@@ -1,5 +1,7 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
+**4K master:** `output/Solix_Empower_2026_AV_v4_4K.mp4` is 3840×2160, 30 fps, 2:55, HEVC (H.265) video with 320 kbps AAC audio, about 97 MB. Every 1080p frame was scaled straight to 4K with Lanczos and light sharpening before encoding. A backup H.264 4K copy for players without HEVC support is in `output/4K_H264_backup/`, split into two parts because GitHub limits files to 100 MB. To join them: `ffmpeg -f concat -safe 0 -i list.txt -c copy out.mp4`.
+
 **Deliverable (v4):** `output/Solix_Empower_2026_AV_v4_1080p.mp4` is the master; `output/Solix_Empower_2026_AV_v4_preview.mp4` is a single-file preview under 30 MB. Both are 1920×1080, 30 fps, 2:55.
 
 ### Changes in v4: animated product screens
