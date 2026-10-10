@@ -1,6 +1,15 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Deliverable:** `output/Solix_Empower_2026_AV_1080p.mp4`. The specs are 1920×1080, 30 fps, about 2:13, with voice-over, background music and on-screen captions.
+**Deliverable (v2):** `output/Solix_Empower_2026_AV_v2_1080p.mp4`. The specs are 1920×1080, 30 fps, 2:55, with voice-over, background music and captions. A compressed copy is in `output/Solix_Empower_2026_AV_v2_preview.mp4`.
+
+### Changes in v2
+- No stock footage. The opening and every other scene use motion graphics; the only stock clip left is EAI Pharma.
+- Product screens come from the new uploads: the CDP, EDG, Application Knowledge Graph and Analyst screen recordings, plus the new Active Archiving, Database, Email, Mainframe, File and EAI Healthcare screenshots.
+- The archiving section is slower and grouped: (1) Application Retirement and Data Preservation, (2) SAP, Oracle and Mainframe, (3) Email, File, Database and Active Archiving, then the benefits.
+- The narration opens with a welcome to the audience and closes with an invitation to connect.
+- Branded diagonal sweep transitions with the Solix bolt, a drifting data-network background, and a slow zoom on every product card.
+- The background music sits lower and ducks further under the voice.
+- The build is `source/build/render2.py`, `vo2.py`, `music.py` (`TL=timeline2.json OUT=music2.wav`) and `mix2.py`.
 
 ## Style (matched to the EAI Healthcare reference video)
 - Light white-to-blush/coral gradient background with a faint grid and soft rings.

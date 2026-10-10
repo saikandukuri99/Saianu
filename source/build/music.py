@@ -4,7 +4,8 @@ from scipy.signal import butter, sosfilt, fftconvolve
 
 B = os.path.dirname(os.path.abspath(__file__))
 SR = 44100
-tl = json.load(open(f"{B}/timeline.json"))
+TLF = os.environ.get("TL", "timeline.json")
+tl = json.load(open(f"{B}/{TLF}"))
 T = tl["total"]
 N = int(T * SR) + SR
 BPM = 124.0
@@ -185,5 +186,5 @@ music[end:] = 0
 music = music[:end]
 music = np.tanh(music / np.abs(music).max() * 1.4) * 0.89
 st = np.stack([music, np.roll(music, 220) * 0.98], 1)  # slight width
-sf.write(f"{B}/music.wav", st, SR)
+sf.write(f"{B}/" + os.environ.get("OUT", "music.wav"), st, SR)
 print("music", len(music) / SR)
