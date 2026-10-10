@@ -1,6 +1,13 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Deliverable (v2):** `output/Solix_Empower_2026_AV_v2_1080p.mp4`. The specs are 1920×1080, 30 fps, 2:55, with voice-over, background music and captions. A compressed copy is in `output/Solix_Empower_2026_AV_v2_preview.mp4`.
+**Deliverable (v3):** `output/Solix_Empower_2026_AV_v3_1080p.mp4`. The specs are 1920×1080, 30 fps, 2:55, high-quality encode.
+
+### Changes in v3
+- Event theme: deep indigo #30267b background, brand-blue #0088cf glows and kickers, red #ee2424 accents, a white Solix logo, and white product cards.
+- Sharper screen recordings: extracted at full source resolution and scaled with Lanczos.
+- Enterprise Content Services: the blurry screenshot is replaced by a crisp, natively rendered panel with an animated graphic.
+- Analysts: a trimmed snippet from the end of the Analysts recording, then a crisp rebuild of the Analyst Recognitions section, with the two Bloor Research entries highlighted.
+- The build is `source/build/render3.py`.
 
 ### Changes in v2
 - No stock footage. The opening and every other scene use motion graphics; the only stock clip left is EAI Pharma.
