@@ -1,6 +1,13 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Deliverable (v3):** `output/Solix_Empower_2026_AV_v3_1080p.mp4`. The specs are 1920×1080, 30 fps, 2:55, high-quality encode.
+**Deliverable (v4):** `output/Solix_Empower_2026_AV_v4_1080p.mp4` is the master; `output/Solix_Empower_2026_AV_v4_preview.mp4` is a single-file preview under 30 MB. Both are 1920×1080, 30 fps, 2:55.
+
+### Changes in v4: animated product screens
+- Every product screenshot and recording plays inside a browser window that shows its solix.com product URL.
+- Screenshots build up section by section: content blocks are detected automatically and revealed in sequence. EAI Healthcare uses a radial build; Data Sense and Agentic use a left-to-right build.
+- The camera pushes in to key areas with a spotlight, a red outline, a label tag, a cursor glide and a click ripple, then pulls back out.
+- Headline keywords land on a blue #0088cf highlight pill.
+- The engine is `source/build/screens.py`; the renderer is `render4.py`.
 
 ### Changes in v3
 - Event theme: deep indigo #30267b background, brand-blue #0088cf glows and kickers, red #ee2424 accents, a white Solix logo, and white product cards.
