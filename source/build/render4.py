@@ -1441,8 +1441,20 @@ def frame(t):
     return c
 
 
+UHD = os.environ.get("UHD") == "1"
+
+
 def render_range(args):
     f0, f1, out = args
+    if UHD:
+        p = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", "3840x2160", "-r", str(FPS),
+                              "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "15", "-tune", "animation", "-profile:v", "high", "-level", "5.1",
+                              "-pix_fmt", "yuv420p", out], stdin=subprocess.PIPE)
+        for f in range(f0, f1):
+            im = frame(f / FPS).resize((3840, 2160), Image.LANCZOS).filter(ImageFilter.UnsharpMask(1.4, 45, 2))
+            p.stdin.write(im.tobytes())
+        p.stdin.close(); p.wait()
+        return out
     p = subprocess.Popen(["ffmpeg", "-nostdin", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
                           "-i", "-", "-c:v", "libx264", "-preset", "medium", "-crf", "12", "-tune", "animation", "-pix_fmt", "yuv420p", out], stdin=subprocess.PIPE)
     for f in range(f0, f1):
@@ -1470,10 +1482,11 @@ if __name__ == "__main__":
         nw = int(sys.argv[2]) if len(sys.argv) > 2 else 4
         nparts = nw * 4
         edges = [nf * q // nparts for q in range(nparts + 1)]
-        jobs = [(edges[q], edges[q + 1], f"{B}/p4_{q:02d}.mp4") for q in range(nparts)]
+        tag = "u4" if UHD else "p4"
+        jobs = [(edges[q], edges[q + 1], f"{B}/{tag}_{q:02d}.mp4") for q in range(nparts)]
         with Pool(nw) as pool:
             for o in pool.imap(render_range, jobs):
                 print("done", o, flush=True)
-        with open(f"{B}/parts4.txt", "w") as f:
+        with open(f"{B}/parts4{'_uhd' if UHD else ''}.txt", "w") as f:
             for j in jobs:
                 f.write(f"file '{j[2]}'\n")
