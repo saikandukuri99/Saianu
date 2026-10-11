@@ -1,6 +1,17 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**4K master:** `output/Solix_Empower_2026_AV_v4_4K.mp4` is 3840×2160, 30 fps, 2:55, HEVC (H.265) video with 320 kbps AAC audio, about 97 MB. Every 1080p frame was scaled straight to 4K with Lanczos and light sharpening before encoding. A backup H.264 4K copy for players without HEVC support is in `output/4K_H264_backup/`, split into two parts because GitHub limits files to 100 MB. To join them: `ffmpeg -f concat -safe 0 -i list.txt -c copy out.mp4`.
+**Current (v5):** `output/Solix_Empower_2026_AV_v5_1080p.mp4` is the 1080p master (2:47); `output/Solix_Empower_2026_AV_v5_preview.mp4` is a single-file preview. A 4K version follows once v5 is approved.
+
+### Changes in v5
+- New narration script approved by management, with matching on-screen text:
+  - Step One: AI-Ready (CDP, ECS, EDG), with a NEW AT EMPOWER tag on EDG.
+  - Step Two: AI-Activated (Understand, Answer, Build, Act).
+  - Move It Once. Access It Always.
+  - Enterprise AI, Built for Industry (EAI Pharma, AI Healthcare Platform).
+- A more natural voice-over:
+  - Kokoro's top-rated voice (af_heart) at natural speed, generated one sentence at a time with real pauses and no time-squeezing.
+  - Studio voice processing: EQ, de-essing, gentle compression and light room tone (`source/build/polish.py`).
+- `output/voice_options_sample.m4a` has the same line in four voices, in order: af_heart (used), af_bella, am_fenrir, bm_george.
 
 **Deliverable (v4):** `output/Solix_Empower_2026_AV_v4_1080p.mp4` is the master; `output/Solix_Empower_2026_AV_v4_preview.mp4` is a single-file preview under 30 MB. Both are 1920×1080, 30 fps, 2:55.
 
