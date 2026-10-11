@@ -1,7 +1,12 @@
 # Solix Application Retirement, 60-second film (Empower 2026)
 
-**Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:09, with voice-over, music and on-screen captions.
+**Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
 
+- **v3 changes:** the film opens on a main title: the original Solix logo and an extruded 3D "Application Retirement" (with EMPOWER 2026) over the legacy-screens fly-in, before the narration starts. The Access beat now follows the script's "Real" direction, built as realistic 3D documents (`docs_ar.py`, fictional demo data):
+  1. Solix Search types the vendor and shows its records.
+  2. Purchase order, goods receipt, invoice and payment (with a PAID stamp) fly in one by one in perspective and settle into a row labelled Ordered, Received, Invoiced and Paid.
+  3. Glowing arcs draw between the four documents to form an Enterprise Business Record.
+  4. A standard report (Invoices by vendor, FY2019) flies forward for "Users get the reports they know."
 - **v2 changes (after review):** the original Solix logo (red disc, white bolt) is used unaltered. The palette is Solix red #ee2424 as the key light behind every subject, indigo #30267b framing the edges and the text side, and blue #0088cf for highlights (key words, check marks, data streams, lit nodes, the active step). The film opens on a 3D camera fly-in through glowing legacy screens, so frame 1 is full. The 3D reads more clearly: particles are lit with a key light and depth-graded in size and haze, objects get a floor reflection, the camera orbit and pitch are deeper, and the five trigger words and "Enable AI" use extruded 3D type.
 - **Look:** no boxes, cards or rules. Kinetic typography: words rise and sharpen into place one by one.
 - **3D motion graphics:** a procedural particle engine with perspective, depth of field, bloom and soft bokeh. One particle system re-forms beat by beat:
