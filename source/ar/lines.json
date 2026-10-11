@@ -3,7 +3,7 @@
   "i": 0,
   "id": "hook",
   "caption": "Every enterprise carries applications it has already moved on from.",
-  "pause": 0.7,
+  "pause": 0.5,
   "file": "00_hook.wav"
  },
  {
@@ -38,63 +38,70 @@
   "i": 5,
   "id": "t5",
   "caption": "An AI program short on history.",
-  "pause": 0.8,
+  "pause": 0.6,
   "file": "05_t5.wav"
  },
  {
   "i": 6,
   "id": "one",
   "caption": "Many reasons. One engine.",
-  "pause": 0.9,
+  "pause": 0.6,
   "file": "06_one.wav"
  },
  {
   "i": 7,
   "id": "connect",
   "caption": "Solix Application Retirement connects to ERP, mainframe, custom and SaaS applications, files and email.",
-  "pause": 0.5,
+  "pause": 0.4,
   "file": "07_connect.wav"
  },
  {
   "i": 8,
   "id": "migrate",
   "caption": "Data moves into a governed Preservation Zone, checked against the source, with retention and legal hold from the day it lands.",
-  "pause": 0.6,
+  "pause": 0.5,
   "file": "08_migrate.wav"
  },
  {
   "i": 9,
   "id": "dark",
   "caption": "Only then does the application go dark. Its licenses, its servers, its risk: gone for good.",
-  "pause": 0.8,
+  "pause": 0.6,
   "file": "09_dark.wav"
  },
  {
   "i": 10,
   "id": "access",
-  "caption": "Nothing it held is lost. Auditors get provable records. Users get the reports they know.",
-  "pause": 0.6,
+  "caption": "Nothing it held is lost. Auditors get provable records.",
+  "pause": 2.3,
   "file": "10_access.wav"
  },
  {
   "i": 11,
-  "id": "ask",
-  "caption": "With Solix Data Ask, people ask in plain English and get cited answers from the application's own Knowledge Graph.",
-  "pause": 0.6,
-  "file": "11_ask.wav"
+  "id": "access2",
+  "caption": "Users get the reports they know.",
+  "pause": 1.1,
+  "file": "11_access2.wav"
  },
  {
   "i": 12,
-  "id": "ai",
-  "caption": "Governed history, ready for your AI.",
-  "pause": 1.0,
-  "file": "12_ai.wav"
+  "id": "ask",
+  "caption": "With Solix Data Ask, people ask in plain English and get cited answers from the application's own Knowledge Graph.",
+  "pause": 0.5,
+  "file": "12_ask.wav"
  },
  {
   "i": 13,
+  "id": "ai",
+  "caption": "Governed history, ready for your AI.",
+  "pause": 0.7,
+  "file": "13_ai.wav"
+ },
+ {
+  "i": 14,
   "id": "sign",
   "caption": "Retire the application. Keep every answer.",
   "pause": 0.0,
-  "file": "13_sign.wav"
+  "file": "14_sign.wav"
  }
 ]

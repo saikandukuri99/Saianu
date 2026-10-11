@@ -6,6 +6,7 @@ import json, os, sys, subprocess, math, numpy as np
 from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from scipy.ndimage import gaussian_filter, zoom
+import docs_ar as DOC
 
 B = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(B, "..", "assets")
@@ -251,9 +252,15 @@ def graph(nodes, links, lit, t, lt, flow=.25):
     return P, Bv, C
 
 def sh_access(t, lt):
-    tw = [word_time("access", w) - SC["access"] for w in ["Nothing", "Auditors", "Auditors", "Users"]]
-    lit = np.array([fl(ease((lt - tw[0] - .3)/.8)), fl(ease((lt-tw[1])/.8)), fl(ease((lt-tw[1]-.4)/.8)), fl(ease((lt-tw[3])/.8))])
-    return graph(DOC_A, LINKS, lit, t, lt)
+    """A glowing data platform the documents stand on."""
+    m = U[:, 0]; a = U[:, 1]*2*np.pi + t*.08
+    ring = m < .45; disc = (m >= .45) & (m < .8)
+    r = np.where(ring, 3.3 + .06*G[:, 0], 3.2*np.sqrt(U[:, 2]))
+    P = np.stack([np.cos(a)*r, np.full(N, -1.25) + .02*G[:, 1], np.sin(a)*r*.55], 1)
+    P = np.where((ring | disc)[:, None], P, DUST*.9)
+    Bv = np.where(ring, .7, np.where(disc, .16 + .3*(np.sin(r*6 - t*2) > .9), .1))
+    C = np.where(ring[:, None], BLG, np.where(disc[:, None], WH, LAV))
+    return P, Bv, C
 
 KG = ["Supplier", "Invoice", "Payment"]
 KG_A = np.array([[-.95, .65, .1], [.9, .6, -.3], [.1, -.8, .35], [-1.3, -.55, -.7], [1.45, -.3, .6], [.3, 1.3, .9]])
@@ -308,8 +315,8 @@ def particles(t):
 
 # ---------------------------------------------------------------- camera
 CAMX = dict(hook=960, t1=1300, t2=1300, t3=1300, t4=1300, t5=1300, one=960, connect=1200,
-            migrate=1270, dark=1270, access=1250, ask=1330, ai=1270, sign=960)
-CAMY = dict(hook=430, one=610, sign=390)
+            migrate=1270, dark=1270, access=960, ask=1330, ai=1270, sign=960)
+CAMY = dict(hook=430, one=610, access=640, sign=390)
 CAMS = dict(hook=1.0, t1=1.15, t2=1.15, t3=1.15, t4=1.1, t5=1.15, one=1.15, connect=1.0, migrate=1.15,
             dark=1.05, access=1.1, ask=1.05, ai=1.15, sign=1.0)
 # red key-light behind the subject (x, y, strength); the end card drops it low so the red logo reads
@@ -535,23 +542,118 @@ LOGO = np.asarray(Image.open(f"{ASSETS}/logo_white.png").convert("RGBA"), np.flo
 def logo_scaled(h):
     im = Image.fromarray((LOGO*255).astype(np.uint8), "RGBA")
     return np.asarray(im.resize((int(im.width*h/im.height), h), Image.LANCZOS), np.float32)/255
-LOGO_SM = logo_scaled(50); LOGO_LG = logo_scaled(160)
+LOGO_SM = logo_scaled(50); LOGO_LG = logo_scaled(160); LOGO_TI = logo_scaled(118)
 def put_rgba(frame, img, x, y, alpha):
     if alpha <= .003: return
     h, w = img.shape[:2]; x, y = int(x), int(y)
     a = img[..., 3:]*alpha
     frame[y:y+h, x:x+w] = frame[y:y+h, x:x+w]*(1-a) + img[..., :3]*a
 
+# ---------------------------------------------------------------- Access beat: 3D documents
+KINDS = ["po", "gr", "inv", "pay"]
+STEPS = ["Ordered", "Received", "Invoiced", "Paid"]
+CW, CH = 1.62, 1.62*900/760
+def slot(k):
+    x = -2.85 + 1.9*k
+    return np.array([x, -.15, .35*(x/2.85)**2]), .25*(x/2.85)
+def lerp(a, b, u): return a*(1-u) + b*u
+def access_docs(fr, t):
+    s = "access"; SA = SC[s]; ta = word_time(s, "Auditors"); tu = LN["access2"]["start"]; te = SC_END[s] - .45
+    out = fl(ease((t - te)/.45))
+    cam = DOC.Cam(960 + 18*math.sin(t*.4), 600, 1050, 5.6, yaw=.07*math.sin(t*.35), pitch=.09)
+    # Solix Search
+    p = fl(eout((t - SA + .1)/.6)); q = fl(ease((t - ta - .15)/.55))
+    if p > 0 and q < 1:
+        n = int(fl(clamp((t - SA - .3)/.75))*len(DOC.VENDOR))
+        rows = int(fl(clamp((t - SA - 1.08)/.4))*4 + .999) if t > SA + 1.08 else 0
+        tex = DOC.search(n, min(rows, 4), t > SA + 1.55)
+        c = lerp(np.array([3.0, -1.0, 2.5]), np.array([.35, .05, -1.6]), p) + np.array([-2.5, 1.6, 3.0])*q
+        qd, nn, _ = DOC.quad(cam, c, 3.4, 3.4*760/1280, yaw=lerp(-.9, -.18, p) - .6*q, pitch=.05, roll=lerp(.15, 0, p))
+        DOC.draw(fr, tex, qd, nn, alpha=p*(1-q), sheen=lerp(-.2, 1.3, fl(clamp((t - SA - .1)/.8))))
+    # purchase-to-pay record
+    rec = fl(ease((t - tu + .1)/.8))   # row recedes when the report arrives
+    quads = []; alphas = []
+    order = []
+    for k, kind in enumerate(KINDS):
+        tk = ta + .3 + .72*k
+        a = fl(eout((t - tk)/.8)); b = fl(einout((t - tk - .8)/.6))
+        if a <= 0: quads.append(None); alphas.append(0); continue
+        sp, syaw = slot(k)
+        start = np.array([4.6, -1.8, 3.2]); hero = np.array([.55, .05, -2.0])
+        c = lerp(lerp(start, hero, a), sp, b) + np.array([0, .3, 1.6])*rec
+        yaw = lerp(lerp(-1.5, -.12, a), syaw, b); roll = lerp(.25, 0, a)
+        al = (1 - out)*(1 - .62*rec)
+        order.append((c[2], k, c, yaw, roll, al, tk))
+        sp_c = DOC.quad(cam, sp + np.array([0, .3, 1.6])*rec, CW, CH, yaw=syaw)[0]
+        quads.append(sp_c if b > .98 else None); alphas.append(al)
+    for z, k, c, yaw, roll, al, tk in sorted(order, key=lambda o: -o[0]):
+        qd, nn, _ = DOC.quad(cam, c, CW, CH, yaw=yaw, roll=roll)
+        if KINDS[k] == "pay":
+            st = fl(ease((t - tk - .75)/.18))
+            DOC.draw(fr, DOC.doc("pay", 0), qd, nn, alpha=al*(1 - st), sheen=lerp(-.2, 1.3, fl(clamp((t - tk - .2)/.7))))
+            if st > 0: DOC.draw(fr, DOC.doc("pay", 1), qd, nn, alpha=al*st, shadow=0)
+        else:
+            DOC.draw(fr, DOC.doc(KINDS[k]), qd, nn, alpha=al, sheen=lerp(-.2, 1.3, fl(clamp((t - tk - .2)/.7))))
+        # step label under each settled card
+        if quads[k] is not None:
+            bm = (quads[k][2] + quads[k][3])/2
+            la = al*fl(ease((t - tk - 1.3)/.4))
+            put(fr, f"0{k+1}", "Inter-SemiBold.otf", 24, bm[0] - measure(STEPS[k], "InterDisplay-SemiBold.otf", 30)/2 - 22, bm[1] + 50, la, rgb=BLUE*1.2, anchor="ms")
+            put(fr, STEPS[k], "InterDisplay-SemiBold.otf", 30, bm[0] + 18, bm[1] + 50, la, anchor="ms")
+    # glowing links tying the four documents together (drawn on as each pair settles)
+    lay = Image.new("L", (W//2, H//2), 0); dr = ImageDraw.Draw(lay); any_l = False
+    for k in range(3):
+        if quads[k] is None or quads[k+1] is None: continue
+        u = fl(eout((t - (ta + .3 + .72*(k+1) + 1.4))/.45))
+        if u <= 0: continue
+        p0 = (quads[k][0] + quads[k][1])/2; p1 = (quads[k+1][0] + quads[k+1][1])/2
+        ctrl = (p0 + p1)/2 - np.array([0, 70])
+        ss = np.linspace(0, u, 40)[:, None]
+        pts = (1-ss)**2*p0 + 2*(1-ss)*ss*ctrl + ss**2*p1
+        dr.line([tuple(v) for v in pts/2], fill=255, width=2); any_l = True
+        dr.ellipse(tuple(np.r_[p0/2 - 4, p0/2 + 4]), fill=255)
+        if u >= 1:
+            dr.ellipse(tuple(np.r_[p1/2 - 4, p1/2 + 4]), fill=255)
+            ph = ((t*.8 + k*.33) % 1.0)
+            pd = (1-ph)**2*p0 + 2*(1-ph)*ph*ctrl + ph**2*p1
+            dr.ellipse(tuple(np.r_[pd/2 - 5, pd/2 + 5]), fill=255)
+    if any_l:
+        L = np.asarray(lay, np.float32)/255*(1 - out)*(1 - .62*rec)
+        g = L*1.2 + gaussian_filter(L, 5)*3.5
+        g = zoom(g, 2, order=1)[:H, :W, None]
+        fr[:] = fr + (1 - fr)*np.clip(g, 0, 1)*np.array([.35, .78, 1.0], np.float32)
+    # Enterprise Business Record kicker
+    ka = fl(ease((t - (ta + .3 + .72*3 + 1.2))/.5))*(1 - out)*(1 - rec)
+    if ka > 0:
+        put(fr, "ENTERPRISE BUSINESS RECORD  ·  " + DOC.VENDOR.upper(), "Inter-SemiBold.otf", 24, W/2, 352, ka, track=5, anchor="ms", rgb=BLUE*1.25)
+    # standard report flies forward
+    r = fl(eout((t - tu + .1)/.95))
+    if r > 0:
+        c = lerp(np.array([3.8, -2.2, 2.5]), np.array([.5, -.2, -2.25]), r)
+        qd, nn, _ = DOC.quad(cam, c, 2.6, 2.6*820/1180, yaw=lerp(-1.0, -.14, r), pitch=lerp(.5, .04, r), roll=lerp(-.2, 0, r))
+        DOC.draw(fr, DOC.doc("report"), qd, nn, alpha=r*(1 - out), sheen=lerp(-.2, 1.3, fl(clamp((t - tu - .3)/.8))))
+
 # ---------------------------------------------------------------- overlays per scene
 LX = 150
 def overlays(fr, t):
     sid = scene_at(t)
     E = lambda s: SC_END[s] - .45
-    put_rgba(fr, LOGO_SM, W - 90 - LOGO_SM.shape[1], 56, (1 - fl(ease((t - SC["sign"] + .2)/.6)))*1.0)
+    T0 = LN["hook"]["start"]
+    put_rgba(fr, LOGO_SM, W - 90 - LOGO_SM.shape[1], 56, (1 - fl(ease((t - SC["sign"] + .2)/.6)))*fl(ease((t - T0 - .3)/.5)))
+
+    # 0. Main title: the original Solix logo and an extruded 3D "Application Retirement"
+    if t < T0 + 1.0:
+        p = fl(eout((t - .3)/.9)); q = fl(ease((t - (T0 - .15))/.6))
+        put_rgba(fr, LOGO_TI, W/2 - LOGO_TI.shape[1]/2 + 10, 300 - 30*(1-p) - 60*q, fl(ease((t - .1)/.6))*(1-q))
+        sc = (1.16 - .16*p)*(1 + .4*q)
+        size = int(128*sc); tw = measure("Application Retirement", "InterDisplay-Bold.otf", size)
+        put3d(fr, "Application Retirement", "InterDisplay-Bold.otf", size, W/2 - tw/2, 580 + 40*q, p*(1-q), t,
+              depth=18, blur=(1-p)*10 + q*12)
+        fade_text(fr, t, "EMPOWER 2026", W/2, 670 + 40*q, 28, .9, T0 - .15, fname="Inter-SemiBold.otf", anchor="ms",
+                  track=8, rgb=BLUE*1.2)
 
     # 1. Hook
-    fade_text(fr, t, "APPLICATION RETIREMENT", LX + 2, 770, 26, 0.0, E("hook"), fname="Inter-SemiBold.otf", track=6, rgb=BLUE*1.15)
-    kinetic(fr, t, "Applications you've moved on from.", LX, 860, 84, .15, E("hook"), maxw=1600)
+    kinetic(fr, t, "Applications you've moved on from.", LX, 860, 84, T0 + .5, E("hook"), maxw=1600)
 
     # 2. Five triggers: one extruded 3D word each
     for tid, word in (("t1", "Cost"), ("t2", "Risk"), ("t3", "M&A"), ("t4", "Old archive"), ("t5", "AI")):
@@ -618,16 +720,14 @@ def overlays(fr, t):
     fade_text(fr, t, "PRESERVATION ZONE  ·  STILL ON", 1270, 930, 26, word_time(s, "gone for good") - .2, E(s),
               fname="Inter-SemiBold.otf", anchor="ms", track=4, rgb=BLUE*1.2)
 
-    # 7. Access
+    # 7. Access: Solix Search, then the purchase-to-pay record in 3D, then a standard report
     s = "access"
-    fade_text(fr, t, "Nothing it held is lost.", LX, 190, 36, SC[s] + .4, E(s), fname="InterDisplay-Medium.otf", alpha=.9)
-    kinetic(fr, t, "Provable records.", LX, 300, 88, word_time(s, "Auditors") - .2, E(s), maxw=800, hl=("Provable",))
-    kinetic(fr, t, "Familiar reports.", LX, 398, 88, word_time(s, "Users") - .2, E(s), maxw=800, hl=("Familiar",))
     if SC[s] - .2 <= t <= SC_END[s] + .6:
-        sx, sy, zc = project(DOC_A, t)
-        tw = [word_time(s, "Nothing") + .3, word_time(s, "Auditors"), word_time(s, "Auditors") + .4, word_time(s, "Users")]
-        for k, lab in enumerate(DOCS):
-            fade_text(fr, t, lab, sx[k], sy[k] - 56, 36, tw[k], E(s), fname="InterDisplay-SemiBold.otf", anchor="ms")
+        access_docs(fr, t)
+    ta, tu = word_time(s, "Auditors"), LN["access2"]["start"]
+    fade_text(fr, t, "Nothing it held is lost.", LX, 250, 56, SC[s] + .3, ta - .3, fname="InterDisplay-SemiBold.otf")
+    kinetic(fr, t, "Provable records.", LX, 230, 64, ta - .1, E(s), maxw=900, hl=("Provable",))
+    kinetic(fr, t, "Familiar reports.", LX, 302, 64, tu - .1, E(s), maxw=900, hl=("Familiar",))
 
     # 8. Data Ask
     s = "ask"
