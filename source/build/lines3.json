@@ -109,14 +109,14 @@
  },
  {
   "scene": 4,
-  "tts": "E A I Healthcare brings trusted data and collaborative AI intelligence together, for actionable outcomes.",
-  "cap": "EAI Healthcare brings trusted data and collaborative AI intelligence together for actionable outcomes.",
+  "tts": "E A I Healthcare brings a trusted data foundation and collaborative intelligence together, for actionable outcomes.",
+  "cap": "EAI Healthcare brings a trusted data foundation and collaborative intelligence together for actionable outcomes.",
   "gap": 0.8
  },
  {
   "scene": 4,
-  "tts": "It delivers Patient three sixty Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
-  "cap": "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
+  "tts": "It delivers Patient three sixty Analytics, AI Clinical Intelligence, Intelligent Imaging and Radiology, and Purpose-Built Healthcare Models.",
+  "cap": "It delivers Patient 360 Analytics, AI Clinical Intelligence, Intelligent Imaging and Radiology, and Purpose-Built Healthcare Models.",
   "gap": 0.8
  },
  {
@@ -129,7 +129,7 @@
   "scene": 4,
   "tts": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
   "cap": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
-  "gap": 1.0
+  "gap": 5.2
  },
  {
   "scene": 5,

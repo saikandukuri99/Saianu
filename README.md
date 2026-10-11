@@ -1,6 +1,11 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Current (v9):** `output/Solix_Empower_2026_AV_v9_1080p.mp4` is the 1080p master (3:04); `output/Solix_Empower_2026_AV_v9_preview.mp4` is a single-file preview. A 4K version follows once v9 is approved.
+**Current (v10):** `output/Solix_Empower_2026_AV_v10_1080p.mp4` is the 1080p master (3:11); `output/Solix_Empower_2026_AV_v10_preview.mp4` is a single-file preview. A 4K version follows once v10 is approved.
+
+### Changes in v10
+- Narration: "a trusted data foundation and collaborative intelligence together, for actionable outcomes". On screen: "Collaborative Intelligence".
+- Pillar 6 (Purpose-Built Healthcare Models) is now spoken and highlighted, with the subtext "Specialty-specific multi-agentic intelligence".
+- Solix Academy: after the learning path, a 3D extruded wheel animates in (`wheel3d.py`): AI-Ready Data / Solix CDP, AI-Ready People / Solix Academy, AI-Ready Enterprise / Solix EAI, around "Your AI Journey Starts Here".
 
 ### Changes in v9
 - The narration now says "actionable outcomes" and "Patient three sixty".
