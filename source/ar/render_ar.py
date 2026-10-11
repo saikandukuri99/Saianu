@@ -675,9 +675,11 @@ def overlays(fr, t):
 
 def captions(fr, t):
     """VO subtitles: plain text with a soft shadow, no box."""
-    for L in TL["lines"]:
+    LS = TL["lines"]
+    for i, L in enumerate(LS):
         if L["id"] == "sign": continue
         t0, t1 = L["start"] - .1, L["end"] + .3
+        if i + 1 < len(LS): t1 = min(t1, LS[i+1]["start"] - .35)
         if not (t0 - .1 <= t <= t1 + .3): continue
         a = fl(ease((t - t0)/.2))*(1 - fl(ease((t - t1)/.25)))*.92
         if a <= .003: continue
