@@ -129,7 +129,13 @@
   "scene": 4,
   "tts": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
   "cap": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
-  "gap": 5.2
+  "gap": 0.7
+ },
+ {
+  "scene": 4,
+  "tts": "Your AI journey starts here. AI-ready data, with Solix C D P. AI-ready people, with Solix Academy. And an AI-ready enterprise, with Solix E A I.",
+  "cap": "Your AI journey starts here: AI-ready data with Solix CDP, AI-ready people with Solix Academy, and an AI-ready enterprise with Solix EAI.",
+  "gap": 1.2
  },
  {
   "scene": 5,

@@ -41,7 +41,9 @@ LINES = [
     (4, "From AI-Powered Documentation and AI Clinical Assistants, to Preventive Care and Revenue Cycle Intelligence.",
         "From AI-Powered Documentation and AI Clinical Assistants to Preventive Care and Revenue Cycle Intelligence.", 0.9),
     (4, "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
-        "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.", 5.2),
+        "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.", 0.7),
+    (4, "Your AI journey starts here. AI-ready data, with Solix C D P. AI-ready people, with Solix Academy. And an AI-ready enterprise, with Solix E A I.",
+        "Your AI journey starts here: AI-ready data with Solix CDP, AI-ready people with Solix Academy, and an AI-ready enterprise with Solix EAI.", 1.2),
 
     (5, "Today, Solix technology supports leading enterprises across industries, including organizations within the Fortune two thousand.",
         "Today, Solix technology supports leading enterprises across industries, including organizations within the Fortune 2000.", 0.5),

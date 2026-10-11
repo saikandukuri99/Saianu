@@ -1,6 +1,9 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Current (v10):** `output/Solix_Empower_2026_AV_v10_1080p.mp4` is the 1080p master (3:11); `output/Solix_Empower_2026_AV_v10_preview.mp4` is a single-file preview. A 4K version follows once v10 is approved.
+**Current (v11):** `output/Solix_Empower_2026_AV_v11_1080p.mp4` is the 1080p master (3:18); `output/Solix_Empower_2026_AV_v11_preview.mp4` is a single-file preview. A 4K version follows once v11 is approved.
+
+### Changes in v11
+- The 3D AI-journey wheel now has narration: "Your AI journey starts here: AI-ready data with Solix CDP, AI-ready people with Solix Academy, and an AI-ready enterprise with Solix EAI." Each segment animates in as it is spoken.
 
 ### Changes in v10
 - Narration: "a trusted data foundation and collaborative intelligence together, for actionable outcomes". On screen: "Collaborative Intelligence".
