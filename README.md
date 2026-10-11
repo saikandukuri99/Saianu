@@ -1,3 +1,16 @@
+# Solix Application Retirement, 60-second film (Empower 2026)
+
+**Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:09, with voice-over, music and on-screen captions.
+
+- **Look:** a deep Solix-red field with no boxes, cards or rules. White kinetic typography: words rise and sharpen into place one by one. A white-disc Solix mark is used so the logo reads on red.
+- **3D motion graphics:** a procedural particle engine with perspective, depth of field, bloom and soft bokeh. One particle system re-forms beat by beat:
+  dormant dot-matrix legacy apps → Cost (coin), Risk (glitching sphere), M&A (absorbed sphere), Old archive (straining stack), AI (sphere with a missing wedge) → everything collapses to a point and bursts into the Solix engine → six sources stream in (ERP, Mainframe, Custom apps, SaaS, Files, Email) → a lattice Preservation Zone fills bottom-up with four checks → the application shell powers down and falls away while the vault stays lit → linked record graph (Invoice, PO, Receipt, Payment) → Data Ask knowledge graph with a typed question → the AI sphere's missing wedge fills with governed history (a callback to the AI trigger) → a halo around the Solix mark for the sign-off.
+- **Narration:** the script's voice-over, trimmed to fit about 60 seconds (Kokoro `af_heart`, studio voice chain). The "150+ source types" claim is left out until it is verified, as the script's claims check asks.
+- **Music:** an original, slow ambient score (pads, sparse felt piano, sub swell), royalty-free. It ducks under the voice, dips at the switch-off and lifts into the sign-off. Loudness is −16 LUFS.
+- **Build** (`source/ar/`): `vo_ar.py` → `timeline_ar.py` → `music_ar.py` → `render_ar.py` → `mix_ar.py`. Use `python3 render_ar.py preview 12 30 45` to render single frames.
+
+---
+
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
 **Current (v7):** `output/Solix_Empower_2026_AV_v7_1080p.mp4` is the 1080p master (3:00); `output/Solix_Empower_2026_AV_v7_preview.mp4` is a single-file preview. A 4K version follows once v7 is approved.
