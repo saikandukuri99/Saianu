@@ -121,9 +121,15 @@
  },
  {
   "scene": 4,
-  "tts": "From AI Clinical Assistants and Preventive Care, to Revenue Cycle Intelligence and AI-Powered Documentation.",
-  "cap": "From AI Clinical Assistants and Preventive Care to Revenue Cycle Intelligence and AI-Powered Documentation.",
-  "gap": 2.6
+  "tts": "From AI-Powered Documentation and AI Clinical Assistants, to Preventive Care and Revenue Cycle Intelligence.",
+  "cap": "From AI-Powered Documentation and AI Clinical Assistants to Preventive Care and Revenue Cycle Intelligence.",
+  "gap": 0.9
+ },
+ {
+  "scene": 4,
+  "tts": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
+  "cap": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
+  "gap": 1.0
  },
  {
   "scene": 5,

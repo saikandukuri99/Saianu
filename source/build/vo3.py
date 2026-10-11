@@ -38,8 +38,10 @@ LINES = [
         "EAI Healthcare brings trusted data and collaborative AI intelligence together for actionable healthcare outcomes.", 0.8),
     (4, "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
         "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.", 0.8),
-    (4, "From AI Clinical Assistants and Preventive Care, to Revenue Cycle Intelligence and AI-Powered Documentation.",
-        "From AI Clinical Assistants and Preventive Care to Revenue Cycle Intelligence and AI-Powered Documentation.", 2.6),
+    (4, "From AI-Powered Documentation and AI Clinical Assistants, to Preventive Care and Revenue Cycle Intelligence.",
+        "From AI-Powered Documentation and AI Clinical Assistants to Preventive Care and Revenue Cycle Intelligence.", 0.9),
+    (4, "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
+        "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.", 1.0),
 
     (5, "Today, Solix technology supports leading enterprises across industries, including organizations within the Fortune two thousand.",
         "Today, Solix technology supports leading enterprises across industries, including organizations within the Fortune 2000.", 0.5),

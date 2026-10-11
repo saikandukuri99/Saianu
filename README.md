@@ -1,6 +1,13 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Current (v7):** `output/Solix_Empower_2026_AV_v7_1080p.mp4` is the 1080p master (3:00); `output/Solix_Empower_2026_AV_v7_preview.mp4` is a single-file preview. A 4K version follows once v7 is approved.
+**Current (v8):** `output/Solix_Empower_2026_AV_v8_1080p.mp4` is the 1080p master (3:05); `output/Solix_Empower_2026_AV_v8_preview.mp4` is a single-file preview. A 4K version follows once v8 is approved.
+
+### Changes in v8 (healthcare section)
+- Under EAI HEALTHCARE: "Accelerated Care by empowering clinicians for intelligent outcomes." and "Care Creates Data | Data Accelerates Cure".
+- The third foundation step now reads "Actionable Outcomes".
+- The 6-pillar diagram has three pillars on the left, three on the right and the Solix sphere in the centre, with no camera movement; labels are fitted inside the frame.
+- Capability order: AI-Powered Documentation → AI Clinical Assistant → Preventive Care → Revenue Cycle Intelligence, with the narration re-recorded in the same order.
+- The EAI Healthcare end screen is removed. Solix Academy is added (narration and an animated learning path: Data → Governance → Enterprise AI → Agentic, "Build the skills for an AI-ready enterprise").
 
 ### Changes in v7: new EAI Pharma / EAI Healthcare section (pure motion graphics)
 - New narration for this section (four lines from the updated script). The screenshot and the 3D body are removed.
