@@ -1,6 +1,14 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Current (v5):** `output/Solix_Empower_2026_AV_v5_1080p.mp4` is the 1080p master (2:47); `output/Solix_Empower_2026_AV_v5_preview.mp4` is a single-file preview. A 4K version follows once v5 is approved.
+**Current (v6):** `output/Solix_Empower_2026_AV_v6_1080p.mp4` is the 1080p master (2:47); `output/Solix_Empower_2026_AV_v6_preview.mp4` is a single-file preview. A 4K version follows once v6 is approved.
+
+### Changes in v6
+- Simple animated text beside the screens replaces the boxed callouts.
+- Subtitles are plain text with a soft shadow, with no box.
+- Background: the grid lines and rings are removed and replaced with depth effects: soft out-of-focus light particles in three layers and floating glossy glass spheres. The icon circles have glossy 3D shading.
+- The CDP, EDG and Application Knowledge Graph recordings are stitched into full-page images (`stitch.py`). The camera now moves strictly from top to bottom, with no back-scrolling.
+- Zoom: none on the low-resolution screenshots, a gentler zoom (at most 1.22×) on the sharp ones, and a lighter dim, so text stays readable.
+- EAI Healthcare: a rotating 3D holographic human body (`human3d.py`) with EHR, imaging, billing, pharmacy and lab nodes orbiting in depth.
 
 ### Changes in v5
 - New narration script approved by management, with matching on-screen text:
