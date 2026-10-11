@@ -109,13 +109,13 @@
  },
  {
   "scene": 4,
-  "tts": "E A I Healthcare brings trusted data and collaborative AI intelligence together, for actionable healthcare outcomes.",
-  "cap": "EAI Healthcare brings trusted data and collaborative AI intelligence together for actionable healthcare outcomes.",
+  "tts": "E A I Healthcare brings trusted data and collaborative AI intelligence together, for actionable outcomes.",
+  "cap": "EAI Healthcare brings trusted data and collaborative AI intelligence together for actionable outcomes.",
   "gap": 0.8
  },
  {
   "scene": 4,
-  "tts": "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
+  "tts": "It delivers Patient three sixty Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
   "cap": "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
   "gap": 0.8
  },

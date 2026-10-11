@@ -1,6 +1,10 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Current (v8):** `output/Solix_Empower_2026_AV_v8_1080p.mp4` is the 1080p master (3:05); `output/Solix_Empower_2026_AV_v8_preview.mp4` is a single-file preview. A 4K version follows once v8 is approved.
+**Current (v9):** `output/Solix_Empower_2026_AV_v9_1080p.mp4` is the 1080p master (3:04); `output/Solix_Empower_2026_AV_v9_preview.mp4` is a single-file preview. A 4K version follows once v9 is approved.
+
+### Changes in v9
+- The narration now says "actionable outcomes" and "Patient three sixty".
+- The 6-pillar subtexts are shown in full (wrapped, never cut off). Pillar 6 reads "Specialty multi-agentic intelligence".
 
 ### Changes in v8 (healthcare section)
 - Under EAI HEALTHCARE: "Accelerated Care by empowering clinicians for intelligent outcomes." and "Care Creates Data | Data Accelerates Cure".

@@ -34,9 +34,9 @@ LINES = [
 
     (4, "E A I Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
         "EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.", 0.9),
-    (4, "E A I Healthcare brings trusted data and collaborative AI intelligence together, for actionable healthcare outcomes.",
-        "EAI Healthcare brings trusted data and collaborative AI intelligence together for actionable healthcare outcomes.", 0.8),
-    (4, "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
+    (4, "E A I Healthcare brings trusted data and collaborative AI intelligence together, for actionable outcomes.",
+        "EAI Healthcare brings trusted data and collaborative AI intelligence together for actionable outcomes.", 0.8),
+    (4, "It delivers Patient three sixty Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
         "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.", 0.8),
     (4, "From AI-Powered Documentation and AI Clinical Assistants, to Preventive Care and Revenue Cycle Intelligence.",
         "From AI-Powered Documentation and AI Clinical Assistants to Preventive Care and Revenue Cycle Intelligence.", 0.9),
