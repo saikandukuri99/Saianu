@@ -103,27 +103,27 @@
  },
  {
   "scene": 4,
-  "tts": "The same foundation powers solutions built for industry.",
-  "cap": "The same foundation powers solutions built for industry.",
-  "gap": 0.6
+  "tts": "E A I Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
+  "cap": "EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
+  "gap": 0.9
  },
  {
   "scene": 4,
-  "tts": "Solix E A I Pharma helps compress preclinical drug discovery, from years to months.",
-  "cap": "Solix EAI Pharma helps compress preclinical drug discovery from years to months.",
+  "tts": "E A I Healthcare brings trusted data and collaborative AI intelligence together, for actionable healthcare outcomes.",
+  "cap": "EAI Healthcare brings trusted data and collaborative AI intelligence together for actionable healthcare outcomes.",
   "gap": 0.8
  },
  {
   "scene": 4,
-  "tts": "And the Solix AI Healthcare Platform unifies the patient record across E H R, imaging, billing, pharmacy, and lab.",
-  "cap": "And the Solix AI Healthcare Platform unifies the patient record across EHR, imaging, billing, pharmacy and lab:",
-  "gap": 0.35
+  "tts": "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
+  "cap": "It delivers Patient 360 Analytics, AI Clinical Intelligence, and Intelligent Imaging and Radiology.",
+  "gap": 0.8
  },
  {
   "scene": 4,
-  "tts": "Hippa compliant, and AI-ready from day one.",
-  "cap": "HIPAA-compliant and AI-ready from day one.",
-  "gap": 1.0
+  "tts": "From AI Clinical Assistants and Preventive Care, to Revenue Cycle Intelligence and AI-Powered Documentation.",
+  "cap": "From AI Clinical Assistants and Preventive Care to Revenue Cycle Intelligence and AI-Powered Documentation.",
+  "gap": 2.6
  },
  {
   "scene": 5,

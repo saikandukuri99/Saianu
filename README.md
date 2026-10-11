@@ -1,6 +1,14 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
-**Current (v6):** `output/Solix_Empower_2026_AV_v6_1080p.mp4` is the 1080p master (2:47); `output/Solix_Empower_2026_AV_v6_preview.mp4` is a single-file preview. A 4K version follows once v6 is approved.
+**Current (v7):** `output/Solix_Empower_2026_AV_v7_1080p.mp4` is the 1080p master (3:00); `output/Solix_Empower_2026_AV_v7_preview.mp4` is a single-file preview. A 4K version follows once v7 is approved.
+
+### Changes in v7: new EAI Pharma / EAI Healthcare section (pure motion graphics)
+- New narration for this section (four lines from the updated script). The screenshot and the 3D body are removed.
+- **EAI Pharma:** title reveal and a rotating 3D molecule with research-data tags (compounds, assays, genomics, trials) linked by animated AI connections. DATA + AI merges into ACCELERATE DRUG DISCOVERY, followed by "Research → Intelligent Insights".
+- **EAI Healthcare foundation:** Trusted Data Foundation → Collaborative AI Intelligence → Actionable Healthcare Outcomes as a horizontal flow with moving data along the links.
+- **Platform:** the infographic rebuilt as motion graphics. Points converge into the big glossy Solix bolt, then the six capability nodes and the dotted ring appear. Patient 360 Analytics, AI Clinical Intelligence and Intelligent Imaging & Radiology highlight in sequence, with a gentle camera drift.
+- **Capabilities:** AI Clinical Assistant, Preventive Care, Revenue Cycle Intelligence and AI-Powered Documentation, each appearing as icon → title → a small animated visual. The section ends on an EAI Healthcare lockup.
+- The section's code is in `source/build/scene4_v7.py` (it is merged into `render7.py`).
 
 ### Changes in v6
 - Simple animated text beside the screens replaces the boxed callouts.
