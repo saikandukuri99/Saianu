@@ -154,3 +154,84 @@ def legacy(kind):
         d.rounded_rectangle((616, 552, 816, 602), 25, fill=(70, 74, 100))
         d.text((716, 577), "Submit", font=F("Inter-SemiBold.otf", 26), fill=DIM, anchor="mm")
     return im
+
+# ---------------------------------------------------------------- Preservation Zone and switch-off screens
+def card(w, h, title, sub):
+    im = Image.new("RGBA", (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+    d.rounded_rectangle((0, 0, w-1, h-1), 28, fill=PAPER + (255,))
+    d.rounded_rectangle((0, 0, w-1, 130), 28, fill=INDIGO + (255,)); d.rectangle((0, 90, w-1, 130), fill=INDIGO + (255,))
+    tracked(d, (48, 34), title, F("Inter-SemiBold.otf", 30), (255, 255, 255), 6)
+    d.text((48, 80), sub, font=F("Inter-Medium.otf", 24), fill=(220, 222, 245))
+    return im, d
+
+VROWS = [("AP invoices", 1284906), ("Purchase orders", 942118), ("Payments", 1117530), ("GL journals", 3402771)]
+@lru_cache(None)
+def validation(step):
+    p = step/24.0
+    w, h = 1100, 720
+    im, d = card(w, h, "VALIDATION REPORT", "Legacy Finance ERP  →  Governed Preservation Zone")
+    hf = F("Inter-SemiBold.otf", 20)
+    for x, lab in ((48, "TABLE"), (520, "SOURCE ROWS"), (790, "ARCHIVE ROWS")): d.text((x, 166), lab, font=hf, fill=MUTE)
+    for i, (name, n) in enumerate(VROWS):
+        y = 214 + i*86
+        if i % 2 == 0: d.rounded_rectangle((28, y - 16, w - 28, y + 56), 14, fill=TINT)
+        f = F("Inter-Medium.otf", 32)
+        d.text((48, y), name, font=f, fill=INK)
+        d.text((700, y), f"{n:,}", font=F("Inter-SemiBold.otf", 32), fill=INK, anchor="ra")
+        k = eo((p - i*.1)*2.2)
+        d.text((970, y), f"{int(n*k):,}", font=F("Inter-SemiBold.otf", 32), fill=INK if k >= 1 else MUTE, anchor="ra")
+        if k >= 1: d.text((1010, y - 2), "✓", font=F("InterDisplay-Bold.otf", 38), fill=BLUE)
+    a = eo((p - .62)*4)
+    if a > 0:
+        col = tuple(int(255 - (255 - c)*a) for c in (225, 240, 250))
+        d.rounded_rectangle((28, 584, w - 28, 680), 20, fill=col)
+        d.text((70, 610), "✓  Validation passed: source and archive match",
+               font=F("InterDisplay-SemiBold.otf", 36), fill=tuple(int(255 - (255 - c)*a) for c in BLUE))
+    return im
+
+@lru_cache(None)
+def policy(step):
+    p = step/24.0
+    w, h = 1100, 660
+    im, d = card(w, h, "GOVERNANCE POLICY", "Finance ERP R11  ·  Preservation Zone")
+    rows = [("Retention", "10 years after fiscal close"), ("Quality checks", "4 of 4 rules passed"), ("Access", "Role-based, every read audited")]
+    for i, (k, v) in enumerate(rows):
+        y = 170 + i*112
+        d.text((48, y), k.upper(), font=F("Inter-SemiBold.otf", 20), fill=MUTE)
+        d.text((48, y + 32), v, font=F("InterDisplay-SemiBold.otf", 38), fill=INK)
+        d.text((w - 60, y + 30), "✓", font=F("InterDisplay-Bold.otf", 42), fill=BLUE, anchor="ra")
+    y = 520
+    d.rounded_rectangle((28, y - 20, w - 28, y + 110), 20, fill=TINT)
+    d.text((60, y + 4), "LEGAL HOLD", font=F("Inter-SemiBold.otf", 20), fill=MUTE)
+    on = eo((p - .45)*4)
+    d.text((60, y + 36), "Ready" if on > .5 else "Off", font=F("InterDisplay-SemiBold.otf", 40), fill=BLUE if on > .5 else MUTE)
+    tx, ty, tw_, th = w - 220, y + 14, 150, 76
+    col = tuple(int(c1*(1 - on) + c2*on) for c1, c2 in zip((200, 202, 222), BLUE))
+    d.rounded_rectangle((tx, ty, tx + tw_, ty + th), 38, fill=col)
+    kx = tx + 8 + (tw_ - th)*on
+    d.ellipse((kx, ty + 8, kx + th - 16, ty + th - 8), fill=(255, 255, 255))
+    return im
+
+@lru_cache(None)
+def inventory(step):
+    p = step/24.0
+    w, h = 1100, 640
+    im, d = card(w, h, "APPLICATION INVENTORY", "Decommissioning status")
+    hf = F("Inter-SemiBold.otf", 20)
+    for x, lab in ((48, "APPLICATION"), (560, "DATA"), (830, "STATUS")): d.text((x, 166), lab, font=hf, fill=MUTE)
+    rows = [("Finance ERP R11", None), ("HR Portal 2009", "Retired"), ("Plant Maintenance v2.3", "Scheduled")]
+    for i, (name, st) in enumerate(rows):
+        y = 214 + i*100
+        if i == 0: d.rounded_rectangle((28, y - 20, w - 28, y + 64), 16, fill=(225, 240, 250) if p > .35 else TINT)
+        d.text((48, y), name, font=F("InterDisplay-SemiBold.otf" if i == 0 else "Inter-Medium.otf", 34), fill=INK)
+        d.text((560, y + 2), "Preserved ✓" if (i < 2 and (i or p > .35)) else "—", font=F("Inter-SemiBold.otf", 28), fill=BLUE if i < 2 else MUTE)
+        if st is None: st = "Retired" if p > .35 else "Active"
+        col = {"Retired": INK, "Active": (40, 150, 90), "Scheduled": MUTE}[st]
+        f = F("Inter-SemiBold.otf", 28); tw_ = f.getlength(st) + 44
+        d.rounded_rectangle((830, y - 6, 830 + tw_, y + 46), 26, fill=tuple(int(c*.12 + 255*.88) for c in col))
+        d.text((852, y + 2), st, font=f, fill=col)
+    a = eo((p - .5)*3)
+    if a > 0:
+        d.text((48, 548), "Licenses cancelled  ·  Servers released  ·  Data preserved", font=F("Inter-SemiBold.otf", 30),
+               fill=tuple(int(255 - (255 - c)*a) for c in BLUE))
+    return im

@@ -316,7 +316,7 @@ def particles(t):
 
 # ---------------------------------------------------------------- camera
 CAMX = dict(hook=960, t1=1660, t2=1660, t3=1660, t4=1660, t5=1660, one=960, connect=1200,
-            migrate=1270, dark=1270, access=960, ask=1330, ai=1270, sign=960)
+            migrate=1160, dark=1300, access=960, ask=1330, ai=1270, sign=960)
 CAMY = dict(hook=430, t1=330, t2=330, t3=330, t4=330, t5=330, one=610, access=640, sign=390)
 CAMS = dict(hook=1.0, t1=.62, t2=.62, t3=.62, t4=.6, t5=.62, one=1.15, connect=1.0, migrate=1.15,
             dark=1.05, access=1.1, ask=1.05, ai=1.15, sign=1.0)
@@ -675,6 +675,59 @@ def legacy_windows(fr, t):
             put(fr, "STILL RUNNING", "Inter-SemiBold.otf", 20, tl[0] + 30, tl[1] - 30, la*.95, track=4, rgb=BLUE*1.25)
             put(fr, stat, "InterDisplay-SemiBold.otf", 32, bm[0], bm[1] + 50, la, anchor="ms")
 
+# ---------------------------------------------------------------- Preservation Zone and switch-off screens
+def process_screens(fr, t):
+    sm, sd = SC["migrate"], SC["dark"]
+    if not (sm - .2 <= t <= SC_END["dark"] + .6): return
+    cam = DOC.Cam(1250, 600, 1050, 5.6, yaw=.05*math.sin(t*.45), pitch=.06)
+    Em, Ed = SC_END["migrate"] - .45, SC_END["dark"] - .45
+    # source application window: above the vault while data streams down, then front and centre to power off
+    td = word_time("dark", "go dark") + .1
+    pin = fl(eout((t - sm - .1)/.8)); mv = fl(einout((t - sd + .2)/1.0))
+    src = np.array([-.57, 2.42, 1.0]); front = np.array([-.79, .2, -.4])
+    c = lerp(src + np.array([0, 1.5, 2.0])*(1 - pin), front, mv) + np.array([0, .03*math.sin(t*1.1), 0])
+    w = lerp(2.4, 2.7, mv)
+    k = (t - td)/.55
+    if pin > 0 and k < 1:
+        hs = lerp(1, .012, fl(eout(k/.6))) if k > 0 else 1.0
+        ws = 1 - fl(eout((k - .6)/.4)) if k > .6 else 1.0
+        if ws > .01:
+            qd, nn, _ = DOC.quad(cam, c, w*ws, w*640/1000*hs, yaw=lerp(.12, .2, mv))
+            DOC.draw(fr, SCR.legacy("erp"), qd, nn, alpha=pin*(1 - .15*mv), sheen=(lerp(-.2, 1.3, fl(clamp(k/.5)))) if k > 0 else None,
+                     shadow=.4 if k <= 0 else 0)
+            if k > .25:  # CRT power-off: a hot line of light
+                cy_ = int(qd[:, 1].mean()); x0, x1 = int(qd[:, 0].min()), int(qd[:, 0].max())
+                g = math.exp(-max(0.0, k - .6)*3)
+                for dy in range(-14, 15):
+                    wv = math.exp(-(dy/4.0)**2)*g*min(1.0, (k - .25)*4)
+                    yy = cy_ + dy
+                    if 0 <= yy < H and x1 > x0:
+                        fr[yy, max(0, x0):min(W, x1)] += (1 - fr[yy, max(0, x0):min(W, x1)])*wv*np.array([.85, .92, 1.0], np.float32)
+        if t < sd + .4:
+            lab = fl(ease((t - sm - .7)/.5))*(1 - mv)
+            qd0, _, _ = DOC.quad(cam, c, w, w*.64)
+            put(fr, "SOURCE  ·  LEGACY FINANCE ERP", "Inter-SemiBold.otf", 20, qd0[0][0], qd0[0][1] - 16, lab, track=4, rgb=BLUE*1.25)
+    # Preservation Zone label under the vault
+    fade_text(fr, t, "GOVERNED PRESERVATION ZONE", 1160, 870, 26, sm + 1.0, Em, fname="Inter-SemiBold.otf", anchor="ms", track=5, rgb=BLUE*1.2)
+    # validation report, then governance policy
+    tv, tr, tl = word_time("migrate", "checked") - .4, word_time("migrate", "retention") - .3, word_time("migrate", "legal hold")
+    pos = np.array([1.6, -.24, -.5])
+    for tex_fn, t_in, t_out, t_anim in ((SCR.validation, tv, tr, tv + .3), (SCR.policy, tr, Em, tl - .6)):
+        pi = fl(eout((t - t_in)/.55)); qo = fl(ease((t - t_out)/.4))
+        if pi <= 0 or qo >= 1: continue
+        cc = lerp(np.array([4.2, -1.0, 2.4]), pos, pi) + np.array([1.5, .4, 2.5])*qo
+        qd, nn, _ = DOC.quad(cam, cc, 2.6, 2.6*(720 if tex_fn is SCR.validation else 660)/1100, yaw=lerp(-1.1, -.22, pi) - .6*qo, roll=lerp(.15, 0, pi))
+        step = int(fl(clamp((t - t_anim)/1.6))*24)
+        DOC.draw(fr, tex_fn(step), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - t_in - .1)/.6))))
+    # application inventory: the source application flips to Retired
+    ti = word_time("dark", "gone for good") - .35
+    pi = fl(eout((t - ti)/.6)); qo = fl(ease((t - Ed)/.45))
+    if pi > 0 and qo < 1:
+        cc = lerp(np.array([-3.5, -1.2, 2.4]), np.array([-.78, -.24, -.5]), pi) + np.array([-1.0, .4, 2.5])*qo
+        qd, nn, _ = DOC.quad(cam, cc, 2.9, 2.9*640/1100, yaw=lerp(1.0, .16, pi) + .5*qo, roll=lerp(-.15, 0, pi))
+        step = int(fl(clamp((t - ti - .2)/1.4))*24)
+        DOC.draw(fr, SCR.inventory(step), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - ti - .1)/.6))))
+
 # ---------------------------------------------------------------- overlays per scene
 LX = 150
 def overlays(fr, t):
@@ -751,6 +804,8 @@ def overlays(fr, t):
         fade_text(fr, t, "✓", LX, 570 + k*64, 40, ti, E(s), fname="InterDisplay-Bold.otf", rgb=BLUE*1.2)
         fade_text(fr, t, c, LX + 56, 570 + k*64, 40, ti + .08, E(s), fname="InterDisplay-Medium.otf")
 
+    process_screens(fr, t)
+
     # 6. Switch off
     s = "dark"
     kinetic(fr, t, "Then the application goes dark.", LX, 300, 80, SC[s] + .3, E(s), maxw=760)
@@ -758,10 +813,10 @@ def overlays(fr, t):
     for k, (lab, wd) in enumerate((("Licenses", "licenses"), ("Servers", "servers"), ("Unpatched risk", "risk"))):
         ti = word_time(s, wd) - .1
         fall = max(0.0, t - ti - .9)
-        x = 1270 + (-340, 280, -30)[k]; y = (420, 470, 780)[k] + 240*fall**2
+        x = (900, 1300, 1560)[k]; y = (370, 370, 700)[k] + 240*fall**2
         a = fl(eout((t - ti)/.35))*(1 - fl(ease((t - ti - .9)/1.0)))
         put(fr, lab, "InterDisplay-SemiBold.otf", 42, x, y, a, blur=fl(clamp(fall*8, 0, 10)), anchor="ms")
-    fade_text(fr, t, "PRESERVATION ZONE  ·  STILL ON", 1270, 930, 26, word_time(s, "gone for good") - .2, E(s),
+    fade_text(fr, t, "PRESERVATION ZONE  ·  STILL ON", 1560, 860, 26, word_time(s, "gone for good") - .2, E(s),
               fname="Inter-SemiBold.otf", anchor="ms", track=4, rgb=BLUE*1.2)
 
     # 7. Access: Solix Search, then the purchase-to-pay record in 3D, then a standard report
