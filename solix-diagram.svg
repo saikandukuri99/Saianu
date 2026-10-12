@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="60%">
+      <stop offset="0" stop-color="#FDE3E3"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </radialGradient>
+    <radialGradient id="logoFill" cx="40%" cy="35%" r="75%">
+      <stop offset="0" stop-color="#F23A28"/>
+      <stop offset="1" stop-color="#E02012"/>
+    </radialGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#E8261A" flood-opacity="0.35"/>
+    </filter>
+    <!-- diagonal split through the logo circle -->
+    <mask id="split">
+      <rect width="1200" height="500" fill="#fff"/>
+      <line x1="652" y1="150" x2="548" y2="350" stroke="#000" stroke-width="7" stroke-linecap="round"/>
+    </mask>
+    <!-- left-side curves; mirrored for the right side -->
+    <g id="side" fill="none" stroke="#E5424A" stroke-width="2" stroke-linecap="round">
+      <path d="M0,80  C260,80  330,250 500,250"/>
+      <path d="M0,250 C200,190 320,310 500,250"/>
+      <path d="M0,420 C260,420 330,250 500,250"/>
+      <g fill="#D91E36" stroke="none">
+        <circle cx="239" cy="140" r="7"/>
+        <circle cx="257" cy="250" r="7"/>
+        <circle cx="239" cy="360" r="7"/>
+        <circle cx="500" cy="250" r="5"/>
+      </g>
+    </g>
+  </defs>
+
+  <rect width="1200" height="500" fill="url(#bg)"/>
+
+  <!-- 3 curved lines on the left, 3 on the right -->
+  <use href="#side"/>
+  <use href="#side" transform="translate(1200,0) scale(-1,1)"/>
+
+  <!-- halo rings -->
+  <g fill="none" stroke="#E8261A">
+    <circle cx="600" cy="250" r="160" stroke-opacity="0.10"/>
+    <circle cx="600" cy="250" r="130" stroke-opacity="0.18"/>
+  </g>
+
+  <!-- Solix logo -->
+  <g filter="url(#glow)">
+    <g mask="url(#split)">
+      <circle cx="600" cy="250" r="100" fill="url(#logoFill)"/>
+    </g>
+  </g>
+  <polygon points="632,186 568,262 602,262 576,320 648,236 612,236" fill="#FFFFFF" fill-opacity="0.72"/>
+</svg>
