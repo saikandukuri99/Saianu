@@ -1,0 +1,7 @@
+1
+00:00:00,600 --> 00:00:04,760
+It delivers Patient 360 Analytics, AI Clinical Intelligence,
+
+2
+00:00:04,760 --> 00:00:09,983
+Intelligent Imaging and Radiology, and Purpose-Built Healthcare Models.

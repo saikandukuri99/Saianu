@@ -1,0 +1,19 @@
+1
+00:00:00,750 --> 00:00:03,932
+Then Solix Enterprise AI activates it.
+
+2
+00:00:03,932 --> 00:00:07,176
+Data Sense builds an Application Knowledge Graph.
+
+3
+00:00:07,176 --> 00:00:11,122
+Data Ask gives anyone cited answers in plain English.
+
+4
+00:00:11,122 --> 00:00:13,827
+AI Warehouse lets teams build on it.
+
+5
+00:00:13,827 --> 00:00:16,747
+And agents can act on it with confidence.

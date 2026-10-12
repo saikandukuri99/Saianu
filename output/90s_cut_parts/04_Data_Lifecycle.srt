@@ -1,0 +1,15 @@
+1
+00:00:00,750 --> 00:00:04,329
+Solix also tackles the hardest data in the enterprise:
+
+2
+00:00:04,329 --> 00:00:07,774
+retiring legacy applications, preserving records,
+
+3
+00:00:07,774 --> 00:00:13,096
+and archiving SAP, Oracle, mainframe, email, file and database data.
+
+4
+00:00:13,096 --> 00:00:16,656
+That history becomes AI-ready, not dead weight.

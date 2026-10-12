@@ -1,0 +1,7 @@
+1
+00:00:00,750 --> 00:00:04,608
+EAI Pharma accelerates drug discovery with data and AI,
+
+2
+00:00:04,608 --> 00:00:08,176
+transforming research into intelligent insights.

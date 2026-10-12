@@ -1,5 +1,15 @@
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
+**Current: 90-second cut, delivered as separate parts for Premiere Pro.** Everything is in `output/90s_cut_parts/`:
+- `02_Foundation`, `03_Enterprise_AI`, `04_Data_Lifecycle`, `05a`–`05e` (EAI Pharma / Healthcare / Academy, approved), `06_Customers_Recognition`, `07_Close`. Each part comes as:
+  - `.mp4`: 1080p video with the voice-over only, no subtitles burned in;
+  - `_VO.wav`: the voice-over alone, 48 kHz 24-bit;
+  - `.srt`: subtitles.
+- `Music_Bed_full_sequence.wav`: the music bed for the whole sequence, in the order above.
+- `00_Assembled_Reference_cut.mp4`: all parts assembled with music, for reference (2:14).
+- `CUE_SHEET.md`: which screen or recording plays on which narration line, with clip timecodes.
+- Screens are plain browser windows with a gentle push-in: no red highlight boxes, cursor or labels. There are no transition sweeps or progress bar, so transitions are done in Premiere.
+
 **Current (v11):** `output/Solix_Empower_2026_AV_v11_1080p.mp4` is the 1080p master (3:18); `output/Solix_Empower_2026_AV_v11_preview.mp4` is a single-file preview. A 4K version follows once v11 is approved.
 
 ### Changes in v11

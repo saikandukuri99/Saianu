@@ -1,0 +1,19 @@
+1
+00:00:00,550 --> 00:00:05,013
+And Solix Academy helps organizations build the skills needed for an
+
+2
+00:00:05,013 --> 00:00:06,926
+AI-ready enterprise.
+
+3
+00:00:07,026 --> 00:00:11,771
+Your AI journey starts here: AI-ready data with Solix CDP,
+
+4
+00:00:11,771 --> 00:00:14,635
+AI-ready people with Solix Academy,
+
+5
+00:00:14,635 --> 00:00:18,671
+and an AI-ready enterprise with Solix EAI.

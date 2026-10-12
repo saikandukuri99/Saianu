@@ -1,0 +1,7 @@
+1
+00:00:00,500 --> 00:00:05,407
+From AI-Powered Documentation and AI Clinical Assistants to Preventive
+
+2
+00:00:05,407 --> 00:00:08,281
+Care and Revenue Cycle Intelligence.

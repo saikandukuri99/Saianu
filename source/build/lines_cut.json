@@ -1,0 +1,122 @@
+[
+ {
+  "scene": 1,
+  "tts": "It starts with AI-ready data.",
+  "cap": "It starts with AI-ready data.",
+  "gap": 0.35
+ },
+ {
+  "scene": 1,
+  "tts": "The Solix Common Data Platform brings structured and unstructured data together.",
+  "cap": "The Solix Common Data Platform brings structured and unstructured data together.",
+  "gap": 0.3
+ },
+ {
+  "scene": 1,
+  "tts": "Enterprise Content Services governs documents and email.",
+  "cap": "Enterprise Content Services governs documents and email.",
+  "gap": 0.3
+ },
+ {
+  "scene": 1,
+  "tts": "And Enterprise Data Governance enforces policy wherever data is used, including by AI.",
+  "cap": "And Enterprise Data Governance enforces policy wherever data is used, including by AI.",
+  "gap": 0.8
+ },
+ {
+  "scene": 2,
+  "tts": "Then, Solix Enterprise AI activates it.",
+  "cap": "Then Solix Enterprise AI activates it.",
+  "gap": 0.35
+ },
+ {
+  "scene": 2,
+  "tts": "Data Sense builds an Application Knowledge Graph.",
+  "cap": "Data Sense builds an Application Knowledge Graph.",
+  "gap": 0.3
+ },
+ {
+  "scene": 2,
+  "tts": "Data Ask gives anyone cited answers, in plain English.",
+  "cap": "Data Ask gives anyone cited answers in plain English.",
+  "gap": 0.3
+ },
+ {
+  "scene": 2,
+  "tts": "AI Warehouse lets teams build on it.",
+  "cap": "AI Warehouse lets teams build on it.",
+  "gap": 0.3
+ },
+ {
+  "scene": 2,
+  "tts": "And agents can act on it with confidence.",
+  "cap": "And agents can act on it with confidence.",
+  "gap": 0.8
+ },
+ {
+  "scene": 3,
+  "tts": "Solix also tackles the hardest data in the enterprise.",
+  "cap": "Solix also tackles the hardest data in the enterprise:",
+  "gap": 0.3
+ },
+ {
+  "scene": 3,
+  "tts": "Retiring legacy applications, preserving records,",
+  "cap": "retiring legacy applications, preserving records,",
+  "gap": 0.25
+ },
+ {
+  "scene": 3,
+  "tts": "and archiving SAP, Oracle, mainframe, email, file, and database data.",
+  "cap": "and archiving SAP, Oracle, mainframe, email, file and database data.",
+  "gap": 0.4
+ },
+ {
+  "scene": 3,
+  "tts": "That history becomes AI-ready, not dead weight.",
+  "cap": "That history becomes AI-ready, not dead weight.",
+  "gap": 0.8
+ },
+ {
+  "scene": 5,
+  "tts": "Trusted by leading enterprises, including Fortune two thousand organizations,",
+  "cap": "Trusted by leading enterprises, including Fortune 2000 organizations,",
+  "gap": 0.2
+ },
+ {
+  "scene": 6,
+  "tts": "Solix is recognized by Gartner, I D C, Forrester, and Bloor Research.",
+  "cap": "Solix is recognized by Gartner, IDC, Forrester, and Bloor Research.",
+  "gap": 0.8
+ },
+ {
+  "scene": 7,
+  "tts": "From data to intelligence.",
+  "cap": "From data to intelligence,",
+  "gap": 0.3
+ },
+ {
+  "scene": 7,
+  "tts": "From governance to action.",
+  "cap": "from governance to action,",
+  "gap": 0.4
+ },
+ {
+  "scene": 7,
+  "tts": "Solix is helping enterprises build the agentic future.",
+  "cap": "Solix is helping enterprises build the agentic future.",
+  "gap": 0.7
+ },
+ {
+  "scene": 7,
+  "tts": "Solix Empower 2026.",
+  "cap": "Solix Empower 2026.",
+  "gap": 0.4
+ },
+ {
+  "scene": 7,
+  "tts": "The Agentic Enterprise.",
+  "cap": "The Agentic Enterprise.",
+  "gap": 0.0
+ }
+]

@@ -1,0 +1,19 @@
+1
+00:00:00,750 --> 00:00:02,972
+It starts with AI-ready data.
+
+2
+00:00:02,972 --> 00:00:07,895
+The Solix Common Data Platform brings structured and unstructured data together.
+
+3
+00:00:07,895 --> 00:00:11,902
+Enterprise Content Services governs documents and email.
+
+4
+00:00:11,902 --> 00:00:16,885
+And Enterprise Data Governance enforces policy wherever data is used,
+
+5
+00:00:16,885 --> 00:00:18,640
+including by AI.

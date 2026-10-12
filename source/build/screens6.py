@@ -5,6 +5,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 B = os.path.dirname(os.path.abspath(__file__))
+PLAIN = os.environ.get("PLAIN") == "1"
 FD = "/usr/share/fonts/opentype/inter/"
 
 
@@ -207,7 +208,7 @@ FOCUS = {
     "active": [((0.0, 0.22, 0.52, 1.0), "Compliance-driven minimization"), ((0.48, 0.22, 1.0, 1.0), "Cloud ERP economics")],
     "eaihc": [((0.0, 0.0, 0.5, 1.0), "Warehouse · Governance · Patient 360"), ((0.5, 0.0, 1.0, 1.0), "Imaging · Clinical intelligence · Models")],
     "ecs": [((0.0, 0.3, 0.62, 1.0), "Repository · GenAI · Sharing · Compliance"), ((0.6, 0.25, 1.0, 1.0), "Secure, mobile, governed content")],
-    "recog": [((0.33, 0.34, 0.67, 0.67), "Bloor · Strong Challenger"), ((0.0, 0.66, 0.67, 1.0), "Bloor · Strong Innovator")],
+    "recog": [] if PLAIN else [((0.33, 0.34, 0.67, 0.67), "Bloor · Strong Challenger"), ((0.0, 0.66, 0.67, 1.0), "Bloor · Strong Innovator")],
 }
 REVEAL = {"eaihc": "radial", "datasense": "wipe", "agentic": "wipe"}
 MAXZ = {}
@@ -302,7 +303,7 @@ def screen_still(key, lt, w, h, dur=6.0, accent=(238, 36, 36), lowres=False, foc
     view = view.resize((w, ch), Image.LANCZOS)
     sx, sy = w / (x1 - x0), ch / (y1 - y0)
     cur_target = None
-    if hl:
+    if hl and not PLAIN:
         r, p, lab = hl
         rx0, ry0, rx1, ry1 = (r[0] - x0) * sx, (r[1] - y0) * sy, (r[2] - x0) * sx, (r[3] - y0) * sy
         rx0, ry0 = max(8, rx0), max(8, ry0)
@@ -329,7 +330,7 @@ def screen_still(key, lt, w, h, dur=6.0, accent=(238, 36, 36), lowres=False, foc
     win.paste(window_bar(w, URLS.get(key, "solix.com"), bar_h), (0, 0))
     win.paste(view, (0, bar_h))
     # cursor glides to each focus region just before it lights up
-    if plan and lt >= plan[0][0] - 1.3:
+    if plan and lt >= plan[0][0] - 1.3 and not PLAIN:
         pos = (w * 0.9, h * 0.95)
         for i, (tf, r, lab) in enumerate(plan):
             if lt < tf - 1.1:
