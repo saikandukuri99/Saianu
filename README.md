@@ -1,3 +1,11 @@
+# Solix Empower 2026 AV: v12 (human-crafted look, local build)
+`output/Solix_Empower_2026_AV_v12_1080p.mp4` (1920x1080, 3:18) and `output/Solix_Empower_2026_AV_v12_preview.mp4` (720p). Built locally, with no Higgsfield and no AI generation.
+- Look: spheres and bokeh removed; a filmic backdrop with soft light leaks; film grain, bloom, vignette and a colour grade; a slow camera push per scene.
+- Flat frosted icons replace glossy ones; product windows get a soft glow and a gentle float; the 3D wheel uses brand colours.
+- A new cold open (light slit, logo reveal with a light sweep) replaces the scattered network graphic; zoom-flare transitions replace the diagonal wipe.
+- Audio: the same narration and music, with a touch of room on the voice and whoosh/impact sound design on transitions.
+- Build: `source/build/render13.py` (video), `mix13.py` (audio). Analysis: `FEEDBACK_ANALYSIS_v12.md`.
+
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
 **Current (v11):** `output/Solix_Empower_2026_AV_v11_1080p.mp4` is the 1080p master (3:18); `output/Solix_Empower_2026_AV_v11_preview.mp4` is a single-file preview. A 4K version follows once v11 is approved.
