@@ -1,0 +1,7 @@
+1
+00:00:00,150 --> 00:00:04,175
+And Solix Academy helps organizations build the skills needed for an
+
+2
+00:00:04,175 --> 00:00:05,959
+AI-ready enterprise.

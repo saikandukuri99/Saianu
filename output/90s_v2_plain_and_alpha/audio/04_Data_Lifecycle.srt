@@ -1,0 +1,11 @@
+1
+00:00:00,600 --> 00:00:05,007
+Solix also retires legacy applications and archives SAP, Oracle,
+
+2
+00:00:05,007 --> 00:00:08,030
+mainframe, email, file and database data,
+
+3
+00:00:08,030 --> 00:00:11,153
+so that history becomes AI-ready, not dead weight.

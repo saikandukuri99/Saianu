@@ -29,7 +29,7 @@ def bp(x, lo, hi, o=2):
 
 def add(buf, sig, t):
     i = int(t * SR)
-    if i >= len(buf):
+    if i >= len(buf) or i < 0:
         return
     j = min(len(buf), i + len(sig))
     buf[i:j] += sig[: j - i]

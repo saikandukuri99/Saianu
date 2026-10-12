@@ -1,0 +1,11 @@
+1
+00:00:00,600 --> 00:00:03,290
+Then Solix Enterprise AI activates it.
+
+2
+00:00:03,290 --> 00:00:06,871
+Data Sense understands it, Data Ask answers in plain English,
+
+3
+00:00:06,871 --> 00:00:10,627
+AI Warehouse builds on it, and agents act with confidence.

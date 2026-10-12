@@ -1,0 +1,15 @@
+1
+00:00:00,500 --> 00:00:02,486
+It starts with AI-ready data.
+
+2
+00:00:02,486 --> 00:00:06,564
+The Common Data Platform unifies structured and unstructured data.
+
+3
+00:00:06,564 --> 00:00:09,595
+Content Services governs documents and email.
+
+4
+00:00:09,595 --> 00:00:14,270
+And Enterprise Data Governance enforces policy everywhere, including AI.
