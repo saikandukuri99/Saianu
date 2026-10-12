@@ -1,0 +1,28 @@
+{
+ "order": [
+  "02_Foundation",
+  "03_Enterprise_AI",
+  "04_Data_Lifecycle",
+  "05a_EAI_Pharma",
+  "05b_EAI_Healthcare_Foundation",
+  "05c_EAI_Healthcare_Platform",
+  "05c2_EAI_Healthcare_Capabilities",
+  "05d_Solix_Academy",
+  "06_Customers_Recognition",
+  "07a_Close_Statement",
+  "07b_End_Lockup"
+ ],
+ "starts": {
+  "02_Foundation": 0.0,
+  "03_Enterprise_AI": 14.266666666666667,
+  "04_Data_Lifecycle": 24.9,
+  "05a_EAI_Pharma": 36.03333333333333,
+  "05b_EAI_Healthcare_Foundation": 43.36666666666667,
+  "05c_EAI_Healthcare_Platform": 51.36666666666667,
+  "05c2_EAI_Healthcare_Capabilities": 61.36666666666667,
+  "05d_Solix_Academy": 69.73333333333333,
+  "06_Customers_Recognition": 75.83333333333333,
+  "07a_Close_Statement": 83.5,
+  "07b_End_Lockup": 87.33333333333333
+ }
+}

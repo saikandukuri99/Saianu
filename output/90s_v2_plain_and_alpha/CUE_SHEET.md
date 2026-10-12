@@ -1,7 +1,7 @@
-# Solix Empower 2026 – 90-second version: cue sheet
+# Solix Empower 2026 – short version: cue sheet
 
-Parts total **83.0s** (your Scene 1 goes in front: ~7s keeps the full film at 90s).
-All section headings removed so you can add your own. Times are relative to the start of each clip.
+Parts total **93.6s**, plus your own Scene 1 in front.
+EAI Healthcare (05b, 05c, 05c2) uses the full original voice-over and visuals. All section headings are removed. Times are relative to the start of each clip.
 
 ### 02 Foundation  (14.27s)
 `02_Foundation.mp4` / `02_Foundation.mov`
@@ -35,19 +35,26 @@ All section headings removed so you can add your own. Times are relative to the 
 |---|---|---|
 | 00:00.60 | EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights. | DATA + AI → ACCELERATE DRUG DISCOVERY; molecule; RESEARCH → INTELLIGENT INSIGHTS |
 
-### 05b EAI Healthcare Foundation  (6.94s)
+### 05b EAI Healthcare Foundation  (8.00s)
 `05b_EAI_Healthcare_Foundation.mp4` / `05b_EAI_Healthcare_Foundation.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
-| 00:00.30 | EAI Healthcare brings a trusted data foundation and collaborative intelligence together for actionable outcomes. | Subtitle + Care Creates Data | Data Accelerates Cure; TRUSTED DATA FOUNDATION → COLLABORATIVE INTELLIGENCE → ACTIONABLE OUTCOMES |
+| 00:00.45 | EAI Healthcare brings a trusted data foundation and collaborative intelligence together for actionable outcomes. | Subtitle + Care Creates Data | Data Accelerates Cure; TRUSTED DATA FOUNDATION → COLLABORATIVE INTELLIGENCE → ACTIONABLE OUTCOMES |
 
-### 05c EAI Healthcare Platform  (8.78s)
+### 05c EAI Healthcare Platform  (9.98s)
 `05c_EAI_Healthcare_Platform.mp4` / `05c_EAI_Healthcare_Platform.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
-| 00:00.25 | It delivers Patient 360 Analytics, AI Clinical Intelligence, Intelligent Imaging and Radiology, and Purpose-Built Healthcare Models. | Six-pillar EAI Healthcare platform (static); pillars 3, 5, 4, 6 highlight on the spoken names |
+| 00:00.35 | It delivers Patient 360 Analytics, AI Clinical Intelligence, Intelligent Imaging and Radiology, and Purpose-Built Healthcare Models. | Six-pillar EAI Healthcare platform (static); pillars 3, 5, 4, 6 highlight on the spoken names |
+
+### 05c2 EAI Healthcare Capabilities  (8.38s)
+`05c2_EAI_Healthcare_Capabilities.mp4` / `05c2_EAI_Healthcare_Capabilities.mov`
+
+| Clip time | Narration | On screen |
+|---|---|---|
+| 00:00.25 | From AI-Powered Documentation and AI Clinical Assistants to Preventive Care and Revenue Cycle Intelligence. | Capabilities appear in order: AI-Powered Documentation, AI Clinical Assistant, Preventive Care, Revenue Cycle Intelligence |
 
 ### 05d Solix Academy  (6.11s)
 `05d_Solix_Academy.mp4` / `05d_Solix_Academy.mov`
