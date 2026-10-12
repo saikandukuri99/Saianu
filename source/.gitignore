@@ -4,3 +4,7 @@ build/p12_*
 build/p13_*
 build/vo3
 build/music12.wav
+__pycache__/
+build/mix13.wav
+build/render13.log
+build/parts13.txt
