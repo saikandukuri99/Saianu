@@ -7,6 +7,7 @@ from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from scipy.ndimage import gaussian_filter, zoom
 import docs_ar as DOC
+import screens_ar as SCR
 
 B = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(B, "..", "assets")
@@ -314,10 +315,10 @@ def particles(t):
     return P, Bv, C
 
 # ---------------------------------------------------------------- camera
-CAMX = dict(hook=960, t1=1300, t2=1300, t3=1300, t4=1300, t5=1300, one=960, connect=1200,
+CAMX = dict(hook=960, t1=1660, t2=1660, t3=1660, t4=1660, t5=1660, one=960, connect=1200,
             migrate=1270, dark=1270, access=960, ask=1330, ai=1270, sign=960)
-CAMY = dict(hook=430, one=610, access=640, sign=390)
-CAMS = dict(hook=1.0, t1=1.15, t2=1.15, t3=1.15, t4=1.1, t5=1.15, one=1.15, connect=1.0, migrate=1.15,
+CAMY = dict(hook=430, t1=330, t2=330, t3=330, t4=330, t5=330, one=610, access=640, sign=390)
+CAMS = dict(hook=1.0, t1=.62, t2=.62, t3=.62, t4=.6, t5=.62, one=1.15, connect=1.0, migrate=1.15,
             dark=1.05, access=1.1, ask=1.05, ai=1.15, sign=1.0)
 # red key-light behind the subject (x, y, strength); the end card drops it low so the red logo reads
 GLOW = dict(sign=(960, 1000, .75))
@@ -633,6 +634,47 @@ def access_docs(fr, t):
         qd, nn, _ = DOC.quad(cam, c, 2.6, 2.6*820/1180, yaw=lerp(-1.0, -.14, r), pitch=lerp(.5, .04, r), roll=lerp(-.2, 0, r))
         DOC.draw(fr, DOC.doc("report"), qd, nn, alpha=r*(1 - out), sheen=lerp(-.2, 1.3, fl(clamp((t - tu - .3)/.8))))
 
+# ---------------------------------------------------------------- Opening and triggers: 3D screens
+TRIG = ["t1", "t2", "t3", "t4", "t5"]
+def trigger_cards(fr, t):
+    cam = DOC.Cam(1250, 600, 1050, 5.6, yaw=.05*math.sin(t*.5), pitch=.06)
+    for tid in TRIG:
+        a0 = LN[tid]["start"] - .1; a1 = SC_END[tid] - .25
+        if not (a0 - .2 <= t <= a1 + .6): continue
+        pi = fl(eout((t - a0 + .05)/.5)); qo = fl(ease((t - a1)/.45))
+        c = lerp(np.array([3.6, -.7, 2.6]), np.array([.48, 0, -.6]), pi) + np.array([-1.2, .5, 3.2])*qo
+        c = c + np.array([0, .03*math.sin(t*1.3), 0])
+        qd, nn, _ = DOC.quad(cam, c, 3.4, 3.4*640/1100, yaw=lerp(-1.15, -.16, pi) + .7*qo, roll=lerp(.2, 0, pi) - .1*qo)
+        step = int(fl(clamp((t - a0 - .2)/2.0))*24)
+        DOC.draw(fr, SCR.trigger(tid, step), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - a0 - .1)/.6))), shadow=.55)
+
+LEG = [("erp", np.array([-2.35, .55, .5]), 2.9, 640/1000, .38, "$1.2M a year to keep it running"),
+       ("mf", np.array([.35, .95, 1.5]), 2.5, 600/900, -.08, "3 users a month"),
+       ("form", np.array([2.55, .15, .1]), 2.35, 620/860, -.42, "Last patched in 2017")]
+def legacy_windows(fr, t):
+    T0 = LN["hook"]["start"]; te = SC["t1"] - .2
+    if not (T0 - .5 <= t <= te + .7): return
+    D = 5.4 + 1.8*(1 - fl(eout((t - T0 + .5)/(te - T0 + .5))))
+    cam = DOC.Cam(960, 450, 1050, D, yaw=.06*math.sin(t*.4), pitch=.05)
+    out = fl(ease((t - te)/.55))
+    items = []
+    for i, (kind, pos, w, ar, yaw, stat) in enumerate(LEG):
+        p = fl(eout((t - (T0 - .4) - i*.22)/.9))
+        if p <= 0: continue
+        c = pos + np.array([0, .05*math.sin(t*.7 + i*2), 2.8*(1 - p)]) + np.array([pos[0]*.6, 0, -3.2])*out
+        items.append((c[2], i, kind, c, w, ar, yaw, stat, p))
+    for z, i, kind, c, w, ar, yaw, stat, p in sorted(items, key=lambda o: -o[0]):
+        qd, nn, _ = DOC.quad(cam, c, w, w*ar, yaw=yaw + .05*math.sin(t*.5 + i))
+        al = p*(1 - out)
+        DOC.draw(fr, SCR.legacy(kind), qd, nn, alpha=al*.96, sheen=lerp(-.2, 1.3, fl(clamp((t - T0 - i*.25)/.9))), shadow=.4)
+        tl = qd[0]; bm = (qd[2] + qd[3])/2
+        la = al*fl(ease((t - T0 - .5 - i*.25)/.5))
+        if la > .01:
+            pulse = .55 + .45*math.sin(t*4 + i*1.7)
+            put(fr, "●", "Inter-SemiBold.otf", 22, tl[0] + 4, tl[1] - 30, la*pulse, rgb=RED*1.1)
+            put(fr, "STILL RUNNING", "Inter-SemiBold.otf", 20, tl[0] + 30, tl[1] - 30, la*.95, track=4, rgb=BLUE*1.25)
+            put(fr, stat, "InterDisplay-SemiBold.otf", 32, bm[0], bm[1] + 50, la, anchor="ms")
+
 # ---------------------------------------------------------------- overlays per scene
 LX = 150
 def overlays(fr, t):
@@ -653,6 +695,7 @@ def overlays(fr, t):
                   track=8, rgb=BLUE*1.2)
 
     # 1. Hook
+    legacy_windows(fr, t)
     kinetic(fr, t, "Applications you've moved on from.", LX, 860, 84, T0 + .5, E("hook"), maxw=1600)
 
     # 2. Five triggers: one extruded 3D word each
@@ -665,6 +708,7 @@ def overlays(fr, t):
             put3d(fr, word, "InterDisplay-Bold.otf", size, LX - (sc-1)*60, 560, al, t, blur=(1-p)*8 + q*10,
                   face=(RED*.25 + .75) if tid == "t2" else WHITE)
             put(fr, f"0{ORDER.index(tid)}  /  05", "Inter-SemiBold.otf", 28, LX + 6, 330, al, track=4, rgb=BLUE*1.15)
+    trigger_cards(fr, t)
 
     # 3. Converge
     kinetic(fr, t, "Many reasons.", W/2, 190, 88, LN["one"]["start"], LN["connect"]["start"] + .1, align="center", maxw=1600)
