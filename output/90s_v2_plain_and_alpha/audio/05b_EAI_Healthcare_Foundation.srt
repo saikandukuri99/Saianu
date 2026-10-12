@@ -1,7 +1,7 @@
 1
-00:00:00,450 --> 00:00:04,607
+00:00:00,450 --> 00:00:04,644
 EAI Healthcare brings a trusted data foundation and collaborative
 
 2
-00:00:04,607 --> 00:00:07,998
+00:00:04,644 --> 00:00:08,062
 intelligence together for actionable outcomes.

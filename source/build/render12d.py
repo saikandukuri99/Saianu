@@ -28,7 +28,7 @@ FONTS = {"black": FD + "InterDisplay-Black.otf", "xbold": FD + "InterDisplay-Ext
          "semi": FD + "Inter-SemiBold.otf", "med": FD + "Inter-Medium.otf", "reg": FD + "Inter-Regular.otf"}
 
 # ------------------------------------------------------------------ timeline
-LINES = json.load(open(f"{B}/lines3.json"))
+LINES = json.load(open(f"{B}/lines3b.json"))
 FIRST = 3.0       # first VO line start (intro motion before it)
 SCENE_PAD = 0.7   # extra air at scene changes
 PRE = 0.75        # scene starts this long before its first line
@@ -38,7 +38,7 @@ for i, L in enumerate(LINES):
     if i and L["scene"] != LINES[i - 1]["scene"]:
         t += SCENE_PAD
     L["start"] = t
-    L["dur"] = sf.info(f"{B}/vo3/{i:02d}.wav").duration
+    L["dur"] = sf.info(f"{B}/vo3b/{i:02d}.wav").duration
     t += L["dur"] + L["gap"]
 TOTAL = LINES[-1]["start"] + LINES[-1]["dur"] + TAIL
 SC = []

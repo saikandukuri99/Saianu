@@ -1,6 +1,6 @@
 # Solix Empower 2026 – 90-second version (no headings)
 
-* **Parts total: 93.6 s**, plus your own Scene 1 in front.
+* **Parts total: 94.5 s**, plus your own Scene 1 in front.
 * **EAI Healthcare uses the full original voice-over and visuals** (same as the long version, normal speed):
   `05b_EAI_Healthcare_Foundation`, `05c_EAI_Healthcare_Platform` and `05c2_EAI_Healthcare_Capabilities`, with the capabilities line and its four graphics back in.
 * All main section headings are removed so you can add your own in Premiere. The `07b_End_Lockup` clip holds the end title; drop it if you're building your own.

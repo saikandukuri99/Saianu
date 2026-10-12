@@ -1,16 +1,16 @@
 # Solix Empower 2026 – short version: cue sheet
 
-Parts total **93.6s**, plus your own Scene 1 in front.
+Parts total **94.5s**, plus your own Scene 1 (7.1 s VO) in front.
 EAI Healthcare (05b, 05c, 05c2) uses the full original voice-over and visuals. All section headings are removed. Times are relative to the start of each clip.
 
-### 02 Foundation  (14.27s)
+### 02 Foundation  (14.97s)
 `02_Foundation.mp4` / `02_Foundation.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
 | 00:00.50 | It starts with AI-ready data. | CDP screen recording starts scrolling (top→bottom); left list: Common Data Platform / Content Services / Data Governance |
-| 00:02.49 | The Common Data Platform unifies structured and unstructured data. Content Services governs documents and email. | CDP page → ECS page (solix.com/products/enterprise-content-services/); chips STRUCTURED + UNSTRUCTURED, DOCUMENTS + EMAIL |
-| 00:09.60 | And Enterprise Data Governance enforces policy everywhere, including AI. | EDG screen recording scrolls down + NEW AT EMPOWER tag; chip POLICY EVERYWHERE, INCLUDING AI |
+| 00:02.49 | The Common Data Platform unifies structured and unstructured data. Enterprise Content Services governs documents and email. | CDP page → Enterprise Content Services page (solix.com/products/enterprise-content-services/); chips STRUCTURED + UNSTRUCTURED, DOCUMENTS + EMAIL |
+| 00:10.30 | And Enterprise Data Governance enforces policy everywhere, including AI. | EDG screen recording scrolls down + NEW AT EMPOWER tag; chip POLICY EVERYWHERE, INCLUDING AI |
 
 ### 03 Enterprise AI  (10.63s)
 `03_Enterprise_AI.mp4` / `03_Enterprise_AI.mov`
@@ -28,14 +28,14 @@ EAI Healthcare (05b, 05c, 05c2) uses the full original voice-over and visuals. A
 | 00:00.60 | Solix also retires legacy applications and archives SAP, Oracle, mainframe, email, file and database data, | Pill row; Application Retirement + Data Preservation pages → SAP / Oracle / Mainframe → Email / File / Database / Active Archiving |
 | 00:08.03 | so that history becomes AI-ready, not dead weight. | Statement: THAT HISTORY BECOMES AI-READY, NOT DEAD WEIGHT. |
 
-### 05a EAI Pharma  (7.33s)
+### 05a EAI Pharma  (7.44s)
 `05a_EAI_Pharma.mp4` / `05a_EAI_Pharma.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
 | 00:00.60 | EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights. | DATA + AI → ACCELERATE DRUG DISCOVERY; molecule; RESEARCH → INTELLIGENT INSIGHTS |
 
-### 05b EAI Healthcare Foundation  (8.00s)
+### 05b EAI Healthcare Foundation  (8.06s)
 `05b_EAI_Healthcare_Foundation.mp4` / `05b_EAI_Healthcare_Foundation.mov`
 
 | Clip time | Narration | On screen |

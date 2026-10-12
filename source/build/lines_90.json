@@ -7,8 +7,8 @@
  },
  {
   "scene": 1,
-  "tts": "The Common Data Platform unifies structured and unstructured data. Content Services governs documents and email.",
-  "cap": "The Common Data Platform unifies structured and unstructured data. Content Services governs documents and email.",
+  "tts": "The Common Data Platform unifies structured and unstructured data. Enterprise Content Services governs documents and email.",
+  "cap": "The Common Data Platform unifies structured and unstructured data. Enterprise Content Services governs documents and email.",
   "gap": 0.25
  },
  {
@@ -43,13 +43,13 @@
  },
  {
   "scene": 4,
-  "tts": "E A I Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
+  "tts": "EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
   "cap": "EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
   "gap": 0.45
  },
  {
   "scene": 4,
-  "tts": "E A I Healthcare brings a trusted data foundation and collaborative intelligence together, for actionable outcomes.",
+  "tts": "EAI Healthcare brings a trusted data foundation and collaborative intelligence together, for actionable outcomes.",
   "cap": "EAI Healthcare brings a trusted data foundation and collaborative intelligence together for actionable outcomes.",
   "gap": 0.45
  },

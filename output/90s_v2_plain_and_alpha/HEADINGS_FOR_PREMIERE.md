@@ -11,8 +11,8 @@ Original heading style, top-left (x 92, y 96 on 1920×1080):
 |---|---|---|---|
 | 01 Scene 1 (yours) | 0:00 | For more than two decades, Solix Technologies has helped enterprises transform their data into a strategic advantage. | Your own intro |
 | 02_Foundation | 0:00.50 | It starts with AI-ready data. | Label: **SOLIX ENTERPRISE FOUNDATION** · Title: **Step One: AI-Ready** |
-| | 0:02.49 | The Common Data Platform unifies structured and unstructured data. Content Services governs documents and email. | (already on screen: Common Data Platform / Enterprise Content Services) |
-| | 0:09.60 | And Enterprise Data Governance enforces policy everywhere, including AI. | (already on screen: Enterprise Data Governance + NEW AT EMPOWER) |
+| | 0:02.49 | The Common Data Platform unifies structured and unstructured data. Enterprise Content Services governs documents and email. | (already on screen: Common Data Platform / Enterprise Content Services) |
+| | 0:10.30 | And Enterprise Data Governance enforces policy everywhere, including AI. | (already on screen: Enterprise Data Governance + NEW AT EMPOWER) |
 | 03_Enterprise_AI | 0:00.60 | Then, Solix Enterprise AI activates it. | Label: **STEP TWO: AI-ACTIVATED** · Title: **Solix Enterprise AI** |
 | | 0:03.29 | Data Sense understands it, Data Ask answers in plain English, AI Warehouse builds on it, and agents act with confidence. | (already on screen: DATA SENSE → DATA ASK → AI WAREHOUSE → AGENTS) |
 | 04_Data_Lifecycle | 0:00.60 | Solix also retires legacy applications, and archives SAP, Oracle, mainframe, email, file, and database data, | Label: **DATA LIFECYCLE & ARCHIVING** · Title: **Move It Once. Access It Always.** |
