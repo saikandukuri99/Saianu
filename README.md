@@ -2,6 +2,14 @@
 
 **Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
 
+- **v4 changes:** following the reference video, each of the five triggers now has a realistic 3D notification screen that flies in beside its extruded word, with a small animation inside (`screens_ar.py`, fictional data):
+  - **Cost:** a maintenance renewal amount counting up to $480,000 a year, due in 14 days.
+  - **Risk:** a flashing critical security alert with a CVSS 9.8 badge, for an unpatched server.
+  - **M&A:** "Acquisition closed", with inherited systems (ERP, CRM, HR, Billing and more) stacking in.
+  - **Old archive:** an archive renewal date circled on the calendar.
+  - **AI:** historical-data bars filling, with dashed empty slots marking the missing history.
+
+  The particle shape for each trigger moves behind the screen, to the upper right, for depth. "Applications you've moved on from." now sits under three realistic legacy windows floating in 3D: a finance ERP ledger, a green-screen mainframe terminal and a custom maintenance app. Each has a pulsing "Still running" light and a short stat ($1.2M a year to keep it running, 3 users a month, last patched in 2017).
 - **v3 changes:** the film opens on a main title: the original Solix logo and an extruded 3D "Application Retirement" (with EMPOWER 2026) over the legacy-screens fly-in, before the narration starts. The Access beat now follows the script's "Real" direction, built as realistic 3D documents (`docs_ar.py`, fictional demo data):
   1. Solix Search types the vendor and shows its records.
   2. Purchase order, goods receipt, invoice and payment (with a PAID stamp) fly in one by one in perspective and settle into a row labelled Ordered, Received, Invoiced and Paid.
