@@ -2,6 +2,9 @@
 
 **Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
 
+- **v5 changes:** the Migrate & Validate and switch-off beats now follow the script's "Real" direction with realistic 3D screens:
+  - **Migrate & Validate:** the legacy Finance ERP window (the source) hovers above the governed Preservation Zone vault while data streams down into it. A Validation Report counts the archive rows up to match the source (✓ on each row, then "Validation passed"). A Governance Policy screen follows, with 10-year retention, 4 of 4 quality checks and the legal-hold switch flipping on.
+  - **Switch-off:** the ERP window moves to the front and powers off like an old monitor, collapsing into a line of light. The Licenses, Servers and Unpatched risk tags fall away. An Application Inventory screen then flips Finance ERP R11 from Active to Retired, with its data preserved, while the vault stays lit.
 - **v4 changes:** following the reference video, each of the five triggers now has a realistic 3D notification screen that flies in beside its extruded word, with a small animation inside (`screens_ar.py`, fictional data):
   - **Cost:** a maintenance renewal amount counting up to $480,000 a year, due in 14 days.
   - **Risk:** a flashing critical security alert with a CVSS 9.8 badge, for an unpatched server.
