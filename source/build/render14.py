@@ -589,6 +589,31 @@ def heading_kw(c, lt, k, title, kw, G, x, y, tout, size):
 
 
 @lru_cache(None)
+def callout_img_r(title, sub, active=False):
+    """mirror of callout_img: text right-aligned, accent bar on the right (inner) side"""
+    t1 = text(title, "bold", 30, TXT)
+    t2 = text(sub, "med", 20, TXT2) if sub else None
+    tw = max(t1.width, t2.width if t2 else 0)
+    w = tw + 20
+    h = t1.height + (t2.height + 2 if t2 else 0) + 6
+    im = Image.new("RGBA", (w, max(h, 40)), (0, 0, 0, 0))
+    ImageDraw.Draw(im).rounded_rectangle((w - 4, 4, w - 1, h - 2), 2, fill=(RED if active else KICK) + (255,))
+    im.alpha_composite(t1, (w - 20 - t1.width, 0))
+    if t2:
+        im.alpha_composite(t2, (w - 20 - t2.width, t1.height + 2))
+    return im
+
+
+def callout_r(c, x_right, y, title, sub, a, active=False):
+    """right edge of the callout sits at x_right; wipes in from the inner side"""
+    if a <= 0.004:
+        return
+    im = callout_img_r(title, sub, active)
+    vw = max(1, int(im.width * min(1.0, a * 1.15)))
+    put(c, im.crop((im.width - vw, 0, im.width, im.height)), x_right - vw, y + (1 - a) * 14, a)
+
+
+@lru_cache(None)
 def callout_img(num, title, sub, w, active=False, ico=None):
     t1 = fit_text(title, "bold", 30, w - 24, TXT)
     t2 = fit_text(sub, "med", 20, w - 24, TXT2) if sub else None
@@ -1582,7 +1607,10 @@ def scene2(c, t, lt, G):
             ex = cx + sx * 470
             pts = bez((cx + sx * 140, cy + sy * 30), (cx + sx * 280, cy + sy * 30), (cx + sx * 300, cy + sy * 160), (ex, cy + sy * 160))
             connector(c, pts, ease((lt - t0) / 0.7), aa, t + j * 0.25)
-            callout(c, ex + 10 if sx > 0 else ex - 470, cy + sy * 160 - 48, j + 1, lab, sub, 460, aa, ico=ic)
+            if sx > 0:
+                callout(c, ex + 10, cy + sy * 160 - 48, j + 1, lab, sub, 460, aa, ico=ic)
+            else:
+                callout_r(c, ex - 10, cy + sy * 160 - 48, lab, sub, aa)
     if lt < tB:
         return
     act = 0
