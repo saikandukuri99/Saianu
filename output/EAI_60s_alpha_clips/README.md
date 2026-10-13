@@ -1,6 +1,6 @@
 # Solix Enterprise AI: 60-second teaser, separate alpha clips for Premiere Pro
 
-Everything here is built from the storyboard in `EAI_Teaser_FINAL_1080p_silent.mp4` and the script in `Solix_EAI_Teaser_Audio_Prompts_v5.docx`. The script is tightened from ~75 s to **60.7 s** so it plays as a 60-second film.
+Everything here is built from the storyboard in `EAI_Teaser_FINAL_1080p_silent.mp4` and the script in `Solix_EAI_Teaser_Audio_Prompts_v5.docx`. The script is tightened from ~75 s to **62.3 s** so it plays as a 60-second film.
 
 ## What is in the folder
 | Folder | What | Format |
@@ -27,7 +27,7 @@ No background music anywhere. Add your own bed.
 - Kept restrained for senior audiences: no robots, brains, glowing neural-net imagery or "AI magic" visuals. "AI" only appears as a plain label (chip, text), as in the storyboard. 3D is used only on the chip, XKG orb, data layers and platform hub; the logo is always flat.
 
 ## Voice-over
-Narration is a female voice (Kokoro "af_heart", warm and clear, neutral English), generated offline sentence by sentence, joined with set pauses, lightly compressed and levelled. It is a good working track. For a studio-grade or cloned brand voice, send the sentences in `CUE_SHEET.md` to your usual voice tool and keep the same order: clips are timed to the sentence gaps, so a replacement read at a similar pace will line up (small nudges in Premiere are fine).
+Female voice (Kokoro "af_heart"), generated phrase by phrase so the highlighted words (e.g. "isn't usable by AI", "AI-activated", "Four services. One framework.", "can trust") are slower, a little louder and slightly higher, with short pauses before them. Each sentence starts at the same moment as in the original timing, so all clips line up. It is a good working track. For a studio-grade or cloned brand voice, send the sentences in `CUE_SHEET.md` to your usual tool and keep the same order.
 
 ## Rebuild / change a scene
 Sources are in `source/eai60_build/` (HTML scenes + render script). Edit text or timing in a scene file and re-render that one clip.

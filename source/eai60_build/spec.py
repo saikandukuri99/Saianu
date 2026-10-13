@@ -1,0 +1,33 @@
+# (text, speed, gain_db, pitch, pause_before)  E = emphasised phrase
+N=lambda t,s=1.0,g=0,p=1.0,pb=0.0:(t,s,g,p,pb)
+E=lambda t,s=.86,g=2.5,p=1.04,pb=.12:(t,s,g,p,pb)
+SPEC=[
+ [N("Put AI in the hands of",.98,0,1.0), E("your business.",.88,2,1.03,.08)],
+ [N("But your enterprise data,",1.0), E("isn't usable by AI.",.84,3,1.045,.22)],
+ [E("Cryptic tables.",.84,3,1.04,0)],
+ [E("Disconnected systems.",.84,3,1.04,0)],
+ [E("No governance.",.82,3.5,1.03,0)],
+ [N("Solix Enterprise AI,",.92,1.5,1.0), N("makes your data,",1.0), E("AI-activated.",.82,3,1.05,.1)],
+ [N("That unlocks",1.0), E("Enterprise AI.",.88,2,1.04,.05)],
+ [E("Answer from it.",.86,2.5,1.04,0)],
+ [E("Build on it.",.86,2.5,1.04,0)],
+ [E("Activate it.",.84,3,1.045,0)],
+ [E("Four services.",.86,2.5,1.04,0)],
+ [E("One framework.",.84,3,1.045,0)],
+ [N("Data Sense maps your ERPs and cloud platforms,",1.0), N("so AI understands",1.0,0,1.0,.1), E("your data.",.88,2,1.035,.05)],
+ [E("The Cross-Application Knowledge Graph",.9,2,1.03,0), N("connects finance,",1.0,0,1.0,.12), N("manufacturing and supply chain.",1.0,0,1.0,.1)],
+ [N("Data Ask answers in plain language,",1.0), E("with sources cited.",.86,2.5,1.04,.18)],
+ [N("If unsure,",1.0), E("it asks.",.84,3,1.045,.15)],
+ [N("AI Warehouse is where your people build",1.0), E("their own AI applications.",.88,2.5,1.035,.12)],
+ [N("Agentic lets experts describe an app",1.0), E("in plain language.",.88,2,1.035,.1)],
+ [N("AI agents",1.0), E("build and run it.",.86,2.5,1.04,.08)],
+ [E("Any data platform.",.86,2.5,1.04,0)],
+ [E("Any LLM.",.84,3,1.045,0)],
+ [E("Any deployment.",.84,3,1.045,0)],
+ [N("AI your business",1.0,0), E("can trust.",.82,3.5,1.04,.12)],
+ [E("Every answer cited.",.86,2.5,1.04,0)],
+ [E("Humans in the loop.",.86,2.5,1.04,0)],
+ [E("Governed from day one.",.84,3,1.045,0)],
+ [N("Solix",.86,1.5,1.0), E("Enterprise AI.",.84,2.5,1.03,.1)],
+ [N("Put AI in the hands of",.92,0,1.0), E("your business.",.82,3,1.03,.1)],
+]
