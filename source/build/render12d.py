@@ -1499,13 +1499,13 @@ def foundation_phase(c, t, l, a):
         put(c, t2, xs[j] - t2.width / 2, y + 166 + (1 - ease((l - tk - 0.25) / 0.5)) * 16, aa * ease((l - tk - 0.25) / 0.5))
 
 
-PLAT_NODES = [  # label lines, sub, icon, (dx, dy)  -> three down the left, three down the right
-    (("1. AI WAREHOUSE",), "The unified enterprise data foundation", "warehouse", (-470, 230)),
-    (("2. FEDERATED", "GOVERNANCE"), "Trust, control and accountability", "shield", (-470, 0)),
-    (("3. AI PATIENT", "360 ANALYTICS"), "A longitudinal intelligence layer for every patient", "chart", (-470, -230)),
-    (("4. INTELLIGENT", "IMAGING & RADIOLOGY"), "Imaging intelligence in the enterprise context", "image", (470, -230)),
-    (("5. AI CLINICAL", "INTELLIGENCE"), "From data to contextual, explainable intelligence", "chat", (470, 0)),
-    (("6. PURPOSE-BUILT", "HEALTHCARE MODELS"), "Specialty-specific multi-agentic intelligence", "heart", (470, 230)),
+PLAT_NODES = [  # label lines, sub, icon, (dx, dy)  -> three down the left, three down the right (no numbering; 4 and 5 swapped)
+    (("AI WAREHOUSE",), "The unified enterprise data foundation", "warehouse", (-470, 230)),
+    (("FEDERATED", "GOVERNANCE"), "Trust, control and accountability", "shield", (-470, 0)),
+    (("AI PATIENT", "360 ANALYTICS"), "A longitudinal intelligence layer for every patient", "chart", (-470, -230)),
+    (("INTELLIGENT", "IMAGING & RADIOLOGY"), "Imaging intelligence in the enterprise context", "image", (470, 0)),
+    (("AI CLINICAL", "INTELLIGENCE"), "From data to contextual, explainable intelligence", "chat", (470, -230)),
+    (("PURPOSE-BUILT", "HEALTHCARE MODELS"), "Specialty-specific multi-agentic intelligence", "heart", (470, 230)),
 ]
 
 
