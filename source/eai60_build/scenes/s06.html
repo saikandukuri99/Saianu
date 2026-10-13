@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><script type=importmap>{"imports":{"three":"/lib/three.module.js"}}</script><script src=../lib/common.js></script>
+<style>
+.sy{position:absolute;left:190px;width:470px;height:128px;padding:20px 28px;display:flex;align-items:center;gap:22px}
+.sy .a{font-size:13px;font-weight:700;letter-spacing:.18em;color:var(--mute);text-transform:uppercase}
+.sy .b{font-size:36px;font-weight:700;margin-top:4px}
+.sy .ico{width:58px;height:58px;border-radius:14px;border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--blue);background:rgba(0,136,207,.12)}
+</style></head><body><div id=stage>
+ <div class=abs style="left:190px;top:92px" data-in=27.0 data-dur=.5 data-fx=right><div class="lbl b" style="letter-spacing:.24em">01 · UNDERSTAND</div><div class=h1 style="font-size:70px;margin-top:6px">Data Sense <span class=acc>· XKG</span></div><div style="font-size:26px;color:#c5d4f2;margin-top:8px">Cross-Application Knowledge Graph</div></div>
+ <div class="abs glass hot" style="left:1130px;top:104px;width:600px;height:118px;padding:20px 28px" data-in=31.0 data-dur=.5 data-fx=down><div class=lbl style="font-size:12px">One question</div><div style="font-size:23px;font-weight:600;margin-top:8px;line-height:1.35">Which late supplier orders put customer deliveries at risk?</div></div>
+ <div class="sy glass" style="top:330px" data-in=29.6 data-dur=.6 data-fx=left><div class=ico data-ic=file></div><div><div class=a>ERP · Finance</div><div class=b>Supplier</div></div></div>
+ <div class="sy glass" style="top:506px" data-in=30.4 data-dur=.6 data-fx=left><div class=ico data-ic=gear></div><div><div class=a>ERP · Manufacturing</div><div class=b>Vendor</div></div></div>
+ <div class="sy glass" style="top:682px" data-in=31.2 data-dur=.6 data-fx=left><div class=ico data-ic=server></div><div><div class=a>Supply chain app</div><div class=b>Vendor ID</div></div></div>
+ <svg class=ln>
+  <path d="M660 394 C 900 394, 960 590, 1150 590" data-draw=29.9 data-dur=.8 /><path d="M660 570 C 900 570, 960 600, 1150 600" data-draw=30.7 data-dur=.8 /><path d="M660 746 C 900 746, 960 610, 1150 610" data-draw=31.5 data-dur=.7 />
+ </svg>
+ <div class=abs style="left:1060px;top:300px;width:700px;height:700px;background:radial-gradient(circle,rgba(0,136,207,.42),rgba(0,136,207,0) 62%)" data-in=28.6 data-dur=.9 data-fx=scale></div>
+ <canvas id=cv width=640 height=640 class=abs style="left:1090px;top:270px" data-in=28.4 data-dur=.9 data-fx=scale></canvas>
+ <div class="abs" style="left:1090px;top:270px;width:640px;height:640px;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none" data-in=29.0 data-dur=.6 data-fx=scale><div style="font-size:92px;font-weight:800;letter-spacing:.02em;text-shadow:0 4px 24px rgba(0,20,80,.8)">XKG</div></div>
+ <div class="abs c" style="left:1090px;width:640px;top:872px;text-align:center" data-in=28.9><div style="font-size:19px;color:#c5d4f2;font-weight:600">One shared meaning across every system.</div></div>
+</div>
+<script type=module>
+import {stage,THREE} from '../lib/kit3d.js';
+const S=stage(document.getElementById('cv'),{fov:30,z:11.2});
+const g=new THREE.Group();S.scene.add(g);
+const sph=new THREE.Mesh(new THREE.SphereGeometry(1.5,96,96),new THREE.MeshPhysicalMaterial({color:0x0a3f8f,metalness:.2,roughness:.18,clearcoat:.6,clearcoatRoughness:.25,envMapIntensity:.45,emissive:0x0a5ec2,emissiveIntensity:.35}));g.add(sph);
+const wire=new THREE.Mesh(new THREE.IcosahedronGeometry(1.56,2),new THREE.MeshBasicMaterial({color:0x6cc6ff,wireframe:true,transparent:true,opacity:.28}));g.add(wire);
+const rings=[];const nodes=[];
+[[2.05,.35,.2,0x0088cf],[2.45,-.5,.9,0xffffff],[2.85,.9,-.4,0xee2424]].forEach(([r,rx,rz,col],i)=>{
+ const pivot=new THREE.Group();pivot.rotation.set(rx,0,rz);g.add(pivot);
+ const ring=new THREE.Mesh(new THREE.TorusGeometry(r,.012,12,200),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.7}));ring.rotation.x=Math.PI/2;pivot.add(ring);
+ const n=new THREE.Mesh(new THREE.SphereGeometry(.13,24,24),new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:.8}));pivot.add(n);nodes.push([n,r,i]);
+});
+window.SCENE={VS:26.9,VE:32.4,update(t){g.rotation.y=t*.35;g.rotation.x=-.2+Math.sin(t*.6)*.06;nodes.forEach(([n,r,i])=>{const a=t*(.9-i*.2)+i*2;n.position.set(Math.cos(a)*r,0,Math.sin(a)*r)});S.render();}};
+window.ready=true;
+</script></body></html>

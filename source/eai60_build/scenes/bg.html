@@ -1,0 +1,11 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><script src=../lib/common.js></script></head><body style="background:#07103a"><canvas id=c width=1920 height=1080></canvas><script>
+const c=document.getElementById('c'),x=c.getContext('2d');let seed=7;const R=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const N=90,nodes=Array.from({length:N},()=>({x:R()*1920,y:R()*1080,vx:(R()-.5)*14,vy:(R()-.5)*14,r:1+R()*1.8}));
+window.SCENE={VS:0,VE:100,N:1869,update(t){
+ const g=x.createLinearGradient(0,0,0,1080);g.addColorStop(0,'#060e36');g.addColorStop(1,'#0f2f6a');x.fillStyle=g;x.fillRect(0,0,1920,1080);
+ const rg=x.createRadialGradient(560,380,0,560,380,900);rg.addColorStop(0,'rgba(0,136,207,.20)');rg.addColorStop(1,'rgba(0,136,207,0)');x.fillStyle=rg;x.fillRect(0,0,1920,1080);
+ const rg2=x.createRadialGradient(1560,820,0,1560,820,700);rg2.addColorStop(0,'rgba(48,38,123,.45)');rg2.addColorStop(1,'rgba(48,38,123,0)');x.fillStyle=rg2;x.fillRect(0,0,1920,1080);
+ const P=nodes.map(n=>({x:((n.x+n.vx*t)%1920+1920)%1920,y:((n.y+n.vy*t)%1080+1080)%1080,r:n.r}));
+ x.lineWidth=1;for(let i=0;i<N;i++)for(let j=i+1;j<N;j++){const dx=P[i].x-P[j].x,dy=P[i].y-P[j].y,d=Math.hypot(dx,dy);if(d<220){x.strokeStyle=`rgba(80,170,240,${.16*(1-d/220)})`;x.beginPath();x.moveTo(P[i].x,P[i].y);x.lineTo(P[j].x,P[j].y);x.stroke();}}
+ P.forEach(p=>{x.fillStyle='rgba(150,205,255,.55)';x.beginPath();x.arc(p.x,p.y,p.r,0,7);x.fill();});
+}};window.ready=true;</script></body></html>

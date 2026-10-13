@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><script type=importmap>{"imports":{"three":"/lib/three.module.js"}}</script><script src=../lib/common.js></script>
+<style>
+.col{position:absolute;width:380px}
+.col .lbl{margin-bottom:14px;font-size:15px}
+.it{height:62px;padding:0 24px;display:flex;align-items:center;gap:16px;font-size:22px;font-weight:600;margin-bottom:14px;border-radius:12px}
+.it span{font-size:26px;color:var(--blue)}
+</style></head><body><div id=stage>
+ <div class="abs c" style="top:128px;flex-direction:column;align-items:center"><div class=lbl data-in=49.05>Any LLM model</div><div style="display:flex;gap:18px;margin-top:14px;white-space:nowrap"><div class=pill data-in=49.15 data-fx=pop>Hosted LLM</div><div class=pill data-in=49.45 data-fx=pop>Open-source LLM</div><div class=pill data-in=49.75 data-fx=pop>Your own model</div></div></div>
+ <div class=col style="left:150px;top:330px"><div class=lbl data-in=47.6>Any data platform</div>
+  <div class="it glass" data-in=47.7 data-fx=left><span data-ic=layers></span>Data lakehouse</div><div class="it glass" data-in=47.9 data-fx=left><span data-ic=cloud></span>Cloud warehouse</div><div class="it glass" data-in=48.1 data-fx=left><span data-ic=db></span>Databases</div><div class="it glass" data-in=48.3 data-fx=left><span data-ic=table></span>Business apps</div><div class="it glass" data-in=48.5 data-fx=left><span data-ic=file></span>File stores</div></div>
+ <div class=col style="left:1390px;top:420px"><div class=lbl data-in=50.2>Any deployment</div>
+  <div class="it glass" data-in=50.3 data-fx=right><span data-ic=cloud></span>Cloud</div><div class="it glass" data-in=50.5 data-fx=right><span data-ic=server></span>On-premises</div><div class="it glass" data-in=50.7 data-fx=right><span data-ic=layers></span>Hybrid</div></div>
+ <svg class=ln>
+  <path d="M530 400 C 640 400 700 540 760 560 M530 478 C 640 478 700 550 760 566 M530 556 H760 M530 634 C 640 634 700 580 760 574 M530 712 C 640 712 700 600 760 580" data-draw=48.2 data-dur=.9 style="stroke-width:2.5" />
+  <path d="M960 250 V400" data-draw=49.6 data-dur=.5 style="stroke-width:2.5" />
+  <path d="M1160 560 H1390 M1160 566 C1280 566 1300 520 1390 510 M1160 574 C 1280 574 1300 620 1390 650" data-draw=50.5 data-dur=.8 style="stroke-width:2.5" />
+ </svg>
+ <div class=abs style="left:610px;top:310px;width:700px;height:520px;background:radial-gradient(circle,rgba(0,136,207,.45),rgba(0,136,207,0) 62%)" data-in=47.6 data-dur=.8 data-fx=scale></div>
+ <canvas id=cv width=560 height=560 class=abs style="left:680px;top:300px" data-in=47.6 data-dur=.8 data-fx=scale></canvas>
+ <div class="abs c" style="top:850px;flex-direction:column;align-items:center;text-align:center" data-in=48.0><div style="font-size:30px;font-weight:800;letter-spacing:.08em">SOLIX ENTERPRISE AI</div><div style="font-size:18px;color:#c5d4f2;margin-top:8px;letter-spacing:.06em">Data Sense · Data Ask · AI Warehouse · Agentic</div></div>
+</div>
+<script type=module>
+import {stage,chip,coin,loadTex,THREE} from '../lib/kit3d.js';
+const S=stage(document.getElementById('cv'),{fov:30,z:10});const tex=await loadTex('/assets/icon.png');
+const c=chip({label:''});c.scale.setScalar(1.0);S.scene.add(c);
+const cn=coin(tex);cn.scale.setScalar(.62);cn.position.z=.55;c.add(cn);cn.scale.setScalar(.62);
+const rings=[0,1].map(i=>{const r=new THREE.Mesh(new THREE.TorusGeometry(2.6+i*.4,.012,10,160),new THREE.MeshBasicMaterial({color:i?0xee2424:0x7fd0ff,transparent:true,opacity:.6}));S.scene.add(r);return r;});
+window.SCENE={VS:47.5,VE:51.65,update(t){c.rotation.set(-.3+Math.sin(t)*.06,Math.sin(t*.8)*.5,0);cn.rotation.y=t*1.1;rings[0].rotation.set(1.2,t*.4,0);rings[1].rotation.set(1.0,-t*.3,.5);S.render();}};
+window.ready=true;
+</script></body></html>

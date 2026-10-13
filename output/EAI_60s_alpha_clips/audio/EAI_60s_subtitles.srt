@@ -1,0 +1,112 @@
+1
+00:00:00,450 --> 00:00:02,580
+Put AI in the hands of your business.
+
+2
+00:00:03,210 --> 00:00:06,150
+But your enterprise data isn't usable by AI.
+
+3
+00:00:06,340 --> 00:00:07,350
+Cryptic tables.
+
+4
+00:00:07,510 --> 00:00:08,840
+Disconnected systems.
+
+5
+00:00:09,000 --> 00:00:09,970
+No governance.
+
+6
+00:00:10,380 --> 00:00:13,720
+Solix Enterprise AI makes your data AI-activated.
+
+7
+00:00:14,280 --> 00:00:16,050
+That unlocks Enterprise AI.
+
+8
+00:00:16,250 --> 00:00:17,060
+Answer from it.
+
+9
+00:00:17,240 --> 00:00:18,040
+Build on it.
+
+10
+00:00:18,200 --> 00:00:18,980
+Activate it.
+
+11
+00:00:19,130 --> 00:00:20,140
+Four services.
+
+12
+00:00:20,310 --> 00:00:21,240
+One framework.
+
+13
+00:00:21,580 --> 00:00:26,650
+Data Sense maps your ERPs and cloud platforms, so AI understands your data.
+
+14
+00:00:27,000 --> 00:00:32,120
+The Cross-Application Knowledge Graph connects finance, manufacturing and supply chain.
+
+15
+00:00:32,470 --> 00:00:35,770
+Data Ask answers in plain language, with sources cited.
+
+16
+00:00:35,930 --> 00:00:37,150
+If unsure, it asks.
+
+17
+00:00:37,530 --> 00:00:41,640
+AI Warehouse is where your people build their own AI applications.
+
+18
+00:00:42,010 --> 00:00:45,460
+Agentic lets experts describe an app in plain language.
+
+19
+00:00:45,640 --> 00:00:47,290
+AI agents build and run it.
+
+20
+00:00:47,670 --> 00:00:48,930
+Any data platform.
+
+21
+00:00:49,120 --> 00:00:50,110
+Any LLM.
+
+22
+00:00:50,280 --> 00:00:51,310
+Any deployment.
+
+23
+00:00:51,670 --> 00:00:53,310
+AI your business can trust.
+
+24
+00:00:53,500 --> 00:00:54,690
+Every answer cited.
+
+25
+00:00:54,870 --> 00:00:55,950
+Humans in the loop.
+
+26
+00:00:56,110 --> 00:00:57,280
+Governed from day one.
+
+27
+00:00:57,860 --> 00:00:59,460
+Solix Enterprise AI.
+
+28
+00:00:59,640 --> 00:01:01,770
+Put AI in the hands of your business.
+

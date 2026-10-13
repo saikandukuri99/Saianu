@@ -1,0 +1,5 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><script type=importmap>{"imports":{"three":"/lib/three.module.js"}}</script><script src=../lib/common.js></script></head><body><div id=stage><canvas id=cv width=1080 height=1080 class=abs style="left:420px;top:0"></canvas></div><script type=module>
+import {stage,chip,coin,slab,loadTex,THREE} from '../lib/kit3d.js';
+const S=stage(document.getElementById('cv'),{fov:28,z:9});const TAU=Math.PI*2,L=6;
+const tex=await loadTex('/assets/icon.png');const o=coin(tex);o.scale.setScalar(1.25);S.scene.add(o);window.SCENE={N:180,VE:100,update(t){const k=t/L;o.rotation.y=k*TAU;o.rotation.x=Math.sin(k*TAU)*.12;o.position.y=Math.sin(k*TAU)*.08;S.render();}};
+window.ready=true;</script></body></html>

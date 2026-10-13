@@ -1,0 +1,31 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><script type=importmap>{"imports":{"three":"/lib/three.module.js"}}</script><script src=../lib/common.js></script>
+<style>
+.st{position:absolute;left:930px;width:820px;height:108px;padding:0 34px;display:flex;align-items:center;gap:26px}
+.st .ic0{width:58px;height:58px;border-radius:50%;border:2px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--blue);background:rgba(0,136,207,.14);flex:none}
+.st b{font-size:30px;font-weight:700;display:block}.st span{font-size:18px;color:#b9c9ea}
+.band{position:absolute;left:200px;font-size:21px;font-weight:700;padding:11px 24px;border-radius:30px;background:rgba(12,19,68,.92);border:1.5px solid var(--blue);box-shadow:0 0 22px rgba(0,136,207,.35)}
+</style></head><body><div id=stage>
+ <div class=abs style="left:170px;top:96px" data-in=37.6 data-dur=.5 data-fx=right><div class="lbl b" style="letter-spacing:.24em">03 · BUILD</div><div class=h1 style="font-size:80px;margin-top:6px">AI Warehouse</div><div style="font-size:26px;color:#c5d4f2;margin-top:8px">Your people build their own AI applications.</div></div>
+ <div class=abs style="left:130px;top:320px;width:700px;height:700px;background:radial-gradient(circle,rgba(0,136,207,.35),rgba(0,136,207,0) 60%)" data-in=38.0 data-dur=.8 data-fx=scale></div>
+ <canvas id=cv width=700 height=700 class=abs style="left:130px;top:300px" data-in=37.9 data-dur=.8 data-fx=scale></canvas>
+ <div class=band style="top:520px;left:700px" data-in=40.6 data-fx=left>Governed</div><div class=band style="top:630px;left:700px" data-in=40.85 data-fx=left>Quality-checked</div><div class=band style="top:740px;left:700px" data-in=41.1 data-fx=left>Version-tracked</div>
+ <div class="st glass" style="top:300px" data-in=38.5 data-dur=.5 data-fx=left><div class=ic0 data-ic=chat></div><div><b>Describe</b><span>In natural language</span></div></div>
+ <div class="st glass" style="top:432px" data-in=39.0 data-dur=.5 data-fx=left><div class=ic0 data-ic=layers></div><div><b>Data Sense</b><span>Surfaces tables and documents</span></div></div>
+ <div class="st glass hot" style="top:564px" data-in=39.5 data-dur=.5 data-fx=left><div class=ic0 data-ic=home></div><div><b>AI Warehouse</b><span>Build and version, governed</span></div></div>
+ <div class="st glass" style="top:696px" data-in=40.1 data-dur=.5 data-fx=left><div class=ic0 data-ic=check></div><div><b>Your AI application</b><span>Owned by your analyst</span></div></div>
+ <svg class=ln><path d="M999 408 V432 M999 540 V564 M999 672 V696" data-draw=39.0 data-dur=1.2 /></svg>
+ <div class="abs" style="left:930px;top:850px;display:flex;gap:18px;white-space:nowrap"><div class=pill style="height:48px;font-size:20px" data-in=40.9 data-fx=pop>Your experts build it themselves</div><div class=pill style="height:48px;font-size:20px" data-in=41.1 data-fx=pop>Your AI, on your data</div></div>
+</div>
+<script type=module>
+import {stage,slab,THREE} from '../lib/kit3d.js';
+const S=stage(document.getElementById('cv'),{fov:28,z:11,y:1.2});S.camera.lookAt(0,0,0);
+const g=new THREE.Group();g.scale.setScalar(.8);S.scene.add(g);
+const cols=[0x30267b,0x0a63a8,0x0088cf];const sl=[];
+for(let i=0;i<3;i++){const s=slab(3.6,3.6,.38,.3,cols[i],{metal:.5,rough:.28,emissive:cols[i],ei:.18});s.rotation.x=-Math.PI/2;s.position.y=-1.15+i*1.15;g.add(s);sl.push(s);
+ const edge=new THREE.Mesh(new THREE.TorusGeometry(.0,.0,2,2),new THREE.MeshBasicMaterial());
+ const e=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(3.5,.34,3.5)),new THREE.LineBasicMaterial({color:0x7fd0ff,transparent:true,opacity:.0}));e.position.y=s.position.y;g.add(e);}
+const orb=new THREE.Mesh(new THREE.SphereGeometry(.22,32,32),new THREE.MeshStandardMaterial({color:0xee2424,emissive:0xee2424,emissiveIntensity:.9}));g.add(orb);
+window.SCENE={VS:37.4,VE:41.9,update(t){const k=P(t,38.1,1.1,E.out);sl.forEach((s,i)=>{s.position.y=-1.15*k+i*1.15*k-.0+(i-1)*0+( -0.0);s.position.y=(i-1)*1.12*k+Math.sin(t*1.2+i)*.04;});
+ g.rotation.y=-.5+Math.sin(t*.5)*.35;g.rotation.x=.0;const a=t*2;orb.position.set(Math.cos(a)*1.0,Math.sin(t*1.7)*1.4,Math.sin(a)*1.0);S.render();}};
+window.ready=true;
+</script></body></html>
