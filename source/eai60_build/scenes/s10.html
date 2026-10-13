@@ -22,9 +22,9 @@
 <script type=module>
 import {stage,chip,coin,loadTex,THREE} from '../lib/kit3d.js';
 const S=stage(document.getElementById('cv'),{fov:30,z:10});const tex=await loadTex('/assets/icon.png');
-const c=chip({label:''});c.scale.setScalar(1.0);S.scene.add(c);
-const cn=coin(tex);cn.scale.setScalar(.62);cn.position.z=.55;c.add(cn);cn.scale.setScalar(.62);
+const c=chip({label:'AI'});c.scale.setScalar(1.0);S.scene.add(c);
+
 const rings=[0,1].map(i=>{const r=new THREE.Mesh(new THREE.TorusGeometry(2.6+i*.4,.012,10,160),new THREE.MeshBasicMaterial({color:i?0xee2424:0x7fd0ff,transparent:true,opacity:.6}));S.scene.add(r);return r;});
-window.SCENE={VS:47.5,VE:51.65,update(t){c.rotation.set(-.3+Math.sin(t)*.06,Math.sin(t*.8)*.5,0);cn.rotation.y=t*1.1;rings[0].rotation.set(1.2,t*.4,0);rings[1].rotation.set(1.0,-t*.3,.5);S.render();}};
+window.SCENE={VS:47.5,VE:51.65,update(t){c.rotation.set(-.3+Math.sin(t)*.06,Math.sin(t*.8)*.5,0);rings[0].rotation.set(1.2,t*.4,0);rings[1].rotation.set(1.0,-t*.3,.5);S.render();}};
 window.ready=true;
 </script></body></html>

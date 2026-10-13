@@ -1,13 +1,8 @@
 <!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><script type=importmap>{"imports":{"three":"/lib/three.module.js"}}</script><script src=../lib/timemap.js></script><script src=../lib/common.js></script>
 </head><body><div id=stage>
- <canvas id=cv width=460 height=460 class=abs style="left:360px;top:230px" data-in=57.95 data-dur=.8 data-fx=scale></canvas>
+ <img src=/assets/icon.png class=abs style="left:470px;top:300px;width:270px;height:270px" data-in=57.95 data-dur=.7 data-fx=pop>
  <div class="abs" style="left:800px;top:330px;line-height:1" data-in=58.1 data-dur=.7 data-fx=left><div style="font-size:150px;font-weight:600;letter-spacing:.1em">SOLIX</div><div style="font-size:62px;font-weight:800;letter-spacing:.06em;margin-top:8px;margin-left:8px">ENTERPRISE AI</div></div>
  <div class="abs c" style="top:690px" data-in=59.0 data-dur=1 data-fx=scale><div style="height:6px;width:760px;border-radius:3px;background:linear-gradient(90deg,#0088cf,#30267b 60%,#ee2424)"></div></div>
  <div class="abs c" style="top:735px;font-size:54px;font-weight:600" data-in=59.65 data-dur=.7>Put AI in the hands of your business.</div>
 </div>
-<script type=module>
-import {stage,coin,loadTex,THREE} from '../lib/kit3d.js';
-const S=stage(document.getElementById('cv'),{fov:28,z:5.6});const tex=await loadTex('/assets/icon.png');const c=coin(tex);c.scale.setScalar(1.05);S.scene.add(c);
-window.SCENE={VS:57.7,VE:62.3,update(t){c.rotation.y=Math.max(0,1-P(t,57.95,1.4,E.out))*(-Math.PI*2.4)+Math.sin(t*1.1)*.3;c.rotation.x=Math.sin(t*.8)*.08;S.render();}};
-window.ready=true;
-</script></body></html>
+<script>window.SCENE={VS:57.7,VE:62.3};window.ready=true;</script></body></html>
