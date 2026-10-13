@@ -1,0 +1,20 @@
+1
+00:00:00,247 --> 00:00:03,613
+where every specialty has its own multi-agent clusters,
+
+2
+00:00:03,647 --> 00:00:05,087
+with a consensus score.
+
+3
+00:00:06,347 --> 00:00:08,022
+Purpose-built Solix agents
+
+4
+00:00:08,067 --> 00:00:10,010
+bring every system into focus,
+
+5
+00:00:10,217 --> 00:00:13,782
+turning real-time insights into better patient outcomes.
+

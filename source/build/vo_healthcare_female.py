@@ -17,7 +17,7 @@ from kokoro_onnx import Kokoro
 SR = 48000
 # (start_seconds, text) - starts measured from the original narration
 LINES = [
-    (2.20, "Every hospital holds a wealth of clinical data,"),
+    (0.73, "Every hospital holds a wealth of clinical data,"),
     (6.62, "unlocking insights that drive better patient outcomes."),
     (10.58, "Solix AI Warehouse unifies healthcare data,"),
     (13.93, "powering intelligent, and personalized care,"),

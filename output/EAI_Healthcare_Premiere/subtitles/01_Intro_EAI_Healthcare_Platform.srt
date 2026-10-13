@@ -1,0 +1,4 @@
+1
+00:00:00,730 --> 00:00:03,567
+Every hospital holds a wealth of clinical data,
+

@@ -1,0 +1,28 @@
+1
+00:00:00,000 --> 00:00:02,283
+Six pillars of an AI-ready foundation,
+
+2
+00:00:02,483 --> 00:00:03,932
+for healthcare intelligence.
+
+3
+00:00:03,963 --> 00:00:05,108
+AI Warehouse.
+
+4
+00:00:05,333 --> 00:00:06,727
+Federated Governance.
+
+5
+00:00:06,763 --> 00:00:08,171
+Patient 360.
+
+6
+00:00:08,383 --> 00:00:10,452
+Clinical Intelligence, and Imaging.
+
+7
+00:00:10,533 --> 00:00:13,740
+Multi-agentic intelligence, for every specialty.
+
