@@ -9,7 +9,7 @@ const [,,scene,out,qs='6',startArg,endArg]=process.argv;
  const N=await p.evaluate('frames()');
  if(out.endsWith('.png')){const f=+startArg;await p.evaluate(`render(${f/30})`);await p.screenshot({path:out,omitBackground:true});console.log('png',scene,f,'of',N);await b.close();return;}
  const s=startArg?+startArg:0,e=endArg?+endArg:N;
- const enc=out.endsWith('.mp4')?['-c:v','libx264','-crf','16','-preset','medium','-pix_fmt','yuv420p']:['-c:v','prores_ks','-profile:v','4444','-pix_fmt','yuva444p10le','-vendor','apl0','-qscale:v',qs];
+ const enc=process.env.ENC==='qtrle'?['-c:v','qtrle','-pix_fmt','argb']:out.endsWith('.mp4')?['-c:v','libx264','-crf','16','-preset','medium','-pix_fmt','yuv420p']:['-c:v','prores_ks','-profile:v','4444','-pix_fmt','yuva444p10le','-vendor','apl0','-qscale:v',qs];
  const ff=spawn('ffmpeg',['-y','-v','error','-f','image2pipe','-framerate','30','-c:v','png','-i','-',...enc,out],{stdio:['pipe','inherit','inherit']});
  const t0=Date.now();
  for(let f=s;f<e;f++){await p.evaluate(`render(${f/30})`);const buf=await p.screenshot({omitBackground:true});if(!ff.stdin.write(buf))await new Promise(r=>ff.stdin.once('drain',r));if(f%60==0)console.log(scene,f,'/',N,((Date.now()-t0)/1000).toFixed(0)+'s');}
