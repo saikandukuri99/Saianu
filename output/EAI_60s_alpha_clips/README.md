@@ -27,7 +27,7 @@ No background music anywhere. Add your own bed.
 - Kept restrained for senior audiences: no robots, brains, glowing neural-net imagery or "AI magic" visuals. "AI" only appears as a plain label (chip, text), as in the storyboard. 3D is used only on the chip, XKG orb, data layers and platform hub; the logo is always flat.
 
 ## Voice-over
-Female voice (Kokoro "af_heart"), generated phrase by phrase so the highlighted words (e.g. "isn't usable by AI", "AI-activated", "Four services. One framework.", "can trust") are slower, a little louder and slightly higher, with short pauses before them. Each sentence starts at the same moment as in the original timing, so all clips line up. It is a good working track. For a studio-grade or cloned brand voice, send the sentences in `CUE_SHEET.md` to your usual tool and keep the same order.
+Female voice (Kokoro "af_heart"), written as a product-demo read: calm and serious on the problem section, a lift at the Solix reveal, then confident and upbeat. **The company and product names are the stressed words**: Solix Enterprise AI, Data Sense, Cross-Application Knowledge Graph, Data Ask, AI Warehouse, Agentic. They are slower, louder, higher in pitch and have a small pause before them. Every sentence starts at the same moment as in the original timing and ends before the next one, so all clips line up. It is a good working track from an offline voice engine. For a studio-grade or cloned brand voice, send the sentences in `CUE_SHEET.md` to your usual tool and keep the same order.
 
 ## Rebuild / change a scene
 Sources are in `source/eai60_build/` (HTML scenes + render script). Edit text or timing in a scene file and re-render that one clip.
