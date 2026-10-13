@@ -380,6 +380,7 @@ def background(t):
 GRAIN = [(np.random.default_rng(i).standard_normal((H, W, 1)).astype(np.float32)*.011) for i in range(6)]
 BOKEH = np.random.default_rng(5).random((48, 6))
 BOKEH_C = [BLG, WH, RDG, LAV]
+NO_BOKEH = False   # alpha export drops the ambient background bokeh
 
 def glow_layer(t, flash=0.0):
     P, Bv, C = particles(t)
@@ -422,7 +423,7 @@ def glow_layer(t, flash=0.0):
         if 0 <= px < hw/2-1 and 0 <= py < hh/2-1:
             bk[:, int(py), int(px)] += BOKEH_C[int(bc*4)]*(.6 + bs)*(.6+.4*math.sin(t*.5+bp*9))
     bk = zoom(gaussian_filter(bk, (0, 5, 5)), (1, 2, 2), order=1)[:, :hh, :hw]*24
-    tot = (I + bloom + bloom2 + bk).transpose(1, 2, 0)
+    tot = (I + bloom + bloom2 + (0 if NO_BOKEH else bk)).transpose(1, 2, 0)
     return zoom(tot, (2, 2, 1), order=1)
 
 def compose_bg(t, flash=0.0):
