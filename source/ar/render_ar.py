@@ -321,7 +321,7 @@ CAMY = dict(hook=430, t1=330, t2=330, t3=330, t4=330, t5=330, one=610, access=64
 CAMS = dict(hook=1.0, t1=.62, t2=.62, t3=.62, t4=.6, t5=.62, one=1.15, connect=1.0, migrate=1.15,
             dark=1.05, access=1.1, ask=1.05, ai=1.15, sign=1.0)
 # red key-light behind the subject (x, y, strength); the end card drops it low so the red logo reads
-GLOW = dict(sign=(960, 1000, .75))
+GLOW = dict(sign=(960, 1000, .8))
 def lerp_scene(t, d, dflt):
     sid = scene_at(t); k = ORDER.index(sid); lt = t - SC[sid]
     v = np.array(d.get(sid, dflt), float)
@@ -360,26 +360,56 @@ YY, XX = np.mgrid[0:H//4, 0:W//4].astype(np.float32)*4
 IND_DK = np.array([14, 10, 40], np.float32)/255
 IND = INDIGO*.85
 RED_DK = np.array([120, 14, 28], np.float32)/255
+NAVY_DK = np.array([4, 10, 30], np.float32)/255       # deep navy edges
+NAVY = np.array([12, 32, 78], np.float32)/255          # dark blue field
+GLOW_C = np.array([22, 92, 170], np.float32)/255       # soft brand-blue key light behind the subject
+NET_C = np.array([150, 205, 255], np.float32)/255      # light network lines
+_nr = np.random.default_rng(23)
+NET = _nr.random((96, 5))   # x, y, layer, phase, speed
+def network(t):
+    """Light network lines: drifting nodes in three depth layers, joined when close."""
+    hw, hh = W//2, H//2
+    im = Image.new("L", (hw, hh), 0); d = ImageDraw.Draw(im)
+    pts = []
+    for x, y, lay, ph, sp in NET:
+        L = int(lay*3)
+        v = (.6 + .8*sp)*(1 + L*.6)
+        px = ((x*1.2 - .1 + t*.0035*v + .03*math.sin(t*.11 + ph*6)) % 1.2 - .1)*hw
+        py = ((y*1.2 - .1 + .02*math.sin(t*.09 + ph*9) + t*.0012*v) % 1.2 - .1)*hh
+        pts.append((px, py, L))
+    lim = (95, 120, 150)
+    for a in range(len(pts)):
+        xa, ya, La = pts[a]
+        for b in range(a + 1, len(pts)):
+            xb, yb, Lb = pts[b]
+            if La != Lb: continue
+            dd = math.hypot(xa - xb, ya - yb)
+            if dd < lim[La]:
+                d.line((xa, ya, xb, yb), fill=int((1 - dd/lim[La])*(70 + 45*La)), width=1)
+    for px, py, L in pts:
+        r = .8 + .7*L
+        d.ellipse((px - r, py - r, px + r, py + r), fill=120 + 60*L)
+    a = np.asarray(im, np.float32)/255
+    return zoom(a, 2, order=1)[:H, :W, None]
+
 def background(t):
     cx, cy, *_ = cam(t)
     gx, gy, gs = lerp_scene(t, GLOW, (cx, cy + 40, 1.0))
-    # indigo base: darker toward the top-left corner and edges
-    base = IND_DK + (IND - IND_DK)*np.clip(1 - np.sqrt(((XX-1100)/1500)**2 + ((YY-650)/900)**2), 0, 1)[..., None]
-    d = np.sqrt(((XX - gx)/980)**2 + ((YY - gy)/760)**2)
-    a = (np.clip(1 - d, 0, 1)**1.35)*gs
-    img = base + (RED_DK - base)*np.clip(a*1.7, 0, 1)[..., None]
-    img = img + (RED - img)*(a**1.9*.85)[..., None]
-    # blue light leak, bottom-left, drifting
+    base = NAVY_DK + (NAVY - NAVY_DK)*np.clip(1 - np.sqrt(((XX-1000)/1500)**2 + ((YY-560)/950)**2), 0, 1)[..., None]
+    d = np.sqrt(((XX - gx)/1000)**2 + ((YY - gy)/780)**2)
+    a = (np.clip(1 - d, 0, 1)**1.5)*gs
+    img = base + (GLOW_C - base)*np.clip(a*1.1, 0, 1)[..., None]*.75
+    # cool light leak, bottom-left, drifting
     b = np.exp(-(((XX - (260 + 160*math.sin(t*.07)))/620)**2 + ((YY - 1000)/360)**2))
-    img = img + (BLUE - img)*(.32*b)[..., None]
-    # cool rim from top-right
+    img = img + (BLUE*.8 - img)*(.22*b)[..., None]
     b2 = np.exp(-(((XX - 1900)/700)**2 + ((YY + 60)/420)**2))
-    img = img + (INDIGO*1.3 - img)*(.35*b2)[..., None]
-    return zoom(img, (4, 4, 1), order=1)
+    img = img + (INDIGO*1.2 - img)*(.3*b2)[..., None]
+    img = zoom(img, (4, 4, 1), order=1)
+    return img + (NET_C - img)*network(t)*.55
 
 GRAIN = [(np.random.default_rng(i).standard_normal((H, W, 1)).astype(np.float32)*.011) for i in range(6)]
 BOKEH = np.random.default_rng(5).random((48, 6))
-BOKEH_C = [BLG, WH, RDG, LAV]
+BOKEH_C = [BLG, WH, BLG, LAV]
 NO_BOKEH = False   # alpha export drops the ambient background bokeh
 
 def glow_layer(t, flash=0.0):
