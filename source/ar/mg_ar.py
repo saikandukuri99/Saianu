@@ -27,11 +27,12 @@ class Cv:
         self.im = Image.new("RGBA", (self.w*SS, self.h*SS), (0, 0, 0, 0)); self.d = ImageDraw.Draw(self.im)
     def p(self, x, y): return ((x - self.x0)*SS, (y - self.y0)*SS)
     def circle(self, x, y, r, fill=None, outline=None, width=2):
+        if r < .5: return
         (a, b) = self.p(x - r, y - r); (c, e) = self.p(x + r, y + r)
         if c - a < 1: return
         self.d.ellipse((a, b, c, e), fill=fill, outline=outline, width=int(width*SS))
     def arc(self, x, y, r, a0, a1, col, width=3):
-        if a1 - a0 < .5: return
+        if a1 - a0 < .5 or r < 1: return
         (a, b) = self.p(x - r, y - r); (c, e) = self.p(x + r, y + r)
         self.d.arc((a, b, c, e), a0, a1, fill=col, width=int(width*SS))
     def line(self, pts, col, width=3):
