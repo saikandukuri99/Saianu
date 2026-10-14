@@ -68,8 +68,9 @@ def ease_back(x):
 
 
 class Pillars:
-    def __init__(self, path, dark=False):
+    def __init__(self, path, dark=False, original=False):
         self.dark = dark
+        self.original = original  # keep the artwork's own colours
         art = cv2.imread(path)[:, :, ::-1].astype(np.float32)
         h, w = art.shape[:2]
         self.h, self.w = h, w
@@ -103,10 +104,11 @@ class Pillars:
             fillc = np.array([234, 246, 255], np.float32)
             src = np.array([21, 70, 160], np.float32)
             k = np.clip(((fillc - ic) * (fillc - src)).sum(axis=2) / ((fillc - src) ** 2).sum(), 0, 1)
-            ic = fillc * (1 - k[..., None]) + BLUE * k[..., None]
+            if not original:
+                ic = fillc * (1 - k[..., None]) + BLUE * k[..., None]
             self.icon[n] = (ic, inner[cy - R_FILL:cy + R_FILL, cx - R_FILL:cx + R_FILL].copy())
             crop = art[y0:y1, x0:x1]
-            a = np.clip((255.0 - crop[..., 0]) / (255.0 - 21.0), 0, 1)
+            a = np.clip((255.0 - crop[..., 0]) / (255.0 - 48.0), 0, 1)
             a[(crop.min(axis=2) > 200)] = 0
             ys, xs = np.nonzero(a > 0.05)
             self.label[n] = a[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
@@ -171,8 +173,9 @@ class Pillars:
             # label: left/right anchored like the artwork, vertically centred on the circle
             la = self.label[content]
             ox, _ = self.label_off[slot]
-            base = np.float32([255, 255, 255]) if self.dark else NAVY
-            col = base * (1 - h) + RED * h
+            base = np.float32([255, 255, 255]) if self.dark else (np.float32([48, 38, 123]) if self.original else NAVY)
+            red = np.float32([229, 37, 46]) if self.original else RED
+            col = base * (1 - h) + red * h
             lab = np.dstack([la[..., None] * col, la]) * smooth(v * 0.9)
             right_side = cx > CENTER[0]
             slide = (1 - smooth(v)) * 18 * (1 if right_side else -1)
