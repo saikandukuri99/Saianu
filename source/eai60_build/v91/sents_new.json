@@ -1,0 +1,205 @@
+[
+ {
+  "line": "L01",
+  "old": 0,
+  "text": "Put AI, in the hands of your business.",
+  "new_a": 0.06,
+  "new_b": 2.702
+ },
+ {
+  "line": "L02",
+  "old": 1,
+  "text": "Your enterprise data isn't usable by AI.",
+  "new_a": 4.16,
+  "new_b": 6.651
+ },
+ {
+  "line": "L02",
+  "old": 2,
+  "text": "Cryptic tables.",
+  "new_a": 6.951,
+  "new_b": 7.924
+ },
+ {
+  "line": "L02",
+  "old": 3,
+  "text": "Disconnected systems.",
+  "new_a": 8.224,
+  "new_b": 9.442
+ },
+ {
+  "line": "L02",
+  "old": null,
+  "text": "No semantic layer.",
+  "new_a": 9.742,
+  "new_b": 10.878
+ },
+ {
+  "line": "L02",
+  "old": 4,
+  "text": "No governance.",
+  "new_a": 11.178,
+  "new_b": 12.072
+ },
+ {
+  "line": "L03",
+  "old": 5,
+  "text": "Solix Enterprise AI, makes your data AI-activated.",
+  "new_a": 12.35,
+  "new_b": 15.652
+ },
+ {
+  "line": "L04",
+  "old": 6,
+  "text": "That unlocks Enterprise AI.",
+  "new_a": 15.81,
+  "new_b": 17.6
+ },
+ {
+  "line": "L04",
+  "old": 7,
+  "text": "Answer from it.",
+  "new_a": 18.0,
+  "new_b": 18.887
+ },
+ {
+  "line": "L04",
+  "old": 8,
+  "text": "Build on it.",
+  "new_a": 19.287,
+  "new_b": 20.101
+ },
+ {
+  "line": "L04",
+  "old": 9,
+  "text": "Activate it.",
+  "new_a": 20.501,
+  "new_b": 21.383
+ },
+ {
+  "line": "L06",
+  "old": 12,
+  "text": "Data Sense maps your ERPs and cloud platforms, their tables and relationships, so AI understands what your data means.",
+  "new_a": 22.6,
+  "new_b": 31.257
+ },
+ {
+  "line": "L07",
+  "old": 13,
+  "text": "The Cross-Application Knowledge Graph connects data across all your business applications, so AI understands the full picture.",
+  "new_a": 31.75,
+  "new_b": 39.538
+ },
+ {
+  "line": "L08",
+  "old": 14,
+  "text": "Data Ask answers in plain language, across structured and unstructured data, with sources cited.",
+  "new_a": 39.98,
+  "new_b": 46.158
+ },
+ {
+  "line": "L08",
+  "old": 15,
+  "text": "If unsure, it asks.",
+  "new_a": 46.591,
+  "new_b": 48.067
+ },
+ {
+  "line": "L08",
+  "old": null,
+  "text": "It never guesses.",
+  "new_a": 48.5,
+  "new_b": 49.671
+ },
+ {
+  "line": "L09",
+  "old": 16,
+  "text": "AI Warehouse is where your people build their own AI applications, on governed, quality-checked, AI-activated data.",
+  "new_a": 50.06,
+  "new_b": 57.405
+ },
+ {
+  "line": "L10",
+  "old": 17,
+  "text": "Agentic lets your domain experts describe an application in plain language.",
+  "new_a": 57.82,
+  "new_b": 63.157
+ },
+ {
+  "line": "L10",
+  "old": 18,
+  "text": "AI agents build, test and run it.",
+  "new_a": 63.557,
+  "new_b": 66.097
+ },
+ {
+  "line": "L11",
+  "old": 19,
+  "text": "Any data platform.",
+  "new_a": 66.51,
+  "new_b": 67.715
+ },
+ {
+  "line": "L11",
+  "old": 20,
+  "text": "Any LLM.",
+  "new_a": 68.165,
+  "new_b": 69.057
+ },
+ {
+  "line": "L11",
+  "old": 21,
+  "text": "Any deployment.",
+  "new_a": 69.507,
+  "new_b": 70.442
+ },
+ {
+  "line": "L11",
+  "old": null,
+  "text": "No migration, and your experts stay in command.",
+  "new_a": 70.892,
+  "new_b": 73.409
+ },
+ {
+  "line": "L12a",
+  "old": 22,
+  "text": "With Solix Enterprise AI, your AI can be trusted.",
+  "new_a": 74.16,
+  "new_b": 78.238
+ },
+ {
+  "line": "L12b",
+  "old": 23,
+  "text": "Every answer cited.",
+  "new_a": 78.62,
+  "new_b": 79.984
+ },
+ {
+  "line": "L12b",
+  "old": 24,
+  "text": "Humans in the loop.",
+  "new_a": 80.584,
+  "new_b": 81.758
+ },
+ {
+  "line": "L12b",
+  "old": 25,
+  "text": "Governed from day one.",
+  "new_a": 82.358,
+  "new_b": 83.669
+ },
+ {
+  "line": "L13",
+  "old": 26,
+  "text": "Solix Enterprise AI.",
+  "new_a": 84.3,
+  "new_b": 86.303
+ },
+ {
+  "line": "L13",
+  "old": 27,
+  "text": "Put AI in the hands of your business.",
+  "new_a": 86.864,
+  "new_b": 89.375
+ }
+]

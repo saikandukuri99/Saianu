@@ -14,22 +14,8 @@
   <path d="M660 394 C 900 394, 960 590, 1150 590" data-draw=29.9 data-dur=.8 /><path d="M660 570 C 900 570, 960 600, 1150 600" data-draw=30.7 data-dur=.8 /><path d="M660 746 C 900 746, 960 610, 1150 610" data-draw=31.5 data-dur=.7 />
  </svg>
  <div class=abs style="left:1060px;top:300px;width:700px;height:700px;background:radial-gradient(circle,rgba(0,136,207,.42),rgba(0,136,207,0) 62%)" data-in=28.6 data-dur=.9 data-fx=scale></div>
- <canvas id=cv width=640 height=640 class=abs style="left:1090px;top:270px" data-in=28.4 data-dur=.9 data-fx=scale></canvas>
+ <div class=abs style="left:1090px;top:270px;width:640px;height:640px" data-in=28.4 data-dur=.9 data-fx=scale><svg viewBox="0 0 640 640" width="100%" height="100%"><defs><radialGradient id="og" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#3db4f5"/><stop offset=".55" stop-color="#0a4a9a"/><stop offset="1" stop-color="#0d2a6e"/></radialGradient></defs><circle cx="320" cy="320" r="292" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="2.5"/><circle cx="320" cy="320" r="248" fill="none" stroke="#0088cf" stroke-opacity=".75" stroke-width="2.5"/><circle cx="320" cy="320" r="208" fill="none" stroke="#ee2424" stroke-opacity=".6" stroke-width="2.5"/><circle cx="320" cy="320" r="165" fill="url(#og)" stroke="#7fd0ff" stroke-width="3"/><circle cx="320" cy="320" r="160" fill="none" stroke="#9fdcff" stroke-opacity=".25" stroke-width="1.5" stroke-dasharray="3 7"/><circle cx="545" cy="217" r="12" fill="#fff"/><circle cx="168" cy="505" r="12" fill="#0088cf"/><circle cx="498" cy="540" r="11" fill="#ee2424"/></svg></div>
  <div class="abs" style="left:1090px;top:270px;width:640px;height:640px;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none" data-in=29.0 data-dur=.6 data-fx=scale><div style="font-size:92px;font-weight:800;letter-spacing:.02em;text-shadow:0 4px 24px rgba(0,20,80,.8)">XKG</div></div>
  <div class="abs c" style="left:1090px;width:640px;top:872px;text-align:center" data-in=28.9><div style="font-size:19px;color:#c5d4f2;font-weight:600">One shared meaning across every system.</div></div>
 </div>
-<script type=module>
-import {stage,THREE} from '../lib/kit3d.js';
-const S=stage(document.getElementById('cv'),{fov:30,z:11.2});
-const g=new THREE.Group();S.scene.add(g);
-const sph=new THREE.Mesh(new THREE.SphereGeometry(1.5,96,96),new THREE.MeshPhysicalMaterial({color:0x0a3f8f,metalness:.2,roughness:.18,clearcoat:.6,clearcoatRoughness:.25,envMapIntensity:.45,emissive:0x0a5ec2,emissiveIntensity:.35}));g.add(sph);
-const wire=new THREE.Mesh(new THREE.IcosahedronGeometry(1.56,2),new THREE.MeshBasicMaterial({color:0x6cc6ff,wireframe:true,transparent:true,opacity:.28}));g.add(wire);
-const rings=[];const nodes=[];
-[[2.05,.35,.2,0x0088cf],[2.45,-.5,.9,0xffffff],[2.85,.9,-.4,0xee2424]].forEach(([r,rx,rz,col],i)=>{
- const pivot=new THREE.Group();pivot.rotation.set(rx,0,rz);g.add(pivot);
- const ring=new THREE.Mesh(new THREE.TorusGeometry(r,.012,12,200),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:.7}));ring.rotation.x=Math.PI/2;pivot.add(ring);
- const n=new THREE.Mesh(new THREE.SphereGeometry(.13,24,24),new THREE.MeshStandardMaterial({color:col,emissive:col,emissiveIntensity:.8}));pivot.add(n);nodes.push([n,r,i]);
-});
-window.SCENE={VS:26.9,VE:32.4,update(t){g.rotation.y=t*.35;g.rotation.x=-.2+Math.sin(t*.6)*.06;nodes.forEach(([n,r,i])=>{const a=t*(.9-i*.2)+i*2;n.position.set(Math.cos(a)*r,0,Math.sin(a)*r)});S.render();}};
-window.ready=true;
-</script></body></html>
+<script>window.SCENE={VS:26.9,VE:32.4};window.ready=true;</script></body></html>
