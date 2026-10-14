@@ -39,8 +39,12 @@ HIGHLIGHT = {"warehouse": (23.45, 24.75), "federated": (24.85, 26.20),
              "imaging": (28.90, 30.00), "models": (30.05, 32.90)}
 LOGO_IN = (19.95, 20.55)
 
+OUT_K = 1
 SCALE = 0.948
 FRAME_CENTER = (960.0, 590.0)
+KEEP_ART_COLOURS = True
+ART_NAVY = np.array([0, 0, 114], np.float32)
+
 
 
 def _unmix_white(img):
@@ -103,7 +107,7 @@ class Pillars:
             fillc = np.array([234, 246, 255], np.float32)
             src = np.array([21, 70, 160], np.float32)
             k = np.clip(((fillc - ic) * (fillc - src)).sum(axis=2) / ((fillc - src) ** 2).sum(), 0, 1)
-            ic = fillc * (1 - k[..., None]) + BLUE * k[..., None]
+            ic = fillc * (1 - k[..., None]) + (src if KEEP_ART_COLOURS else BLUE) * k[..., None]
             self.icon[n] = (ic, inner[cy - R_FILL:cy + R_FILL, cx - R_FILL:cx + R_FILL].copy())
             crop = art[y0:y1, x0:x1]
             a = np.clip((255.0 - crop[..., 0]) / (255.0 - 21.0), 0, 1)
@@ -130,7 +134,7 @@ class Pillars:
         dst[..., 3:4] = a + dst[..., 3:4] * (1 - a)
 
     def _warp(self, pm, M, size):
-        return cv2.warpAffine(pm, M, size, flags=cv2.INTER_LINEAR, borderValue=(0, 0, 0, 0))
+        return cv2.warpAffine(pm, M, size, flags=cv2.INTER_CUBIC, borderValue=(0, 0, 0, 0))
 
     def render(self, t, size=(1920, 1080)):
         """Premultiplied RGBA float frame of the diagram at time t."""
@@ -151,7 +155,7 @@ class Pillars:
             fade = smooth(v)
             content = PLACE[slot]
             (cx, cy), _ = SLOTS[slot]
-            h = hl[slot]
+            h = hl[content]
             if h > 0:
                 g = np.zeros((self.h, self.w, 4), np.float32)
                 disk = cv2.GaussianBlur(_disk(self.h, self.w, cx, cy, R_OUT * 1.15), (0, 0), 14)
@@ -171,7 +175,7 @@ class Pillars:
             # label: left/right anchored like the artwork, vertically centred on the circle
             la = self.label[content]
             ox, _ = self.label_off[slot]
-            base = np.float32([255, 255, 255]) if self.dark else NAVY
+            base = np.float32([255, 255, 255]) if self.dark else (ART_NAVY if KEEP_ART_COLOURS else NAVY)
             col = base * (1 - h) + RED * h
             lab = np.dstack([la[..., None] * col, la]) * smooth(v * 0.9)
             right_side = cx > CENTER[0]
