@@ -2,7 +2,18 @@
 
 **Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
 
-- **v6 (current), colour theme only:** a dark navy-blue background with light network lines (drifting connected nodes) and a soft brand-blue glow behind each 3D subject, replacing the red/indigo field. Red is kept as an accent only: the Solix logo, the Risk alert, the PAID stamp and the switch-off. Everything else is identical to v5: animation, screens, text, captions, VO, music and timing.
+- **v7 (current):** the 3D particle layer is removed from the whole film, along with the soft background light spots, so nothing is blurry. The background is dark Solix blue with the AI network lines at low opacity. In place of every particle shape there are crisp, After Effects-style vector animations (`mg_ar.py`), drawn supersampled with stroke draw-ons, ring wipes, overshoot pop-ins, dashed rotating rings and flowing data dots:
+  - an icon badge for each trigger (Cost $, Risk shield, M&A merge, Old archive drawers, AI chip), plus a 5-step tracker under the word
+  - the five triggers converging into a Solix Engine hub with a shockwave ring
+  - six source nodes (ERP, Mainframe, Custom apps, SaaS, Files, Email) wiring into the hub with data flowing
+  - a Preservation Zone vault (lock plus data rows filling) with packets dropping in from the source window, which moves aside and stays lit at the switch-off
+  - a light stage line under the Access documents
+  - a crisp knowledge graph for Data Ask (Supplier, Invoice and Payment light up, with pulses along the links)
+  - an AI-readiness ring whose missing segments fill with governed history
+  - dashed orbit rings around the end-card logo
+
+  The screens, cards, text, voice-over, music and timing are unchanged.
+- **v6, colour theme only:** a dark navy-blue background with light network lines (drifting connected nodes) and a soft brand-blue glow behind each 3D subject, replacing the red/indigo field. Red is kept as an accent only: the Solix logo, the Risk alert, the PAID stamp and the switch-off. Everything else is identical to v5: animation, screens, text, captions, VO, music and timing.
 - **v5 changes:** the Migrate & Validate and switch-off beats now follow the script's "Real" direction with realistic 3D screens:
   - **Migrate & Validate:** the legacy Finance ERP window (the source) hovers above the governed Preservation Zone vault while data streams down into it. A Validation Report counts the archive rows up to match the source (✓ on each row, then "Validation passed"). A Governance Policy screen follows, with 10-year retention, 4 of 4 quality checks and the legal-hold switch flipping on.
   - **Switch-off:** the ERP window moves to the front and powers off like an old monitor, collapsing into a line of light. The Licenses, Servers and Unpatched risk tags fall away. An Application Inventory screen then flips Finance ERP R11 from Active to Retired, with its data preserved, while the vault stays lit.
