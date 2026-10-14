@@ -15,15 +15,26 @@ Place the pieces back to back (exact frames, no gaps, lossless).
 | # | Clip | Starts at (mm:ss:ff) | Length | File(s) |
 |---|---|---|---|---|
 | 01 | Intro EAI Healthcare Platform | 00:00:00 | 3.57 s (107 fr) | `01_Intro_EAI_Healthcare_Platform.mov` |
-| 02 | Fragmented Data to Outcomes | 00:03:17 | 7.00 s (210 fr) | `02_Fragmented_Data_to_Outcomes_piece1.mov`<br>`02_Fragmented_Data_to_Outcomes_piece2.mov` |
+| 02 | Fragmented Data to Outcomes | 00:03:17 | 7.00 s (210 fr) | `02_Fragmented_Data_to_Outcomes.mov` |
 | 03 | AI Ready Unified Governance | 00:10:17 | 9.00 s (270 fr) | `03_AI_Ready_Unified_Governance_piece1.mov`<br>`03_AI_Ready_Unified_Governance_piece2.mov` |
 | 04 | Six Pillars | 00:19:17 | 14.77 s (443 fr) | `04_Six_Pillars.mov` |
 | 05 | AI Patient 360 Title | 00:34:10 | 2.50 s (75 fr) | `05_AI_Patient_360_Title.mov` |
-| 06 | Multi Agentic Every Specialty | 00:36:25 | 14.23 s (427 fr) | `06_Multi_Agentic_Every_Specialty_piece1.mov`<br>`06_Multi_Agentic_Every_Specialty_piece2.mov`<br>`06_Multi_Agentic_Every_Specialty_piece3.mov` |
+| 06 | Multi Agentic Every Specialty | 00:36:25 | 14.23 s (427 fr) | `06_Multi_Agentic_Every_Specialty_piece1.mov`<br>`06_Multi_Agentic_Every_Specialty_piece2.mov` |
 | 07 | Findings with Evidence | 00:51:02 | 8.63 s (259 fr) | `07_Findings_with_Evidence_piece1.mov`<br>`07_Findings_with_Evidence_piece2.mov` |
-| 08 | Clinician Validation | 00:59:21 | 8.00 s (240 fr) | `08_Clinician_Validation_piece1.mov`<br>`08_Clinician_Validation_piece2.mov` |
-| 09 | Built for Global Healthcare | 01:07:21 | 6.90 s (207 fr) | `09_Built_for_Global_Healthcare_piece1.mov`<br>`09_Built_for_Global_Healthcare_piece2.mov`<br>`09_Built_for_Global_Healthcare_piece3.mov` |
+| 08 | Clinician Validation | 00:59:21 | 8.00 s (240 fr) | `08_Clinician_Validation.mov` |
+| 09 | Built for Global Healthcare | 01:07:21 | 6.90 s (207 fr) | `09_Built_for_Global_Healthcare_piece1.mov`<br>`09_Built_for_Global_Healthcare_piece2.mov` |
 | 10 | End EAI Healthcare Platform | 01:14:18 | 4.20 s (126 fr) | `10_End_EAI_Healthcare_Platform.mov` |
+
+## Version 2 – clean alpha + Solix colour theme
+* Re-pulled from scratch: text, icons, lines and circles are separated against
+  their exact flat colours, so edges are crisp and anti-aliased with **no pink
+  fringe, no pink/white haze and no torn shadows**. Soft drop shadows and glows
+  from the old pink background are removed; cards and badges are solid.
+* Solix colour theme on the flat graphics (content and layout unchanged):
+  dark titles/labels **#30267b**, red highlights **#ee2424**, six-pillar icons
+  **#0088cf** (labels #30267b, active pillar #ee2424).
+* Screenshots and 3D renders keep their own colours; the globe image gets a
+  soft oval edge.
 
 ## Changes in this version (visuals otherwise untouched)
 * **Unified Governance:** the Revenue Cycle Intelligence icon is now a

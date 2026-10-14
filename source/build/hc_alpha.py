@@ -19,7 +19,12 @@ import cv2
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from hc_matte import background_plate, degrid, matte_frame  # noqa: E402
+from hc_matte import background_plate, degrid  # noqa: E402
+from hc_clean import full_matte  # noqa: E402
+
+# per-scene: photo/3D render box kept as an image; soft oval for the globe
+PROTECT = {2: (735, 330, 1185, 900)}
+ELLIPSE = {8: (1410, 555, 510, 345, 90)}
 
 W, H, FPS = 1920, 1080, 30
 ORANGE = np.array([249, 113, 20], np.float32)
@@ -168,11 +173,11 @@ def process(job):
     elif o < 0.999:
         b0 = background_plate(c)
         cu = b0 + (c - b0) / o
-        rgb, a, _ = matte_frame(np.clip(cu, 0, 255), fill, outl)
+        rgb, a, _ = full_matte(np.clip(cu, 0, 255), fill, outl, PROTECT.get(scene), ELLIPSE.get(scene))
         a = a * o
         b = b0
     else:
-        rgb, a, b = matte_frame(c, fill, outl)
+        rgb, a, b = full_matte(c, fill, outl, PROTECT.get(scene), ELLIPSE.get(scene))
     if scene == 3:
         y0, y1 = PILLAR_ZONE
         a[y0:y1] = 0

@@ -172,6 +172,19 @@ def pull_matte(c, b, fill_holes=False, min_hole=20000, force=None, outlines=Fals
                 continue
             cv2.drawContours(fill, [cnt], -1, 1, -1)
         fill = cv2.erode(fill, np.ones((3, 3), np.uint8))
+        # the pink glow around a card is not the card: trim it, keep the card body
+        if fill.any():
+            r_, g_, b_ = c[..., 0], c[..., 1], c[..., 2]
+            glow = (r_ > 200) & (g_ > 100) & (g_ < 225) & (np.abs(g_ - b_) < 14) & (r_ - g_ > 20)
+            body = cv2.morphologyEx((fill.astype(bool) & ~glow).astype(np.uint8), cv2.MORPH_OPEN, np.ones((7, 7), np.uint8))
+            nb_, lb_, sb_, _ = cv2.connectedComponentsWithStats(body, connectivity=4)
+            trimmed = np.zeros_like(fill)
+            for j in range(1, nb_):
+                if sb_[j, 4] > 40000:
+                    comp = (lb_ == j).astype(np.uint8)
+                    cn_, _ = cv2.findContours(comp, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                    cv2.drawContours(trimmed, cn_, -1, 1, -1)
+            fill = trimmed
         a = np.maximum(a, fill.astype(np.float32))
     else:
         fill = None
@@ -182,7 +195,7 @@ def pull_matte(c, b, fill_holes=False, min_hole=20000, force=None, outlines=Fals
     return np.clip(rgb, 0, 255), a, fill
 
 
-def matte_frame(c, fill_holes=False, outlines=False):
+def matte_frame(c, fill_holes=False, outlines=False, return_fill=False):
     """Two passes: the second rebuilds the plate without anything the first
     pass found to be graphics (cards, icons, text and their shadows)."""
     b = background_plate(c)
@@ -192,4 +205,6 @@ def matte_frame(c, fill_holes=False, outlines=False):
         ex |= cv2.dilate(fill, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (41, 41)))
     b = background_plate(c, ex)
     rgb, a, _ = pull_matte(c, b, False, force=fill, outlines=outlines)
+    if return_fill:
+        return rgb, a, b, fill
     return rgb, a, b

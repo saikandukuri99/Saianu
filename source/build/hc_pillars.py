@@ -10,8 +10,9 @@ narration names it.
 import cv2
 import numpy as np
 
-NAVY = np.array([21, 70, 160], np.float32)
-RED = np.array([229, 37, 46], np.float32)
+NAVY = np.array([0x30, 0x26, 0x7b], np.float32)   # Solix navy  #30267b
+RED = np.array([0xee, 0x24, 0x24], np.float32)    # Solix red   #ee2424
+BLUE = np.array([0x00, 0x88, 0xcf], np.float32)   # Solix blue  #0088cf
 
 CENTER = (770, 455)          # centre logo in the source artwork
 R_LOGO, R_HUB = 110, 172     # red disk, disk incl. ring + dots
@@ -96,10 +97,15 @@ class Pillars:
             own = (near == i).astype(np.float32)
             inner = _disk(h, w, cx, cy, R_FILL - 1, 1.5)
             self.shell[n] = rest * (own * (1 - inner))[..., None]          # rim, glow, line
-            self.icon[n] = (art[cy - R_FILL:cy + R_FILL, cx - R_FILL:cx + R_FILL].copy(),
-                            inner[cy - R_FILL:cy + R_FILL, cx - R_FILL:cx + R_FILL].copy())
+            ic = art[cy - R_FILL:cy + R_FILL, cx - R_FILL:cx + R_FILL].copy()
+            # icon glyphs (dark blue on light blue) -> Solix blue, keeping anti-aliasing
+            fillc = np.array([234, 246, 255], np.float32)
+            src = np.array([21, 70, 160], np.float32)
+            k = np.clip(((fillc - ic) * (fillc - src)).sum(axis=2) / ((fillc - src) ** 2).sum(), 0, 1)
+            ic = fillc * (1 - k[..., None]) + BLUE * k[..., None]
+            self.icon[n] = (ic, inner[cy - R_FILL:cy + R_FILL, cx - R_FILL:cx + R_FILL].copy())
             crop = art[y0:y1, x0:x1]
-            a = np.clip((255.0 - crop[..., 0]) / (255.0 - NAVY[0]), 0, 1)
+            a = np.clip((255.0 - crop[..., 0]) / (255.0 - 21.0), 0, 1)
             a[(crop.min(axis=2) > 200)] = 0
             ys, xs = np.nonzero(a > 0.05)
             self.label[n] = a[ys.min():ys.max() + 1, xs.min():xs.max() + 1]
