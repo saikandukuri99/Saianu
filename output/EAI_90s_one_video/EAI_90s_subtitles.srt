@@ -1,0 +1,116 @@
+1
+00:00:00,060 --> 00:00:02,703
+Put AI, in the hands of your business.
+
+2
+00:00:04,160 --> 00:00:06,651
+Your enterprise data isn't usable by AI.
+
+3
+00:00:06,951 --> 00:00:07,931
+Cryptic tables.
+
+4
+00:00:08,231 --> 00:00:09,450
+Disconnected systems.
+
+5
+00:00:09,750 --> 00:00:10,886
+No semantic layer.
+
+6
+00:00:11,186 --> 00:00:12,080
+No governance.
+
+7
+00:00:12,350 --> 00:00:15,652
+Solix Enterprise AI, makes your data AI-activated.
+
+8
+00:00:15,810 --> 00:00:17,597
+That unlocks Enterprise AI.
+
+9
+00:00:17,997 --> 00:00:18,885
+Answer from it.
+
+10
+00:00:19,285 --> 00:00:20,097
+Build on it.
+
+11
+00:00:20,497 --> 00:00:21,380
+Activate it.
+
+12
+00:00:21,900 --> 00:00:30,730
+Data Sense maps your ERPs and cloud platforms, their tables and relationships, so AI understands what your data means.
+
+13
+00:00:31,150 --> 00:00:39,034
+The Cross-Application Knowledge Graph connects data across all your business applications, so AI understands the full picture.
+
+14
+00:00:39,460 --> 00:00:45,692
+Data Ask answers in plain language, across structured and unstructured data, with sources cited.
+
+15
+00:00:46,092 --> 00:00:47,614
+If unsure, it asks.
+
+16
+00:00:48,014 --> 00:00:49,227
+It never guesses.
+
+17
+00:00:49,650 --> 00:00:57,095
+AI Warehouse is where your people build their own AI applications, on governed, quality-checked, AI-activated data.
+
+18
+00:00:57,490 --> 00:01:02,828
+Agentic lets your domain experts describe an application in plain language.
+
+19
+00:01:03,337 --> 00:01:05,878
+AI agents build, test and run it.
+
+20
+00:01:06,270 --> 00:01:07,480
+Any data platform.
+
+21
+00:01:07,930 --> 00:01:08,859
+Any LLM.
+
+22
+00:01:09,309 --> 00:01:10,276
+Any deployment.
+
+23
+00:01:10,726 --> 00:01:13,266
+No migration, and your experts stay in command.
+
+24
+00:01:14,000 --> 00:01:18,076
+With Solix Enterprise AI, your AI can be trusted.
+
+25
+00:01:18,510 --> 00:01:19,873
+Every answer cited.
+
+26
+00:01:20,473 --> 00:01:21,669
+Humans in the loop.
+
+27
+00:01:22,269 --> 00:01:23,588
+Governed from day one.
+
+28
+00:01:24,250 --> 00:01:26,290
+Solix Enterprise AI.
+
+29
+00:01:26,790 --> 00:01:29,351
+Put AI in the hands of your business.
+

@@ -26,7 +26,7 @@ function _map(){const m=typeof TM_OLD!=='undefined'&&SCENE.VS!==undefined&&!SCEN
 window.render=function(tl){
  const M=_map();const t=M?_ip(tl+M.f0/30,TM_NEW,TM_OLD):tl+(SCENE.VS||0);
  const st=document.getElementById('stage');
- if(st)st.style.opacity=SCENE.VE>=100?1:1-P(t,SCENE.VE-.3,.3,E.io);
+ if(st)st.style.opacity=SCENE.VE>=100?1:(M?1-P(tl+M.f0/30,M.f1/30-.3,.3,E.io):1-P(t,SCENE.VE-.3,.3,E.io));
  auto(t);
  SCENE.update&&SCENE.update(t,tl);
  return true;
