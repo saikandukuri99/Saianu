@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from scipy.ndimage import gaussian_filter, zoom
 import docs_ar as DOC
 import screens_ar as SCR
+import mg_ar as MG
 
 B = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(B, "..", "assets")
@@ -398,14 +399,14 @@ def background(t):
     base = NAVY_DK + (NAVY - NAVY_DK)*np.clip(1 - np.sqrt(((XX-1000)/1500)**2 + ((YY-560)/950)**2), 0, 1)[..., None]
     d = np.sqrt(((XX - gx)/1000)**2 + ((YY - gy)/780)**2)
     a = (np.clip(1 - d, 0, 1)**1.5)*gs
-    img = base + (GLOW_C - base)*np.clip(a*1.1, 0, 1)[..., None]*.75
+    img = base + (GLOW_C - base)*np.clip(a*1.1, 0, 1)[..., None]*.35
     # cool light leak, bottom-left, drifting
     b = np.exp(-(((XX - (260 + 160*math.sin(t*.07)))/620)**2 + ((YY - 1000)/360)**2))
     img = img + (BLUE*.8 - img)*(.22*b)[..., None]
     b2 = np.exp(-(((XX - 1900)/700)**2 + ((YY + 60)/420)**2))
     img = img + (INDIGO*1.2 - img)*(.3*b2)[..., None]
     img = zoom(img, (4, 4, 1), order=1)
-    return img + (NET_C - img)*network(t)*.55
+    return img + (NET_C - img)*network(t)*.32
 
 GRAIN = [(np.random.default_rng(i).standard_normal((H, W, 1)).astype(np.float32)*.011) for i in range(6)]
 BOKEH = np.random.default_rng(5).random((48, 6))
@@ -457,12 +458,8 @@ def glow_layer(t, flash=0.0):
     return zoom(tot, (2, 2, 1), order=1)
 
 def compose_bg(t, flash=0.0):
-    bg = background(t)
-    g = glow_layer(t, flash)
-    lit = 1 - np.exp(-g*.9)
-    out = bg + (1 - bg)*lit
-    hot = np.clip((g.max(-1, keepdims=True) - 1.6)/3.5, 0, 1)   # very dense cores burn to white
-    return out + (1 - out)*hot*.7
+    """Dark Solix-blue field with the AI network at low opacity (the 3D particle layer is retired)."""
+    return background(t)
 
 VIG = None
 def vignette():
@@ -761,12 +758,14 @@ def process_screens(fr, t):
 
 # ---------------------------------------------------------------- overlays per scene
 LX = 150
+R_ = sys.modules[__name__]
 def overlays(fr, t):
     sid = scene_at(t)
     E = lambda s: SC_END[s] - .45
     T0 = LN["hook"]["start"]
     put_rgba(fr, LOGO_SM, W - 90 - LOGO_SM.shape[1], 56, (1 - fl(ease((t - SC["sign"] + .2)/.6)))*fl(ease((t - T0 - .3)/.5)))
 
+    MG.title_rings(fr, t, R_)
     # 0. Main title: the original Solix logo and an extruded 3D "Application Retirement"
     if t < T0 + 1.0:
         p = fl(eout((t - .3)/.9)); q = fl(ease((t - (T0 - .15))/.6))
@@ -783,6 +782,7 @@ def overlays(fr, t):
     kinetic(fr, t, "Applications you've moved on from.", LX, 860, 84, T0 + .5, E("hook"), maxw=1600)
 
     # 2. Five triggers: one extruded 3D word each
+    MG.triggers(fr, t, R_)
     for tid, word in (("t1", "Cost"), ("t2", "Risk"), ("t3", "M&A"), ("t4", "Old archive"), ("t5", "AI")):
         a0 = LN[tid]["start"] - .1; a1 = SC_END[tid] - .25
         if a0 - .1 <= t <= a1 + .6:
@@ -795,6 +795,7 @@ def overlays(fr, t):
     trigger_cards(fr, t)
 
     # 3. Converge
+    MG.converge(fr, t, R_)
     kinetic(fr, t, "Many reasons.", W/2, 190, 88, LN["one"]["start"], LN["connect"]["start"] + .1, align="center", maxw=1600)
     kinetic(fr, t, "One engine.", W/2, 292, 88, word_time("one", "One engine"), LN["connect"]["start"] + .1, align="center",
             maxw=1600, hl=("One", "engine"))
@@ -816,15 +817,10 @@ def overlays(fr, t):
                 put(fr, "›", "Inter-SemiBold.otf", 24, x, 100, ga*.4); x += 36
 
     # 4. Connect
+    MG.connect(fr, t, R_)
     s = "connect"
     kinetic(fr, t, "Every source.", LX, 300, 88, SC[s] + 1.2, E(s), maxw=800, hl=("Every", "source"))
     kinetic(fr, t, "One engine.", LX, 396, 88, SC[s] + 1.6, E(s), maxw=800)
-    if SC[s] - .2 <= t <= SC_END[s] + .6:
-        sx, sy, zc = project(SRC_A, t)
-        for k, (lab, wd) in enumerate(zip(SRC, SRC_W)):
-            sz = int(np.clip(30 + (cam_dist(t) - zc[k])*8, 24, 42))
-            fade_text(fr, t, lab, sx[k], sy[k] - 38, sz, word_time(s, wd), E(s), fname="InterDisplay-SemiBold.otf", anchor="ms",
-                      alpha=fl(clamp(1.35 - (zc[k]-cam_dist(t))*.35, .45, 1)))
 
     # 5. Migrate & Validate
     s = "migrate"
@@ -835,6 +831,7 @@ def overlays(fr, t):
         fade_text(fr, t, "✓", LX, 570 + k*64, 40, ti, E(s), fname="InterDisplay-Bold.otf", rgb=BLUE*1.2)
         fade_text(fr, t, c, LX + 56, 570 + k*64, 40, ti + .08, E(s), fname="InterDisplay-Medium.otf")
 
+    MG.migrate(fr, t, R_)
     process_screens(fr, t)
 
     # 6. Switch off
@@ -847,12 +844,13 @@ def overlays(fr, t):
         x = (900, 1300, 1560)[k]; y = (370, 370, 700)[k] + 240*fall**2
         a = fl(eout((t - ti)/.35))*(1 - fl(ease((t - ti - .9)/1.0)))
         put(fr, lab, "InterDisplay-SemiBold.otf", 42, x, y, a, blur=fl(clamp(fall*8, 0, 10)), anchor="ms")
-    fade_text(fr, t, "PRESERVATION ZONE  ·  STILL ON", 1560, 860, 26, word_time(s, "gone for good") - .2, E(s),
+    fade_text(fr, t, "PRESERVATION ZONE  ·  STILL ON", 1600, 820, 26, word_time(s, "gone for good") - .2, E(s),
               fname="Inter-SemiBold.otf", anchor="ms", track=4, rgb=BLUE*1.2)
 
     # 7. Access: Solix Search, then the purchase-to-pay record in 3D, then a standard report
     s = "access"
     if SC[s] - .2 <= t <= SC_END[s] + .6:
+        MG.platform(fr, t, R_)
         access_docs(fr, t)
     ta, tu = word_time(s, "Auditors"), LN["access2"]["start"]
     fade_text(fr, t, "Nothing it held is lost.", LX, 250, 56, SC[s] + .3, ta - .3, fname="InterDisplay-SemiBold.otf")
@@ -860,6 +858,7 @@ def overlays(fr, t):
     kinetic(fr, t, "Familiar reports.", LX, 302, 64, tu - .1, E(s), maxw=900, hl=("Familiar",))
 
     # 8. Data Ask
+    MG.graph(fr, t, R_)
     s = "ask"
     kinetic(fr, t, "Ask in plain English.", LX, 300, 80, SC[s] + .3, E(s), maxw=860)
     kinetic(fr, t, "Get cited answers.", LX, 392, 80, word_time(s, "cited"), E(s), maxw=860, hl=("cited", "answers"))
@@ -876,13 +875,11 @@ def overlays(fr, t):
     fade_text(fr, t, "Sources  [1]  [2]  [3]", LX + measure("3 suppliers", "Inter-SemiBold.otf", 34) + 30, 624, 34, ta + .25, E(s),
               fname="Inter-SemiBold.otf", rgb=BLUE*1.2)
     if SC[s] - .2 <= t <= SC_END[s] + .6:
-        sx, sy, zc = project(KG_A, t)
-        t0 = word_time(s, "cited") - 1.6 + .2
-        for k, lab in enumerate(KG):
-            fade_text(fr, t, lab, sx[k], sy[k] - 54, 36, t0 + k*.6, E(s), fname="InterDisplay-SemiBold.otf", anchor="ms")
-        fade_text(fr, t, "APPLICATION KNOWLEDGE GRAPH", 1330, 215, 24, t0, E(s), fname="Inter-SemiBold.otf", anchor="ms", track=5, rgb=BLUE*1.2)
+        t0 = word_time(s, "cited") - 1.4
+        fade_text(fr, t, "APPLICATION KNOWLEDGE GRAPH", 1330, 185, 24, t0, E(s), fname="Inter-SemiBold.otf", anchor="ms", track=5, rgb=BLUE*1.2)
 
     # 9. Enable AI
+    MG.enable_ai(fr, t, R_)
     s = "ai"
     if SC[s] - .1 <= t <= SC_END[s] + .6:
         p = fl(eout((t - SC[s] - .35)/.6)); q = fl(ease((t - E(s))/.5))
@@ -890,6 +887,7 @@ def overlays(fr, t):
     fade_text(fr, t, "Governed history, ready for your AI.", LX + 4, 570, 40, SC[s] + .9, E(s), fname="InterDisplay-Medium.otf")
 
     # 10. Sign-off
+    MG.signoff(fr, t, R_)
     s = "sign"
     if t >= SC[s] - .1:
         p = fl(eout((t - SC[s] - .3)/1.2))
@@ -919,9 +917,7 @@ def captions(fr, t):
             put(fr, " ".join(ln), "Inter-Medium.otf", 32, W/2, y + i*42, a, anchor="ms")
 
 def frame(t):
-    to = word_time("one", "One engine")
-    flash = 2.5*math.exp(-(t - to)*2.2) if t > to else 0.0
-    fr = compose_bg(t, flash).astype(np.float32)
+    fr = compose_bg(t).astype(np.float32)
     fr *= vignette()
     overlays(fr, t)
     captions(fr, t)
