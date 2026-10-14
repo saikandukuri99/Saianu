@@ -24,6 +24,8 @@ from hc_clean import full_matte  # noqa: E402
 
 # per-scene: photo/3D render box kept as an image; soft oval for the globe
 PROTECT = {2: (735, 330, 1185, 900)}
+DARK = os.environ.get("HC_DARK") == "1"          # full video on the Solix dark-blue background
+DARK_BG = np.array([0x30, 0x26, 0x7b], np.float32)
 ELLIPSE = {8: (1410, 555, 510, 345, 90)}
 
 W, H, FPS = 1920, 1080, 30
@@ -122,7 +124,7 @@ def swap_rupee(c):
     roi = c[y0:y1, x0:x1]
     r, g, b = roi[..., 0], roi[..., 1], roi[..., 2]
     orange = (r - b > 120) & (g > 60) & (g < 175) & (r > 150)
-    if orange.sum() < 400:
+    if orange.sum() < 200:
         return c
     ys, xs = np.nonzero(orange)
     cy, cx = (ys.min() + ys.max()) / 2, (xs.min() + xs.max()) / 2
@@ -155,14 +157,14 @@ _P = None
 def _init():
     global _P
     from hc_pillars import Pillars
-    _P = Pillars(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets_hc", "six_pillars.png"))
+    _P = Pillars(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets_hc", "six_pillars.png"), dark=DARK)
 
 
 def process(job):
     """Returns (straight RGBA uint8, preview RGB uint8 over the original background)."""
     fr, scene, t, o, diag_o = job
     c = degrid(fr.astype(np.float32))
-    if scene == 2:
+    if scene == 2 and o >= 0.999:
         c = swap_rupee(c)
     fill = SCENES[scene][3]
     outl = scene == 8  # badges in "Built for global healthcare"
@@ -172,12 +174,14 @@ def process(job):
         b = background_plate(c)
     elif o < 0.999:
         b0 = background_plate(c)
-        cu = b0 + (c - b0) / o
-        rgb, a, _ = full_matte(np.clip(cu, 0, 255), fill, outl, PROTECT.get(scene), ELLIPSE.get(scene))
+        cu = np.clip(b0 + (c - b0) / o, 0, 255)
+        if scene == 2:
+            cu = swap_rupee(cu)  # also while the scene fades (no rupee flash at the end)
+        rgb, a, _ = full_matte(cu, fill, outl, PROTECT.get(scene), ELLIPSE.get(scene), dark=DARK)
         a = a * o
         b = b0
     else:
-        rgb, a, b = full_matte(c, fill, outl, PROTECT.get(scene), ELLIPSE.get(scene))
+        rgb, a, b = full_matte(c, fill, outl, PROTECT.get(scene), ELLIPSE.get(scene), dark=DARK)
     if scene == 3:
         y0, y1 = PILLAR_ZONE
         a[y0:y1] = 0
@@ -190,7 +194,8 @@ def process(job):
     rgb8 = np.clip(rgb, 0, 255).astype(np.uint8)
     rgb8[a8 == 0] = 0
     rgba = np.dstack([rgb8, a8])
-    prev = (rgb * a[..., None] + b * (1 - a[..., None])).clip(0, 255).astype(np.uint8)
+    under = DARK_BG if DARK else b
+    prev = (rgb * a[..., None] + under * (1 - a[..., None])).clip(0, 255).astype(np.uint8)
     return rgba, prev
 
 
@@ -202,7 +207,7 @@ def run_scene(video, out, work, i, ana, pool):
     mov = f"{out}/alpha/{name}.mov"
     os.makedirs(f"{out}/alpha", exist_ok=True)
     os.makedirs(f"{work}/preview", exist_ok=True)
-    enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}",
+    enc = None if DARK else subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-c:v", "qtrle", "-pix_fmt", "argb", mov], stdin=subprocess.PIPE)
     pre = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-crf", "16", "-pix_fmt", "yuv420p",
@@ -222,9 +227,12 @@ def run_scene(video, out, work, i, ana, pool):
             yield (fr, i, t, o, d)
 
     for rgba, prev in pool.imap(process, jobs(), chunksize=2):
-        enc.stdin.write(rgba.tobytes())
+        if enc:
+            enc.stdin.write(rgba.tobytes())
         pre.stdin.write(prev.tobytes())
-    enc.stdin.close(); pre.stdin.close(); enc.wait(); pre.wait()
+    if enc:
+        enc.stdin.close(); enc.wait()
+    pre.stdin.close(); pre.wait()
     print(f"{name}: frames {s}-{e - 1} ({(e - s) / FPS:.3f}s)", flush=True)
 
 

@@ -171,7 +171,7 @@ DARKS = np.array([[21, 22, 29], [1, 1, 1], [29, 40, 67]], np.float32)
 REDS = np.array([[243, 37, 43], [237, 33, 33], [205, 27, 33], [231, 35, 42]], np.float32)
 
 
-def full_matte(c, cards=False, outlines=False, protect_box=None, ellipse=None):
+def full_matte(c, cards=False, outlines=False, protect_box=None, ellipse=None, dark=False):
     """v2 pull: v1 matte for photos/cards, palette unmix for flat graphics,
     weak haze dropped, Solix colour theme on flat graphics.
     Returns straight rgb, alpha, background plate."""
@@ -229,7 +229,7 @@ def full_matte(c, cards=False, outlines=False, protect_box=None, ellipse=None):
         px, py, pw, ph = ss[pid, :4]
         if pw > 1.6 * ph or ph > 1.6 * pw:
             continue  # disc-like parents only (title words are wide)
-        if ss[pid, 4] < 0.6 * pw * ph or area > 0.2 * pw * ph:
+        if ss[pid, 4] < 0.68 * pw * ph or area > 0.2 * pw * ph or pw < 50 or ph < 50:
             continue  # a ring (letter O) with a big opening, not a solid disc with a glyph
         ra = float(np.median(a[y0:y1, x0:x1][ring]))
         if ra < 0.45:
@@ -295,6 +295,53 @@ def full_matte(c, cards=False, outlines=False, protect_box=None, ellipse=None):
     flat = (a > 0) & ~protect
     dd = np.min(np.linalg.norm(rgb[..., None, :] - DARKS[None, None], axis=3), axis=2)
     rd = np.min(np.linalg.norm(rgb[..., None, :] - REDS[None, None], axis=3), axis=2)
-    rgb = np.where((flat & (dd < 30))[..., None], THEME_NAVY, rgb)
-    rgb = np.where((flat & (rd < 30))[..., None], THEME_RED, rgb)
+    rd_m = flat & (rd < 30)
+    if not dark:
+        rgb = np.where((flat & (dd < 30))[..., None], THEME_NAVY, rgb)
+    else:
+        # dark Solix background: dark text becomes white, grey text light grey,
+        # dark filled discs become Solix blue; text sitting on white (badges) stays dark
+        lum = rgb.mean(axis=2)
+        chroma = rgb.max(axis=2) - rgb.min(axis=2)
+        on_white = cv2.GaussianBlur(((a > 0.9) & (lum > 215)).astype(np.float32), (0, 0), 5) > 0.25
+        # dark or grey ink (incl. anti-aliased edges), not red, not on a white badge/card
+        ink = flat & ~on_white & ~rd_m & (lum < 185) & (chroma < 75) & ~((rgb[..., 0] > 150) & (rgb[..., 0] - rgb[..., 2] > 60))
+        dist = cv2.distanceTransform((ink & (a > 0.5)).astype(np.uint8), cv2.DIST_L2, 3)
+        n, lab, st, _ = cv2.connectedComponentsWithStats((ink & (a > 0.2)).astype(np.uint8), connectivity=8)
+        thick = np.zeros(n, np.float32)
+        np.maximum.at(thick, lab.ravel(), dist.ravel())
+        roundish = np.zeros(n, bool)
+        for j in np.nonzero(thick > 11)[0]:
+            x_, y_, w_, h_, ar_ = st[j]
+            roundish[j] = 0.75 < w_ / max(h_, 1) < 1.33 and ar_ > 0.62 * w_ * h_
+        shape = (thick > 11)[lab] & ink                      # filled shapes (not text)
+        disc_ink = roundish[lab] & ink                       # dark round icon discs
+        text = ink & ~shape
+        darkish = (lum < 110)
+        rgb = np.where((disc_ink & darkish & (dd < 40))[..., None], THEME_BLUE, rgb)
+        rgb = np.where((shape & ~disc_ink & darkish)[..., None], np.float32([255, 255, 255]), rgb)
+        # text: pure white (or light grey) ink, coverage from how much darker than
+        # the background the original pixel is -> smooth anti-aliased edges
+        lc = c.mean(axis=2)
+        lb = b.mean(axis=2)
+        # around solid discs (icon circles, logo) nothing is text; their faint shadow goes
+        solid8 = (a > 0.8).astype(np.uint8)
+        dsol = cv2.distanceTransform(solid8, cv2.DIST_L2, 3)
+        ns2, lab2, _, _ = cv2.connectedComponentsWithStats(solid8, connectivity=8)
+        th2 = np.zeros(ns2, np.float32)
+        np.maximum.at(th2, lab2.ravel(), dsol.ravel())
+        body = (th2 > 14)[lab2] & (solid8 > 0)
+        near_disc = cv2.dilate(body.astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (17, 17))).astype(bool)
+        a = np.where(near_disc & ~body & (a < 0.7) & ~protect, 0.0, a)
+        reg = cv2.dilate(text.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool) & ~shape & ~rd_m & ~near_disc
+        if protect.any():
+            reg &= ~protect
+        ink = cv2.erode(np.where(reg, lc, 255).astype(np.float32), np.ones((7, 7), np.uint8))
+        ink = np.minimum(ink, 150)
+        cov = np.clip((lb - lc) / np.maximum(lb - ink, 30), 0, 1)
+        grey_ink = ink > 95
+        a = np.where(reg, cov, a)
+        rgb = np.where((reg & ~grey_ink)[..., None], np.float32([255, 255, 255]), rgb)
+        rgb = np.where((reg & grey_ink)[..., None], np.float32([214, 218, 232]), rgb)
+    rgb = np.where(rd_m[..., None], THEME_RED, rgb)
     return np.clip(rgb, 0, 255), np.clip(a, 0, 1), b

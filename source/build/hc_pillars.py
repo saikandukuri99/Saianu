@@ -68,7 +68,8 @@ def ease_back(x):
 
 
 class Pillars:
-    def __init__(self, path):
+    def __init__(self, path, dark=False):
+        self.dark = dark
         art = cv2.imread(path)[:, :, ::-1].astype(np.float32)
         h, w = art.shape[:2]
         self.h, self.w = h, w
@@ -170,7 +171,8 @@ class Pillars:
             # label: left/right anchored like the artwork, vertically centred on the circle
             la = self.label[content]
             ox, _ = self.label_off[slot]
-            col = NAVY * (1 - h) + RED * h
+            base = np.float32([255, 255, 255]) if self.dark else NAVY
+            col = base * (1 - h) + RED * h
             lab = np.dstack([la[..., None] * col, la]) * smooth(v * 0.9)
             right_side = cx > CENTER[0]
             slide = (1 - smooth(v)) * 18 * (1 if right_side else -1)
