@@ -1,3 +1,4 @@
 #!/bin/sh
+# Needs ffmpeg. Makes ONE file with the RGB-alpha video + the voice-over together.
 cd "$(dirname "$0")"
-ffmpeg -y -f concat -safe 0 -i list.txt -c copy EAI_90s_RGBA_alpha.mov && echo done
+ffmpeg -y -f concat -safe 0 -i list.txt -i EAI_90s_VO_narration.wav -map 0:v -map 1:a -c:v copy -c:a pcm_s24le -t 90 EAI_90s_RGBA_with_VO.mov && echo "Done: EAI_90s_RGBA_with_VO.mov (90 s, alpha video + voice-over)"
