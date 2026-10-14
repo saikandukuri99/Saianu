@@ -44,6 +44,7 @@ class Cv:
     def poly(self, pts, fill=None, outline=None, width=2):
         self.d.polygon([self.p(*q) for q in pts], fill=fill, outline=outline, width=int(width*SS))
     def text(self, x, y, s, size, col, font="InterDisplay-SemiBold.otf", anchor="mm"):
+        if size < 1: return
         self.d.text(self.p(x, y), s, font=F(font, size*SS), fill=col, anchor=anchor)
     def paste(self, img, x, y, alpha=1.0):
         im = img

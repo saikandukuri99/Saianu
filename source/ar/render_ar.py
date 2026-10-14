@@ -759,13 +759,16 @@ def process_screens(fr, t):
 # ---------------------------------------------------------------- overlays per scene
 LX = 150
 R_ = sys.modules[__name__]
+def _safe(fn, fr, t):
+    try: fn(fr, t, R_)
+    except Exception as e: print('mg skip', fn.__name__, round(t, 3), e, flush=True)
 def overlays(fr, t):
     sid = scene_at(t)
     E = lambda s: SC_END[s] - .45
     T0 = LN["hook"]["start"]
     put_rgba(fr, LOGO_SM, W - 90 - LOGO_SM.shape[1], 56, (1 - fl(ease((t - SC["sign"] + .2)/.6)))*fl(ease((t - T0 - .3)/.5)))
 
-    MG.title_rings(fr, t, R_)
+    _safe(MG.title_rings, fr, t)
     # 0. Main title: the original Solix logo and an extruded 3D "Application Retirement"
     if t < T0 + 1.0:
         p = fl(eout((t - .3)/.9)); q = fl(ease((t - (T0 - .15))/.6))
@@ -782,7 +785,7 @@ def overlays(fr, t):
     kinetic(fr, t, "Applications you've moved on from.", LX, 860, 84, T0 + .5, E("hook"), maxw=1600)
 
     # 2. Five triggers: one extruded 3D word each
-    MG.triggers(fr, t, R_)
+    _safe(MG.triggers, fr, t)
     for tid, word in (("t1", "Cost"), ("t2", "Risk"), ("t3", "M&A"), ("t4", "Old archive"), ("t5", "AI")):
         a0 = LN[tid]["start"] - .1; a1 = SC_END[tid] - .25
         if a0 - .1 <= t <= a1 + .6:
@@ -795,7 +798,7 @@ def overlays(fr, t):
     trigger_cards(fr, t)
 
     # 3. Converge
-    MG.converge(fr, t, R_)
+    _safe(MG.converge, fr, t)
     kinetic(fr, t, "Many reasons.", W/2, 190, 88, LN["one"]["start"], LN["connect"]["start"] + .1, align="center", maxw=1600)
     kinetic(fr, t, "One engine.", W/2, 292, 88, word_time("one", "One engine"), LN["connect"]["start"] + .1, align="center",
             maxw=1600, hl=("One", "engine"))
@@ -817,7 +820,7 @@ def overlays(fr, t):
                 put(fr, "›", "Inter-SemiBold.otf", 24, x, 100, ga*.4); x += 36
 
     # 4. Connect
-    MG.connect(fr, t, R_)
+    _safe(MG.connect, fr, t)
     s = "connect"
     kinetic(fr, t, "Every source.", LX, 300, 88, SC[s] + 1.2, E(s), maxw=800, hl=("Every", "source"))
     kinetic(fr, t, "One engine.", LX, 396, 88, SC[s] + 1.6, E(s), maxw=800)
@@ -831,7 +834,7 @@ def overlays(fr, t):
         fade_text(fr, t, "✓", LX, 570 + k*64, 40, ti, E(s), fname="InterDisplay-Bold.otf", rgb=BLUE*1.2)
         fade_text(fr, t, c, LX + 56, 570 + k*64, 40, ti + .08, E(s), fname="InterDisplay-Medium.otf")
 
-    MG.migrate(fr, t, R_)
+    _safe(MG.migrate, fr, t)
     process_screens(fr, t)
 
     # 6. Switch off
@@ -850,7 +853,7 @@ def overlays(fr, t):
     # 7. Access: Solix Search, then the purchase-to-pay record in 3D, then a standard report
     s = "access"
     if SC[s] - .2 <= t <= SC_END[s] + .6:
-        MG.platform(fr, t, R_)
+        _safe(MG.platform, fr, t)
         access_docs(fr, t)
     ta, tu = word_time(s, "Auditors"), LN["access2"]["start"]
     fade_text(fr, t, "Nothing it held is lost.", LX, 250, 56, SC[s] + .3, ta - .3, fname="InterDisplay-SemiBold.otf")
@@ -858,7 +861,7 @@ def overlays(fr, t):
     kinetic(fr, t, "Familiar reports.", LX, 302, 64, tu - .1, E(s), maxw=900, hl=("Familiar",))
 
     # 8. Data Ask
-    MG.graph(fr, t, R_)
+    _safe(MG.graph, fr, t)
     s = "ask"
     kinetic(fr, t, "Ask in plain English.", LX, 300, 80, SC[s] + .3, E(s), maxw=860)
     kinetic(fr, t, "Get cited answers.", LX, 392, 80, word_time(s, "cited"), E(s), maxw=860, hl=("cited", "answers"))
@@ -879,7 +882,7 @@ def overlays(fr, t):
         fade_text(fr, t, "APPLICATION KNOWLEDGE GRAPH", 1330, 185, 24, t0, E(s), fname="Inter-SemiBold.otf", anchor="ms", track=5, rgb=BLUE*1.2)
 
     # 9. Enable AI
-    MG.enable_ai(fr, t, R_)
+    _safe(MG.enable_ai, fr, t)
     s = "ai"
     if SC[s] - .1 <= t <= SC_END[s] + .6:
         p = fl(eout((t - SC[s] - .35)/.6)); q = fl(ease((t - E(s))/.5))
@@ -887,7 +890,7 @@ def overlays(fr, t):
     fade_text(fr, t, "Governed history, ready for your AI.", LX + 4, 570, 40, SC[s] + .9, E(s), fname="InterDisplay-Medium.otf")
 
     # 10. Sign-off
-    MG.signoff(fr, t, R_)
+    _safe(MG.signoff, fr, t)
     s = "sign"
     if t >= SC[s] - .1:
         p = fl(eout((t - SC[s] - .3)/1.2))
