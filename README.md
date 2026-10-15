@@ -2,7 +2,12 @@
 
 **Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
 
-- **v7 (current):** the 3D particle layer is removed from the whole film, along with the soft background light spots, so nothing is blurry. The background is dark Solix blue with the AI network lines at low opacity. In place of every particle shape there are crisp, After Effects-style vector animations (`mg_ar.py`), drawn supersampled with stroke draw-ons, ring wipes, overshoot pop-ins, dashed rotating rings and flowing data dots:
+- **v8 (current, the manager's pick):** based on "Version 3" (the red/indigo look with 3D particles, trigger cards and legacy windows). Only two moments change:
+  - **~0:29, Preservation Zone:** a Validation Report and a Governance Policy screen, plus legal-check blocks (VALIDATED, QUALITY CHECKED, RETENTION SET, LEGAL HOLD) that drop in and stack into a "Legal & compliance checks" tower as each check fires.
+  - **~0:38, switch-off:** ERP module icons (GL, AP, PO, HR, INV) pop in around the ERP window. A Decommission Request screen fills its fields live (application, records preserved, licenses, servers), then "Retire application" is clicked and the ERP window and its modules power off.
+
+  There is also a 4K master: `output/Solix_Application_Retirement_4K.mp4` (3840x2160, HEVC, upscaled from the 1080p render with Lanczos, under 95 MB).
+- **v7:** the 3D particle layer is removed from the whole film, along with the soft background light spots, so nothing is blurry. The background is dark Solix blue with the AI network lines at low opacity. In place of every particle shape there are crisp, After Effects-style vector animations (`mg_ar.py`), drawn supersampled with stroke draw-ons, ring wipes, overshoot pop-ins, dashed rotating rings and flowing data dots:
   - an icon badge for each trigger (Cost $, Risk shield, M&A merge, Old archive drawers, AI chip), plus a 5-step tracker under the word
   - the five triggers converging into a Solix Engine hub with a shockwave ring
   - six source nodes (ERP, Mainframe, Custom apps, SaaS, Files, Email) wiring into the hub with data flowing
