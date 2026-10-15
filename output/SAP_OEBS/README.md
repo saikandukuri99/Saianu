@@ -1,3 +1,6 @@
+# v2 (Data Ask insert): `Solix_SAP_OEBS_v2_DataAsk_*.mp4`, 74.8 s
+Adds the Data Ask scene (43.5 s to 54 s) between the policy scene and "The result?". Changes from v1: padded and centred highlight boxes, smooth policy-to-archive glide, hard cuts (no transitions), no sound effects, darker background with the AI network at 30 % opacity, and "The result?" held for 2 s (everything after it starts 0.9 s later than the v2 script timecodes). v1 files are kept below.
+
 # SOLIXCloud for SAP + Oracle E-Business Suite: Empower 2026 film (63.9 s)
 
 | File | What it is |
