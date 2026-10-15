@@ -4,23 +4,14 @@
 import sys, os, subprocess, multiprocessing as mp
 import numpy as np, cv2
 from lib import *
-from scenes import SCENES, SC, CUTS, energy, kicker
+from scenes import SCENES, SC, energy
 
-TOTAL = 1916
+TOTAL = 2243
 _G = {}
 def init():
     _G["bg"] = make_bg()[..., ::-1].copy(); _G["net"] = Net()
     rs = np.random.RandomState(5); _G["noise"] = [rs.randint(-3, 4, (H, W, 1)).astype(np.int16) for _ in range(6)]
     _G["logo"] = np.asarray(LOGO(46)).astype(np.float32) / 255
-
-def streak(O, t):
-    for cut in CUTS:
-        u = (t - (cut - .22)) / .55
-        if 0 < u < 1:
-            xc = lerp(-400, W + 500, IO(u)); a = math.sin(math.pi * u)
-            for off, col, th in ((0, (255, 235, 200), 3), (-46, (RED[2], RED[1], RED[0]), 2), (46, (207, 136, 0), 2)):
-                p0 = (int(xc + off - 330), H + 120); p1 = (int(xc + off + 330), -120)
-                cv2.line(O, p0, p1, tuple(int(v * a) for v in col), th, cv2.LINE_AA)
 
 def frame(i):
     t = i / FPS; bg, net = _G["bg"], _G["net"]
@@ -29,13 +20,9 @@ def frame(i):
     L = np.zeros((H, W, 4), np.float32); G = np.zeros((H, W, 3), np.uint8); O = np.zeros((H, W, 3), np.uint8)
     zoom = 1.0
     for n, (k, (a, b)) in enumerate(SC.items()):
-        if t < a - .15 or t > b + .35: continue
-        ein = 1.0 if k == "A" else E(pr(t, a - .12, .38)); eout = 0.0 if k == "J" else E(pr(t, b - .12, .32))
-        c = Ctx(L, G, O); c.ga = ein * (1 - eout); c.ox = (1 - ein) * 60 - eout * 60
-        if c.ga > .003: SCENES[k](c, t)
-        if a <= t < b + .0001 or (k == "J" and t >= a):
-            u = clamp((t - a) / (b - a)); zoom = 1.0 + .03 * (u if n % 2 == 0 else 1 - u)
-    streak(O, t)
+        if not (a <= t < b or (k == "J" and t >= a)): continue            # plain hard cuts: no fades, slides or wipes
+        c = Ctx(L, G, O); SCENES[k](c, t)
+        u = clamp((t - a) / (b - a)); zoom = 1.0 + .03 * (u if n % 2 == 0 else 1 - u)
     f = glow_add(f, G, 1.0)
     al = L[..., 3:4]; f = (f.astype(np.float32) * (1 - al) + L[..., [2, 1, 0]] * 255).astype(np.uint8)
     f = glow_add(f, O, 1.0)

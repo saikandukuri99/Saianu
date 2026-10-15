@@ -229,13 +229,15 @@ def bezier(p0, p1, p2, k):
 # ---------------------------------------------------------------- background (dark blue + AI network)
 def make_bg():
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-    base = np.array([5, 13, 44], np.float32); mid = np.array([11, 36, 102], np.float32)
+    base = np.array([3, 8, 28], np.float32); mid = np.array([7, 22, 68], np.float32)
     r = np.sqrt(((xx - .60 * W) / W) ** 2 + ((yy - .42 * H) / H) ** 2 * 1.4)
     bg = base + (mid - base) * np.clip(1 - r / .85, 0, 1)[..., None] ** 1.6
-    g1 = np.exp(-(((xx - .05 * W) / (.35 * W)) ** 2 + ((yy - 1.0 * H) / (.45 * H)) ** 2))[..., None] * np.array([34, 26, 96], np.float32) * .55   # indigo, bottom-left
-    g2 = np.exp(-(((xx - .98 * W) / (.30 * W)) ** 2 + ((yy - 0.0 * H) / (.40 * H)) ** 2))[..., None] * np.array([0, 90, 150], np.float32) * .30  # blue, top-right
+    g1 = np.exp(-(((xx - .05 * W) / (.35 * W)) ** 2 + ((yy - 1.0 * H) / (.45 * H)) ** 2))[..., None] * np.array([34, 26, 96], np.float32) * .32   # indigo, bottom-left
+    g2 = np.exp(-(((xx - .98 * W) / (.30 * W)) ** 2 + ((yy - 0.0 * H) / (.40 * H)) ** 2))[..., None] * np.array([0, 90, 150], np.float32) * .16  # blue, top-right
     v = 1 - .35 * np.clip(((xx - W / 2) / (W / 2)) ** 2 * .6 + ((yy - H / 2) / (H / 2)) ** 2 * .6, 0, 1)[..., None]
     return np.clip((bg + g1 + g2) * v, 0, 255).astype(np.uint8)
+
+NET_OPACITY = 0.30          # AI-network lines/nodes at 30 % opacity
 
 class Net:
     N = 70
@@ -261,7 +263,7 @@ class Net:
             r = 2 + int(2 * s.d[i]); b = (.55 + .45 * math.sin(t * 1.4 + s.ph[i, 0])) * (.6 + .6 * energy) * s.d[i]
             col = (RED if s.c[i] > .93 else (110, 170, 255) if s.c[i] < .15 else (60, 190, 255))
             cv2.circle(cv, (int(P[i, 0]), int(P[i, 1])), r, (int(col[2] * b), int(col[1] * b), int(col[0] * b)), -1, cv2.LINE_AA)
-        return cv
+        return (cv.astype(np.float32) * NET_OPACITY).astype(np.uint8)
 
 def glow_add(frame, G, k=1.0):
     """frame uint8 + light canvas + its blur (bloom)."""

@@ -37,26 +37,38 @@
  },
  {
   "i": 6,
-  "start": 43.983,
-  "end": 44.874,
-  "text": "The result?"
+  "start": 43.65,
+  "end": 46.546,
+  "text": "Ask your archive in plain language, with Data Ask."
  },
  {
   "i": 7,
-  "start": 45.217,
-  "end": 52.23,
-  "text": "Leaner production systems, cleaner migrations, and S A P databases, up to thirty to sixty percent smaller."
+  "start": 47.683,
+  "end": 52.819,
+  "text": "Every answer cites its source, and every question is permission checked, and audit logged."
  },
  {
   "i": 8,
-  "start": 52.35,
-  "end": 56.248,
-  "text": "Your ERP history becomes AI-ready data, not dead weight."
+  "start": 53.983,
+  "end": 54.874,
+  "text": "The result?"
  },
  {
   "i": 9,
-  "start": 56.95,
-  "end": 60.486,
+  "start": 56.117,
+  "end": 63.13,
+  "text": "Leaner production systems, cleaner migrations, and S A P databases, up to thirty to sixty percent smaller."
+ },
+ {
+  "i": 10,
+  "start": 63.25,
+  "end": 67.148,
+  "text": "Your ERP history becomes AI-ready data, not dead weight."
+ },
+ {
+  "i": 11,
+  "start": 67.85,
+  "end": 71.386,
   "text": "Solix Cloud. Built for S A P. Built for Oracle."
  }
 ]

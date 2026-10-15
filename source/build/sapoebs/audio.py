@@ -3,8 +3,7 @@ import sys, numpy as np, soundfile as sf, subprocess
 from scipy.signal import butter, sosfilt, fftconvolve
 sys.path.insert(0, ".")
 from cues import cue, VO
-from scenes import CUTS
-SR = 48000; T = 63.87; N = int(T * SR); rs = np.random.RandomState(3)
+SR = 48000; T = 74.77; N = int(T * SR); rs = np.random.RandomState(3)
 t = np.arange(N) / SR
 def lp(x, f, o=2): return sosfilt(butter(o, f, "low", fs=SR, output="sos"), x)
 def bp(x, a, b, o=2): return sosfilt(butter(o, [a, b], "band", fs=SR, output="sos"), x)
@@ -33,26 +32,7 @@ for k in range(int(T // 4) + 1):
     if L > 0: sub[a:a + L] += np.sin(2 * np.pi * f * tt) * np.minimum(1, tt / .3) * np.minimum(1, (4 - tt) / .5) * .06
 music = pad + arp + sub
 music *= np.clip(t / 1.5, 0, 1) * np.clip((T - t) / 2.5, 0, 1)
-# ---- sfx
-sfx = np.zeros(N)
-def add(x, at, g=1.0):
-    a = int(at * SR); x = x[:max(0, N - a)]; sfx[a:a + len(x)] += x * g
-def whoosh(dur=.6, up=True):
-    n = int(dur * SR); x = rs.randn(n); tt = np.linspace(0, 1, n)
-    y = np.zeros(n); blocks = 12
-    for b in range(blocks):
-        s0, s1 = int(b * n / blocks), int((b + 1) * n / blocks); fc = (400 + 5200 * (tt[s0] if up else 1 - tt[s0])) ; y[s0:s1] = bp(x, max(200, fc * .7), fc * 1.3, 2)[s0:s1]
-    return y * np.sin(np.pi * tt) ** 1.5 * .16
-def pop(f=880, dur=.18): tt = np.arange(int(dur * SR)) / SR; return (np.sin(2 * np.pi * f * tt) * np.exp(-tt * 26) + .4 * np.sin(2 * np.pi * f * 2 * tt) * np.exp(-tt * 40)) * .07
-def boom(): tt = np.arange(int(1.8 * SR)) / SR; return (np.sin(2 * np.pi * (60 - 22 * tt) * tt) * np.exp(-tt * 2.6) * .55 + lp(rs.randn(len(tt)), 600) * np.exp(-tt * 4) * .25)
-def riser(dur): n = int(dur * SR); tt = np.linspace(0, 1, n); x = bp(rs.randn(n), 800, 6000, 2) * tt ** 2.2 * .10; return x
-for c in CUTS: add(whoosh(.7), c - .45, 1.0)
-add(whoosh(.5, True), .0, .6)
-add(riser(1.2), 60.0); add(boom(), 61.15, .75); add(whoosh(1.1, False), 61.1, .7)
-pops = [(1, k) for k in ("inactive", "bloating", "slowing", "driving up", "S four HANA")] + [(3, k) for k in ("Finance", "Materials", "Sales", "and more")] + \
-       [(4, "certified"), (4, "archiving"), (4, "full application"), (5, "searchable"), (5, "reportable"), (5, "legal hold"), (7, "Leaner"), (7, "cleaner"), (7, "thirty"), (8, "AI-ready"), (9, "Built for S A P"), (9, "Built for Oracle")]
-for i, (l, k) in enumerate(pops): add(pop([740, 880, 988, 1175][i % 4]), cue(l, k) - .12)
-add(pop(1318, .3), cue(2, "twenty") - .25, 1.2); add(boom(), 44.0 - .05, .4)
+sfx = np.zeros(N)                    # sound effects removed: music bed + voice-over only
 # ---- duck music + sfx under the voice, then mix
 voL, _ = sf.read(sys.argv[1]); vo = voL[:, 0] if voL.ndim > 1 else voL; vo = np.pad(vo, (0, max(0, N - len(vo))))[:N]
 e = lp(np.abs(vo), 6, 2); e = np.clip(e / (np.percentile(e, 95) + 1e-9), 0, 1)
