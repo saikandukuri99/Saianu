@@ -322,7 +322,7 @@ CAMY = dict(hook=430, t1=330, t2=330, t3=330, t4=330, t5=330, one=610, access=64
 CAMS = dict(hook=1.0, t1=.62, t2=.62, t3=.62, t4=.6, t5=.62, one=1.15, connect=1.0, migrate=1.15,
             dark=1.05, access=1.1, ask=1.05, ai=1.15, sign=1.0)
 # red key-light behind the subject (x, y, strength); the end card drops it low so the red logo reads
-GLOW = dict(sign=(960, 1000, .8))
+GLOW = dict(sign=(960, 1000, .75))
 def lerp_scene(t, d, dflt):
     sid = scene_at(t); k = ORDER.index(sid); lt = t - SC[sid]
     v = np.array(d.get(sid, dflt), float)
@@ -361,57 +361,26 @@ YY, XX = np.mgrid[0:H//4, 0:W//4].astype(np.float32)*4
 IND_DK = np.array([14, 10, 40], np.float32)/255
 IND = INDIGO*.85
 RED_DK = np.array([120, 14, 28], np.float32)/255
-NAVY_DK = np.array([4, 10, 30], np.float32)/255       # deep navy edges
-NAVY = np.array([12, 32, 78], np.float32)/255          # dark blue field
-GLOW_C = np.array([22, 92, 170], np.float32)/255       # soft brand-blue key light behind the subject
-NET_C = np.array([150, 205, 255], np.float32)/255      # light network lines
-_nr = np.random.default_rng(23)
-NET = _nr.random((96, 5))   # x, y, layer, phase, speed
-def network(t):
-    """Light network lines: drifting nodes in three depth layers, joined when close."""
-    hw, hh = W//2, H//2
-    im = Image.new("L", (hw, hh), 0); d = ImageDraw.Draw(im)
-    pts = []
-    for x, y, lay, ph, sp in NET:
-        L = int(lay*3)
-        v = (.6 + .8*sp)*(1 + L*.6)
-        px = ((x*1.2 - .1 + t*.0035*v + .03*math.sin(t*.11 + ph*6)) % 1.2 - .1)*hw
-        py = ((y*1.2 - .1 + .02*math.sin(t*.09 + ph*9) + t*.0012*v) % 1.2 - .1)*hh
-        pts.append((px, py, L))
-    lim = (95, 120, 150)
-    for a in range(len(pts)):
-        xa, ya, La = pts[a]
-        for b in range(a + 1, len(pts)):
-            xb, yb, Lb = pts[b]
-            if La != Lb: continue
-            dd = math.hypot(xa - xb, ya - yb)
-            if dd < lim[La]:
-                d.line((xa, ya, xb, yb), fill=int((1 - dd/lim[La])*(70 + 45*La)), width=1)
-    for px, py, L in pts:
-        r = .8 + .7*L
-        d.ellipse((px - r, py - r, px + r, py + r), fill=120 + 60*L)
-    a = np.asarray(im, np.float32)/255
-    return zoom(a, 2, order=1)[:H, :W, None]
-
 def background(t):
     cx, cy, *_ = cam(t)
     gx, gy, gs = lerp_scene(t, GLOW, (cx, cy + 40, 1.0))
-    base = NAVY_DK + (NAVY - NAVY_DK)*np.clip(1 - np.sqrt(((XX-1000)/1500)**2 + ((YY-560)/950)**2), 0, 1)[..., None]
-    d = np.sqrt(((XX - gx)/1000)**2 + ((YY - gy)/780)**2)
-    a = (np.clip(1 - d, 0, 1)**1.5)*gs
-    img = base + (GLOW_C - base)*np.clip(a*1.1, 0, 1)[..., None]*.35
-    # cool light leak, bottom-left, drifting
+    # indigo base: darker toward the top-left corner and edges
+    base = IND_DK + (IND - IND_DK)*np.clip(1 - np.sqrt(((XX-1100)/1500)**2 + ((YY-650)/900)**2), 0, 1)[..., None]
+    d = np.sqrt(((XX - gx)/980)**2 + ((YY - gy)/760)**2)
+    a = (np.clip(1 - d, 0, 1)**1.35)*gs
+    img = base + (RED_DK - base)*np.clip(a*1.7, 0, 1)[..., None]
+    img = img + (RED - img)*(a**1.9*.85)[..., None]
+    # blue light leak, bottom-left, drifting
     b = np.exp(-(((XX - (260 + 160*math.sin(t*.07)))/620)**2 + ((YY - 1000)/360)**2))
-    img = img + (BLUE*.8 - img)*(.22*b)[..., None]
+    img = img + (BLUE - img)*(.32*b)[..., None]
+    # cool rim from top-right
     b2 = np.exp(-(((XX - 1900)/700)**2 + ((YY + 60)/420)**2))
-    img = img + (INDIGO*1.2 - img)*(.3*b2)[..., None]
-    img = zoom(img, (4, 4, 1), order=1)
-    return img + (NET_C - img)*network(t)*.32
+    img = img + (INDIGO*1.3 - img)*(.35*b2)[..., None]
+    return zoom(img, (4, 4, 1), order=1)
 
 GRAIN = [(np.random.default_rng(i).standard_normal((H, W, 1)).astype(np.float32)*.011) for i in range(6)]
 BOKEH = np.random.default_rng(5).random((48, 6))
-BOKEH_C = [BLG, WH, BLG, LAV]
-NO_BOKEH = False   # alpha export drops the ambient background bokeh
+BOKEH_C = [BLG, WH, RDG, LAV]
 
 def glow_layer(t, flash=0.0):
     P, Bv, C = particles(t)
@@ -454,12 +423,16 @@ def glow_layer(t, flash=0.0):
         if 0 <= px < hw/2-1 and 0 <= py < hh/2-1:
             bk[:, int(py), int(px)] += BOKEH_C[int(bc*4)]*(.6 + bs)*(.6+.4*math.sin(t*.5+bp*9))
     bk = zoom(gaussian_filter(bk, (0, 5, 5)), (1, 2, 2), order=1)[:, :hh, :hw]*24
-    tot = (I + bloom + bloom2 + (0 if NO_BOKEH else bk)).transpose(1, 2, 0)
+    tot = (I + bloom + bloom2 + bk).transpose(1, 2, 0)
     return zoom(tot, (2, 2, 1), order=1)
 
 def compose_bg(t, flash=0.0):
-    """Dark Solix-blue field with the AI network at low opacity (the 3D particle layer is retired)."""
-    return background(t)
+    bg = background(t)
+    g = glow_layer(t, flash)
+    lit = 1 - np.exp(-g*.9)
+    out = bg + (1 - bg)*lit
+    hot = np.clip((g.max(-1, keepdims=True) - 1.6)/3.5, 0, 1)   # very dense cores burn to white
+    return out + (1 - out)*hot*.7
 
 VIG = None
 def vignette():
@@ -747,6 +720,24 @@ def process_screens(fr, t):
         qd, nn, _ = DOC.quad(cam, cc, 2.6, 2.6*(720 if tex_fn is SCR.validation else 660)/1100, yaw=lerp(-1.1, -.22, pi) - .6*qo, roll=lerp(.15, 0, pi))
         step = int(fl(clamp((t - t_anim)/1.6))*24)
         DOC.draw(fr, tex_fn(step), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - t_in - .1)/.6))))
+    legal_blocks(fr, t)
+    erp_modules(fr, t, td)
+    # decommission request: fields fill in live, then "Retire application" is clicked just before the power-off
+    tin = sd + .15; tout = td + .55
+    pi = fl(eout((t - tin)/.55)); qo = fl(ease((t - tout)/.45))
+    if pi > 0 and qo < 1:
+        cc = lerp(np.array([4.4, -1.1, 2.4]), np.array([1.62, -.12, -.6]), pi) + np.array([1.6, .4, 2.6])*qo
+        qd, nn, _ = DOC.quad(cam, cc, 2.55, 2.55*820/1100, yaw=lerp(-1.1, -.24, pi) - .6*qo, roll=lerp(.15, 0, pi))
+        n = int(fl(clamp((t - tin - .5)/(td - tin - 1.0)))*SCR.DTOTAL)
+        pressed = td - .45 <= t < td - .1
+        DOC.draw(fr, SCR.decommission(n, pressed), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - tin - .1)/.6))))
+        if td - .45 <= t < td + .2:   # click ripple on the button
+            bx = qd[0]*.0 + (qd[1]*.78 + qd[2]*.22)*1.0; bx = qd[3] + (qd[2] - qd[3])*.78 + (qd[1] - qd[2])*.09
+            r = (t - td + .45)/.65
+            cv = MG.Cv(bx[0] - 90, bx[1] - 90, 180, 180)
+            cv.circle(bx[0], bx[1], 14 + 70*r, outline=MG.rgba(MG.BLUE_L, 1 - r), width=3)
+            cv.circle(bx[0], bx[1], 9, fill=MG.rgba(MG.WHITE, 1 - r))
+            cv.blit(fr, glow=.6)
     # application inventory: the source application flips to Retired
     ti = word_time("dark", "gone for good") - .35
     pi = fl(eout((t - ti)/.6)); qo = fl(ease((t - Ed)/.45))
@@ -756,19 +747,62 @@ def process_screens(fr, t):
         step = int(fl(clamp((t - ti - .2)/1.4))*24)
         DOC.draw(fr, SCR.inventory(step), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - ti - .1)/.6))))
 
+# ---------------------------------------------------------------- legal check blocks (Migrate & Validate)
+BLOCKS = [("VALIDATED", "app"), ("QUALITY CHECKED", "file"), ("RETENTION SET", "archive"), ("LEGAL HOLD", "lock")]
+def legal_blocks(fr, t):
+    """As each check fires, a 3D block drops in and stacks into a 'legal checks' tower beside the Preservation Zone."""
+    s = "migrate"; Em = SC_END[s] - .45
+    if not (SC[s] <= t <= Em + .6): return
+    tc = [word_time(s, "checked") - .2, word_time(s, "checked") + .5, word_time(s, "retention"), word_time(s, "legal hold")]
+    a = 1 - fl(ease((t - Em)/.45))
+    x0, base, bw, bh, dep = 712, 800, 262, 50, 16
+    cv = MG.Cv(x0 - 30, 300, bw + dep + 80, 600)
+    for i, ((lab, kind), ti) in enumerate(zip(BLOCKS, tc)):
+        u = (t - ti)/.55
+        if u <= 0: continue
+        drop = 1 - MG.back(u, 2.2)
+        y = base - (i + 1)*(bh + 8) - 380*max(0.0, drop)
+        flash = max(0.0, 1 - (t - ti - .45)/.4) if t > ti + .45 else 0
+        # isometric block: top face, side face, front face
+        cv.poly([(x0, y), (x0 + dep, y - dep*.7), (x0 + bw + dep, y - dep*.7), (x0 + bw, y)], fill=MG.rgba((90, 190, 245), a))
+        cv.poly([(x0 + bw, y), (x0 + bw + dep, y - dep*.7), (x0 + bw + dep, y + bh - dep*.7), (x0 + bw, y + bh)], fill=MG.rgba((0, 90, 150), a))
+        cv.rrect(x0, y, bw, bh, 4, fill=MG.rgba((0, 136, 207), a), outline=MG.rgba(MG.WHITE, a*flash), width=2)
+        MG.icon(cv, kind, x0 + 28, y + bh/2, 30, MG.WHITE, a)
+        cv.text(x0 + 52, y + bh/2, lab, 19, MG.rgba(MG.WHITE, a), "Inter-SemiBold.otf", anchor="lm")
+        cv.text(x0 + bw - 22, y + bh/2, "✓", 24, MG.rgba(MG.WHITE, a), "InterDisplay-Bold.otf")
+    if t > tc[0]:
+        cv.text(x0 + bw/2 + 8, base + 22, "LEGAL & COMPLIANCE CHECKS", 15, MG.rgba((90, 190, 245), a*fl(ease((t - tc[0])/.5))), "Inter-SemiBold.otf")
+    cv.blit(fr, glow=.45)
+
+# ---------------------------------------------------------------- ERP module icons (switch-off)
+MODS = [("GL", "General ledger"), ("AP", "Payables"), ("PO", "Purchasing"), ("HR", "People"), ("INV", "Inventory")]
+MOD_POS = [(742, 455), (742, 545), (742, 635), (742, 725), (1090, 800)]
+def erp_modules(fr, t, td):
+    sd = SC["dark"]
+    if not (sd - .1 <= t <= td + 1.6): return
+    off = fl(ease((t - td)/.5))
+    cv = MG.Cv(500, 380, 700, 500)
+    for i, ((ab, name), (x, y)) in enumerate(zip(MODS, MOD_POS)):
+        p = MG.back((t - sd - .25 - i*.12)/.45)
+        if p <= 0: continue
+        a = 1 - off
+        fy = y + 140*max(0.0, (t - td - .15))**2*(1 + i*.2)
+        tx, ty = (818, y) if i < 4 else (x, 730)
+        cv.line([(x + (32 if i < 4 else 0), y if i < 4 else y - 32), (tx, ty)], MG.rgba(MG.BLUE_L, .5*a), 2)
+        cv.circle(x, fy, 32*p, fill=MG.rgba((14, 34, 82), .95*a), outline=MG.rgba((0, 136, 207), a), width=3)
+        cv.text(x, fy, ab, int(20*p) if p > .05 else 1, MG.rgba(MG.WHITE, a), "InterDisplay-Bold.otf")
+        if i < 4:
+            cv.text(x - 44, fy, name, 16, MG.rgba(MG.WHITE, .7*a*min(1, p)), "Inter-Medium.otf", anchor="rm")
+    cv.blit(fr, glow=.5)
+
 # ---------------------------------------------------------------- overlays per scene
 LX = 150
-R_ = sys.modules[__name__]
-def _safe(fn, fr, t):
-    try: fn(fr, t, R_)
-    except Exception as e: print('mg skip', fn.__name__, round(t, 3), e, flush=True)
 def overlays(fr, t):
     sid = scene_at(t)
     E = lambda s: SC_END[s] - .45
     T0 = LN["hook"]["start"]
     put_rgba(fr, LOGO_SM, W - 90 - LOGO_SM.shape[1], 56, (1 - fl(ease((t - SC["sign"] + .2)/.6)))*fl(ease((t - T0 - .3)/.5)))
 
-    _safe(MG.title_rings, fr, t)
     # 0. Main title: the original Solix logo and an extruded 3D "Application Retirement"
     if t < T0 + 1.0:
         p = fl(eout((t - .3)/.9)); q = fl(ease((t - (T0 - .15))/.6))
@@ -785,7 +819,6 @@ def overlays(fr, t):
     kinetic(fr, t, "Applications you've moved on from.", LX, 860, 84, T0 + .5, E("hook"), maxw=1600)
 
     # 2. Five triggers: one extruded 3D word each
-    _safe(MG.triggers, fr, t)
     for tid, word in (("t1", "Cost"), ("t2", "Risk"), ("t3", "M&A"), ("t4", "Old archive"), ("t5", "AI")):
         a0 = LN[tid]["start"] - .1; a1 = SC_END[tid] - .25
         if a0 - .1 <= t <= a1 + .6:
@@ -798,7 +831,6 @@ def overlays(fr, t):
     trigger_cards(fr, t)
 
     # 3. Converge
-    _safe(MG.converge, fr, t)
     kinetic(fr, t, "Many reasons.", W/2, 190, 88, LN["one"]["start"], LN["connect"]["start"] + .1, align="center", maxw=1600)
     kinetic(fr, t, "One engine.", W/2, 292, 88, word_time("one", "One engine"), LN["connect"]["start"] + .1, align="center",
             maxw=1600, hl=("One", "engine"))
@@ -820,10 +852,15 @@ def overlays(fr, t):
                 put(fr, "›", "Inter-SemiBold.otf", 24, x, 100, ga*.4); x += 36
 
     # 4. Connect
-    _safe(MG.connect, fr, t)
     s = "connect"
     kinetic(fr, t, "Every source.", LX, 300, 88, SC[s] + 1.2, E(s), maxw=800, hl=("Every", "source"))
     kinetic(fr, t, "One engine.", LX, 396, 88, SC[s] + 1.6, E(s), maxw=800)
+    if SC[s] - .2 <= t <= SC_END[s] + .6:
+        sx, sy, zc = project(SRC_A, t)
+        for k, (lab, wd) in enumerate(zip(SRC, SRC_W)):
+            sz = int(np.clip(30 + (cam_dist(t) - zc[k])*8, 24, 42))
+            fade_text(fr, t, lab, sx[k], sy[k] - 38, sz, word_time(s, wd), E(s), fname="InterDisplay-SemiBold.otf", anchor="ms",
+                      alpha=fl(clamp(1.35 - (zc[k]-cam_dist(t))*.35, .45, 1)))
 
     # 5. Migrate & Validate
     s = "migrate"
@@ -834,7 +871,6 @@ def overlays(fr, t):
         fade_text(fr, t, "✓", LX, 570 + k*64, 40, ti, E(s), fname="InterDisplay-Bold.otf", rgb=BLUE*1.2)
         fade_text(fr, t, c, LX + 56, 570 + k*64, 40, ti + .08, E(s), fname="InterDisplay-Medium.otf")
 
-    _safe(MG.migrate, fr, t)
     process_screens(fr, t)
 
     # 6. Switch off
@@ -847,13 +883,12 @@ def overlays(fr, t):
         x = (900, 1300, 1560)[k]; y = (370, 370, 700)[k] + 240*fall**2
         a = fl(eout((t - ti)/.35))*(1 - fl(ease((t - ti - .9)/1.0)))
         put(fr, lab, "InterDisplay-SemiBold.otf", 42, x, y, a, blur=fl(clamp(fall*8, 0, 10)), anchor="ms")
-    fade_text(fr, t, "PRESERVATION ZONE  ·  STILL ON", 1600, 820, 26, word_time(s, "gone for good") - .2, E(s),
+    fade_text(fr, t, "PRESERVATION ZONE  ·  STILL ON", 1560, 860, 26, word_time(s, "gone for good") - .2, E(s),
               fname="Inter-SemiBold.otf", anchor="ms", track=4, rgb=BLUE*1.2)
 
     # 7. Access: Solix Search, then the purchase-to-pay record in 3D, then a standard report
     s = "access"
     if SC[s] - .2 <= t <= SC_END[s] + .6:
-        _safe(MG.platform, fr, t)
         access_docs(fr, t)
     ta, tu = word_time(s, "Auditors"), LN["access2"]["start"]
     fade_text(fr, t, "Nothing it held is lost.", LX, 250, 56, SC[s] + .3, ta - .3, fname="InterDisplay-SemiBold.otf")
@@ -861,7 +896,6 @@ def overlays(fr, t):
     kinetic(fr, t, "Familiar reports.", LX, 302, 64, tu - .1, E(s), maxw=900, hl=("Familiar",))
 
     # 8. Data Ask
-    _safe(MG.graph, fr, t)
     s = "ask"
     kinetic(fr, t, "Ask in plain English.", LX, 300, 80, SC[s] + .3, E(s), maxw=860)
     kinetic(fr, t, "Get cited answers.", LX, 392, 80, word_time(s, "cited"), E(s), maxw=860, hl=("cited", "answers"))
@@ -878,11 +912,13 @@ def overlays(fr, t):
     fade_text(fr, t, "Sources  [1]  [2]  [3]", LX + measure("3 suppliers", "Inter-SemiBold.otf", 34) + 30, 624, 34, ta + .25, E(s),
               fname="Inter-SemiBold.otf", rgb=BLUE*1.2)
     if SC[s] - .2 <= t <= SC_END[s] + .6:
-        t0 = word_time(s, "cited") - 1.4
-        fade_text(fr, t, "APPLICATION KNOWLEDGE GRAPH", 1330, 185, 24, t0, E(s), fname="Inter-SemiBold.otf", anchor="ms", track=5, rgb=BLUE*1.2)
+        sx, sy, zc = project(KG_A, t)
+        t0 = word_time(s, "cited") - 1.6 + .2
+        for k, lab in enumerate(KG):
+            fade_text(fr, t, lab, sx[k], sy[k] - 54, 36, t0 + k*.6, E(s), fname="InterDisplay-SemiBold.otf", anchor="ms")
+        fade_text(fr, t, "APPLICATION KNOWLEDGE GRAPH", 1330, 215, 24, t0, E(s), fname="Inter-SemiBold.otf", anchor="ms", track=5, rgb=BLUE*1.2)
 
     # 9. Enable AI
-    _safe(MG.enable_ai, fr, t)
     s = "ai"
     if SC[s] - .1 <= t <= SC_END[s] + .6:
         p = fl(eout((t - SC[s] - .35)/.6)); q = fl(ease((t - E(s))/.5))
@@ -890,7 +926,6 @@ def overlays(fr, t):
     fade_text(fr, t, "Governed history, ready for your AI.", LX + 4, 570, 40, SC[s] + .9, E(s), fname="InterDisplay-Medium.otf")
 
     # 10. Sign-off
-    _safe(MG.signoff, fr, t)
     s = "sign"
     if t >= SC[s] - .1:
         p = fl(eout((t - SC[s] - .3)/1.2))
@@ -920,7 +955,9 @@ def captions(fr, t):
             put(fr, " ".join(ln), "Inter-Medium.otf", 32, W/2, y + i*42, a, anchor="ms")
 
 def frame(t):
-    fr = compose_bg(t).astype(np.float32)
+    to = word_time("one", "One engine")
+    flash = 2.5*math.exp(-(t - to)*2.2) if t > to else 0.0
+    fr = compose_bg(t, flash).astype(np.float32)
     fr *= vignette()
     overlays(fr, t)
     captions(fr, t)

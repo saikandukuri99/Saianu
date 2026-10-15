@@ -235,3 +235,32 @@ def inventory(step):
         d.text((48, 548), "Licenses cancelled  ·  Servers released  ·  Data preserved", font=F("Inter-SemiBold.otf", 30),
                fill=tuple(int(255 - (255 - c)*a) for c in BLUE))
     return im
+
+# ---------------------------------------------------------------- decommission request (switch-off beat)
+DFIELDS = [("Application", "Finance ERP R11"), ("Records preserved", "6,747,325  ✓"),
+           ("Licenses", "Cancel at renewal"), ("Servers", "Release fin-app-07")]
+DTOTAL = sum(len(v) for _, v in DFIELDS)
+@lru_cache(None)
+def decommission(nchars, pressed):
+    w, h = 1100, 820
+    im, d = card(w, h, "DECOMMISSION REQUEST", "Application Retirement  ·  Final step")
+    left = nchars
+    for i, (k, v) in enumerate(DFIELDS):
+        y = 170 + i*130
+        d.text((48, y), k.upper(), font=F("Inter-SemiBold.otf", 20), fill=MUTE)
+        n = max(0, min(len(v), left)); left -= len(v)
+        active = 0 < n < len(v) or (n == 0 and left + len(v) == 0 and i > 0 and False)
+        d.rounded_rectangle((40, y + 30, w - 40, y + 100), 16, fill=TINT, outline=BLUE if 0 < n < len(v) else (210, 212, 228), width=3)
+        s = v[:n]
+        col = BLUE if s.endswith("✓") else INK
+        d.text((66, y + 46), s, font=F("InterDisplay-SemiBold.otf", 36), fill=col)
+        if 0 < n < len(v) or (n == 0 and nchars == sum(len(x) for _, x in DFIELDS[:i]) and nchars < DTOTAL):
+            x = 66 + F("InterDisplay-SemiBold.otf", 36).getlength(s) + 4
+            d.rectangle((x, y + 44, x + 4, y + 88), fill=BLUE)
+    done = nchars >= DTOTAL
+    bx0, by0, bx1, by1 = w - 440, h - 112, w - 40, h - 36
+    col = (0, 104, 160) if pressed else (BLUE if done else (190, 194, 214))
+    d.rounded_rectangle((bx0 + (6 if pressed else 0), by0 + (4 if pressed else 0), bx1 - (6 if pressed else 0), by1), 38, fill=col)
+    d.text(((bx0 + bx1)/2, (by0 + by1)/2 + 2), "Retire application", font=F("Inter-SemiBold.otf", 32), fill=(255, 255, 255), anchor="mm")
+    d.text((48, h - 88), "All checks passed" if done else "Filling in…", font=F("Inter-SemiBold.otf", 28), fill=BLUE if done else MUTE)
+    return im
