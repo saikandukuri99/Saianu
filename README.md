@@ -2,7 +2,11 @@
 
 **Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
 
-- **v8 (current, the manager's pick):** based on "Version 3" (the red/indigo look with 3D particles, trigger cards and legacy windows). Only two moments change:
+- **v9 (current):** v8 with three changes:
+  - **0:26-0:30:** three source data icons (table, spreadsheet file, stacked files) replace the ERP window, fly into the Preservation Zone and disappear.
+  - **Preservation Zone:** the left tick list is removed, so only the blue legal-check blocks remain.
+  - **Data Ask:** the answer reads "ABC Supplies, XYZ Industries, and PQR Enterprises.", with smaller sources below.
+- **v8:** based on "Version 3" (the red/indigo look with 3D particles, trigger cards and legacy windows). Only two moments change:
   - **~0:29, Preservation Zone:** a Validation Report and a Governance Policy screen, plus legal-check blocks (VALIDATED, QUALITY CHECKED, RETENTION SET, LEGAL HOLD) that drop in and stack into a "Legal & compliance checks" tower as each check fires.
   - **~0:38, switch-off:** ERP module icons (GL, AP, PO, HR, INV) pop in around the ERP window. A Decommission Request screen fills its fields live (application, records preserved, licenses, servers), then "Retire application" is clicked and the ERP window and its modules power off.
 
