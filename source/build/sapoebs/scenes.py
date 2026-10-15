@@ -19,16 +19,16 @@ def kicker(c, label, x, y, t0, t, color=SKY, bar=RED, anchor="l"):
 
 def words(c, items, x, y, size, times, t, kind="d", weight="Bold", anchor="l", gap=.27, rise=22):
     """items: (text, color, chip_color|None). each word eases up at its time; chips sweep in behind with roomy padding."""
-    f = font(kind, weight, size); sp = size * gap; padc = int(size * .42)
+    f = font(kind, weight, size); sp = size * gap; padc = int(size * .5)
     ws = [f.getlength(it[0]) + (2 * padc if it[2] else 0) for it in items]
     tot = sum(ws) + sp * (len(items) - 1)
     cx = x - tot / 2 if anchor == "c" else x
-    asc = f.getmetrics()[0]; ch = int(size * 1.42)
+    asc = f.getmetrics()[0]; ch = int(size * 1.62)
     for it, w, ti in zip(items, ws, times):
         a = E(pr(t, ti, .30)); dy = (1 - a) * rise
         if it[2]:
             sw = E(pr(t, ti + .05, .36)); cw = int(w * sw) // 6 * 6
-            yc = y + asc - .363 * size + dy                      # middle of the capitals = middle of the chip
+            yc = y + asc - .363 * size + .07 * size + dy             # middle of the capitals (nudged for descenders) = middle of the chip
             if cw > 4: c.blit(BAR(cw, ch, it[2]), cx, yc - ch / 2, a, 1.0)
             c.text(it[0], cx + padc, y + dy, kind, weight, size, WHITE, a)
         else:
@@ -59,26 +59,26 @@ def scene_A(c, t):
     L1 = [("SAP", WHITE, BLUE), ("and", TXT, None), ("Oracle", WHITE, RED), ("E-Business", WHITE, None), ("Suite", WHITE, None)]
     T1 = [cue(0, k) - .1 for k in ("S A P", "and", "Oracle", "E Business", "Suite")]
     size = 104
-    while sum(tw(i[0], "d", "Bold", size) + (2 * int(size * .42) if i[2] else 0) for i in L1) + size * .27 * 4 > 1640: size -= 2
+    while sum(tw(i[0], "d", "Bold", size) + (2 * int(size * .5) if i[2] else 0) for i in L1) + size * .27 * 4 > 1640: size -= 2
     words(c, L1, 960, 350, size, T1, t, anchor="c")
     L2 = [("run", WHITE, None), ("the", WHITE, None), ("business.", WHITE, None)]
     T2 = [cue(0, "run") - .1, cue(0, "the business") - .1, cue(0, "business.") - .1]
-    tot = words(c, L2, 960, 490, 128, T2, t, anchor="c")
+    tot = words(c, L2, 960, 525, 128, T2, t, anchor="c")
     # animated underline under 'business.' (blue -> red)
     f = font("d", "Bold", 128); bw = f.getlength("business."); bx = 960 + tot / 2 - bw
     k = E(pr(t, T2[2] + .25, .6)); uw = int(bw * k)
     if uw > 6:
         h = int(uw * .55) // 6 * 6
-        c.blit(BAR(max(6, h), 10, BLUE), bx, 650, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 10, RED), bx + h - 6, 650, 1)
+        c.blit(BAR(max(6, h), 10, BLUE), bx, 690, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 10, RED), bx + h - 6, 690, 1)
     # module chips: the business that SAP / Oracle run
     mods = ["FINANCE", "SUPPLY CHAIN", "SALES", "PROCUREMENT", "MANUFACTURING", "HR"]
     ws = [tw(m, "i", "Bold", 21, 5) + 56 for m in mods]; tot = sum(ws) + 18 * (len(mods) - 1); x = 960 - tot / 2
     t0 = cue(0, "run") + .05
     for i, (m, w) in enumerate(zip(mods, ws)):
         a = E(pr(t, t0 + i * .16, .4)); col = BLUE if i % 2 == 0 else RED
-        c.card(x, 770 + (1 - a) * 14, w, 52, a, outline=col + (170,), fill=CARD + (190,), r=26)
-        c.blit(CIRCLE(10, col + (255,), glow=col), x + 26, 796 + (1 - a) * 14, a, 1, True)
-        ctext(c, m, x + 42, 796 + (1 - a) * 14, "i", "Bold", 21, TXT, a, track=5)
+        c.card(x, 800 + (1 - a) * 14, w, 52, a, outline=col + (170,), fill=CARD + (190,), r=26)
+        c.blit(CIRCLE(10, col + (255,), glow=col), x + 26, 826 + (1 - a) * 14, a, 1, True)
+        ctext(c, m, x + 42, 826 + (1 - a) * 14, "i", "Bold", 21, TXT, a, track=5)
         x += w + 18
 
 # --------------------------------------------------------------------------- B  (HEAD) the challenge
@@ -99,11 +99,11 @@ def db_rows(c, x, y, w, n, t, t_from, t_to, hot_color, row_h=25, pitch=33, label
 def scene_B(c, t):
     kicker(c, "THE CHALLENGE", 120, 205, .0 + 3.5, t)
     T0 = cue(1, "years") - .1
-    words(c, [("Years", WHITE, None), ("of", WHITE, None)], 120, 248, 92, [T0, T0 + .12], t)
-    words(c, [("inactive", WHITE, RED), ("data", WHITE, None)], 120, 368, 92, [cue(1, "inactive") - .15, cue(1, "data") - .05], t)
+    words(c, [("Years", WHITE, None), ("of", WHITE, None)], 120, 232, 92, [T0, T0 + .12], t)
+    words(c, [("inactive", WHITE, RED), ("data", WHITE, None)], 120, 378, 92, [cue(1, "inactive") - .15, cue(1, "data") - .05], t)
     items = [("Bloating databases", "db", cue(1, "bloating")), ("Slowing performance", "clock", cue(1, "slowing")), ("Driving up costs", "dollar", cue(1, "driving up"))]
     for i, (lab, ic, ti) in enumerate(items):
-        a = E(pr(t, ti - .12, .4)); yy = 520 + i * 90
+        a = E(pr(t, ti - .12, .4)); yy = 538 + i * 90
         pill(c, 120 + (1 - a) * -40, yy, 600, 72, lab, ic, RED, a, ti, t, 34)
     # planning a move
     tm = cue(1, "planning a move") - .1; a = E(pr(t, tm, .4))
@@ -295,9 +295,9 @@ def scene_F(c, t):
     t0 = line_t(5)[0]
     kicker(c, "POLICY-DRIVEN ARCHIVING", 120, 190, t0 - .05, t, bar=BLUE)
     words(c, [("Inactive", WHITE, RED), ("data", WHITE, None)], 120, 240, 84, [t0 - .05, t0 + .2], t)
-    words(c, [("moves", WHITE, None), ("out", WHITE, None), ("on", WHITE, None), ("policy.", WHITE, BLUE)], 120, 348, 84,
+    words(c, [("moves", WHITE, None), ("out", WHITE, None), ("on", WHITE, None), ("policy.", WHITE, BLUE)], 120, 372, 84,
           [cue(5, "moves") - .1, cue(5, "out") - .1, cue(5, "on policy") - .1, cue(5, "policy") - .1], t)
-    ta = t0 + .2; fa = E(pr(t, ta, .6)); y0 = 490; h0 = 220
+    ta = t0 + .2; fa = E(pr(t, ta, .6)); y0 = 528; h0 = 220
     PX, AX, RW, RH, SY, ST = 176, 1436, 308, 24, y0 + 52, 31
     gx = 960
     # frames
@@ -327,14 +327,14 @@ def scene_F(c, t):
     for i, (lab, ic, ti) in enumerate(bl):
         a = E(pr(t, ta + .6 + i * .12, .5)); on = E(pr(t, ti - .05, .45)); col = RED if i == 2 else BLUE
         x = 150 + i * 560
-        c.card(x, 775, 500, 104, a, outline=mix((60, 80, 140), col, on) + (int(lerp(100, 240, on)),), fill=CARD + (int(lerp(180, 238, on)),))
-        c.blit(CIRCLE(68, col + (int(lerp(70, 255, on)),)), x + 62, 827, a, 1, True); c.icon(ic, x + 62, 827, 38, WHITE, a)
-        ctext(c, lab, x + 118, 827, "d", "Bold", 40, mix(TXT, WHITE, on), a)
-        if on > .5: c.icon("check", x + 462, 827, 30, mix(SKY, WHITE, .2), a * on)
+        c.card(x, 808, 500, 104, a, outline=mix((60, 80, 140), col, on) + (int(lerp(100, 240, on)),), fill=CARD + (int(lerp(180, 238, on)),))
+        c.blit(CIRCLE(68, col + (int(lerp(70, 255, on)),)), x + 62, 860, a, 1, True); c.icon(ic, x + 62, 860, 38, WHITE, a)
+        ctext(c, lab, x + 118, 860, "d", "Bold", 40, mix(TXT, WHITE, on), a)
+        if on > .5: c.icon("check", x + 462, 860, 30, mix(SKY, WHITE, .2), a * on)
     tl = cue(5, "for as long") - .1; a = E(pr(t, tl, .5)); k = E(pr(t, tl, 2.4))
-    c.blit(BAR(1620, 4, (40, 64, 124)), 150, 940, a); c.blit(BAR(max(6, int(1620 * k)) // 6 * 6, 4, BLUE), 150, 940, a)
-    c.blit(CIRCLE(22, WHITE + (255,), glow=BLUE), 150 + 1620 * k, 942, a, 1, True)
-    c.text("FOR AS LONG AS YOU NEED IT", 150, 968, "i", "Bold", 18, SKY, a, track=6)
+    c.blit(BAR(1620, 4, (40, 64, 124)), 150, 970, a); c.blit(BAR(max(6, int(1620 * k)) // 6 * 6, 4, BLUE), 150, 970, a)
+    c.blit(CIRCLE(22, WHITE + (255,), glow=BLUE), 150 + 1620 * k, 972, a, 1, True)
+    c.text("FOR AS LONG AS YOU NEED IT", 150, 996, "i", "Bold", 18, SKY, a, track=6)
 
 # --------------------------------------------------------------------------- DA  (BODY) Data Ask: ask in plain language, cited answers
 QUESTION = "How much did Tarrow Freight bill us in FY2012?"
@@ -349,15 +349,15 @@ def scene_DA(c, t):
     g0 = c.ga; c.ga = g0 * (1 - E(pr(t, t2 - .35, .35)))
     if c.ga > .004:
         words(c, [("Ask", WHITE, None), ("in", WHITE, None), ("plain", WHITE, None)], 120, 285, 84, [cue(6, "Ask") - .1, cue(6, "plain") - .3, cue(6, "plain") - .1], t)
-        words(c, [("language.", WHITE, BLUE)], 120, 395, 84, [cue(6, "language") - .15], t)
+        words(c, [("language.", WHITE, BLUE)], 120, 412, 84, [cue(6, "language") - .15], t)
     c.ga = g0
     if t > t2 - .3:
         words(c, [("Every", WHITE, None), ("answer", WHITE, None)], 120, 285, 84, [cue(7, "Every") - .1, cue(7, "answer") - .1], t)
-        words(c, [("cites", WHITE, None), ("its", WHITE, None), ("source.", WHITE, RED)], 120, 395, 84, [cue(7, "cites") - .1, cue(7, "its source") - .1, cue(7, "source") - .1], t)
+        words(c, [("cites", WHITE, None), ("its", WHITE, None), ("source.", WHITE, RED)], 120, 412, 84, [cue(7, "cites") - .1, cue(7, "its source") - .1, cue(7, "source") - .1], t)
     pills = [("Data Ask", "search", BLUE, cue(6, "Data Ask") - .1), ("Cites its source", "doc", RED, cue(7, "cites its") - .05),
              ("Permission-checked", "shield", BLUE, cue(7, "permission") - .1), ("Audit-logged", "lock", RED, cue(7, "audit") - .1)]
     for i, (lab, ic, col, ti) in enumerate(pills):
-        a = E(pr(t, ti - .1, .4)); on = E(pr(t, ti, .35)); yy = 590 + i * 92
+        a = E(pr(t, ti - .1, .4)); on = E(pr(t, ti, .35)); yy = 610 + i * 92
         c.card(120 - (1 - a) * 40, yy, 560, 72, a, outline=mix((60, 80, 140), col, on) + (int(lerp(110, 235, on)),), fill=CARD + (int(lerp(190, 238, on)),), r=36)
         c.blit(CIRCLE(52, col + (255,)), 120 + 36 - (1 - a) * 40, yy + 36, a, 1, True); c.icon(ic, 156 - (1 - a) * 40, yy + 36, 28, WHITE, a)
         ctext(c, lab, 196 - (1 - a) * 40, yy + 36, "i", "Bold", 32, mix(TXT, WHITE, on), a)
@@ -483,7 +483,7 @@ EDGES = [(0, 11), (11, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8
          (13, 1), (13, 3), (10, 5), (9, 6), (14, 7), (15, 5), (15, 6), (10, 2), (11, 14)]
 def scene_I(c, t):
     t0 = line_t(10)[0]
-    words(c, [("Your", WHITE, None), ("ERP", WHITE, None), ("history", WHITE, None), ("becomes", WHITE, None)], 960, 112, 80,
+    words(c, [("Your", WHITE, None), ("ERP", WHITE, None), ("history", WHITE, None), ("becomes", WHITE, None)], 960, 98, 80,
           [cue(10, "Your") - .1, cue(10, "ERP") - .1, cue(10, "history") - .1, cue(10, "becomes") - .1], t, anchor="c")
     words(c, [("AI-ready", WHITE, BLUE), ("data", WHITE, None)], 960, 232, 128, [cue(10, "AI-ready") - .12, cue(10, "data") - .08], t, anchor="c")
     ta = t0; fa = E(pr(t, ta, .6)); tb = cue(10, "becomes")
@@ -537,8 +537,8 @@ def scene_J(c, t):
     c.text("SOLIX", xx, 250, "d", "Bold", 156, WHITE, a, track=14); c.text("Cloud", xx + wS + 14, 250, "d", "Bold", 156, SKY, a)
     c.blit(BAR(int(wS + wC + 14) * 1 // 6 * 6, 8, BLUE), xx, 450, a); c.blit(BAR(int((wS + wC + 14) * .32) // 6 * 6, 8, RED), xx + (wS + wC + 14) * .68, 450, a)
     t1 = cue(11, "Built for S A P") - .12; t2 = cue(11, "Built for Oracle") - .1
-    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("SAP.", WHITE, BLUE)], 960, 520, 104, [t1, t1 + .1, t1 + .22], t, anchor="c")
-    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("Oracle.", WHITE, RED)], 960, 660, 104, [t2, t2 + .1, t2 + .22], t, anchor="c")
+    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("SAP.", WHITE, BLUE)], 960, 505, 90, [t1, t1 + .1, t1 + .22], t, anchor="c")
+    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("Oracle.", WHITE, RED)], 960, 685, 90, [t2, t2 + .1, t2 + .22], t, anchor="c")
     c.ga = g0
     # end card
     ea = E(pr(t, tend + .15, .8))
