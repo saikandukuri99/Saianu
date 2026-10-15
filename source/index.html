@@ -1,0 +1,653 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-700-normal.woff2);font-weight:700}
+:root{--blue:#0088cf;--red:#ee2424;--purple:#30267b}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;background:transparent;overflow:hidden;font-family:Inter,sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+.a{position:absolute;will-change:transform,opacity}
+#stage{position:absolute;inset:0;perspective:2200px}
+.mono{font-family:JBM,monospace}
+.lbl{font-family:JBM;font-size:15px;font-weight:500;letter-spacing:.22em;color:var(--blue);text-transform:uppercase}
+.hl{position:relative;display:inline-block;padding:0 .12em;margin:0 -.04em}
+.hl>i{position:absolute;left:0;right:0;top:.12em;bottom:.04em;background:var(--purple);border-radius:.08em;transform-origin:left center;transform:scaleX(0)}
+.hl>span{position:relative}
+.pline{height:5px;background:var(--red);border-radius:3px;transform-origin:left center}
+/* cold open */
+.q{font-size:56px;font-weight:500;letter-spacing:-.01em;white-space:nowrap}
+.q .lbl{display:block;margin-bottom:14px;font-size:14px}
+.cur{display:inline-block;width:3px;height:.9em;background:var(--red);margin-left:4px;vertical-align:-.08em}
+#log{left:0;top:0;width:1920px;height:1080px;overflow:hidden;font-family:JBM;font-size:15px;line-height:30px;color:#fff;white-space:pre}
+/* receipt */
+#printer{left:610px;top:836px;width:700px;height:64px;border-radius:12px;background:linear-gradient(#1a2348,#0d1430);box-shadow:0 20px 50px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08)}
+#printer .slot{position:absolute;left:70px;right:70px;top:14px;height:6px;border-radius:3px;background:#05081a}
+#printer .led{position:absolute;right:28px;top:34px;width:8px;height:8px;border-radius:50%;background:#3ad07a;box-shadow:0 0 8px #3ad07a}
+#printer .pt{position:absolute;left:28px;top:36px;font-family:JBM;font-size:10px;letter-spacing:.25em;color:rgba(255,255,255,.35)}
+#rclip{left:660px;top:0;width:600px;height:852px;overflow:hidden}
+#paper{position:absolute;left:40px;bottom:0;width:520px;background:#f5f2ea;color:#1b1c26;padding:30px 34px 26px;font-family:JBM;font-size:15px;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);clip-path:polygon(0 8px,4% 0,8% 8px,12% 0,16% 8px,20% 0,24% 8px,28% 0,32% 8px,36% 0,40% 8px,44% 0,48% 8px,52% 0,56% 8px,60% 0,64% 8px,68% 0,72% 8px,76% 0,80% 8px,84% 0,88% 8px,92% 0,96% 8px,100% 0,100% 100%,0 100%)}
+.rsm{font-size:10.5px;letter-spacing:.16em;color:#6b6d78}
+.rtitle{font-family:Inter;font-weight:800;font-size:36px;letter-spacing:.01em;margin:8px 0 6px;position:relative;display:inline-block}
+.rdiv{border-top:1.5px dashed #b9b6ad;margin:16px 0 12px}
+.rl{display:flex;justify-content:space-between;height:34px;align-items:center;position:relative;white-space:nowrap}
+.rl .dots{flex:1;border-bottom:1.5px dotted #a9a69c;margin:0 10px;transform:translateY(4px)}
+.rl.red{color:var(--red)}
+.rl.bold{font-weight:700}
+.strike{position:absolute;left:-6px;right:-6px;top:50%;height:3px;background:var(--red);transform-origin:left;transform:scaleX(0)}
+#stamp{left:0;top:0;font-family:Inter;font-weight:900;font-size:64px;letter-spacing:.06em;color:var(--red);border:6px solid var(--red);border-radius:10px;padding:2px 22px;transform-origin:center}
+/* wall */
+#wall{left:260px;top:300px;width:1400px;height:560px;transform-origin:50% 0%}
+.f{position:absolute;width:150px;text-align:center}
+.f svg{width:54px;height:68px;display:block;margin:0 auto 10px}
+.f .fn{font-size:13px;color:rgba(255,255,255,.82);font-weight:500}
+.f .fy{font-family:JBM;font-size:11px;color:rgba(255,255,255,.45);margin-top:3px}
+.f .tag{position:absolute;left:50%;top:-30px;transform:translateX(-50%);white-space:nowrap;font-family:JBM;font-size:10.5px;font-weight:700;letter-spacing:.1em;color:#fff;background:var(--red);padding:4px 8px;border-radius:4px;opacity:0}
+#beam{left:0;width:100%;height:3px;background:var(--blue);box-shadow:0 0 18px 4px rgba(0,136,207,.6)}
+#search{left:560px;top:170px;width:800px;height:64px;border-radius:32px;background:rgba(255,255,255,.96);color:#1b1c26;display:flex;align-items:center;padding:0 28px;font-size:22px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+#search .ic{width:22px;height:22px;border:2.5px solid #8a8d99;border-radius:50%;margin-right:18px;position:relative;flex:none}
+#search .ic:after{content:'';position:absolute;width:9px;height:2.5px;background:#8a8d99;right:-8px;bottom:-4px;transform:rotate(45deg)}
+#search .as{margin-left:auto;font-family:JBM;font-size:11px;letter-spacing:.2em;color:#8a8d99}
+#chip{left:735px;top:862px;padding:0 0;font-size:24px;font-weight:600;display:flex;align-items:center;gap:14px;white-space:nowrap}
+#chip b{width:12px;height:12px;border-radius:50%;background:var(--red);display:inline-block}
+/* turn */
+.turn{font-size:68px;font-weight:600;line-height:1.18;letter-spacing:-.015em}
+.w{display:inline-block}
+/* lockup */
+.lock{display:flex;align-items:center;gap:26px;white-space:nowrap}
+.lock img{display:block}
+.lock .tx{font-size:92px;letter-spacing:-.01em;line-height:1}
+.lock .tx b{font-weight:800}.lock .tx span{font-weight:400}
+.ecs{position:relative;display:inline-block}
+/* chapter */
+.chap .lbl{margin-bottom:22px}
+.chap h1{font-size:110px;font-weight:800;letter-spacing:-.025em;line-height:1}
+.chap .pl{width:90px;margin:28px 0 30px}
+.chap p{font-size:26px;line-height:1.45;color:rgba(255,255,255,.82);font-weight:500}
+.chap p.m{color:rgba(255,255,255,.58);margin-top:18px;font-size:22px}
+/* app window */
+.win{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 50px 100px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.06);color:#1d2433;transform-origin:0% 50%}
+.top{height:52px;border-bottom:1px solid #e6e9f0;display:flex;align-items:center;padding:0 20px;gap:12px;font-size:14px}
+.top img{height:20px}
+.top .brand{font-weight:800;letter-spacing:.04em;font-size:15px}.top .brand span{font-weight:400;color:#8a90a0;margin:0 6px}
+.top .srch{margin-left:40px;width:300px;height:32px;border-radius:8px;background:#f2f4f8;color:#9aa0ad;font-size:13px;display:flex;align-items:center;padding:0 12px}
+.top .av{margin-left:auto;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.side{position:absolute;left:0;top:52px;bottom:0;width:210px;background:#f6f8fb;border-right:1px solid #e6e9f0;padding:18px 0;font-size:14px;color:#4a5263}
+.side div{padding:10px 22px;position:relative}
+.side .on{color:var(--blue);font-weight:600;background:#e8f3fa}
+.side .on:before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--blue)}
+.side .h{font-size:10.5px;letter-spacing:.16em;color:#9aa0ad;padding-top:16px;font-weight:600}
+.body{position:absolute;left:210px;right:0;top:52px;bottom:0;padding:22px 28px}
+.crumb{font-size:13px;color:#7a8191;margin-bottom:6px}
+.crumb b{color:#1d2433;font-weight:600}
+.ttl{font-size:24px;font-weight:700;margin-bottom:18px}
+.tbl{width:100%;font-size:14px}
+.tr{display:flex;align-items:center;height:46px;border-bottom:1px solid #eef0f4;padding:0 6px;position:relative}
+.tr.hd{height:34px;font-size:11px;letter-spacing:.12em;color:#9aa0ad;font-weight:600}
+.tr .c1{flex:1;display:flex;align-items:center;gap:12px}.tr .c2{width:150px;color:#7a8191}.tr .c3{width:170px}
+.pdf{width:22px;height:28px;border-radius:3px;background:#e2403a;color:#fff;font-size:7px;font-weight:800;display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;flex:none}
+.chp{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:600;white-space:nowrap}
+.chp.blue{background:#e3f2fb;color:#006aa3}.chp.amber{background:#fff1d6;color:#9a6200}.chp.green{background:#e2f6ea;color:#1c7a45}.chp.redc{background:#fde6e6;color:#c41c1c}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 20px;border-radius:8px;background:var(--blue);color:#fff;font-size:14px;font-weight:600}
+.btn.ghost{background:#fff;color:#4a5263;border:1px solid #d9dde6}
+.modal{background:#fff;border-radius:12px;box-shadow:0 30px 70px rgba(10,20,50,.35),0 0 0 1px #e6e9f0;padding:24px 26px;width:440px;color:#1d2433}
+.modal h3{font-size:18px;margin-bottom:16px}
+.fld{margin-bottom:14px}.fld label{display:block;font-size:12px;color:#7a8191;margin-bottom:6px;font-weight:500}
+.fld .in{height:38px;border:1px solid #d9dde6;border-radius:8px;display:flex;align-items:center;padding:0 12px;font-size:14px}
+.tog{display:flex;align-items:center;gap:12px;font-size:14px;margin:6px 0 20px}
+.tog i{width:40px;height:22px;border-radius:11px;background:var(--blue);position:relative}
+.tog i:after{content:'';position:absolute;right:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff}
+.toast{background:#1d2433;color:#fff;border-radius:10px;padding:14px 20px;font-size:15px;font-weight:500;display:flex;align-items:center;gap:12px;box-shadow:0 20px 40px rgba(0,0,0,.3);white-space:nowrap}
+.toast b{width:20px;height:20px;border-radius:50%;background:#2fb36b;display:inline-flex;align-items:center;justify-content:center;font-size:12px}
+#audit{background:#0b1022;border-radius:12px;box-shadow:0 30px 60px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.08);padding:18px 24px;font-family:JBM;font-size:14px;color:rgba(255,255,255,.85)}
+#audit .ah{font-size:11px;letter-spacing:.24em;color:rgba(255,255,255,.5);margin-bottom:12px;position:relative;display:inline-block}
+#audit .ar{display:flex;gap:22px;height:28px;align-items:center;white-space:nowrap}
+#audit .ar .t{color:rgba(255,255,255,.4)}#audit .ar .k{width:70px;font-weight:700;color:var(--blue)}#audit .ar .k.r{color:#ffb020}
+.card{background:#fff;border-radius:14px;box-shadow:0 40px 80px rgba(0,0,0,.45);color:#1d2433;padding:22px 26px}
+.notice{display:flex;gap:10px;margin:14px 0 16px}
+.notice div{flex:1;height:34px;border-radius:8px;border:1px solid #e1e5ec;font-size:12px;font-weight:600;color:#9aa0ad;display:flex;align-items:center;justify-content:center;gap:6px}
+.notice div.on{border-color:#f0b54a;background:#fff6e3;color:#9a6200}
+/* server */
+#server{left:690px;top:250px;width:190px;height:470px;border-radius:12px;background:linear-gradient(#1b2244,#0e1430);box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.08);padding:18px 16px}
+#server .sl{font-family:JBM;font-size:11px;letter-spacing:.18em;color:rgba(255,255,255,.75);font-weight:700}
+#server .st{font-family:JBM;font-size:11px;letter-spacing:.18em;margin:6px 0 16px;color:#3ad07a;font-weight:700}
+#server .u{height:30px;border-radius:5px;background:rgba(255,255,255,.05);margin-bottom:9px;display:flex;align-items:center;padding:0 10px;gap:7px}
+#server .u i{width:6px;height:6px;border-radius:50%;background:#3ad07a;box-shadow:0 0 6px #3ad07a}
+#server .u em{flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-left:8px}
+.pst{position:absolute;width:80px;text-align:center;font-family:JBM;font-size:10.5px;color:rgba(255,255,255,.7)}
+.pst svg{width:40px;height:50px;display:block;margin:0 auto 6px}
+.env{position:absolute;left:0;top:0;width:26px;height:18px;border-radius:3px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.35)}
+.env:after{content:'';position:absolute;left:3px;right:3px;top:2px;height:9px;border-left:1.5px solid #9aa0ad;border-bottom:1.5px solid #9aa0ad;transform:skewY(0);clip-path:polygon(0 0,100% 0,50% 100%);background:#e8ebf2}
+#brow .top{background:#eef1f6}
+#brow .dots3{display:flex;gap:7px}#brow .dots3 i{width:11px;height:11px;border-radius:50%;background:#d0d4dd}
+#brow .url{margin-left:18px;flex:1;max-width:520px;height:30px;border-radius:15px;background:#fff;color:#5a6273;font-size:13px;display:flex;align-items:center;padding:0 14px}
+.scr{position:absolute;left:0;right:0;top:52px;bottom:0;background:#fff}
+.stack div{font-size:66px;font-weight:700;letter-spacing:-.02em;line-height:1.14}
+#cursor{left:0;top:0;width:26px;height:34px}
+#logo{right:54px;top:42px;width:200px}
+.ev{font-family:JBM;font-size:14px;letter-spacing:.2em;color:rgba(255,255,255,.7);white-space:nowrap}
+</style></head><body>
+<div id="stage">
+
+<!-- ============ S1 COLD OPEN ============ -->
+<div id="s1" class="a" style="inset:0">
+  <div id="log" class="a"></div>
+  <div id="q1" class="a q" style="left:240px;top:250px"><span class="lbl">The Auditor</span><span class="tx"></span><i class="cur"></i></div>
+  <div id="q2" class="a q" style="left:1010px;top:430px"><span class="lbl">Counsel</span><span class="tx"></span><i class="cur"></i></div>
+  <div id="q3" class="a q" style="left:420px;top:620px"><span class="lbl">The Examiner</span><span class="tx"></span><i class="cur"></i></div>
+  <div id="prove" class="a" style="left:0;width:1920px;top:430px;text-align:center;font-size:156px;font-weight:800;letter-spacing:-.035em">Prove it.</div>
+</div>
+<div id="pl1" class="a pline" style="left:700px;top:640px;width:520px"></div>
+
+<!-- ============ S2-S4 RECEIPT ============ -->
+<div id="rgroup" class="a" style="inset:0;transform-origin:960px 840px">
+  <div id="rclip" class="a"><div id="paper">
+    <div class="rsm">STATEMENT OF CHARGES · REGULATED TEAM</div>
+    <div class="rtitle">COMPLIANCE <span style="position:relative;display:inline-block">TAX<i id="taxu" class="a pline" style="left:0;bottom:-6px;width:100%;height:5px"></i></span></div>
+    <div class="rsm">BILLED EVERY YEAR · NO END DATE</div>
+    <div class="rdiv"></div>
+    <div class="rl" id="r1"><span>PREMIUM TIER · LEGAL HOLD</span><span class="dots"></span><span>PER SEAT / MO</span><i class="strike"></i></div>
+    <div class="rl" id="r2"><span>CLIENT PORTAL · SEPARATE</span><span class="dots"></span><span>PER SEAT / MO</span><i class="strike"></i></div>
+    <div class="rl" id="r3"><span>ARCHIVE MAINTENANCE</span><span class="dots"></span><span>PER YEAR</span><i class="strike"></i></div>
+    <div class="rl red" id="r4"><span>+ EXPOSURE · FILES PAST SCHEDULE</span><span class="dots"></span><span>PER FILE</span><i class="strike"></i></div>
+    <div id="r5w"><div class="rdiv"></div>
+    <div class="rl bold" id="r5"><span>AMOUNT DUE</span><span class="dots"></span><span>EVERY YEAR</span></div></div>
+    <div id="stamp" class="a" style="left:120px;top:150px">INCLUDED</div>
+  </div></div>
+  <div id="printer" class="a"><div class="slot"></div><div class="pt">PRINTING</div><div class="led"></div></div>
+</div>
+
+<!-- S3 wall -->
+<div id="s3" class="a" style="inset:0">
+  <div id="wall" class="a"><div id="beam" class="a"></div></div>
+  <div id="search" class="a"><i class="ic"></i><span class="tx"></span><i class="cur" style="background:var(--blue)"></i><span class="as">ASSISTANT</span></div>
+  <div id="chip" class="a"><b></b><span>7 files found&nbsp;·&nbsp;<span style="color:#ff6b6b">all past retention</span></span></div>
+</div>
+
+<!-- S4 turn text -->
+<div id="turn" class="a turn" style="left:1010px;top:390px;width:820px"></div>
+
+<!-- S5 lockup -->
+<div id="s5" class="a" style="inset:0">
+  <div id="lock" class="a lock" style="left:0;top:0"><img id="lmark" src="assets/mark.png" style="width:104px;height:104px"><div class="tx"><b>SOLIX</b><span>Cloud</span> <b class="ecs">ECS</b></div></div>
+  <div id="sub" class="a" style="left:0;width:1920px;top:618px;text-align:center;font-size:36px;font-weight:500;color:rgba(255,255,255,.88)"><span class="hl" id="subhl"><i></i><span>Proof</span></span> in every plan.</div>
+</div>
+<div id="pl5" class="a pline" style="left:0;top:0;width:100px"></div>
+
+<!-- S6-S9 chapters (left column) -->
+<div id="ch1" class="a chap" style="left:150px;top:300px;width:520px">
+  <div class="lbl">01 · Exchange with proof</div><h1>Share it.</h1><div class="pline pl"></div>
+  <p id="ch1a">Upload links · Expiring links<br>Every view logged</p><p class="m" id="ch1b">Clients never need a license.</p></div>
+<div id="ch2" class="a chap" style="left:150px;top:300px;width:520px">
+  <div class="lbl">02 · Proof in every plan</div><h1>Keep it.</h1><div class="pline pl"></div>
+  <p id="ch2a">Retention · Legal hold<br>Deletion after approval</p><p class="m" id="ch2b">Included with every plan.</p></div>
+<div id="ch3" class="a chap" style="left:150px;top:300px;width:520px">
+  <div class="lbl">03 · Retire with proof</div><h1>Retire it.</h1><div class="pline pl"></div>
+  <p id="ch3a">Exchange &amp; PST<br>Mapped to owners · Held on arrival</p><p class="m" id="ch3b">Then switch the old archive off.</p></div>
+<div id="ch4" class="a chap" style="left:150px;top:330px;width:620px">
+  <div class="lbl" style="margin-bottom:30px">In the product today</div>
+  <div class="stack"><div id="k1">Published pricing.</div><div id="k2">30-day trial.</div><div id="k3"><span class="hl" id="k3hl"><i></i><span>No card needed.</span></span></div></div></div>
+
+<!-- S6/S7 app window -->
+<div id="appg" class="a" style="inset:0">
+<div id="win" class="a win" style="left:720px;top:190px;width:1060px;height:600px">
+  <div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search documents</div><div class="av">JA</div></div>
+  <div id="side6" class="side"><div class="h">WORKSPACE</div><div>My Documents</div><div class="on">Workgroup &amp; Shared</div><div>Recent</div><div>Favorites</div><div class="h">CLIENTS</div><div>Chen &amp; Co.</div><div>Okafor Family</div><div>Ramirez Household</div></div>
+  <div id="side7" class="side"><div class="h">ADMIN CONSOLE</div><div>Users</div><div>Storage</div><div class="h">GOVERNANCE</div><div>Retention</div><div class="on">Legal Hold</div><div>Classifications</div><div>Audit Reports</div></div>
+  <div id="b6" class="body">
+    <div class="crumb">Workgroup &amp; Shared Content › Clients › <b>Ramirez Household</b></div>
+    <div style="display:flex;align-items:center;margin-bottom:14px"><div class="ttl" style="margin:0">Ramirez Household</div><div style="margin-left:auto;display:flex;gap:10px"><div class="btn ghost">Share</div><div class="btn" id="upbtn">Request upload</div></div></div>
+    <div class="tbl">
+      <div class="tr hd"><div class="c1">NAME</div><div class="c2">MODIFIED</div><div class="c3">RETENTION</div></div>
+      <div id="newrow" class="tr" style="background:#eef7fc"><div class="c1"><span class="pdf">PDF</span><b style="font-weight:600">2026_W-2_Ramirez.pdf</b><span class="chp blue" style="margin-left:6px">Uploaded by client</span></div><div class="c2">Just now</div><div class="c3"><span id="ret7" class="chp green">Retention · 7 yrs</span></div></div>
+      <div id="oldrows">
+      <div class="tr"><div class="c1"><span class="pdf">PDF</span>2025_Form1040_Ramirez.pdf</div><div class="c2">Apr 11, 2026</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+      <div class="tr"><div class="c1"><span class="pdf">PDF</span>Engagement_Letter_2026.pdf</div><div class="c2">Jan 08, 2026</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+      <div class="tr"><div class="c1"><span class="pdf">PDF</span>Bank_Statements_Q4.pdf</div><div class="c2">Dec 30, 2025</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+      <div class="tr"><div class="c1"><span class="pdf">PDF</span>Brokerage_1099_2025.pdf</div><div class="c2">Feb 19, 2026</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div id="b7" class="body">
+    <div class="crumb">Admin Console › Governance › <b>Legal Hold</b></div>
+    <div class="ttl">New legal hold</div>
+    <div style="display:flex;gap:28px">
+      <div style="width:330px">
+        <div class="fld"><label>Policy name</label><div class="in">Litigation hold · Matter 2026-117</div></div>
+        <div class="fld"><label>Scope</label><div class="in">Users</div></div>
+        <div class="fld"><label>Custodian</label><div class="in"><span class="chp blue">J. Alvarez ×</span></div></div>
+        <div class="btn" id="savebtn" style="margin-top:6px">SAVE &amp; APPLY</div>
+      </div>
+      <div style="flex:1">
+        <div style="font-size:12px;color:#7a8191;font-weight:600;letter-spacing:.1em;margin:2px 0 8px">CUSTODIAN FILES · J. ALVAREZ</div>
+        <div class="tr"><div class="c1"><span class="pdf">PDF</span>Vendor_Settlement_Draft.pdf</div><span class="chp amber lh">Legal Hold</span></div>
+        <div class="tr"><div class="c1"><span class="pdf" style="background:#2f6fe0">DOC</span>Board_Minutes_Mar.docx</div><span class="chp amber lh">Legal Hold</span></div>
+        <div class="tr"><div class="c1"><span class="pdf" style="background:#1f9d55">XLS</span>Payments_Ledger_2025.xlsx</div><span class="chp amber lh">Legal Hold</span></div>
+        <div class="tr"><div class="c1"><span class="pdf">PDF</span>Counsel_Memo_0412.pdf</div><span class="chp amber lh">Legal Hold</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="modal" class="a modal" style="left:1100px;top:270px">
+  <h3>Upload request</h3>
+  <div class="fld"><label>Send to</label><div class="in">d.ramirez@example.com</div></div>
+  <div class="fld"><label>Link expires</label><div class="in">In 7 days</div></div>
+  <div class="tog"><i></i>Apply folder retention</div>
+  <div style="display:flex;justify-content:flex-end;gap:10px"><div class="btn ghost">Cancel</div><div class="btn" id="sendbtn">Send request</div></div>
+</div>
+<div id="toast6" class="a toast" style="left:960px;top:720px"><b>✓</b>Upload link sent</div>
+<div id="toast7" class="a toast" style="left:960px;top:720px"><b>✓</b>Legal hold applied successfully.</div>
+<div id="fly" class="a" style="left:0;top:0;display:flex;align-items:center;gap:12px;background:#fff;color:#1d2433;padding:12px 18px;border-radius:10px;box-shadow:0 20px 40px rgba(0,0,0,.35);font-size:15px;font-weight:600"><span class="pdf">PDF</span>2026_W-2_Ramirez.pdf</div>
+<div id="audit" class="a" style="left:790px;top:735px;width:900px">
+  <div class="ah">AUDIT TRAIL · RAMIREZ HOUSEHOLD<i id="auditu" class="a pline" style="left:0;bottom:-8px;width:100%;height:4px"></i></div>
+  <div class="ar" id="a1"><span class="t">09:41:02</span><span class="k">UPLOAD</span><span>guest · d.ramirez</span><span style="color:rgba(255,255,255,.55)">2026_W-2_Ramirez.pdf</span></div>
+  <div class="ar" id="a2"><span class="t">09:41:02</span><span class="k r">RETAIN</span><span>Client Records · 7 years applied</span></div>
+  <div class="ar" id="a3"><span class="t">09:58:17</span><span class="k">VIEW</span><span>j.alvarez</span><span style="color:rgba(255,255,255,.55)">2026_W-2_Ramirez.pdf</span></div>
+  <div class="ar" id="a4"><span class="t">10:12:44</span><span class="k">VIEW</span><span>m.patel</span><span style="color:rgba(255,255,255,.55)">2026_W-2_Ramirez.pdf</span></div>
+</div>
+<div id="rcard" class="a card" style="left:1240px;top:560px;width:500px">
+  <div style="display:flex;align-items:center;gap:10px"><div style="font-size:18px;font-weight:700">Client Records</div><span class="chp green">7 years</span><span class="chp redc" style="margin-left:auto">Delete post approval</span></div>
+  <div class="notice"><div id="nt1">10 days</div><div id="nt2">7 days</div><div id="nt3">1 day</div></div>
+  <div id="pend" style="display:flex;align-items:center;gap:12px;border-top:1px solid #eef0f4;padding-top:14px">
+    <div style="width:36px;height:36px;border-radius:50%;background:#30267b;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center">MP</div>
+    <div><div style="font-size:14px;font-weight:600">Pending approval</div><div style="font-size:12.5px;color:#7a8191">M. Patel · Records Manager</div></div>
+    <div class="btn" id="apbtn" style="margin-left:auto">Approve</div></div>
+</div>
+</div>
+
+<!-- S8 retire -->
+<div id="s8" class="a" style="inset:0">
+  <div id="server" class="a"><div class="sl">EXCHANGE 2016</div><div class="st" id="sst">● ONLINE</div><div id="units"></div></div>
+  <div class="pst a" style="left:668px;top:745px"><svg viewBox="0 0 40 50"><path d="M2 2h24l12 12v34H2z" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"/><path d="M26 2v12h12" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"/></svg>alvarez.pst</div>
+  <div class="pst a" style="left:752px;top:745px"><svg viewBox="0 0 40 50"><path d="M2 2h24l12 12v34H2z" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"/><path d="M26 2v12h12" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"/></svg>okafor.pst</div>
+  <div class="pst a" style="left:836px;top:745px"><svg viewBox="0 0 40 50"><path d="M2 2h24l12 12v34H2z" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"/><path d="M26 2v12h12" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"/></svg>chen.pst</div>
+  <div id="envs" class="a" style="left:0;top:0"></div>
+  <div id="win8" class="a win" style="left:1010px;top:200px;width:780px;height:500px">
+    <div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av" style="margin-left:auto">JA</div></div>
+    <div class="body" style="left:0">
+      <div class="crumb">Migration Manager › <b>Exchange 2016 → Mail Archive</b></div>
+      <div class="ttl" style="margin-bottom:10px">Mailbox migration</div>
+      <div class="tbl" id="mrows"><div class="tr hd"><div class="c1">MAILBOX</div><div style="width:150px">OWNER</div><div style="width:90px;text-align:right">ITEMS</div><div style="width:110px;text-align:right">STATUS</div></div></div>
+    </div>
+  </div>
+  <div id="job" class="a card" style="left:1010px;top:720px;width:780px;padding:16px 24px;display:flex;align-items:center;gap:28px;font-size:16px;font-weight:600">
+    <span style="font-size:12px;letter-spacing:.14em;color:#7a8191">JOB · EXCH-2016</span><span>Mailboxes <span id="mbn">0</span> / 50</span><span id="j2" style="color:#1c7a45">✓ Held on arrival</span><span id="j3" style="color:#1c7a45">✓ Source purged</span></div>
+</div>
+
+<!-- S9 browser -->
+<div id="brow" class="a win" style="left:800px;top:220px;width:960px;height:580px;transform-origin:50% 50%">
+  <div class="top"><div class="dots3"><i></i><i></i><i></i></div><div class="url">ecs.solixcloud.com</div></div>
+  <div class="scr" id="sc1"><div class="body" style="left:0"><div class="crumb">Governance › <b>Audit report builder</b></div><div class="ttl">Audit report · Matter 2026-117</div>
+    <div style="display:flex;gap:10px;margin-bottom:16px"><span class="chp blue">Event: View, Download, Delete</span><span class="chp blue">Custodian: J. Alvarez</span><span class="chp blue">Last 12 months</span></div>
+    <div class="tr hd"><div class="c1">EVENT</div><div class="c2">USER</div><div class="c3">TIME</div></div>
+    <div class="tr"><div class="c1">VIEW · Vendor_Settlement_Draft.pdf</div><div class="c2">m.patel</div><div class="c3">Mar 14 · 09:12</div></div>
+    <div class="tr"><div class="c1">DOWNLOAD · Board_Minutes_Mar.docx</div><div class="c2">j.alvarez</div><div class="c3">Mar 14 · 10:03</div></div>
+    <div class="tr"><div class="c1">HOLD APPLIED · Matter 2026-117</div><div class="c2">admin</div><div class="c3">Mar 15 · 08:30</div></div>
+    <div class="tr"><div class="c1">DELETE REQUEST · Payments_Ledger_2019.xlsx</div><div class="c2">records</div><div class="c3">Mar 18 · 16:41</div></div></div></div>
+  <div class="scr" id="sc2"><div class="body" style="left:0"><div class="crumb">Migration Manager › <b>New migration</b></div><div class="ttl">Migration wizard</div>
+    <div style="display:flex;gap:10px;margin:6px 0 26px">
+      <div style="flex:1;height:6px;border-radius:3px;background:var(--blue)"></div><div style="flex:1;height:6px;border-radius:3px;background:var(--blue)"></div><div style="flex:1;height:6px;border-radius:3px;background:var(--blue)"></div><div style="flex:1;height:6px;border-radius:3px;background:#e1e5ec"></div></div>
+    <div style="font-size:12px;color:#7a8191;font-weight:600;letter-spacing:.1em;margin-bottom:12px">STEP 3 OF 4 · TARGET &amp; POLICY</div>
+    <div class="fld"><label>Source</label><div class="in">Exchange 2016 · mail01.example.local</div></div>
+    <div class="fld"><label>Target</label><div class="in">Mail Archive</div></div>
+    <div class="fld"><label>On arrival</label><div class="in">Apply legal hold · Matter 2026-117</div></div></div></div>
+  <div class="scr" id="sc3"><div class="body" style="left:0"><div class="crumb">Migration Manager › <b>Job report</b></div><div class="ttl">EXCH-2016 · Completed</div>
+    <div style="display:flex;gap:16px;margin-bottom:18px">
+      <div class="card" style="flex:1;box-shadow:0 0 0 1px #e6e9f0;padding:16px"><div style="font-size:12px;color:#7a8191">Mailboxes</div><div style="font-size:30px;font-weight:800">50 / 50</div></div>
+      <div class="card" style="flex:1;box-shadow:0 0 0 1px #e6e9f0;padding:16px"><div style="font-size:12px;color:#7a8191">Items migrated</div><div style="font-size:30px;font-weight:800">184,302</div></div>
+      <div class="card" style="flex:1;box-shadow:0 0 0 1px #e6e9f0;padding:16px"><div style="font-size:12px;color:#7a8191">Held on arrival</div><div style="font-size:30px;font-weight:800;color:#1c7a45">100%</div></div></div>
+    <div class="tr"><div class="c1">Source purged</div><span class="chp green">Complete</span></div>
+    <div class="tr"><div class="c1">Owner mapping verified</div><span class="chp green">Complete</span></div>
+    <div class="tr"><div class="c1">Audit log exported</div><span class="chp green">Complete</span></div></div></div>
+</div>
+<div id="pl9" class="a pline" style="left:0;top:0;width:100px"></div>
+<div id="ts9" class="a mono" style="left:0;top:0;font-size:13px;color:rgba(255,255,255,.55);white-space:nowrap"></div>
+
+<!-- S10 end card -->
+<div id="s10" class="a" style="inset:0">
+  <div id="kp" class="a" style="left:0;width:1920px;top:330px;text-align:center;font-size:118px;font-weight:800;letter-spacing:-.03em"><span class="w" id="kp1">Keep</span> <span class="w" id="kp2">the</span> <span class="w" id="kp3"><span class="hl" id="kphl"><i></i><span>proof.</span></span></span></div>
+  <div id="pl10" class="a pline" style="left:680px;top:500px;width:560px"></div>
+  <div id="lock2" class="a lock" style="left:0;top:0"><img src="assets/mark.png" style="width:62px;height:62px"><div class="tx" style="font-size:54px"><b>SOLIX</b><span>Cloud</span> <b>ECS</b></div></div>
+  <div id="desc" class="a" style="left:0;width:1920px;top:648px;text-align:center;font-size:22px;color:rgba(255,255,255,.75);font-weight:500">Audit-ready document management and archiving for regulated organizations.</div>
+  <div id="cta" class="a" style="left:0;width:1920px;top:712px;text-align:center;font-size:26px;font-weight:600">Start a 30-day trial. No card needed. <span style="color:rgba(255,255,255,.4);margin:0 10px">·</span><span style="color:var(--blue)">solix.com</span></div>
+  <div id="ev" class="a ev" style="right:60px;top:1010px">SOLIXEMPOWER 2026 · SAN DIEGO</div>
+</div>
+
+<svg id="cursor" class="a" viewBox="0 0 26 34"><path d="M2 2 L2 27 L8.5 21 L13 31 L17 29.3 L12.6 19.6 L21 19.4 Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg>
+</div>
+<img id="logo" class="a" src="assets/logo.png">
+<div id="cap" class="a" style="left:0;width:1920px;top:962px;text-align:center;font-size:40px;font-weight:600;letter-spacing:-.005em;text-shadow:0 2px 12px rgba(0,0,0,.65),0 0 2px rgba(0,0,0,.5)"></div>
+
+<script src="cues.js"></script><script src="capdata.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const E={l:x=>x,io:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,o:x=>1-Math.pow(1-x,3),i:x=>x*x*x,
+ o5:x=>1-Math.pow(1-x,5),ob:x=>{const c=1.4,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)}};
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const R=(t,a,b,e=E.io)=>t<=a?0:t>=b?1:e((t-a)/(b-a));
+const L=(a,b,p)=>a+(b-a)*p;
+const V=(t,a,b,fi=.35,fo=.35,e=E.io)=>R(t,a,a+fi,e)*(1-R(t,b-fo,b,e));
+const ws=(k,i)=>CUES[k][i][1], we=(k,i)=>CUES[k][i][2];
+const lineEnd=k=>CUES[k][CUES[k].length-1][2];
+function S(el,o={}){const {op=1,x=0,y=0,s=1,sx=null,sy=null,r=0,b=0,rx=0,ry=0}=o;
+ el.style.opacity=op; el.style.visibility=op<=0.002?'hidden':'';
+ el.style.transform=`translate(${x}px,${y}px) rotateX(${rx}deg) rotateY(${ry}deg) rotate(${r}deg) scale(${sx??s},${sy??s})`;
+ el.style.filter=b>0.05?`blur(${b}px)`:'none';}
+const hide=el=>{el.style.opacity=0;el.style.visibility='hidden'};
+function hlP(el,p){el.querySelector('i').style.transform=`scaleX(${p})`}
+
+/* ---------- build dynamic DOM ---------- */
+// audit log background
+(function(){const names=['2019_TaxReturn_Chen.pdf','Okafor_Trust_Deed.pdf','Payroll_Q3_2021.xlsx','Ramirez_W-2_2022.pdf','Board_Minutes_Mar.docx','Vendor_Contract_88.pdf','Client_KYC_0412.pdf','Engagement_2020.pdf'];
+ const ev=['VIEW    ','DOWNLOAD','SHARE   ','DELETE  ','HOLD    ','RETAIN  ','EXPORT  '];const us=['k.osei','m.patel','j.alvarez','r.singh','l.moreau','admin'];
+ let s='';for(let i=0;i<70;i++){const h=8+(i*7)%10,m=(i*13)%60,sec=(i*29)%60;
+ s+=`2026-0${1+i%9}-${String(10+i%18)}  ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}   ${ev[i%7]}   ${names[(i*3)%8].padEnd(26)}  user: ${us[i%6]}          ${ev[(i+3)%7]}   ${names[(i*5+1)%8].padEnd(26)}  user: ${us[(i+2)%6]}\n`;}
+ $('log').textContent=s;})();
+// file wall
+const FILES=['Chen_Tax_2018.pdf','Okafor_KYC.pdf','Payroll_2019.xlsx','Lee_1040_2017.pdf','Vendor_W9.pdf','Ramirez_Bank.pdf','Board_2020.docx',
+'Patel_Estate.pdf','Invoice_8812.pdf','Moreau_SSN.pdf','Audit_FY19.xlsx','Singh_Trust.pdf','Lease_2016.pdf','Client_List.xlsx',
+'Nguyen_1099.pdf','HR_Files_2018.zip','Kim_Account.pdf','Minutes_2019.docx','Tax_Workpapers.xlsx','Garcia_Will.pdf','Loan_App_2020.pdf',
+'Brokerage_2017.pdf','Osei_Payroll.pdf','Wire_Records.xlsx','Policy_v2.docx','Diaz_Return.pdf','Old_Exports.zip','Statements_19.pdf'];
+const FLAG={0:'2018',9:'2019',11:'2019',15:'2018',16:'2021',21:'2017',27:'2019'};
+const docSvg=c=>`<svg viewBox="0 0 54 68"><path class="pg" d="M3 3h32l16 16v46H3z" fill="${c}" stroke="rgba(255,255,255,.75)" stroke-width="2.5" stroke-linejoin="round"/><path d="M35 3v16h16" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.5" stroke-linejoin="round"/><path d="M12 32h28M12 40h28M12 48h18" stroke="rgba(255,255,255,.35)" stroke-width="2.5"/></svg>`;
+FILES.forEach((n,i)=>{const r=Math.floor(i/7),c=i%7;const d=document.createElement('div');d.className='f';d.id='f'+i;
+ d.style.left=(c*200+25)+'px';d.style.top=(r*140)+'px';
+ d.innerHTML=docSvg('rgba(255,255,255,.06)')+`<div class="fn">${n}</div><div class="fy">${2016+((i*5)%9)}</div>`+(FLAG[i]?`<div class="tag">PAST RETENTION · ${FLAG[i]}</div>`:'');
+ $('wall').appendChild(d);});
+// server units
+for(let i=0;i<10;i++){const u=document.createElement('div');u.className='u';u.innerHTML='<i></i><i></i><em></em>';$('units').appendChild(u);}
+// migration rows
+const MB=[['alvarez@corp.local','J. Alvarez',4120],['okafor@corp.local','N. Okafor',2988],['chen@corp.local','W. Chen',6311],['patel@corp.local','M. Patel',3570],['moreau@corp.local','L. Moreau',1904],['singh@corp.local','R. Singh',5233]];
+MB.forEach((m,i)=>{const d=document.createElement('div');d.className='tr';d.id='m'+i;
+ d.innerHTML=`<div class="c1"><span style="width:22px;height:16px;border-radius:3px;background:#e3f2fb;border:1.5px solid #0088cf;flex:none"></span>${m[0]}</div><div style="width:150px;color:#4a5263">→ ${m[1]}</div><div class="cnt mono" style="width:90px;text-align:right;font-size:13px">0</div><div style="width:110px;text-align:right"><span class="chp amber held">Held</span></div>`;
+ $('mrows').appendChild(d);});
+// envelopes
+for(let i=0;i<14;i++){const e=document.createElement('div');e.className='env';e.id='e'+i;$('envs').appendChild(e);}
+// turn words
+(function(){const lines=[["You","shouldn't","have","to"],["pay","extra","to","prove"],["you","did","the","right","thing."]];
+ let h='';const map=[['n4a',0],['n4a',1],['n4a',2],['n4a',3],['n4a',4],['n4a',5],['n4b',0],['n4b',1],['n4b',2],['n4b',3],['n4b',4],['n4b',5],['n4b',6]];let k=0;
+ lines.forEach(l=>{h+='<div>';l.forEach(w=>{const id='tw'+k;let inner=w;
+  if(k===4) inner='<span class="hl" id="hlpay"><i></i><span>pay extra</span></span>';
+  if(k===5){k++;return;}
+  if(k===7) inner='<span style="color:#0088cf">prove</span>';
+  h+=`<span class="w" id="${id}" data-k="${map[k][0]}" data-i="${map[k][1]}">${inner}</span> `;k++;});h+='</div>';});
+ $('turn').innerHTML=h;})();
+
+const Q=[['q1','c1','Who opened this file?'],['q2','c2','What’s on legal hold?'],['q3','c3','Who approved this deletion?']];
+const TL=[['tw0'],['tw1'],['tw2'],['tw3'],['tw4'],['tw6'],['tw7'],['tw8'],['tw9'],['tw10'],['tw11'],['tw12']];
+
+function centerLock(el,cy){const w=el.offsetWidth,h=el.offsetHeight;el.style.left=(960-w/2)+'px';el.style.top=(cy-h/2)+'px';}
+let lockW=0;
+function setup(){centerLock($('lock'),520);centerLock($('lock2'),590);}
+
+/* ---------- SEEK ---------- */
+function seekG(t){
+ // ===== S1 cold open (0 - 8.1)
+ const proveT=ws('n1',6);
+ const s1v=t<8.4;
+ $('s1').style.visibility=s1v?'':'hidden';
+ if(s1v){
+  const push=L(1,1.06,R(t,0,8.2,E.l));
+  S($('s1'),{s:push});
+  S($('log'),{op:0.045*V(t,0.1,8.0,1.2,.5),y:-L(0,260,t/8.2)});
+  Q.forEach(([id,k,txt],qi)=>{const el=$(id),st=CUES[k][0][1]-0.05,en=lineEnd(k);
+   const n=Math.round(txt.length*R(t,st,en-0.05,E.l));el.querySelector('.tx').textContent=txt.slice(0,n);
+   const cur=el.querySelector('.cur');cur.style.opacity=(t>=st-0.4&&t<en+0.5&&(Math.floor(t*2.4)%2===0||t<en))?1:0;
+   if(qi<2){}
+   // depth: when later questions start, recede
+   let depth=0;for(let j=qi+1;j<3;j++)depth+=R(t,CUES[Q[j][1]][0][1]-0.1,CUES[Q[j][1]][0][1]+0.5);
+   const fall=R(t,proveT-0.35,proveT+0.25,E.i);
+   const op=V(t,st-0.25,99,0.2,0)*L(1,0.38,cl(depth/1.3))*(1-R(t,ws('n1',0),proveT-0.1,E.l)*0.35)*(1-fall);
+   S(el,{op,s:L(1,0.9,cl(depth/2)),b:depth*2.6+fall*6,y:fall*40-depth*8});});
+  const pin=R(t,proveT-0.05,proveT+0.4,E.o5);
+  const pout=R(t,7.75,8.1,E.i);
+  S($('prove'),{op:pin*(1-pout),s:L(1.14,1,pin),b:(1-pin)*10+pout*8,y:-pout*30});
+ }
+ // proof line 1 -> becomes printer slot
+ {const d=R(t,proveT+0.25,proveT+0.85,E.o);const m=R(t,7.8,8.35,E.io);
+  const el=$('pl1');
+  if(t<proveT+0.2||t>8.6){hide(el);}else{
+   const x=L(700,610,m),y=L(640,850,m),w=L(520*d,700,m);
+   el.style.left=x+'px';el.style.top=y+'px';el.style.width=w+'px';S(el,{op:1-R(t,8.3,8.55)});}}
+
+ // ===== RECEIPT (8.0 - 24.4 , turn 24.45-29.8)
+ const rg=$('rgroup');
+ const rStart=8.0, craneT=ws('n3',9)-0.2, cutT=24.40, turnIn=24.45, turnOut=29.85;
+ const lines=[['r1',ws('n2b',0)+0.15],['r2',ws('n2c',0)+0.15],['r3',ws('n2d',0)+0.2],['r4',ws('n3',0)+0.35],['r5w',ws('n3',7)]];
+ const hdrT=8.15;
+ if(t>=rStart&&t<cutT){
+  rg.style.visibility='';
+  // camera: slight tilt and slow push; crane up/out at craneT
+  const cr=R(t,craneT,craneT+1.1,E.io);
+  S(rg,{op:1-cr,rx:L(0,8,R(t,8.2,18,E.l))+cr*20,s:L(1,1.05,R(t,8.2,craneT,E.l))*L(1,.82,cr),y:-cr*380,b:cr*5});
+  $('printer').style.opacity=1;
+  // paper growth: header 150 + lines
+  let h=0;const hp=R(t,hdrT,hdrT+0.9,E.o);h+=hp*150;
+  lines.forEach(([id,lt],i)=>{const p=R(t,lt,lt+0.42,E.o);const lh=(id==='r5w')?62:34;h+=p*lh;
+   const el=$(id);el.style.clipPath=`inset(0 ${100-100*R(t,lt+0.05,lt+0.4,E.l)}% 0 0)`;el.style.visibility=t>lt?'':'hidden';el.style.display='';});
+  const paper=$('paper');paper.style.height=(h+40)+'px';paper.style.visibility=h>0?'':'hidden';
+  // header contents reveal fully by the time pushed out
+  $('taxu').style.transform=`scaleX(${R(t,ws('n2a',4),ws('n2a',4)+0.35,E.o)})`;$('taxu').style.opacity=1;
+  ['r1','r2','r3','r4'].forEach(id=>$(id).querySelector('.strike').style.transform='scaleX(0)');
+  hide($('stamp'));
+  $('paper').style.transform='none';
+ } else if(t>=turnIn&&t<turnOut+0.3){
+  rg.style.visibility='';
+  // finished receipt sits left, no printer
+  const out=R(t,turnOut-0.15,turnOut+0.2,E.i);
+  S(rg,{op:1-out,x:-410,y:-50,r:-2.5,s:0.98,b:out*6});
+  $('printer').style.opacity=0;
+  lines.forEach(([id])=>{$(id).style.clipPath='none';$(id).style.visibility='';});
+  $('paper').style.height='420px';$('paper').style.visibility='';
+  $('taxu').style.transform='scaleX(1)';
+  const st=ws('n4a',4);
+  ['r1','r2','r3','r4'].forEach((id,i)=>$(id).querySelector('.strike').style.transform=`scaleX(${R(t,st+i*0.13,st+i*0.13+0.35,E.o)})`);
+  const stT=ws('n4b',6)+0.22; const sp=R(t,stT,stT+0.16,E.i);
+  const shake=t>stT+0.16&&t<stT+0.4?Math.sin((t-stT)*90)*2.5*(1-R(t,stT+0.16,stT+0.4)):0;
+  S($('stamp'),{op:sp>0?Math.min(1,sp*1.5)*0.92:0,s:L(1.9,1,sp),r:-13,x:shake});
+ } else rg.style.visibility='hidden';
+
+ // ===== S3 wall
+ const s3=$('s3');
+ if(t>=craneT&&t<cutT){
+  s3.style.visibility='';
+  const wi=R(t,craneT+0.1,craneT+1.3,E.o);
+  S($('wall'),{op:wi,rx:L(62,40,wi),y:L(260,0,wi),s:L(.9,1,wi)});
+  const qT=ws('n3',10)-0.25; const sv=R(t,qT-0.3,qT,E.o);
+  S($('search'),{op:sv,y:L(-20,0,sv)});
+  const txt='Find old client records with account numbers';
+  $('search').querySelector('.tx').textContent=txt.slice(0,Math.round(txt.length*R(t,qT,qT+1.05,E.l)));
+  $('search').querySelector('.cur').style.opacity=(Math.floor(t*2.4)%2===0||t<qT+1.05)?1:0;
+  const bS=qT+1.15,bE=bS+0.75;
+  S($('beam'),{op:V(t,bS,bE+0.15,0.1,0.2)});$('beam').style.top=L(-10,560,R(t,bS,bE,E.l))+'px';
+  FILES.forEach((n,i)=>{const r=Math.floor(i/7);const ft=bS+(r*140+40)/570*0.75;const f=$('f'+i);
+   if(FLAG[i]){const p=R(t,ft,ft+0.15,E.o);f.querySelector('.pg').setAttribute('fill',`rgba(238,36,36,${0.06+0.8*p})`);
+    f.querySelector('.tag').style.opacity=p;f.querySelector('.tag').style.transform=`translateX(-50%) translateY(${(1-p)*6}px)`;
+    S(f,{s:1+0.06*Math.sin(Math.PI*p)});}
+   else{f.querySelector('.pg').setAttribute('fill','rgba(255,255,255,.06)');f.style.opacity=L(1,0.55,R(t,bE,bE+0.4));}});
+  const cT=bE+0.1;const cp=R(t,cT,cT+0.3,E.o);S($('chip'),{op:cp,y:L(14,0,cp)});
+ } else s3.style.visibility='hidden';
+
+ // ===== S4 turn text
+ const tu=$('turn');
+ if(t>=turnIn&&t<turnOut+0.3){
+  tu.style.visibility='';tu.style.opacity=1-R(t,turnOut-0.15,turnOut+0.2,E.i);
+  tu.querySelectorAll('.w').forEach(w=>{const st=ws(w.dataset.k,+w.dataset.i)-0.04;const p=R(t,st,st+0.3,E.o);S(w,{op:p,y:L(16,0,p),b:(1-p)*4});});
+  hlP($('hlpay'),R(t,ws('n4a',4)+0.05,ws('n4a',5)+0.25,E.io));
+ } else tu.style.visibility='hidden';
+
+ // ===== S5 reveal
+ const s5=$('s5'),rv0=29.78;
+ const sweep=$('pl5');
+ if(t>=rv0-0.2&&t<34.2){
+  // sweep line across then settle under ECS
+  const ecs=$('lock').querySelector('.ecs');const lk=$('lock');
+  const ex=lk.offsetLeft+ecs.offsetLeft+lk.querySelector('.tx').offsetLeft, ey=lk.offsetTop+lk.offsetHeight-2, ew=ecs.offsetWidth;
+  const a=R(t,rv0-0.2,rv0+0.25,E.io), b=R(t,rv0+0.3,rv0+0.8,E.o5);
+  let x0=L(-200,0,a), x1=L(-200,1920,a); // spans
+  let y=L(560,560,a);
+  const X0=L(x0,ex,b),X1=L(x1,ex+ew,b),Y=L(y,ey+14,b);
+  sweep.style.left=X0+'px';sweep.style.width=Math.max(0,X1-X0)+'px';sweep.style.top=Y+'px';
+  const out=R(t,33.55,33.95,E.i);
+  S(sweep,{op:1-out});
+  s5.style.visibility='';
+  const mi=R(t,rv0+0.2,rv0+0.85,E.o5);
+  S($('lmark'),{r:L(-200,0,mi),s:L(.4,1,mi),op:cl(mi*2)});
+  const ti=R(t,ws('n5',0)+0.1,ws('n5',0)+0.75,E.o5);
+  S(lk.querySelector('.tx'),{op:ti,y:L(40,0,ti)});
+  S(lk,{op:1-out,s:L(1,1.035,R(t,rv0,33.6,E.l))*L(1,.94,out),b:out*6});
+  const si=R(t,ws('n5',5)-0.1,ws('n5',5)+0.3,E.o);
+  S($('sub'),{op:si*(1-out),y:L(14,0,si)});
+  hlP($('subhl'),R(t,ws('n5',7),ws('n5',7)+0.3,E.io));
+ } else {s5.style.visibility='hidden';hide(sweep);}
+
+ // ===== S6/S7 product chapters
+ const c1In=33.85, c2In=38.95, c3In=44.85, c4In=52.85, c4Out=55.9;
+ function chap(id,tin,tout,a,ta,b,tb){const el=$(id);
+  if(t<tin-0.1||t>tout+0.5){hide(el);return;}
+  const i=R(t,tin,tin+0.55,E.o5),o=R(t,tout,tout+0.35,E.i);
+  S(el,{op:i*(1-o),y:L(30,0,i)-o*24,b:o*5});
+  if(a){const p=R(t,ta,ta+0.4,E.o);S($(a),{op:p,y:L(12,0,p)});}
+  if(b){const p=R(t,tb,tb+0.4,E.o);S($(b),{op:p,y:L(12,0,p)});}
+  const pl=el.querySelector('.pl');if(pl)pl.style.transform=`scaleX(${R(t,tin+0.2,tin+0.75,E.o)})`;}
+ chap('ch1',c1In,c2In-0.3,'ch1a',ws('n6',4),'ch1b',ws('n6',12)-0.3);
+ chap('ch2',c2In,c3In-0.3,'ch2a',ws('n7',6),'ch2b',ws('n7',12));
+ chap('ch3',c3In,c4In-0.3,'ch3a',ws('n8',2),'ch3b',ws('n8',14));
+ // ch4 stack
+ {const el=$('ch4');
+  if(t<c4In-0.1||t>60){hide(el);}else{
+   const o=R(t,c4Out,c4Out+0.35,E.i);S(el,{op:R(t,c4In,c4In+0.3)*(1-o),b:o*6,y:-o*20});
+   [['k1',ws('n9a',0)],['k2',ws('n9b',1)-0.1],['k3',ws('n9b',2)+0.3]].forEach(([id,tt])=>{const p=R(t,tt,tt+0.4,E.o5);S($(id),{op:p,y:L(26,0,p)});});
+   hlP($('k3hl'),R(t,ws('n9b',2)+0.45,ws('n9b',2)+0.85,E.io));}}
+
+ const appg=$('appg');
+ if(t>=c1In-0.1&&t<c3In+0.4){
+  appg.style.visibility='';
+  const wi=R(t,c1In+0.1,c1In+0.8,E.o5);
+  const whip=R(t,c3In-0.15,c3In+0.2,E.i);
+  // camera push in S7
+  const push7=R(t,ws('n7',6),ws('n7',9),E.io)*0.03+R(t,ws('n7',10),ws('n7',14),E.io)*0.02;
+  S(appg,{op:1-whip,x:-whip*700,b:whip*10});
+  const ry=L(-12,-6,R(t,c1In,c2In,E.io))+L(0,2,R(t,c2In,c3In,E.io));
+  S($('win'),{op:wi,x:L(90,0,wi),ry,s:1+push7});
+  // content swap 6->7
+  const sw=R(t,c2In-0.15,c2In+0.25,E.io);
+  S($('b6'),{op:1-sw});S($('side6'),{op:1-sw});S($('b7'),{op:sw});S($('side7'),{op:sw});
+  // S6 modal
+  const mIn=c1In+0.75, send=ws('n6',5)-0.05;
+  const mv=R(t,mIn,mIn+0.35,E.o5)*(1-R(t,send+0.25,send+0.5,E.i));
+  S($('modal'),{op:mv,s:L(.94,1,mv),y:L(14,0,mv),ry:ry*0.6});
+  // send button press
+  const press=t>send&&t<send+0.18?0.94:1;$('sendbtn').style.transform=`scale(${press})`;
+  const tv6=V(t,send+0.45,ws('n6',9)+0.4,0.3,0.3);S($('toast6'),{op:tv6,y:L(16,0,R(t,send+0.45,send+0.75,E.o))});
+  // file flies in
+  const flyS=ws('n6',6)+0.05,flyE=flyS+0.7;const fp=R(t,flyS,flyE,E.io);
+  if(t>flyS-0.05&&t<flyE+0.05){S($('fly'),{op:cl(fp*4)*(1-R(t,flyE-0.1,flyE)),x:L(1880,960,fp),y:L(120,330,fp)-Math.sin(Math.PI*fp)*80,s:L(1.15,0.95,fp),r:L(8,0,fp)});}else hide($('fly'));
+  const nr=R(t,flyE-0.1,flyE+0.25,E.o);
+  $('newrow').style.height=(46*nr)+'px';$('newrow').style.opacity=nr;$('newrow').style.overflow='hidden';
+  $('newrow').style.background=`rgba(0,136,207,${0.12*(1-R(t,flyE+1.2,flyE+2))})`;
+  const rc=R(t,flyE+0.25,flyE+0.45,E.ob);S($('ret7'),{op:cl(rc*2),s:L(.6,1,rc)});
+  // audit trail
+  const aIn=ws('n6',8);const av=R(t,aIn-0.2,aIn+0.3,E.o5)*(1-R(t,c2In-0.2,c2In+0.25,E.i));
+  S($('audit'),{op:av,y:L(40,0,R(t,aIn-0.2,aIn+0.3,E.o5))+R(t,c2In-0.2,c2In+0.25,E.i)*120});
+  ['a1','a2','a3','a4'].forEach((id,i)=>{const tt=ws('n6',9)-0.05+i*0.3;const el=$(id);el.style.clipPath=`inset(0 ${100-100*R(t,tt,tt+0.35,E.l)}% 0 0)`;});
+  $('auditu').style.transform=`scaleX(${R(t,ws('n6',12),ws('n6',13)+0.2,E.o)})`;
+  // S7 cursor & toast & chips
+  const saveT=ws('n7',6)+0.05;
+  $('savebtn').style.transform=`scale(${t>saveT&&t<saveT+0.18?0.94:1})`;
+  const tv7=V(t,saveT+0.3,ws('n7',10)+0.6,0.3,0.35);S($('toast7'),{op:tv7,y:L(16,0,R(t,saveT+0.3,saveT+0.6,E.o))});
+  document.querySelectorAll('#b7 .lh').forEach((c,i)=>{const tt=ws('n7',7)+0.15+i*0.12;const p=R(t,tt,tt+0.22,E.ob);S(c,{op:cl(p*2),s:L(.5,1,p)});});
+  // retention card
+  const rcIn=ws('n7',10)-0.2;const rp=R(t,rcIn,rcIn+0.55,E.o5);
+  S($('rcard'),{op:rp,y:L(70,0,rp),ry:ry*0.4});
+  ['nt1','nt2','nt3'].forEach((id,i)=>{$(id).className=t>rcIn+0.6+i*0.22?'on':'';});
+  const pd=R(t,ws('n7',13)-0.1,ws('n7',13)+0.25,E.o);$('pend').style.opacity=0.25+0.75*pd;
+  const gl=R(t,ws('n7',15),ws('n7',15)+0.4,E.o);const pulse=0.5+0.5*Math.sin((t-ws('n7',15))*6);
+  $('apbtn').style.boxShadow=gl>0?`0 0 0 ${2+4*pulse*gl}px rgba(0,136,207,${0.35*gl}), 0 0 ${18*gl}px rgba(0,136,207,${0.55*gl})`:'none';
+ } else appg.style.visibility='hidden';
+
+ // ===== S8 retire
+ const s8=$('s8');
+ if(t>=c3In-0.2&&t<c4In+0.4){
+  s8.style.visibility='';
+  const inn=R(t,c3In-0.15,c3In+0.3,E.o5), out=R(t,c4In-0.25,c4In+0.15,E.i);
+  const track=L(30,-30,R(t,c3In,c4In,E.l));
+  S(s8,{op:inn*(1-out),x:L(700,0,inn)+track-out*0,b:(1-inn)*10+out*6});
+  const offT=ws('n8',19)-0.05;
+  $('units').querySelectorAll('.u').forEach((u,i)=>{const tt=offT+i*0.05;const on=t<tt;
+   u.querySelectorAll('i').forEach((led,j)=>{const blink=(Math.sin(t*(9+i*1.7+j*3.1)+i)*0.5+0.5)>0.25;led.style.background=on?(blink?'#3ad07a':'#1d6b42'):'#2a3150';led.style.boxShadow=on&&blink?'0 0 6px #3ad07a':'none';});});
+  const st=$('sst');if(t<offT+0.3){st.textContent='● ONLINE';st.style.color='#3ad07a';}else{st.textContent='● OFF';st.style.color='#ee2424';}
+  // envelopes along bezier from server (880,400) to window (1010,380)
+  const P0=[870,330],P1=[950,150],P2=[1000,520],P3=[1060,400];
+  for(let i=0;i<14;i++){const e=$('e'+i);const t0=c3In+0.5+i*0.3;const p=R(t,t0,t0+0.9,E.io);
+   if(p<=0||p>=1||t>offT){hide(e);continue;}
+   const u=p,mt=1-u;const x=mt*mt*mt*P0[0]+3*mt*mt*u*P1[0]+3*mt*u*u*P2[0]+u*u*u*P3[0];
+   const yy=mt*mt*mt*P0[1]+3*mt*mt*u*P1[1]+3*mt*u*u*P2[1]+u*u*u*P3[1]+(i%3-1)*40*Math.sin(Math.PI*u);
+   S(e,{op:Math.sin(Math.PI*u)*1.4>1?1:Math.sin(Math.PI*u)*1.4,x,y:yy,r:L(-15,10,u),s:L(.8,1.1,Math.sin(Math.PI*u))});}
+  // rows counts
+  MB.forEach((m,i)=>{const row=$('m'+i);const rt=c3In+0.7+i*0.35;const p=R(t,rt,rt+0.3,E.o);S(row,{op:p,x:L(-20,0,p)});
+   row.querySelector('.cnt').textContent=Math.round(m[2]*R(t,rt+0.1,ws('n8',13)+0.2+i*0.1,E.o)).toLocaleString('en-US');
+   const h=row.querySelector('.held');const hp=R(t,ws('n8',12)+i*0.09,ws('n8',12)+i*0.09+0.22,E.ob);S(h,{op:cl(hp*2),s:L(.5,1,hp)});});
+  $('mbn').textContent=Math.round(50*R(t,c3In+0.7,ws('n8',13)+0.6,E.o));
+  const jp=R(t,c3In+0.6,c3In+1.1,E.o5);S($('job'),{op:jp,y:L(30,0,jp)});
+  $('j2').style.opacity=R(t,ws('n8',13),ws('n8',13)+0.3);$('j3').style.opacity=R(t,offT+0.25,offT+0.55);
+  S($('win8'),{ry:-6});
+ } else s8.style.visibility='hidden';
+
+ // ===== S9 browser
+ const br=$('brow');const pl9=$('pl9'),ts=$('ts9');
+ if(t>=c4In-0.1&&t<56.3){
+  const cuts=[c4In+0.1,ws('n9a',1)+0.15,ws('n9b',0)+0.2];
+  const iin=R(t,c4In,c4In+0.4,E.o5);
+  const col=R(t,c4Out-0.1,c4Out+0.25,E.io); // collapse to line
+  const ci=t<cuts[1]?0:t<cuts[2]?1:2;const cs=cuts[ci];const z=R(t,cs,cs+0.22,E.o5);
+  ['sc1','sc2','sc3'].forEach((id,i)=>{$(id).style.visibility=i===ci?'':'hidden';$(id).style.transform=`scale(${L(1.1,1,z)})`;$(id).style.transformOrigin='30% 30%';});
+  S(br,{op:iin*(col<1?1:0),sy:L(1,0.008,col),sx:L(1,0.85,col),x:L(60,0,iin)});
+  // line
+  if(col>0.6){const lp=R(t,c4Out+0.15,c4Out+0.5,E.io);const w=L(816,0,lp);
+   pl9.style.left=(1280-w/2)+'px';pl9.style.width=w+'px';pl9.style.top='508px';S(pl9,{op:1-R(t,c4Out+0.4,c4Out+0.5)});
+   ts.textContent=['09:41:02 UPLOAD','09:58:17 VIEW','10:12:44 HOLD','11:03:09 APPROVE'][Math.floor(t*12)%4];
+   S(ts,{op:(1-lp)*0.9,x:1280-60,y:524});}
+  else{hide(pl9);hide(ts);}
+ } else {hide(br);hide(pl9);hide(ts);}
+
+ // ===== S10 end
+ const s10=$('s10');
+ if(t>=56.0){
+  s10.style.visibility='';
+  const drift=L(1,1.02,R(t,56,60,E.l));S(s10,{s:drift});
+  $('pl10').style.transform=`scaleX(${R(t,56.1,56.7,E.io)})`;
+  const li=R(t,ws('n10a',0)-0.05,ws('n10a',0)+0.5,E.o5);S($('lock2'),{op:li,y:L(24,0,li)});
+  const di=R(t,ws('n10a',4)+0.2,ws('n10a',4)+0.7,E.o);S($('desc'),{op:di,y:L(12,0,di)});
+  const ci=R(t,57.9,58.4,E.o);S($('cta'),{op:ci,y:L(12,0,ci)});
+  S($('ev'),{op:R(t,57.0,57.6)});
+  [['kp1',ws('n10b',0)],['kp2',ws('n10b',1)-0.1],['kp3',ws('n10b',2)-0.15]].forEach(([id,tt])=>{const p=R(t,tt-0.05,tt+0.35,E.o5);S($(id),{op:p,y:L(28,0,p),b:(1-p)*5});});
+  hlP($('kphl'),R(t,ws('n10b',2),ws('n10b',2)+0.35,E.io));
+ } else s10.style.visibility='hidden';
+
+ // ===== cursor
+ const cu=$('cursor');
+ const cpaths=[ // [t0,t1,x0,y0,x1,y1]
+  [c1In+0.9,ws('n6',5)-0.12,1500,620,1500,0], // placeholder filled at runtime
+ ];
+ let cv=false;
+ {// S6: move to send button
+  const b=$('sendbtn').getBoundingClientRect();const tx=b.left+b.width*0.55,ty=b.top+b.height*0.6;
+  const t0=c1In+1.0,t1=ws('n6',5)-0.08;
+  if(t>t0-0.2&&t<t1+0.5&&t<ws('n6',6)+0.2){const p=R(t,t0,t1,E.io);S(cu,{op:V(t,t0-0.2,t1+0.6,0.2,0.25),x:L(tx+180,tx,p),y:L(ty+150,ty,p),s:(t>t1&&t<t1+0.15)?0.88:1});cv=true;}
+  const b2=$('savebtn').getBoundingClientRect();const sx=b2.left+b2.width*0.5,sy=b2.top+b2.height*0.6;
+  const s0=c2In+0.3,s1=ws('n7',6)+0.0;
+  if(!cv&&t>s0-0.2&&t<s1+0.6){const p=R(t,s0,s1,E.io);S(cu,{op:V(t,s0-0.2,s1+0.6,0.2,0.25),x:L(sx+260,sx,p),y:L(sy-160,sy,p),s:(t>s1&&t<s1+0.15)?0.88:1});cv=true;}
+ }
+ if(!cv)hide(cu);
+ S($('logo'),{op:1});
+}
+document.fonts.ready.then(()=>{setup();window.READY=true;});
+const CAPMODE=location.hash==='#cap';
+if(CAPMODE){$('stage').style.display='none';$('logo').style.display='none';}else $('cap').style.display='none';
+function seekCap(t){const el=$('cap');const c=CAPS.find(c=>t>=c[0]&&t<c[1]);
+ if(!c){el.style.opacity=0;return;} el.textContent=c[2]; el.style.opacity=Math.min(1,(t-c[0])/0.1,(c[1]-t)/0.1);}
+window.seek=t=>{if(CAPMODE)seekCap(t);else seekG(t);};
+</script>
+</body></html>

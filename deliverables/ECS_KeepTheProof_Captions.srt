@@ -1,0 +1,103 @@
+1
+00:00:00,300 --> 00:00:01,610
+Who opened this file?
+
+2
+00:00:01,650 --> 00:00:02,960
+What's on legal hold?
+
+3
+00:00:03,000 --> 00:00:04,570
+Who approved this deletion?
+
+4
+00:00:04,650 --> 00:00:07,710
+Every regulated team gets asked to prove it.
+
+5
+00:00:07,900 --> 00:00:10,160
+Most teams pay a tax to answer.
+
+6
+00:00:10,200 --> 00:00:12,410
+A premium tier for legal hold.
+
+7
+00:00:12,450 --> 00:00:14,610
+A separate portal for clients.
+
+8
+00:00:14,650 --> 00:00:16,510
+Maintenance on an old archive,
+
+9
+00:00:16,550 --> 00:00:18,840
+kept alive for retention.
+
+10
+00:00:18,900 --> 00:00:21,310
+And now, every file kept past its schedule
+
+11
+00:00:21,350 --> 00:00:24,650
+is something an AI assistant can find.
+
+12
+00:00:24,950 --> 00:00:27,100
+You shouldn't have to pay extra
+
+13
+00:00:27,250 --> 00:00:29,610
+to prove you did the right thing.
+
+14
+00:00:29,900 --> 00:00:33,920
+SOLIXCloud ECS puts the proof in every plan.
+
+15
+00:00:34,100 --> 00:00:35,960
+Share with clients through secure links,
+
+16
+00:00:36,000 --> 00:00:39,020
+and every view lands in the audit trail.
+
+17
+00:00:39,100 --> 00:00:40,980
+Keep it on your retention schedule,
+
+18
+00:00:41,020 --> 00:00:42,180
+under legal hold,
+
+19
+00:00:42,220 --> 00:00:45,040
+with deletion that waits for an approver.
+
+20
+00:00:45,100 --> 00:00:48,600
+Retire old Exchange mailboxes and PST files
+
+21
+00:00:48,640 --> 00:00:50,100
+to their owners, under hold,
+
+22
+00:00:50,140 --> 00:00:52,910
+then switch the old archive off.
+
+23
+00:00:53,000 --> 00:00:54,360
+Published pricing.
+
+24
+00:00:54,400 --> 00:00:56,180
+A thirty-day trial.
+
+25
+00:00:56,400 --> 00:00:58,510
+SOLIXCloud ECS.
+
+26
+00:00:58,550 --> 00:01:00,000
+Keep the proof.
