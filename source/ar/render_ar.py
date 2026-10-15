@@ -694,7 +694,7 @@ def process_screens(fr, t):
         ws = 1 - fl(eout((k - .6)/.4)) if k > .6 else 1.0
         if ws > .01:
             qd, nn, _ = DOC.quad(cam, c, w*ws, w*640/1000*hs, yaw=lerp(.12, .2, mv))
-            DOC.draw(fr, SCR.legacy("erp"), qd, nn, alpha=pin*(1 - .15*mv), sheen=(lerp(-.2, 1.3, fl(clamp(k/.5)))) if k > 0 else None,
+            DOC.draw(fr, SCR.legacy("erp"), qd, nn, alpha=fl(ease((t - sd + .3)/.6))*(1 - .15*mv), sheen=(lerp(-.2, 1.3, fl(clamp(k/.5)))) if k > 0 else None,
                      shadow=.4 if k <= 0 else 0)
             if k > .25:  # CRT power-off: a hot line of light
                 cy_ = int(qd[:, 1].mean()); x0, x1 = int(qd[:, 0].min()), int(qd[:, 0].max())
@@ -704,8 +704,9 @@ def process_screens(fr, t):
                     yy = cy_ + dy
                     if 0 <= yy < H and x1 > x0:
                         fr[yy, max(0, x0):min(W, x1)] += (1 - fr[yy, max(0, x0):min(W, x1)])*wv*np.array([.85, .92, 1.0], np.float32)
+        source_icons(fr, t)
         if t < sd + .4:
-            lab = fl(ease((t - sm - .7)/.5))*(1 - mv)
+            lab = fl(ease((t - sm - .2)/.5))*(1 - fl(ease((t - sm - 3.3)/.5)))
             qd0, _, _ = DOC.quad(cam, c, w, w*.64)
             put(fr, "SOURCE  ·  LEGACY FINANCE ERP", "Inter-SemiBold.otf", 20, qd0[0][0], qd0[0][1] - 16, lab, track=4, rgb=BLUE*1.25)
     # Preservation Zone label under the vault
@@ -746,6 +747,45 @@ def process_screens(fr, t):
         qd, nn, _ = DOC.quad(cam, cc, 2.9, 2.9*640/1100, yaw=lerp(1.0, .16, pi) + .5*qo, roll=lerp(-.15, 0, pi))
         step = int(fl(clamp((t - ti - .2)/1.4))*24)
         DOC.draw(fr, SCR.inventory(step), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - ti - .1)/.6))))
+
+# ---------------------------------------------------------------- source data icons (Migrate & Validate, ~0:26-0:30)
+NV = (13, 43, 85); TEAL = (26, 168, 168); PAPER_W = (255, 255, 255)
+def _grid(cv, x, y, w, h, a, rows=3, cols=3, lw=4):
+    cv.rrect(x, y, w, h, 8, fill=MG.rgba(PAPER_W, a), outline=MG.rgba(NV, a), width=lw)
+    hh = h/(rows + 1)
+    cv.rrect(x + lw*.5, y + lw*.5, w - lw, hh, 6, fill=MG.rgba(TEAL, a))
+    for r in range(1, rows + 1): cv.line([(x, y + hh*r), (x + w, y + hh*r)], MG.rgba(NV, a), lw)
+    for c in range(1, cols): cv.line([(x + w*c/cols, y), (x + w*c/cols, y + h)], MG.rgba(NV, a), lw)
+def _doc(cv, x, y, w, h, a, lw=4):
+    f = w*.28
+    cv.poly([(x, y), (x + w - f, y), (x + w, y + f), (x + w, y + h), (x, y + h)], fill=MG.rgba(PAPER_W, a), outline=MG.rgba(NV, a), width=lw)
+    cv.poly([(x + w - f, y), (x + w, y + f), (x + w - f, y + f)], fill=MG.rgba(TEAL, a), outline=MG.rgba(NV, a), width=lw*.8)
+    _grid(cv, x + w*.14, y + h*.42, w*.72, h*.48, a, lw=lw*.8)
+def data_icon(cv, kind, x, y, s, a):
+    if kind == 0: _grid(cv, x - s*.55, y - s*.38, s*1.1, s*.76, a)
+    elif kind == 1: _doc(cv, x - s*.38, y - s*.5, s*.76, s, a)
+    else:
+        for j in (2, 1, 0): _doc(cv, x - s*.42 + j*s*.13, y - s*.5 - j*s*.12, s*.7, s*.92, a)
+def source_icons(fr, t):
+    """The legacy application's data (tables, exports, document sets) moves into the Preservation Zone, then disappears."""
+    sm = SC["migrate"]
+    if not (sm <= t <= sm + 4.0): return
+    cv = MG.Cv(880, 60, 560, 620)
+    vx, vy = 1160, 560
+    for i in range(3):
+        x0, y0 = 990 + i*170, 225
+        p = MG.back((t - sm - .2 - i*.15)/.5)
+        if p <= 0: continue
+        tm = sm + 1.7 + i*.45
+        u = fl(einout((t - tm)/.75))
+        if u >= 1:
+            r = (t - tm - .75)/.35
+            if r < 1: cv.circle(vx, vy, 30 + 90*r, outline=MG.rgba((90, 190, 245), 1 - r), width=3)
+            continue
+        x = x0 + (vx - x0)*u; y = y0 + (vy - y0)*u - math.sin(u*math.pi)*40
+        sc = (1 - .8*u)*p
+        data_icon(cv, i, x, y, 132*sc, 1 - fl(ease((u - .75)/.25)))
+    cv.blit(fr, glow=.35)
 
 # ---------------------------------------------------------------- legal check blocks (Migrate & Validate)
 BLOCKS = [("VALIDATED", "app"), ("QUALITY CHECKED", "file"), ("RETENTION SET", "archive"), ("LEGAL HOLD", "lock")]
@@ -865,11 +905,6 @@ def overlays(fr, t):
     # 5. Migrate & Validate
     s = "migrate"
     kinetic(fr, t, "Governed from the day it lands.", LX, 300, 80, SC[s] + .3, E(s), maxw=760, hl=("Governed",))
-    checks = ["Validated against source", "Quality checked", "Retention applied", "Legal hold ready"]
-    tc = [word_time(s, "checked") - .2, word_time(s, "checked") + .5, word_time(s, "retention"), word_time(s, "legal hold")]
-    for k, (c, ti) in enumerate(zip(checks, tc)):
-        fade_text(fr, t, "✓", LX, 570 + k*64, 40, ti, E(s), fname="InterDisplay-Bold.otf", rgb=BLUE*1.2)
-        fade_text(fr, t, c, LX + 56, 570 + k*64, 40, ti + .08, E(s), fname="InterDisplay-Medium.otf")
 
     process_screens(fr, t)
 
@@ -908,9 +943,9 @@ def overlays(fr, t):
         if n < len(q) and int(t*2.5) % 2 == 0:
             put(fr, "|", "Inter-Medium.otf", 38, LX + measure(q[:n], "Inter-Italic.otf", 38) + 4, 550, a*.8, rgb=BLUE*1.2)
     ta = word_time(s, "cited") + .4
-    fade_text(fr, t, "3 suppliers", LX, 624, 34, ta, E(s), fname="Inter-SemiBold.otf")
-    fade_text(fr, t, "Sources  [1]  [2]  [3]", LX + measure("3 suppliers", "Inter-SemiBold.otf", 34) + 30, 624, 34, ta + .25, E(s),
-              fname="Inter-SemiBold.otf", rgb=BLUE*1.2)
+    fade_text(fr, t, "ABC Supplies, XYZ Industries,", LX, 622, 34, ta, E(s), fname="Inter-SemiBold.otf")
+    fade_text(fr, t, "and PQR Enterprises.", LX, 666, 34, ta + .1, E(s), fname="Inter-SemiBold.otf")
+    fade_text(fr, t, "Sources  [1]  [2]  [3]", LX, 712, 24, ta + .3, E(s), fname="Inter-SemiBold.otf", rgb=BLUE*1.2)
     if SC[s] - .2 <= t <= SC_END[s] + .6:
         sx, sy, zc = project(KG_A, t)
         t0 = word_time(s, "cited") - 1.6 + .2
