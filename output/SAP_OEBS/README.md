@@ -1,3 +1,6 @@
+# FINAL: `Solix_SAP_OEBS_FINAL_*` (77.8 s)
+Opening slide order: "SAP and Oracle E-Business Suite run the business." -> module boxes -> underline last. "SOLIX" only (screen and end-line voice: "Solix. Built for SAP. Built for Oracle."). Ambient and CorporateMusic versions; 4K files follow.
+
 # v5: `Solix_SAP_OEBS_v5_*` (77.8 s)
 A 3 s title card ("SAP + Oracle E-Business Suite", "ERP Archiving & Application Retirement") now opens the film, so everything else starts 3 s later. Opening line: "SAP" and "Oracle" highlighted, "E-Business Suite" appears as one phrase, then "run the business.", then the underline below it, then the module chips. End screen heading is "SOLIX" only. Two music versions: `_v5_1080p/4K-UHD` (ambient) and `_v5_CorporateMusic_*`.
 
