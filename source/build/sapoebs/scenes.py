@@ -2,7 +2,7 @@
 # Every cue is derived from the voice-over timing in cues.py.
 import math
 from lib import *
-from cues import cue, line_t
+from cues import cue, line_t, OFF
 
 # --------------------------------------------------------------------------- shared helpers
 def ctext(c, st, x, yc, kind="i", weight="Bold", size=40, color=WHITE, a=1.0, track=0, anchor="l"):
@@ -49,15 +49,28 @@ def mono(c, s, x, y, size, color, a=1.0, w="Regular", anchor="l"):
     c.text(s, x, y, "m", w, size, color, a, anchor=anchor)
 
 # --------------------------------------------------------------------------- scene windows (absolute seconds)
-SC = {"A": (0.0, 3.45), "B": (3.45, 12.95), "C": (12.95, 18.35), "E": (18.35, 26.00), "D": (26.00, 36.55),
-      "F": (36.55, 43.45), "DA": (43.45, 53.95), "G": (53.95, 55.95), "H": (55.95, 63.20), "I": (63.20, 67.80), "J": (67.80, 74.77)}
+_SC0 = {"A": (0.0, 3.60), "B": (3.60, 12.95), "C": (12.95, 18.35), "E": (18.35, 26.00), "D": (26.00, 36.55),
+        "F": (36.55, 43.45), "DA": (43.45, 53.95), "G": (53.95, 55.95), "H": (55.95, 63.20), "I": (63.20, 67.80), "J": (67.80, 74.77)}
+SC = {"T": (0.0, OFF)}; SC.update({k: (a + OFF, b + OFF) for k, (a, b) in _SC0.items()})
 CUTS = []          # hard cuts: no transition effects
+
+# --------------------------------------------------------------------------- T  video title card (music only, before the voice-over starts)
+def scene_T(c, t):
+    kicker(c, "SOLIXEMPOWER 2026", 960, 330, .15, t, anchor="c")
+    size = 104; items = [("SAP", WHITE, None), ("+", SKY, None), ("Oracle E-Business Suite", WHITE, None)]
+    while sum(tw(i[0], "d", "Bold", size) for i in items) + size * .27 * 2 > 1640: size -= 2
+    words(c, items, 960, 395, size, [.35, .55, .75], t, anchor="c")
+    f = font("d", "Bold", size); wd = sum(f.getlength(i[0]) for i in items) + size * .27 * 2
+    u = E(pr(t, 1.2, .6)); uw = int(wd * u) // 6 * 6
+    if uw > 6:
+        h = int(uw * .66) // 6 * 6; c.blit(BAR(max(6, h), 8, BLUE), 960 - wd / 2, 560, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 8, RED), 960 - wd / 2 + h - 6, 560, 1)
+    ctext(c, "ERP Archiving & Application Retirement", 960, 625, "i", "Medium", 44, TXT, E(pr(t, 1.45, .5)), anchor="c")
 
 # --------------------------------------------------------------------------- A  (HEAD) opening headline
 def scene_A(c, t):
-    kicker(c, "SOLIXEMPOWER 2026   ·   SOLIXCLOUD", 960, 292, .15, t, anchor="c")
-    L1 = [("SAP", WHITE, BLUE), ("and", TXT, None), ("Oracle E-Business Suite", WHITE, RED)]       # product name stays together as one unit
-    T1 = [cue(0, k) - .1 for k in ("S A P", "and", "Oracle")]
+    kicker(c, "SOLIXEMPOWER 2026   ·   SOLIXCLOUD", 960, 292, .15 + OFF, t, anchor="c")
+    L1 = [("SAP", WHITE, BLUE), ("and", TXT, None), ("Oracle", WHITE, RED), ("E-Business Suite", WHITE, None)]   # "E-Business Suite" reveals as one word, like the voice
+    T1 = [cue(0, k) - .1 for k in ("S A P", "and", "Oracle", "E Business")]
     size = 104
     while sum(tw(i[0], "d", "Bold", size) + (2 * int(size * .5) if i[2] else 0) for i in L1) + size * .27 * 4 > 1640: size -= 2
     words(c, L1, 960, 350, size, T1, t, anchor="c")
@@ -66,14 +79,14 @@ def scene_A(c, t):
     tot = words(c, L2, 960, 525, 128, T2, t, anchor="c")
     # animated underline under 'business.' (blue -> red)
     f = font("d", "Bold", 128); bw = f.getlength("business."); bx = 960 + tot / 2 - bw
-    t_ul = T2[2] + .2; k = E(pr(t, t_ul, .3)); uw = int(bw * k)
+    t_ul = T2[2] + .4; k = E(pr(t, t_ul, .3)); uw = int(bw * k)      # underline comes in below the text only once the word is fully there
     if uw > 6:
         h = int(uw * .55) // 6 * 6
         c.blit(BAR(max(6, h), 10, BLUE), bx, 700, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 10, RED), bx + h - 6, 700, 1)
     # module chips: the business that SAP / Oracle run
     mods = ["FINANCE", "SUPPLY CHAIN", "SALES", "PROCUREMENT", "MANUFACTURING", "HR"]
     ws = [tw(m, "i", "Bold", 21, 5) + 56 for m in mods]; tot = sum(ws) + 18 * (len(mods) - 1); x = 960 - tot / 2
-    t0 = t_ul + .34                                               # module chips arrive only after the underline has landed
+    t0 = t_ul + .30                                               # module chips arrive only after the underline has landed
     for i, (m, w) in enumerate(zip(mods, ws)):
         a = E(pr(t, t0 + i * .05, .22)); col = BLUE if i % 2 == 0 else RED
         c.card(x, 800 + (1 - a) * 14, w, 52, a, outline=col + (170,), fill=CARD + (190,), r=26)
@@ -97,7 +110,7 @@ def db_rows(c, x, y, w, n, t, t_from, t_to, hot_color, row_h=25, pitch=33, label
         mono(c, "ACTIVE" if act else "INACTIVE", x + w - 14, yy + 4, label_size, WHITE if act else (140, 90, 110), a, "Regular", "r")
 
 def scene_B(c, t):
-    kicker(c, "THE CHALLENGE", 120, 205, .0 + 3.5, t)
+    kicker(c, "THE CHALLENGE", 120, 205, 3.5 + OFF, t)
     T0 = cue(1, "years") - .1
     words(c, [("Years", WHITE, None), ("of", WHITE, None)], 120, 232, 92, [T0, T0 + .12], t)
     words(c, [("inactive", WHITE, RED), ("data", WHITE, None)], 120, 378, 92, [cue(1, "inactive") - .15, cue(1, "data") - .05], t)
@@ -539,10 +552,9 @@ def scene_J(c, t):
     # wordmark
     g0 = c.ga; c.ga = g0 * out
     ta = cue(11, "Solix Cloud") - .12; a = E(pr(t, ta, .5))
-    wS = tw("SOLIX", "d", "Bold", 156, 14) ; wC = tw("Cloud", "d", "Bold", 156)
-    xx = 960 - (wS + wC + 14) / 2; k = lerp(.9, 1, E(pr(t, ta, .5)))
-    c.text("SOLIX", xx, 250, "d", "Bold", 156, WHITE, a, track=14); c.text("Cloud", xx + wS + 14, 250, "d", "Bold", 156, SKY, a)
-    c.blit(BAR(int(wS + wC + 14) * 1 // 6 * 6, 8, BLUE), xx, 450, a); c.blit(BAR(int((wS + wC + 14) * .32) // 6 * 6, 8, RED), xx + (wS + wC + 14) * .68, 450, a)
+    wS = tw("SOLIX", "d", "Bold", 156, 14); xx = 960 - wS / 2
+    c.text("SOLIX", xx, 250, "d", "Bold", 156, WHITE, a, track=14)
+    c.blit(BAR(int(wS) // 6 * 6, 8, BLUE), xx, 450, a); c.blit(BAR(int(wS * .32) // 6 * 6, 8, RED), xx + wS * .68, 450, a)
     t1 = cue(11, "Built for S A P") - .12; t2 = cue(11, "Built for Oracle") - .1
     words(c, [("Built", WHITE, None), ("for", WHITE, None), ("SAP.", WHITE, BLUE)], 960, 505, 90, [t1, t1 + .1, t1 + .22], t, anchor="c")
     words(c, [("Built", WHITE, None), ("for", WHITE, None), ("Oracle.", WHITE, RED)], 960, 685, 90, [t2, t2 + .1, t2 + .22], t, anchor="c")
@@ -559,7 +571,7 @@ def scene_J(c, t):
         c.text("SAP and SAP S/4HANA are trademarks or registered trademarks of SAP SE.", 960, 985, "i", "Regular", 15, (98, 120, 176), fa, anchor="c")
         c.text("Oracle and E-Business Suite are trademarks or registered trademarks of Oracle and/or its affiliates.", 960, 1010, "i", "Regular", 15, (98, 120, 176), fa, anchor="c")
 
-SCENES = {"DA": scene_DA, "A": scene_A, "B": scene_B, "C": scene_C, "D": scene_D, "E": scene_E, "F": scene_F, "G": scene_G, "H": scene_H, "I": scene_I, "J": scene_J}
+SCENES = {"T": scene_T, "DA": scene_DA, "A": scene_A, "B": scene_B, "C": scene_C, "D": scene_D, "E": scene_E, "F": scene_F, "G": scene_G, "H": scene_H, "I": scene_I, "J": scene_J}
 
 def energy(t):
     e = .35
