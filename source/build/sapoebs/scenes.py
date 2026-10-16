@@ -49,7 +49,7 @@ def mono(c, s, x, y, size, color, a=1.0, w="Regular", anchor="l"):
     c.text(s, x, y, "m", w, size, color, a, anchor=anchor)
 
 # --------------------------------------------------------------------------- scene windows (absolute seconds)
-_SC0 = {"A": (0.0, 3.60), "B": (3.60, 12.95), "C": (12.95, 18.35), "E": (18.35, 26.00), "D": (26.00, 36.55),
+_SC0 = {"A": (0.0, 3.70), "B": (3.70, 12.95), "C": (12.95, 18.35), "E": (18.35, 26.00), "D": (26.00, 36.55),
         "F": (36.55, 43.45), "DA": (43.45, 53.95), "G": (53.95, 55.95), "H": (55.95, 63.20), "I": (63.20, 67.80), "J": (67.80, 74.77)}
 SC = {"T": (0.0, OFF)}; SC.update({k: (a + OFF, b + OFF) for k, (a, b) in _SC0.items()})
 CUTS = []          # hard cuts: no transition effects
@@ -75,18 +75,18 @@ def scene_A(c, t):
     while sum(tw(i[0], "d", "Bold", size) + (2 * int(size * .5) if i[2] else 0) for i in L1) + size * .27 * 4 > 1640: size -= 2
     words(c, L1, 960, 350, size, T1, t, anchor="c")
     L2 = [("run", WHITE, None), ("the", WHITE, None), ("business.", WHITE, None)]
-    T2 = [cue(0, "run") - .25, cue(0, "the business") - .25, cue(0, "business.") - .25]
+    T2 = [cue(0, "run") - .3, cue(0, "the business") - .3, cue(0, "business.") - .3]
     tot = words(c, L2, 960, 525, 128, T2, t, anchor="c")
     # animated underline under 'business.' (blue -> red)
     f = font("d", "Bold", 128); bw = f.getlength("business."); bx = 960 + tot / 2 - bw
-    t_ul = T2[2] + .4; k = E(pr(t, t_ul, .3)); uw = int(bw * k)      # underline comes in below the text only once the word is fully there
+    t_ul = T2[2] + .80; k = E(pr(t, t_ul, .28)); uw = int(bw * k)      # order: text -> module chips -> underline LAST, below the text
     if uw > 6:
         h = int(uw * .55) // 6 * 6
         c.blit(BAR(max(6, h), 10, BLUE), bx, 700, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 10, RED), bx + h - 6, 700, 1)
     # module chips: the business that SAP / Oracle run
     mods = ["FINANCE", "SUPPLY CHAIN", "SALES", "PROCUREMENT", "MANUFACTURING", "HR"]
     ws = [tw(m, "i", "Bold", 21, 5) + 56 for m in mods]; tot = sum(ws) + 18 * (len(mods) - 1); x = 960 - tot / 2
-    t0 = t_ul + .30                                               # module chips arrive only after the underline has landed
+    t0 = T2[2] + .34                                               # module chips arrive only after the underline has landed
     for i, (m, w) in enumerate(zip(mods, ws)):
         a = E(pr(t, t0 + i * .05, .22)); col = BLUE if i % 2 == 0 else RED
         c.card(x, 800 + (1 - a) * 14, w, 52, a, outline=col + (170,), fill=CARD + (190,), r=26)
