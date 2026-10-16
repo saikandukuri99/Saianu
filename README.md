@@ -2,7 +2,8 @@
 
 **Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
 
-- **v9 (current):** v8 with three changes:
+- **v10 (current):** v9 with the black ERP window and the GL, AP, PO, HR and INV module icons removed from the switch-off. Nothing else changes.
+- **v9:** v8 with three changes:
   - **0:26-0:30:** three source data icons (table, spreadsheet file, stacked files) replace the ERP window, fly into the Preservation Zone and disappear.
   - **Preservation Zone:** the left tick list is removed, so only the blue legal-check blocks remain.
   - **Data Ask:** the answer reads "ABC Supplies, XYZ Industries, and PQR Enterprises.", with smaller sources below.
