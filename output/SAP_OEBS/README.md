@@ -1,3 +1,6 @@
+# v4 (content edits): `Solix_SAP_OEBS_v4_*`
+Oracle portion now comes before the SAP portion (voice and visuals swapped); "planning a move to the cloud" (S/4HANA removed, voice regenerated); opening headline shows "Oracle E-Business Suite" as one unit, underline first, then the module chips; Oracle circle first and "SOLIX" only on the 20+ slide; result slide reads "Legacy databases", "DATABASE" and "Modernization application"; "AI-activated data" with the network inside its own screen; only "dead weight" struck through. Both music versions: `..._v4_1080p/4K-UHD.mp4` (ambient) and `..._v4_CorporateMusic_*`.
+
 # v3 (roomier boxes + music options): `Solix_SAP_OEBS_v3_*`
 Highlight boxes now have more padding with the text centred, and the two end-slide boxes ("Built for SAP." / "Built for Oracle.") no longer touch. Same film, two music beds:
 - `Solix_SAP_OEBS_v3_1080p.mp4` / `_4K-UHD.mp4`: original ambient bed
