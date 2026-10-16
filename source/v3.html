@@ -1,0 +1,535 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-700-normal.woff2);font-weight:700}
+:root{--blue:#0088cf;--red:#ee2424;--purple:#30267b;--ink:#1b1740;--grey:#6b6f85;--paper:#f5f6fa}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;background:var(--paper)}
+.a{position:absolute;will-change:transform,opacity}
+#paper{left:0;top:0;width:1920px;height:1080px;background:radial-gradient(1400px 900px at 50% 42%,#fbfbfd 0%,#f3f4f8 60%,#eceef4 100%)}
+.panel{left:0;top:0;width:1920px;height:1080px}
+#panP{background:radial-gradient(1300px 900px at 30% 30%,#3a2f8c 0%,#30267b 45%,#231b5e 100%)}
+#panB{background:radial-gradient(1300px 900px at 70% 40%,#0a97dd 0%,#0088cf 50%,#0071ad 100%)}
+.lbl{font-family:JBM;font-size:16px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--blue)}
+.disp{font-family:'Inter Display',Inter;font-weight:700;letter-spacing:-.03em;line-height:1.02}
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em .08em;margin-bottom:-.08em}
+.wi{display:inline-block}
+.hl{position:relative;display:inline-block;padding:0 .14em;margin:0 -.06em;color:inherit}
+.hl>i{position:absolute;left:0;right:0;top:.1em;bottom:.02em;background:var(--purple);border-radius:.08em;transform-origin:left center;transform:scaleX(0)}
+.hl>span{position:relative}
+.pline{height:6px;background:var(--red);border-radius:3px;transform-origin:left center}
+.dash{display:inline-block;width:26px;height:3px;background:var(--red);vertical-align:middle;margin-right:14px;transform:translateY(-3px)}
+/* ledger */
+.lg{left:1060px;width:730px;height:84px;border-bottom:1.5px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:space-between;color:#fff}
+.lg .t{font-size:34px;font-weight:600;letter-spacing:-.01em;white-space:nowrap}
+.lg .u{font-family:JBM;font-size:17px;letter-spacing:.14em;color:rgba(255,255,255,.7);white-space:nowrap}
+.tag{display:inline-block;font-family:JBM;font-size:14px;font-weight:700;letter-spacing:.12em;color:#fff;background:var(--red);padding:5px 10px;border-radius:5px;vertical-align:middle;margin-right:16px}
+/* search */
+#sbar{left:360px;top:250px;width:1200px;height:84px;border-radius:42px;background:#fff;color:var(--ink);display:flex;align-items:center;padding:0 36px;font-size:30px;box-shadow:0 30px 60px rgba(10,5,40,.35)}
+#sbar .ic{width:28px;height:28px;border:3px solid #8a8d99;border-radius:50%;margin-right:22px;position:relative;flex:none}
+#sbar .ic:after{content:'';position:absolute;width:11px;height:3px;background:#8a8d99;right:-10px;bottom:-5px;transform:rotate(45deg)}
+#sbar .as{margin-left:auto;font-family:JBM;font-size:13px;letter-spacing:.22em;color:#8a8d99}
+.cur{display:inline-block;width:3px;height:1em;background:var(--blue);margin-left:4px;vertical-align:-.12em}
+.res{left:400px;width:1120px;height:58px;border-bottom:1px solid rgba(255,255,255,.14);display:flex;align-items:center;color:#fff;font-size:22px;font-weight:500}
+.res .di{width:20px;height:25px;border:2px solid rgba(255,255,255,.7);border-radius:3px;margin-right:20px}
+.res .y{margin-left:auto}
+/* charges row in turn */
+.chg{font-family:JBM;font-size:20px;letter-spacing:.14em;color:#8b8fa3;white-space:nowrap;position:relative}
+.strike{position:absolute;left:-8px;right:-8px;top:52%;height:3px;background:var(--red);transform-origin:left;transform:scaleX(0)}
+#stamp{font-family:Inter;font-weight:900;font-size:58px;letter-spacing:.08em;color:var(--red);border:6px solid var(--red);border-radius:12px;padding:2px 26px;transform-origin:center}
+/* lockup */
+.lock{display:flex;align-items:center;gap:28px;white-space:nowrap;color:var(--ink)}
+.lock .tx{font-size:96px;letter-spacing:-.01em;line-height:1}
+.lock .tx b{font-weight:800}.lock .tx span{font-weight:400}
+/* laptop */
+#device{left:0;top:0;width:1920px;height:1080px;transform-origin:960px 600px}
+#lap{left:470px;top:300px;width:980px;height:570px;border-radius:24px;background:#15151b;box-shadow:0 50px 90px rgba(20,20,60,.28),0 0 0 1px rgba(0,0,0,.2)}
+#lap:before{content:'';position:absolute;left:50%;top:5px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#2c2c36}
+#lapbase{left:395px;top:866px;width:1130px;height:24px;border-radius:2px 2px 16px 16px;background:linear-gradient(#e7e8ee,#c4c7d1);box-shadow:0 18px 30px rgba(20,20,60,.22)}
+#lapbase:after{content:'';position:absolute;left:50%;top:0;width:150px;height:9px;margin-left:-75px;border-radius:0 0 9px 9px;background:#b3b6c2}
+#scr{position:absolute;left:14px;top:14px;width:952px;height:542px;border-radius:8px;overflow:hidden;background:#fff}
+.pg{position:absolute;left:0;top:0;width:952px;height:542px;background:#fff;color:#1d2433}
+.top{height:46px;border-bottom:1px solid #e6e9f0;display:flex;align-items:center;padding:0 18px;gap:10px;font-size:13px;background:#fff}
+.top img{height:18px}
+.top .brand{font-weight:800;letter-spacing:.04em;font-size:14px}.top .brand span{font-weight:400;color:#8a90a0;margin:0 6px}
+.top .srch{margin-left:30px;width:260px;height:28px;border-radius:7px;background:#f2f4f8;color:#9aa0ad;font-size:12px;display:flex;align-items:center;padding:0 10px}
+.top .av{margin-left:auto;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.side{position:absolute;left:0;top:46px;bottom:0;width:176px;background:#f6f8fb;border-right:1px solid #e6e9f0;padding:14px 0;font-size:13px;color:#4a5263}
+.side div{padding:9px 18px;position:relative}
+.side .on{color:var(--blue);font-weight:600;background:#e8f3fa}
+.side .on:before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:3px;background:var(--blue)}
+.side .h{font-size:10px;letter-spacing:.16em;color:#9aa0ad;padding-top:14px;font-weight:600}
+.body{position:absolute;left:176px;right:0;top:46px;bottom:0;padding:18px 24px}
+.crumb{font-size:12px;color:#7a8191;margin-bottom:5px}.crumb b{color:#1d2433;font-weight:600}
+.ttl{font-size:21px;font-weight:700;margin-bottom:14px}
+.tr{display:flex;align-items:center;height:42px;border-bottom:1px solid #eef0f4;padding:0 6px;position:relative;font-size:13px}
+.tr.hd{height:30px;font-size:10px;letter-spacing:.12em;color:#9aa0ad;font-weight:600}
+.tr .c1{flex:1;display:flex;align-items:center;gap:10px;white-space:nowrap}.tr .c2{width:120px;color:#7a8191}.tr .c3{width:140px}
+.pdf{width:20px;height:25px;border-radius:3px;background:#e2403a;color:#fff;font-size:6.5px;font-weight:800;display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;flex:none}
+.chp{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:11px;font-size:11px;font-weight:600;white-space:nowrap}
+.chp.blue{background:#e3f2fb;color:#006aa3}.chp.amber{background:#fff1d6;color:#9a6200}.chp.green{background:#e2f6ea;color:#1c7a45}.chp.redc{background:#fde6e6;color:#c41c1c}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 16px;border-radius:7px;background:var(--blue);color:#fff;font-size:13px;font-weight:600}
+.btn.ghost{background:#fff;color:#4a5263;border:1px solid #d9dde6}
+.modal{background:#fff;border-radius:12px;box-shadow:0 24px 60px rgba(10,20,50,.3),0 0 0 1px #e6e9f0;padding:20px 22px;width:380px;color:#1d2433}
+.modal h3{font-size:16px;margin-bottom:14px}
+.fld{margin-bottom:12px}.fld label{display:block;font-size:11px;color:#7a8191;margin-bottom:5px;font-weight:500}
+.fld .in{height:34px;border:1px solid #d9dde6;border-radius:7px;display:flex;align-items:center;padding:0 11px;font-size:13px}
+.tog{display:flex;align-items:center;gap:10px;font-size:13px;margin:4px 0 16px}
+.tog i{width:36px;height:20px;border-radius:10px;background:var(--blue);position:relative}
+.tog i:after{content:'';position:absolute;right:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff}
+.toast{background:#1d2433;color:#fff;border-radius:9px;padding:11px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 14px 30px rgba(0,0,0,.25);white-space:nowrap}
+.toast b{width:18px;height:18px;border-radius:50%;background:#2fb36b;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+#drawer{left:176px;right:0;bottom:0;height:178px;background:#0e1328;padding:14px 22px;font-family:JBM;font-size:12.5px;color:rgba(255,255,255,.86)}
+#drawer .ah{font-size:10px;letter-spacing:.24em;color:rgba(255,255,255,.5);margin-bottom:10px;position:relative;display:inline-block}
+#drawer .ar{display:flex;gap:18px;height:27px;align-items:center;white-space:nowrap}
+#drawer .t{color:rgba(255,255,255,.4)}#drawer .k{width:62px;font-weight:700;color:#4fb6ef}#drawer .k.r{color:#ffb020}
+.card{background:#fff;border-radius:12px;box-shadow:0 24px 50px rgba(10,20,50,.28),0 0 0 1px #e6e9f0;color:#1d2433;padding:18px 20px}
+.notice{display:flex;gap:8px;margin:12px 0 14px}
+.notice div{flex:1;height:30px;border-radius:7px;border:1px solid #e1e5ec;font-size:11px;font-weight:600;color:#9aa0ad;display:flex;align-items:center;justify-content:center}
+.notice div.on{border-color:#f0b54a;background:#fff6e3;color:#9a6200}
+/* chapter header */
+.ch{left:150px;top:118px;white-space:nowrap}
+.ch .lbl{margin-bottom:14px}
+.ch h1{font-family:'Inter Display',Inter;font-size:84px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.sup{right:150px;text-align:right;font-size:24px;line-height:1.45;font-weight:500;color:#4c5068;white-space:nowrap}
+.sup .m{color:var(--grey);font-size:21px}
+/* server */
+#server{left:205px;top:420px;width:160px;height:330px;border-radius:12px;background:linear-gradient(#262c4c,#151a33);box-shadow:0 30px 50px rgba(20,20,60,.25);padding:16px 14px}
+#server .sl{font-family:JBM;font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.75);font-weight:700}
+#server .st{font-family:JBM;font-size:10px;letter-spacing:.16em;margin:5px 0 12px;color:#3ad07a;font-weight:700}
+#server .u{height:24px;border-radius:4px;background:rgba(255,255,255,.06);margin-bottom:7px;display:flex;align-items:center;padding:0 8px;gap:6px}
+#server .u i{width:5px;height:5px;border-radius:50%;background:#3ad07a}
+#server .u em{flex:1;height:3px;background:rgba(255,255,255,.08);border-radius:2px;margin-left:6px}
+.pst{position:absolute;width:70px;text-align:center;font-family:JBM;font-size:10px;color:#6b6f85}
+.pst svg{width:32px;height:40px;display:block;margin:0 auto 5px}
+.env{position:absolute;left:0;top:0;width:24px;height:17px;border-radius:3px;background:#fff;box-shadow:0 4px 10px rgba(20,20,60,.25);border:1px solid #d9dde6}
+.env:after{content:'';position:absolute;left:2px;right:2px;top:1px;height:9px;clip-path:polygon(0 0,100% 0,50% 100%);background:#c9cfdb}
+.stack div{font-family:'Inter Display',Inter;font-size:78px;font-weight:700;letter-spacing:-.03em;line-height:1.1;color:#fff;white-space:nowrap}
+#cap{left:160px;width:1600px;top:978px;text-align:center;font-size:36px;font-weight:600;letter-spacing:-.005em}
+#cursor{left:0;top:0;width:24px;height:31px}
+.lg2{position:absolute;right:56px;top:42px;width:200px}
+.ev{font-family:JBM;font-size:14px;letter-spacing:.2em;color:#8b8fa3;white-space:nowrap}
+</style></head><body>
+<div id="paper" class="a"></div>
+<div id="panP" class="a panel"></div>
+<div id="panB" class="a panel"></div>
+
+<!-- S1 -->
+<div id="q1" class="a" style="left:0;width:1920px;top:400px;text-align:center"><div class="lbl" style="margin-bottom:26px"><i class="dash"></i>The Auditor</div><div class="disp sw" style="font-size:104px">Who opened this file?</div></div>
+<div id="q2" class="a" style="left:0;width:1920px;top:400px;text-align:center"><div class="lbl" style="margin-bottom:26px"><i class="dash"></i>Counsel</div><div class="disp sw" style="font-size:104px">What’s on legal hold?</div></div>
+<div id="q3" class="a" style="left:0;width:1920px;top:400px;text-align:center"><div class="lbl" style="margin-bottom:26px"><i class="dash"></i>The Examiner</div><div class="disp sw" style="font-size:104px">Who approved this deletion?</div></div>
+<div id="n1a" class="a" style="left:0;width:1920px;top:330px;text-align:center;font-size:40px;font-weight:500;color:var(--grey)"><span class="sw">Every regulated team gets asked to</span></div>
+<div id="prove" class="a disp" style="left:0;width:1920px;top:420px;text-align:center;font-size:230px"><span class="sw">Prove it.</span></div>
+<div id="pl1" class="a pline" style="left:760px;top:690px;width:400px"></div>
+
+<!-- S2/S3 purple -->
+<div id="s2" class="a" style="left:0;top:0;width:1920px;height:1080px">
+  <div id="s2l" class="a" style="left:150px;top:300px;color:#fff">
+    <div class="lbl" style="color:rgba(255,255,255,.6);margin-bottom:30px">Statement of charges · Regulated team</div>
+    <div class="disp" id="s2h" style="font-size:104px;color:#fff"><span class="sw">The compliance</span><br><span class="sw">tax.</span><i id="taxu" class="a pline" style="left:0;top:252px;width:200px"></i></div>
+    <div id="billed" style="font-family:JBM;font-size:17px;letter-spacing:.16em;color:rgba(255,255,255,.6);margin-top:40px">BILLED EVERY YEAR · NO END DATE</div>
+  </div>
+  <div id="l1" class="a lg" style="top:300px"><span class="t">Premium tier · legal hold</span><span class="u">PER SEAT / MO</span></div>
+  <div id="l2" class="a lg" style="top:384px"><span class="t">Client portal · separate</span><span class="u">PER SEAT / MO</span></div>
+  <div id="l3" class="a lg" style="top:468px"><span class="t">Archive maintenance</span><span class="u">PER YEAR</span></div>
+  <div id="l4" class="a lg" style="top:552px"><span class="t"><span class="tag">+ EXPOSURE</span>Files past schedule</span><span class="u">PER FILE</span></div>
+  <div id="l5" class="a lg" style="top:650px;border-bottom:4px double rgba(255,255,255,.4)"><span class="t" style="font-weight:800">Amount due</span><span class="u" style="color:#fff;font-weight:700">EVERY YEAR</span></div>
+  <div id="sbar" class="a"><i class="ic"></i><span class="tx"></span><i class="cur"></i><span class="as">ASSISTANT</span></div>
+  <div id="rlist" class="a" style="left:0;top:0"></div>
+  <div id="found" class="a" style="left:400px;top:820px;font-size:28px;font-weight:600;color:#fff;white-space:nowrap"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--red);margin-right:14px;vertical-align:middle"></span>7 files found · <span style="color:#ff8a8a">all past retention</span></div>
+</div>
+
+<!-- S4 -->
+<div id="s4" class="a" style="left:0;top:0;width:1920px;height:1080px">
+  <div id="chg" class="a" style="left:0;width:1920px;top:250px;display:flex;justify-content:center;gap:70px">
+    <span class="chg">PREMIUM TIER · LEGAL HOLD<i class="strike"></i></span><span class="chg">CLIENT PORTAL · SEPARATE<i class="strike"></i></span><span class="chg">ARCHIVE MAINTENANCE<i class="strike"></i></span>
+  </div>
+  <div id="stamp" class="a" style="left:0;top:0">INCLUDED</div>
+  <div id="turn" class="a disp" style="left:0;width:1920px;top:430px;text-align:center;font-size:100px;line-height:1.14"></div>
+</div>
+
+<!-- S5 -->
+<div id="s5" class="a" style="left:0;top:0;width:1920px;height:1080px">
+  <div id="lock" class="a lock"><img id="lmark" src="assets/mark.png" style="width:112px;height:112px"><div class="tx"><span class="wm"><span class="wi" id="lktx"><b>SOLIX</b> <b class="ecs">ECS</b></span></span></div></div>
+  <div id="sub" class="a" style="left:0;width:1920px;top:640px;text-align:center;font-size:40px;font-weight:500;color:#4c5068"><span class="hl" id="subhl" style="color:var(--ink)"><i></i><span>Proof</span></span> in every plan.</div>
+</div>
+<div id="pl5" class="a pline" style="left:0;top:0;width:100px"></div>
+
+<!-- chapter headers -->
+<div id="h1" class="a ch"><div class="lbl"><i class="dash"></i>01 · Exchange with proof</div><h1><span class="sw">Share it.</span></h1></div>
+<div id="h2" class="a ch"><div class="lbl"><i class="dash"></i>02 · Proof in every plan</div><h1><span class="sw">Keep it.</span></h1></div>
+<div id="h3" class="a ch"><div class="lbl"><i class="dash"></i>03 · Retire with proof</div><h1><span class="sw">Retire it.</span></h1></div>
+<div id="u1a" class="a sup" style="top:150px">Upload links · Expiring links<br>Every view logged</div>
+<div id="u1b" class="a sup" style="top:222px"><span class="m">Clients never need a license.</span></div>
+<div id="u2a" class="a sup" style="top:150px">Retention · Legal hold<br>Deletion after approval</div>
+<div id="u2b" class="a sup" style="top:222px"><span class="m">Included with every plan.</span></div>
+<div id="u3a" class="a sup" style="top:150px">Exchange &amp; PST<br>Mapped to owners · Held on arrival</div>
+<div id="u3b" class="a sup" style="top:222px"><span class="m">Then switch the old archive off.</span></div>
+
+<!-- S8 server (outside laptop) -->
+<div id="s8x" class="a" style="left:0;top:0;width:1920px;height:1080px">
+  <div id="server" class="a"><div class="sl">EXCHANGE 2016</div><div class="st" id="sst">● ONLINE</div><div id="units"></div></div>
+  <div class="pst a" style="left:178px;top:772px"><svg viewBox="0 0 40 50"><path d="M2 2h24l12 12v34H2z" fill="#fff" stroke="#6b6f85" stroke-width="2"/><path d="M26 2v12h12" fill="none" stroke="#6b6f85" stroke-width="2"/></svg>alvarez.pst</div>
+  <div class="pst a" style="left:250px;top:772px"><svg viewBox="0 0 40 50"><path d="M2 2h24l12 12v34H2z" fill="#fff" stroke="#6b6f85" stroke-width="2"/><path d="M26 2v12h12" fill="none" stroke="#6b6f85" stroke-width="2"/></svg>okafor.pst</div>
+  <div class="pst a" style="left:322px;top:772px"><svg viewBox="0 0 40 50"><path d="M2 2h24l12 12v34H2z" fill="#fff" stroke="#6b6f85" stroke-width="2"/><path d="M26 2v12h12" fill="none" stroke="#6b6f85" stroke-width="2"/></svg>chen.pst</div>
+</div>
+
+<!-- S9 stack -->
+<div id="s9" class="a" style="left:150px;top:330px">
+  <div class="lbl" style="color:rgba(255,255,255,.75);margin-bottom:34px"><i class="dash" style="background:#fff"></i>In the product today</div>
+  <div class="stack"><div id="k1"><span class="sw">Published pricing.</span></div><div id="k2"><span class="sw">30-day trial.</span></div><div id="k3"><span class="sw">No card needed.</span></div></div>
+</div>
+
+<!-- DEVICE -->
+<div id="device" class="a">
+  <div id="lapbase" class="a"></div>
+  <div id="lap" class="a"><div id="scr">
+    <!-- page 6 -->
+    <div id="p6" class="pg">
+      <div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search documents</div><div class="av">JA</div></div>
+      <div class="side"><div class="h">WORKSPACE</div><div>My Documents</div><div class="on">Workgroup &amp; Shared</div><div>Recent</div><div class="h">CLIENTS</div><div>Chen &amp; Co.</div><div>Okafor Family</div><div>Ramirez Household</div></div>
+      <div class="body">
+        <div class="crumb">Workgroup &amp; Shared Content › Clients › <b>Ramirez Household</b></div>
+        <div style="display:flex;align-items:center;margin-bottom:10px"><div class="ttl" style="margin:0">Ramirez Household</div><div style="margin-left:auto;display:flex;gap:8px"><div class="btn ghost">Share</div><div class="btn">Request upload</div></div></div>
+        <div class="tr hd"><div class="c1">NAME</div><div class="c2">MODIFIED</div><div class="c3">RETENTION</div></div>
+        <div id="newrow" class="tr" style="overflow:hidden"><div class="c1"><span class="pdf">PDF</span><b style="font-weight:600">2026_W-2_Ramirez.pdf</b><span class="chp blue">Uploaded by client</span></div><div class="c2">Just now</div><div class="c3"><span id="ret7" class="chp green">Retention · 7 yrs</span></div></div>
+        <div class="tr"><div class="c1"><span class="pdf">PDF</span>2025_Form1040_Ramirez.pdf</div><div class="c2">Apr 11, 2026</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+        <div class="tr"><div class="c1"><span class="pdf">PDF</span>Engagement_Letter_2026.pdf</div><div class="c2">Jan 08, 2026</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+        <div class="tr"><div class="c1"><span class="pdf">PDF</span>Bank_Statements_Q4.pdf</div><div class="c2">Dec 30, 2025</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+        <div class="tr"><div class="c1"><span class="pdf">PDF</span>Brokerage_1099_2025.pdf</div><div class="c2">Feb 19, 2026</div><div class="c3"><span class="chp green">Retention · 7 yrs</span></div></div>
+      </div>
+      <div id="modal" class="a modal" style="left:380px;top:70px">
+        <h3>Upload request</h3>
+        <div class="fld"><label>Send to</label><div class="in">d.ramirez@example.com</div></div>
+        <div class="fld"><label>Link expires</label><div class="in">In 7 days</div></div>
+        <div class="tog"><i></i>Apply folder retention</div>
+        <div style="display:flex;justify-content:flex-end;gap:8px"><div class="btn ghost">Cancel</div><div class="btn" id="sendbtn">Send request</div></div>
+      </div>
+      <div id="toast6" class="a toast" style="left:196px;top:478px"><b>✓</b>Upload link sent</div>
+      <div id="drawer" class="a">
+        <div class="ah">AUDIT TRAIL · RAMIREZ HOUSEHOLD<i id="auditu" class="a pline" style="left:0;bottom:-7px;width:100%;height:3px"></i></div>
+        <div class="ar" id="a1"><span class="t">09:41:02</span><span class="k">UPLOAD</span><span>guest · d.ramirez</span><span style="color:rgba(255,255,255,.5)">2026_W-2_Ramirez.pdf</span></div>
+        <div class="ar" id="a2"><span class="t">09:41:02</span><span class="k r">RETAIN</span><span>Client Records · 7 years applied</span></div>
+        <div class="ar" id="a3"><span class="t">09:58:17</span><span class="k">VIEW</span><span>j.alvarez</span><span style="color:rgba(255,255,255,.5)">2026_W-2_Ramirez.pdf</span></div>
+        <div class="ar" id="a4"><span class="t">10:12:44</span><span class="k">VIEW</span><span>m.patel</span><span style="color:rgba(255,255,255,.5)">2026_W-2_Ramirez.pdf</span></div>
+      </div>
+    </div>
+    <!-- page 7 -->
+    <div id="p7" class="pg">
+      <div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search settings</div><div class="av">JA</div></div>
+      <div class="side"><div class="h">ADMIN CONSOLE</div><div>Users</div><div>Storage</div><div class="h">GOVERNANCE</div><div>Retention</div><div class="on">Legal Hold</div><div>Classifications</div><div>Audit Reports</div></div>
+      <div class="body">
+        <div class="crumb">Admin Console › Governance › <b>Legal Hold</b></div>
+        <div class="ttl">New legal hold</div>
+        <div style="display:flex;gap:22px">
+          <div style="width:290px">
+            <div class="fld"><label>Policy name</label><div class="in">Litigation hold · Matter 2026-117</div></div>
+            <div class="fld"><label>Scope</label><div class="in">Users</div></div>
+            <div class="fld"><label>Custodian</label><div class="in"><span class="chp blue">J. Alvarez ×</span></div></div>
+            <div class="btn" id="savebtn" style="margin-top:4px">SAVE &amp; APPLY</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:11px;color:#7a8191;font-weight:600;letter-spacing:.1em;margin:0 0 6px">CUSTODIAN FILES · J. ALVAREZ</div>
+            <div class="tr"><div class="c1"><span class="pdf">PDF</span>Vendor_Settlement.pdf</div><span class="chp amber lh">Legal Hold</span></div>
+            <div class="tr"><div class="c1"><span class="pdf" style="background:#2f6fe0">DOC</span>Board_Minutes_Mar.docx</div><span class="chp amber lh">Legal Hold</span></div>
+            <div class="tr"><div class="c1"><span class="pdf" style="background:#1f9d55">XLS</span>Payments_Ledger.xlsx</div><span class="chp amber lh">Legal Hold</span></div>
+            <div class="tr"><div class="c1"><span class="pdf">PDF</span>Counsel_Memo_0412.pdf</div><span class="chp amber lh">Legal Hold</span></div>
+          </div>
+        </div>
+      </div>
+      <div id="toast7" class="a toast" style="left:196px;top:478px"><b>✓</b>Legal hold applied successfully.</div>
+      <div id="rcard" class="a card" style="left:470px;top:300px;width:450px">
+        <div style="display:flex;align-items:center;gap:8px"><div style="font-size:16px;font-weight:700">Client Records</div><span class="chp green">7 years</span><span class="chp redc" style="margin-left:auto">Delete post approval</span></div>
+        <div class="notice"><div id="nt1">10 days</div><div id="nt2">7 days</div><div id="nt3">1 day</div></div>
+        <div id="pend" style="display:flex;align-items:center;gap:10px;border-top:1px solid #eef0f4;padding-top:12px">
+          <div style="width:32px;height:32px;border-radius:50%;background:#30267b;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center">MP</div>
+          <div><div style="font-size:13px;font-weight:600">Pending approval</div><div style="font-size:11.5px;color:#7a8191">M. Patel · Records Manager</div></div>
+          <div class="btn" id="apbtn" style="margin-left:auto">Approve</div></div>
+      </div>
+    </div>
+    <!-- page 8 -->
+    <div id="p8" class="pg">
+      <div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search jobs</div><div class="av">JA</div></div>
+      <div class="body" style="left:0;padding:18px 28px">
+        <div class="crumb">Migration Manager › <b>Exchange 2016 → Mail Archive</b></div>
+        <div class="ttl" style="margin-bottom:8px">Mailbox migration</div>
+        <div id="mrows"><div class="tr hd"><div class="c1">MAILBOX</div><div style="width:170px">OWNER</div><div style="width:90px;text-align:right">ITEMS</div><div style="width:100px;text-align:right">STATUS</div></div></div>
+        <div id="job" style="position:absolute;left:28px;right:28px;bottom:18px;height:50px;border-radius:9px;background:#f6f8fb;border:1px solid #e6e9f0;display:flex;align-items:center;gap:26px;padding:0 18px;font-size:14px;font-weight:600">
+          <span style="font-size:11px;letter-spacing:.14em;color:#7a8191">JOB · EXCH-2016</span><span>Mailboxes <span id="mbn">0</span> / 50</span><span id="j2" style="color:#1c7a45">✓ Held on arrival</span><span id="j3" style="color:#1c7a45">✓ Source purged</span></div>
+      </div>
+    </div>
+    <!-- S9 screens -->
+    <div id="sc1" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div><div class="body" style="left:0;padding:20px 28px"><div class="crumb">Governance › <b>Audit report builder</b></div><div class="ttl">Audit report · Matter 2026-117</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px"><span class="chp blue">Event: View, Download, Delete</span><span class="chp blue">Custodian: J. Alvarez</span><span class="chp blue">Last 12 months</span></div>
+      <div class="tr hd"><div class="c1">EVENT</div><div class="c2">USER</div><div class="c3">TIME</div></div>
+      <div class="tr"><div class="c1">VIEW · Vendor_Settlement.pdf</div><div class="c2">m.patel</div><div class="c3">Mar 14 · 09:12</div></div>
+      <div class="tr"><div class="c1">DOWNLOAD · Board_Minutes_Mar.docx</div><div class="c2">j.alvarez</div><div class="c3">Mar 14 · 10:03</div></div>
+      <div class="tr"><div class="c1">HOLD APPLIED · Matter 2026-117</div><div class="c2">admin</div><div class="c3">Mar 15 · 08:30</div></div>
+      <div class="tr"><div class="c1">DELETE REQUEST · Payments_2019.xlsx</div><div class="c2">records</div><div class="c3">Mar 18 · 16:41</div></div></div></div>
+    <div id="sc2" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div><div class="body" style="left:0;padding:20px 28px"><div class="crumb">Migration Manager › <b>New migration</b></div><div class="ttl">Migration wizard</div>
+      <div style="display:flex;gap:8px;margin:4px 0 22px"><div style="flex:1;height:6px;border-radius:3px;background:var(--blue)"></div><div style="flex:1;height:6px;border-radius:3px;background:var(--blue)"></div><div style="flex:1;height:6px;border-radius:3px;background:var(--blue)"></div><div style="flex:1;height:6px;border-radius:3px;background:#e1e5ec"></div></div>
+      <div style="font-size:11px;color:#7a8191;font-weight:600;letter-spacing:.1em;margin-bottom:10px">STEP 3 OF 4 · TARGET &amp; POLICY</div>
+      <div class="fld"><label>Source</label><div class="in">Exchange 2016 · mail01.example.local</div></div>
+      <div class="fld"><label>Target</label><div class="in">Mail Archive</div></div>
+      <div class="fld"><label>On arrival</label><div class="in">Apply legal hold · Matter 2026-117</div></div></div></div>
+    <div id="sc3" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div><div class="body" style="left:0;padding:20px 28px"><div class="crumb">Migration Manager › <b>Job report</b></div><div class="ttl">EXCH-2016 · Completed</div>
+      <div style="display:flex;gap:14px;margin-bottom:16px">
+        <div style="flex:1;border:1px solid #e6e9f0;border-radius:10px;padding:14px"><div style="font-size:11px;color:#7a8191">Mailboxes</div><div style="font-size:28px;font-weight:800">50 / 50</div></div>
+        <div style="flex:1;border:1px solid #e6e9f0;border-radius:10px;padding:14px"><div style="font-size:11px;color:#7a8191">Items migrated</div><div style="font-size:28px;font-weight:800">184,302</div></div>
+        <div style="flex:1;border:1px solid #e6e9f0;border-radius:10px;padding:14px"><div style="font-size:11px;color:#7a8191">Held on arrival</div><div style="font-size:28px;font-weight:800;color:#1c7a45">100%</div></div></div>
+      <div class="tr"><div class="c1">Source purged</div><span class="chp green">Complete</span></div>
+      <div class="tr"><div class="c1">Owner mapping verified</div><span class="chp green">Complete</span></div>
+      <div class="tr"><div class="c1">Audit log exported</div><span class="chp green">Complete</span></div></div></div>
+  </div></div>
+</div>
+<div id="fly" class="a" style="left:0;top:0;display:flex;align-items:center;gap:10px;background:#fff;color:#1d2433;padding:11px 16px;border-radius:10px;box-shadow:0 18px 36px rgba(20,20,60,.25);font-size:14px;font-weight:600;white-space:nowrap"><span class="pdf">PDF</span>2026_W-2_Ramirez.pdf</div>
+<div id="envs" class="a" style="left:0;top:0"></div>
+<div id="pl9" class="a pline" style="left:0;top:0;width:100px"></div>
+
+<!-- S10 -->
+<div id="s10" class="a" style="left:0;top:0;width:1920px;height:1080px">
+  <div id="kp" class="a disp" style="left:0;width:1920px;top:300px;text-align:center;font-size:150px"><span class="wm"><span class="wi" id="kp1">Keep</span></span> <span class="wm"><span class="wi" id="kp2">the</span></span> <span class="wm"><span class="wi" id="kp3"><span class="hl" id="kphl"><i></i><span id="kpw">proof.</span></span></span></span></div>
+  <div id="pl10" class="a pline" style="left:700px;top:515px;width:520px"></div>
+  <div id="lock2" class="a lock"><img src="assets/mark.png" style="width:64px;height:64px"><div class="tx" style="font-size:56px"><b>SOLIX</b> <b>ECS</b></div></div>
+  <div id="desc" class="a" style="left:0;width:1920px;top:676px;text-align:center;font-size:24px;color:var(--grey);font-weight:500">Audit-ready document management and archiving for regulated organizations.</div>
+  <div id="cta" class="a" style="left:0;width:1920px;top:740px;text-align:center;font-size:28px;font-weight:600;color:var(--ink)">Start a 30-day trial. No card needed. <span style="color:#b5b8c6;margin:0 10px">·</span><span style="color:var(--blue)">solix.com</span></div>
+  <div id="ev" class="a ev" style="right:60px;top:1020px">SOLIXEMPOWER 2026 · SAN DIEGO</div>
+</div>
+
+<svg id="cursor" class="a" viewBox="0 0 26 34"><path d="M2 2 L2 27 L8.5 21 L13 31 L17 29.3 L12.6 19.6 L21 19.4 Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg>
+<img id="logoD" class="a lg2" src="assets/logo_dark.png">
+<img id="logoW" class="a lg2" src="assets/logo.png">
+<div id="cap" class="a"></div>
+
+<script src="cues3.js"></script><script src="capdata3.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const E={l:x=>x,io:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,o:x=>1-Math.pow(1-x,3),i:x=>x*x*x,
+ o5:x=>1-Math.pow(1-x,5),ob:x=>{const c=1.4,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)}};
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const R=(t,a,b,e=E.io)=>t<=a?0:t>=b?1:e((t-a)/(b-a));
+const L=(a,b,p)=>a+(b-a)*p;
+const V=(t,a,b,fi=.35,fo=.35,e=E.io)=>R(t,a,a+fi,e)*(1-R(t,b-fo,b,e));
+const ws=(k,i)=>CUES[k][i][1];
+const lineEnd=k=>CUES[k][CUES[k].length-1][2];
+function S(el,o={}){const {op=1,x=0,y=0,s=1,sx=null,sy=null,r=0,b=0}=o;
+ el.style.opacity=op; el.style.visibility=op<=0.002?'hidden':'';
+ el.style.transform=`translate(${x}px,${y}px) rotate(${r}deg) scale(${sx??s},${sy??s})`;
+ el.style.filter=b>0.05?`blur(${b}px)`:'none';}
+const hide=el=>{el.style.opacity=0;el.style.visibility='hidden'};
+const show=(el,v)=>{el.style.visibility=v?'':'hidden'};
+function hlP(el,p){el.querySelector('i').style.transform=`scaleX(${p})`}
+// split .sw spans into masked words
+document.querySelectorAll('.sw').forEach(sw=>{const words=sw.textContent.split(' ');sw.innerHTML=words.map(w=>`<span class="wm"><span class="wi">${w}</span></span>`).join(' ');});
+function rise(el,t0,stag=0.06,dur=0.5){el.querySelectorAll('.wi').forEach((w,i)=>{const p=R(-0,t0+i*stag,t0+i*stag+dur,E.o5);});}
+function riseT(el,t,t0,stag=0.06,dur=0.55,out=null){el.querySelectorAll('.wi').forEach((w,i)=>{const p=R(t,t0+i*stag,t0+i*stag+dur,E.o5);let y=(1-p)*105;if(out!==null){const q=R(t,out+i*0.03,out+i*0.03+0.35,E.i);y-=q*105;}w.style.transform=`translateY(${y}%)`;});}
+// result list
+const RES=[['Chen_Tax_2018.pdf','2018'],['Moreau_SSN_Scan.pdf','2019'],['Singh_Trust_Accts.pdf','2019'],['HR_Files_2018.zip','2018'],['Kim_Account_Recs.pdf','2021'],['Brokerage_2017.pdf','2017'],['Statements_2019.pdf','2019']];
+RES.forEach((r,i)=>{const d=document.createElement('div');d.className='res a';d.id='rs'+i;d.style.top=(380+i*58)+'px';
+ d.innerHTML=`<span class="di"></span>${r[0]}<span class="y"><span class="tag" style="margin:0">PAST RETENTION · ${r[1]}</span></span>`;$('rlist').appendChild(d);});
+for(let i=0;i<8;i++){const u=document.createElement('div');u.className='u';u.innerHTML='<i></i><i></i><em></em>';$('units').appendChild(u);}
+const MB=[['alvarez@corp.local','J. Alvarez',4120],['okafor@corp.local','N. Okafor',2988],['chen@corp.local','W. Chen',6311],['patel@corp.local','M. Patel',3570],['moreau@corp.local','L. Moreau',1904],['singh@corp.local','R. Singh',5233]];
+MB.forEach((m,i)=>{const d=document.createElement('div');d.className='tr';d.id='m'+i;
+ d.innerHTML=`<div class="c1"><span style="width:20px;height:15px;border-radius:3px;background:#e3f2fb;border:1.5px solid #0088cf;flex:none"></span>${m[0]}</div><div style="width:170px;color:#4a5263">→ ${m[1]}</div><div class="cnt" style="width:90px;text-align:right;font-family:JBM;font-size:12px">0</div><div style="width:100px;text-align:right"><span class="chp amber held">Held</span></div>`;$('mrows').appendChild(d);});
+for(let i=0;i<12;i++){const e=document.createElement('div');e.className='env';e.id='e'+i;$('envs').appendChild(e);}
+// turn words
+(function(){const lines=[[['You','n4a',0],["shouldn't",'n4a',1],['have','n4a',2],['to','n4a',3]],[['PAY','n4a',4],['to','n4b',0],['prove','n4b',1]],[['you','n4b',2],['did','n4b',3],['the','n4b',4],['right','n4b',5],['thing.','n4b',6]]];
+ $('turn').innerHTML=lines.map(l=>'<div>'+l.map(([w,k,i])=>{let inner=w;
+  if(w==='PAY')inner='<span class="hl" id="hlpay" style="color:var(--ink)"><i></i><span id="paytx">pay extra</span></span>';
+  if(w==='prove')inner='<span style="color:var(--blue)">prove</span>';
+  return `<span class="wm"><span class="wi tw" data-k="${k}" data-i="${i}">${inner}</span></span>`;}).join(' ')+'</div>').join('');})();
+function center(el,cy){el.style.left=(960-el.offsetWidth/2)+'px';el.style.top=(cy-el.offsetHeight/2)+'px';}
+function setup(){const ws2=$('s2h').querySelectorAll('.wm');const lw=ws2[ws2.length-1];const tu=$('taxu');tu.style.left=lw.offsetLeft+'px';tu.style.width=(lw.offsetWidth*0.78)+'px';tu.style.top=(lw.offsetTop+lw.offsetHeight-4)+'px';center($('lock'),540);center($('lock2'),610);
+ const st=$('stamp');st.style.left=(960-st.offsetWidth/2)+'px';st.style.top=(262-st.offsetHeight/2)+'px';}
+
+function seekG(t){
+ const proveT=ws('n1',6);
+ const wipeP0=7.82, cutT=24.40, turnIn=24.45, turnOut=29.85, rv0=29.78;
+ const c1In=33.85,c2In=38.95,c3In=44.85,c4In=52.72,c4Out=55.92;
+ // ---------- panels
+ const pP=t<cutT?R(t,wipeP0,wipeP0+0.42,E.io):0;
+ $('panP').style.clipPath=`inset(0 ${100-100*pP}% 0 0)`; show($('panP'),pP>0);
+ const bIn=R(t,c4In-0.1,c4In+0.3,E.io), bOut=R(t,c4Out+0.05,c4Out+0.42,E.io);
+ $('panB').style.clipPath=`inset(${100*bOut}% 0 ${100-100*bIn}% 0)`; show($('panB'),bIn>0&&bOut<1);
+ // logo variant: white when a dark panel covers top-right
+ const darkTR=(pP>0.9)||(bIn>0.99&&bOut<0.05);
+ const lw=t<cutT?R(t,wipeP0+0.25,wipeP0+0.42):(t<c4In?0:(bIn>=1?1-R(t,c4Out+0.05,c4Out+0.15):R(t,c4In+0.1,c4In+0.3)));
+ $('logoW').style.opacity=lw;$('logoD').style.opacity=1-lw;
+
+ // ---------- S1 questions (cut-based)
+ const QS=[['q1','c1',ws('c2',0)-0.12],['q2','c2',ws('c3',0)-0.12],['q3','c3',ws('n1',0)+0.35]];
+ QS.forEach(([id,k,end],qi)=>{const el=$(id),st=ws(k,0)-0.12;
+  if(t<st||t>=end){hide(el);return;}
+  const push=L(1,1.045,R(t,st,end,E.l));S(el,{s:push,op:1-R(t,end-0.12,end)});
+  riseT(el,t,st,0.05,0.5);
+  const lb=el.querySelector('.lbl');lb.style.opacity=R(t,st,st+0.3);});
+ {const el=$('n1a');const st=ws('n1',0)+0.35;
+  if(t<st-0.05||t>7.9){hide(el);}else{S(el,{op:1-R(t,proveT-0.1,proveT+0.2)*0.55,y:-R(t,proveT-0.2,proveT+0.3,E.o)*40});riseT(el,t,st,0.05,0.5,7.55);}}
+ {const el=$('prove');if(t<proveT-0.1||t>7.95){hide(el);}else{S(el,{op:1,s:L(1,1.035,R(t,proveT,7.9,E.l))});riseT(el,t,proveT-0.06,0.09,0.55,7.55);}}
+ {const el=$('pl1');if(t<proveT+0.3||t>7.95)hide(el);else{S(el,{op:1});el.style.transform=`scaleX(${R(t,proveT+0.3,proveT+0.85,E.o5)*(1-R(t,7.6,7.85,E.i))})`;el.style.transformOrigin=t>7.6?'right center':'left center';}}
+
+ // ---------- S2/S3
+ const s2=$('s2');
+ if(t>=wipeP0+0.1&&t<cutT){show(s2,true);
+  const sw=ws('n3',9)-0.25; // switch to search
+  const ledOut=R(t,sw,sw+0.45,E.i);
+  const hl=$('s2l');S(hl,{op:1-ledOut,x:-ledOut*120});
+  riseT(hl,t,8.15,0.07,0.6);
+  $('billed').style.opacity=R(t,8.7,9.1);
+  const tu=$('taxu');tu.style.transform=`scaleX(${R(t,ws('n2a',4),ws('n2a',4)+0.4,E.o5)})`;
+  const LT=[['l1',ws('n2b',0)],['l2',ws('n2c',0)],['l3',ws('n2d',0)],['l4',ws('n3',0)+0.35],['l5',ws('n3',7)]];
+  LT.forEach(([id,lt])=>{const p=R(t,lt,lt+0.5,E.o5);S($(id),{op:cl(p*1.6)*(1-ledOut),x:L(60,0,p)+ledOut*160});});
+  // search
+  const qT=ws('n3',10)-0.3;const sp=R(t,sw+0.2,sw+0.6,E.o5);
+  S($('sbar'),{op:sp,y:L(30,0,sp)});
+  const txt='Find old client records with account numbers';
+  $('sbar').querySelector('.tx').textContent=txt.slice(0,Math.round(txt.length*R(t,qT,qT+1.0,E.l)));
+  $('sbar').querySelector('.cur').style.opacity=(t<qT+1.0||Math.floor(t*2.4)%2===0)?1:0;
+  RES.forEach((r,i)=>{const tt=qT+1.1+i*0.1;const p=R(t,tt,tt+0.3,E.o5);S($('rs'+i),{op:p,y:L(16,0,p)});});
+  const fp=R(t,qT+1.95,qT+2.3,E.o5);S($('found'),{op:fp,y:L(12,0,fp)});
+ } else show(s2,false);
+
+ // ---------- S4 turn
+ const s4=$('s4');
+ if(t>=turnIn&&t<turnOut+0.25){show(s4,true);
+  const out=R(t,turnOut-0.1,turnOut+0.2,E.i);S(s4,{op:1-out});
+  S($('chg'),{op:R(t,turnIn,turnIn+0.4)});
+  const pt=ws('n4a',4);$('chg').querySelectorAll('.strike').forEach((s,i)=>s.style.transform=`scaleX(${R(t,pt+i*0.14,pt+i*0.14+0.35,E.o)})`);
+  const stT=ws('n4b',6)+0.22;const sp=R(t,stT,stT+0.16,E.i);
+  const shake=t>stT+0.16&&t<stT+0.4?Math.sin((t-stT)*90)*2.5*(1-R(t,stT+0.16,stT+0.4)):0;
+  S($('stamp'),{op:sp>0?Math.min(1,sp*1.5):0,s:L(1.9,1,sp),r:-6,x:shake});
+  document.querySelectorAll('.tw').forEach(w=>{const st=ws(w.dataset.k,+w.dataset.i)-0.05;const p=R(t,st,st+0.45,E.o5);w.style.transform=`translateY(${(1-p)*105}%)`;});
+  const hp=R(t,ws('n4a',4)+0.05,ws('n4a',5)+0.3,E.io);hlP($('hlpay'),hp);$('paytx').style.color=hp>0.5?'#fff':'';
+ } else show(s4,false);
+
+ // ---------- S5 reveal
+ const s5=$('s5'),sweep=$('pl5');
+ if(t>=rv0-0.2&&t<34.2){show(s5,true);
+  const lk=$('lock'),ecs=lk.querySelector('.ecs');
+  const ex=lk.offsetLeft+ecs.offsetLeft, ey=lk.offsetTop+lk.offsetHeight+12, ew=ecs.offsetWidth;
+  const a=R(t,rv0-0.2,rv0+0.25,E.io), b=R(t,rv0+0.3,rv0+0.8,E.o5);
+  const X0=L(L(-200,0,a),ex,b),X1=L(L(-200,1920,a),ex+ew,b),Y=L(560,ey,b);
+  sweep.style.left=X0+'px';sweep.style.width=Math.max(0,X1-X0)+'px';sweep.style.top=Y+'px';
+  const out=R(t,33.5,33.9,E.i);S(sweep,{op:1-out});
+  const mi=R(t,rv0+0.15,rv0+0.8,E.o5);S($('lmark'),{r:L(-160,0,mi),s:L(.3,1,mi),op:cl(mi*2)});
+  const ti=R(t,ws('n5',0)+0.05,ws('n5',0)+0.7,E.o5);$('lktx').style.transform=`translateY(${(1-ti)*105}%)`;
+  S(lk,{op:1-out,s:L(1,1.03,R(t,rv0,33.5,E.l))*L(1,.94,out),y:-out*20});
+  const si=R(t,ws('n5',4)-0.1,ws('n5',4)+0.35,E.o5);S($('sub'),{op:si*(1-out),y:L(16,0,si)-out*20});
+  const hp=R(t,ws('n5',6),ws('n5',6)+0.3,E.io);hlP($('subhl'),hp);$('subhl').style.color=hp>0.5?'#fff':'var(--ink)';
+ } else {show(s5,false);hide(sweep);}
+
+ // ---------- chapter headers + supers
+ function hdr(id,tin,tout){const el=$(id);if(t<tin-0.05||t>tout+0.5){hide(el);return;}
+  S(el,{op:1});riseT(el,t,tin,0.06,0.55,tout);el.querySelector('.lbl').style.opacity=R(t,tin,tin+0.3)*(1-R(t,tout,tout+0.25));}
+ hdr('h1',c1In,c2In-0.35);hdr('h2',c2In,c3In-0.35);hdr('h3',c3In,c4In-0.35);
+ function sup(id,tin,tout){const el=$(id);if(t<tin-0.05||t>tout+0.4){hide(el);return;}const p=R(t,tin,tin+0.45,E.o5),o=R(t,tout,tout+0.3,E.i);S(el,{op:p*(1-o),y:L(14,0,p)-o*10});}
+ sup('u1a',ws('n6',4),c2In-0.35);sup('u1b',ws('n6',12)-0.3,c2In-0.35);
+ sup('u2a',ws('n7',6),c3In-0.35);sup('u2b',ws('n7',12),c3In-0.35);
+ sup('u3a',ws('n8',2),c4In-0.35);sup('u3b',ws('n8',14),c4In-0.35);
+
+ // ---------- device
+ const dev=$('device');
+ if(t>=c1In-0.05&&t<c4Out+0.6){show(dev,true);
+  const di=R(t,c1In+0.05,c1In+0.75,E.o5);
+  // S9 move right & shrink
+  const m9=R(t,c4In,c4In+0.5,E.io);
+  const col=R(t,c4Out-0.1,c4Out+0.25,E.io);
+  const push7=R(t,ws('n7',10),ws('n7',14),E.io)*0.05;
+  const base=L(1,1.02,R(t,c1In,c4In,E.l));
+  S(dev,{op:di*(col<1?1:0),y:L(90,0,di)+L(0,-10,m9),x:L(0,330,m9),s:base*L(1,0.74,m9)*(1+push7),sy:base*L(1,0.74,m9)*(1+push7)*L(1,0.01,col)});
+  dev.style.transformOrigin=push7>0&&m9===0?'1180px 720px':'960px 600px';
+  $('lapbase').style.opacity=1-col;
+  // page switching with slide
+  const pages=[['p6',c1In-1,c2In],['p7',c2In,c3In],['p8',c3In,c4In],['sc1',c4In,ws('n9a',1)+0.15],['sc2',ws('n9a',1)+0.15,ws('n9b',0)+0.2],['sc3',ws('n9b',0)+0.2,99]];
+  pages.forEach(([id,a,b],i)=>{const el=$(id);const isSnap=i>=3;
+   if(t<a-0.3||t>=b+0.3){el.style.visibility='hidden';return;}
+   el.style.visibility='';
+   if(isSnap){const vis=t>=a&&t<b;el.style.visibility=vis?'':'hidden';const z=R(t,a,a+0.22,E.o5);el.style.transform=`scale(${L(1.1,1,z)})`;el.style.transformOrigin='30% 30%';return;}
+   const inP=i===0?1:R(t,a-0.15,a+0.3,E.io), outP=R(t,b-0.15,b+0.3,E.io);
+   el.style.transform=`translateX(${(1-inP)*952-outP*952}px)`;});
+  // S6
+  const mIn=c1In+0.75, send=ws('n6',5)-0.05;
+  const mv=R(t,mIn,mIn+0.35,E.o5)*(1-R(t,send+0.25,send+0.5,E.i));S($('modal'),{op:mv,s:L(.94,1,mv),y:L(12,0,mv)});
+  $('sendbtn').style.transform=`scale(${t>send&&t<send+0.18?0.94:1})`;
+  S($('toast6'),{op:V(t,send+0.45,ws('n6',9)-0.1,0.3,0.3),y:L(14,0,R(t,send+0.45,send+0.75,E.o))});
+  const flyS=ws('n6',6)+0.05,flyE=flyS+0.7;const fp=R(t,flyS,flyE,E.io);
+  const nr=R(t,flyE-0.1,flyE+0.25,E.o);$('newrow').style.height=(42*nr)+'px';$('newrow').style.opacity=nr;
+  $('newrow').style.background=`rgba(0,136,207,${0.12*(1-R(t,flyE+1.2,flyE+2))})`;
+  const rc=R(t,flyE+0.25,flyE+0.45,E.ob);S($('ret7'),{op:cl(rc*2),s:L(.6,1,rc)});
+  const aIn=ws('n6',8)-0.1;const dp=R(t,aIn,aIn+0.45,E.o5);$('drawer').style.transform=`translateY(${(1-dp)*190}px)`;$('drawer').style.visibility=dp>0?'':'hidden';
+  ['a1','a2','a3','a4'].forEach((id,i)=>{const tt=ws('n6',9)-0.05+i*0.3;$(id).style.clipPath=`inset(0 ${100-100*R(t,tt,tt+0.35,E.l)}% 0 0)`;});
+  $('auditu').style.transform=`scaleX(${R(t,ws('n6',12),ws('n6',13)+0.2,E.o)})`;
+  // S7
+  const saveT=ws('n7',6)+0.05;$('savebtn').style.transform=`scale(${t>saveT&&t<saveT+0.18?0.94:1})`;
+  S($('toast7'),{op:V(t,saveT+0.3,ws('n7',10)+0.3,0.3,0.35),y:L(14,0,R(t,saveT+0.3,saveT+0.6,E.o))});
+  document.querySelectorAll('#p7 .lh').forEach((c,i)=>{const tt=ws('n7',7)+0.15+i*0.12;const p=R(t,tt,tt+0.22,E.ob);S(c,{op:cl(p*2),s:L(.5,1,p)});});
+  const rcIn=ws('n7',10)-0.2;const rp=R(t,rcIn,rcIn+0.5,E.o5);S($('rcard'),{op:rp,y:L(60,0,rp)});
+  ['nt1','nt2','nt3'].forEach((id,i)=>{$(id).className=t>rcIn+0.6+i*0.22?'on':'';});
+  $('pend').style.opacity=0.3+0.7*R(t,ws('n7',13)-0.1,ws('n7',13)+0.25,E.o);
+  const gl=R(t,ws('n7',15),ws('n7',15)+0.4,E.o);const pulse=0.5+0.5*Math.sin((t-ws('n7',15))*6);
+  $('apbtn').style.boxShadow=gl>0?`0 0 0 ${2+4*pulse*gl}px rgba(0,136,207,${0.3*gl}), 0 0 ${16*gl}px rgba(0,136,207,${0.5*gl})`:'none';
+  // S8
+  MB.forEach((m,i)=>{const row=$('m'+i);const rt=c3In+0.6+i*0.3;const p=R(t,rt,rt+0.3,E.o);S(row,{op:p,x:L(-16,0,p)});
+   row.querySelector('.cnt').textContent=Math.round(m[2]*R(t,rt+0.1,ws('n8',13)+0.2+i*0.1,E.o)).toLocaleString('en-US');
+   const hp=R(t,ws('n8',12)+i*0.09,ws('n8',12)+i*0.09+0.22,E.ob);S(row.querySelector('.held'),{op:cl(hp*2),s:L(.5,1,hp)});});
+  $('mbn').textContent=Math.round(50*R(t,c3In+0.6,ws('n8',13)+0.6,E.o));
+  $('j2').style.opacity=R(t,ws('n8',13),ws('n8',13)+0.3);$('j3').style.opacity=R(t,ws('n8',19)+0.2,ws('n8',19)+0.5);
+ } else show(dev,false);
+ // fly (stage level)
+ {const flyS=ws('n6',6)+0.05,flyE=flyS+0.7;const fp=R(t,flyS,flyE,E.io);
+  if(t>flyS-0.05&&t<flyE+0.05){S($('fly'),{op:cl(fp*4)*(1-R(t,flyE-0.1,flyE)),x:L(1700,700,fp),y:L(200,440,fp)-Math.sin(Math.PI*fp)*90,s:L(1.2,0.9,fp),r:L(8,0,fp)});}else hide($('fly'));}
+ // S8 outside elements
+ const s8x=$('s8x');
+ if(t>=c3In-0.1&&t<c4In+0.2){show(s8x,true);
+  const p=R(t,c3In,c3In+0.5,E.o5),o=R(t,c4In-0.3,c4In,E.i);S(s8x,{op:p*(1-o),x:L(-80,0,p)});
+  const offT=ws('n8',19)-0.05;
+  $('units').querySelectorAll('.u').forEach((u,i)=>{const on=t<offT+i*0.05;u.querySelectorAll('i').forEach((led,j)=>{const bl=(Math.sin(t*(9+i*1.7+j*3.1)+i)*0.5+0.5)>0.25;led.style.background=on?(bl?'#3ad07a':'#1d6b42'):'#2a3150';});});
+  const st=$('sst');if(t<offT+0.3){st.textContent='● ONLINE';st.style.color='#3ad07a';}else{st.textContent='● OFF';st.style.color='#ff5a5a';}
+  const P0=[370,520],P1=[430,380],P2=[520,640],P3=[640,520];
+  for(let i=0;i<12;i++){const e=$('e'+i);const t0=c3In+0.5+i*0.33;const q=R(t,t0,t0+0.9,E.io);
+   if(q<=0||q>=1||t>offT){hide(e);continue;}const u=q,mt=1-u;
+   const x=mt*mt*mt*P0[0]+3*mt*mt*u*P1[0]+3*mt*u*u*P2[0]+u*u*u*P3[0];
+   const yy=mt*mt*mt*P0[1]+3*mt*mt*u*P1[1]+3*mt*u*u*P2[1]+u*u*u*P3[1]+(i%3-1)*36*Math.sin(Math.PI*u);
+   S(e,{op:Math.min(1,Math.sin(Math.PI*u)*1.5),x,y:yy,r:L(-12,10,u),s:L(.8,1.05,Math.sin(Math.PI*u))});}
+ } else {show(s8x,false);for(let i=0;i<12;i++)hide($('e'+i));}
+
+ // ---------- S9 stack (on blue)
+ const s9=$('s9');
+ if(t>=c4In&&t<c4Out+0.3){show(s9,true);const o=R(t,c4Out-0.05,c4Out+0.25,E.i);S(s9,{op:1-o,y:-o*20});
+  s9.querySelector('.lbl').style.opacity=R(t,c4In+0.15,c4In+0.45);
+  riseT($('k1'),t,ws('n9a',0)-0.05,0.07,0.5);riseT($('k2'),t,ws('n9b',1)-0.15,0.07,0.5);riseT($('k3'),t,ws('n9b',2)-0.15,0.07,0.45);
+ } else show(s9,false);
+ {const el=$('pl9');const col=R(t,c4Out-0.1,c4Out+0.25,E.io);
+  if(col>0.6&&t<c4Out+0.6){const lp=R(t,c4Out+0.15,c4Out+0.5,E.io);const w=L(725,0,lp);el.style.left=(1290-w/2)+'px';el.style.width=w+'px';el.style.top='590px';S(el,{op:1-R(t,c4Out+0.4,c4Out+0.5)});el.style.background='#fff';}else hide(el);}
+
+ // ---------- S10
+ const s10=$('s10');
+ if(t>=56.0){show(s10,true);S(s10,{s:L(1,1.02,R(t,56,60,E.l))});
+  $('pl10').style.transform=`scaleX(${R(t,56.15,56.75,E.io)})`;
+  const li=R(t,ws('n10a',0)-0.05,ws('n10a',0)+0.5,E.o5);S($('lock2'),{op:li,y:L(24,0,li)});
+  const di=R(t,ws('n10a',3)+0.2,ws('n10a',3)+0.7,E.o);S($('desc'),{op:di,y:L(12,0,di)});
+  const ci=R(t,57.9,58.4,E.o);S($('cta'),{op:ci,y:L(12,0,ci)});S($('ev'),{op:R(t,57.0,57.6)});
+  [['kp1',ws('n10b',0)],['kp2',ws('n10b',1)-0.1],['kp3',ws('n10b',2)-0.15]].forEach(([id,tt])=>{const p=R(t,tt-0.05,tt+0.45,E.o5);$(id).style.transform=`translateY(${(1-p)*105}%)`;});
+  const hp=R(t,ws('n10b',2),ws('n10b',2)+0.35,E.io);hlP($('kphl'),hp);$('kpw').style.color=hp>0.5?'#fff':'';
+ } else show(s10,false);
+
+ // ---------- cursor
+ const cu=$('cursor');let cv=false;
+ if(t>c1In+0.8&&t<ws('n6',6)+0.2){const b=$('sendbtn').getBoundingClientRect();const tx=b.left+b.width*.55,ty=b.top+b.height*.6;const t0=c1In+1.0,t1=ws('n6',5)-0.08;
+  const p=R(t,t0,t1,E.io);S(cu,{op:V(t,t0-0.2,t1+0.6,0.2,0.25),x:L(tx+160,tx,p),y:L(ty+130,ty,p),s:(t>t1&&t<t1+0.15)?0.88:1});cv=true;}
+ if(!cv&&t>c2In+0.1&&t<ws('n7',6)+0.6){const b=$('savebtn').getBoundingClientRect();const sx=b.left+b.width*.5,sy=b.top+b.height*.6;const s0=c2In+0.3,s1=ws('n7',6);
+  const p=R(t,s0,s1,E.io);S(cu,{op:V(t,s0-0.2,s1+0.6,0.2,0.25),x:L(sx+240,sx,p),y:L(sy-150,sy,p),s:(t>s1&&t<s1+0.15)?0.88:1});cv=true;}
+ if(!cv)hide(cu);
+
+ // ---------- captions (burned in)
+ const c=CAPS.find(c=>t>=c[0]&&t<c[1]);const ce=$('cap');
+ if(!c){ce.style.opacity=0;}else{ce.textContent=c[2];ce.style.opacity=Math.min(1,(t-c[0])/0.1,(c[1]-t)/0.1);
+  const onDark=(t>=wipeP0+0.3&&t<cutT)||(t>=c4In+0.2&&t<c4Out+0.2);
+  ce.style.color=onDark?'#fff':'var(--ink)';ce.style.textShadow=onDark?'0 2px 10px rgba(0,0,0,.35)':'none';}
+}
+document.fonts.ready.then(()=>{setup();window.READY=true;});
+window.seek=seekG;
+</script>
+</body></html>
