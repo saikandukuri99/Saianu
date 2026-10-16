@@ -8,8 +8,8 @@
  {
   "i": 1,
   "start": 3.517,
-  "end": 12.748,
-  "text": "But years of inactive data keep bloating databases, slowing performance, and driving up costs, right when you're planning a move to S four HANA, or the cloud."
+  "end": 11.789,
+  "text": "But years of inactive data keep bloating databases, slowing performance, and driving up costs, right when you're planning a move to the cloud."
  },
  {
   "i": 2,
@@ -20,14 +20,14 @@
  {
   "i": 3,
   "start": 18.383,
-  "end": 28.729,
-  "text": "For S A P, Solix Cloud works natively through SAP's Archive Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."
+  "end": 25.84,
+  "text": "For Oracle E Business Suite, Solix is certified by Oracle, and covers both archiving and full application retirement."
  },
  {
   "i": 4,
-  "start": 29.017,
-  "end": 36.474,
-  "text": "For Oracle E Business Suite, Solix is certified by Oracle, and covers both archiving and full application retirement."
+  "start": 26.01,
+  "end": 36.355,
+  "text": "For S A P, Solix Cloud works natively through SAP's Archive Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."
  },
  {
   "i": 5,
