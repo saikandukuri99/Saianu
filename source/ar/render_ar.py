@@ -692,7 +692,7 @@ def process_screens(fr, t):
     if pin > 0 and k < 1:
         hs = lerp(1, .012, fl(eout(k/.6))) if k > 0 else 1.0
         ws = 1 - fl(eout((k - .6)/.4)) if k > .6 else 1.0
-        if ws > .01:
+        if False and ws > .01:   # the ERP window is no longer shown at the switch-off
             qd, nn, _ = DOC.quad(cam, c, w*ws, w*640/1000*hs, yaw=lerp(.12, .2, mv))
             DOC.draw(fr, SCR.legacy("erp"), qd, nn, alpha=fl(ease((t - sd + .3)/.6))*(1 - .15*mv), sheen=(lerp(-.2, 1.3, fl(clamp(k/.5)))) if k > 0 else None,
                      shadow=.4 if k <= 0 else 0)
@@ -722,7 +722,6 @@ def process_screens(fr, t):
         step = int(fl(clamp((t - t_anim)/1.6))*24)
         DOC.draw(fr, tex_fn(step), qd, nn, alpha=pi*(1 - qo), sheen=lerp(-.2, 1.3, fl(clamp((t - t_in - .1)/.6))))
     legal_blocks(fr, t)
-    erp_modules(fr, t, td)
     # decommission request: fields fill in live, then "Retire application" is clicked just before the power-off
     tin = sd + .15; tout = td + .55
     pi = fl(eout((t - tin)/.55)); qo = fl(ease((t - tout)/.45))
