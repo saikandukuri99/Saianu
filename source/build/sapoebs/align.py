@@ -1,6 +1,6 @@
 # Snap script punctuation to the real pauses in the placed voice-over track -> vo_align.json
 import sys, json, itertools, numpy as np, soundfile as sf
-from cues import VO, weights
+from cues import VO, weights, OFF
 a, sr = sf.read(sys.argv[1]); a = a[:, 0] if a.ndim > 1 else a
 hop = int(.01 * sr); env = np.array([np.sqrt(np.mean(a[i:i + hop] ** 2)) for i in range(0, len(a) - hop, hop)]); quiet = env < .012
 out = []
@@ -42,4 +42,6 @@ for v in VO:
         spans.append(dict(c0=c0, c1=c1, t0=round(t_prev, 3), t1=round(t_end, 3)))
         if n < K: t_prev = bounds[n][1]
     out.append(spans); print(v["i"], [(sp["t0"], sp["t1"]) for sp in spans])
+for l in out:                               # stored unshifted: cues.py adds OFF back when it loads
+    for sp in l: sp["t0"] = round(float(sp["t0"]) - OFF, 3); sp["t1"] = round(float(sp["t1"]) - OFF, 3)
 json.dump(out, open("vo_align.json", "w"))

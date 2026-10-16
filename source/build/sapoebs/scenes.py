@@ -68,7 +68,7 @@ def scene_T(c, t):
 
 # --------------------------------------------------------------------------- A  (HEAD) opening headline
 def scene_A(c, t):
-    kicker(c, "SOLIXEMPOWER 2026   ·   SOLIXCLOUD", 960, 292, .15 + OFF, t, anchor="c")
+    kicker(c, "SOLIXEMPOWER 2026   ·   SOLIX", 960, 292, .15 + OFF, t, anchor="c")
     L1 = [("SAP", WHITE, BLUE), ("and", TXT, None), ("Oracle", WHITE, RED), ("E-Business Suite", WHITE, None)]   # "E-Business Suite" reveals as one word, like the voice
     T1 = [cue(0, k) - .1 for k in ("S A P", "and", "Oracle", "E Business")]
     size = 104
@@ -315,7 +315,7 @@ def scene_F(c, t):
     gx = 960
     # frames
     c.card(150, y0, 360, h0, fa, outline=BLUE + (170,)); mono(c, "PRODUCTION", 330, y0 + 18, 16, SKY, fa, "Bold", "c")
-    c.card(1410, y0, 360, h0, fa, outline=RED + (170,)); mono(c, "SOLIXCLOUD ARCHIVE", 1590, y0 + 18, 16, SKY, fa, "Bold", "c")
+    c.card(1410, y0, 360, h0, fa, outline=RED + (170,)); mono(c, "SOLIX ARCHIVE", 1590, y0 + 18, 16, SKY, fa, "Bold", "c")
     c.icon("lock", 1690, y0 + 152, 54, RED, fa * E(pr(t, cue(5, "legal hold") - .3, .8)))
     c.line((510, y0 + 110), (gx - 175, y0 + 110), BLUE, fa * .35, 2); c.line((gx + 175, y0 + 110), (1410, y0 + 110), BLUE, fa * .35, 2)
     # records: each glides in ONE continuous eased move from its production slot to its archive slot (no pops, no resizing)
@@ -551,7 +551,7 @@ def scene_J(c, t):
     out = 1 - E(pr(t, tend, .5))
     # wordmark
     g0 = c.ga; c.ga = g0 * out
-    ta = cue(11, "Solix Cloud") - .12; a = E(pr(t, ta, .5))
+    ta = cue(11, "Solix") - .12; a = E(pr(t, ta, .5))
     wS = tw("SOLIX", "d", "Bold", 156, 14); xx = 960 - wS / 2
     c.text("SOLIX", xx, 250, "d", "Bold", 156, WHITE, a, track=14)
     c.blit(BAR(int(wS) // 6 * 6, 8, BLUE), xx, 450, a); c.blit(BAR(int(wS * .32) // 6 * 6, 8, RED), xx + wS * .68, 450, a)
