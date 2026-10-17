@@ -122,22 +122,16 @@ def recolor(out, a, newbg, scene, cards_fill=None):
     col = np.where(ink_grey[..., None], BLUE, NAVY)
     rec = newbg + (col - newbg) * k_dark[..., None]
     grey = neutral & ~region & (lum > 90) & (lum < 190)
+    # only thin text strokes, never filled shapes (grey particles, icon discs)
+    thin = cv2.distanceTransform(grey.astype(np.uint8), cv2.DIST_L2, 3)
+    n_, lab_, _, _ = cv2.connectedComponentsWithStats(grey.astype(np.uint8), connectivity=8)
+    tmax = np.zeros(n_, np.float32)
+    np.maximum.at(tmax, lab_.ravel(), thin.ravel())
+    grey &= (tmax < 3.5)[lab_]
     k_g = np.clip((lb - lum) / np.maximum(lb - 120.0, 1), 0, 1)
     recg = newbg + (BLUE - newbg) * k_g[..., None]
     out = np.where(region[..., None], rec, out)
     out = np.where(grey[..., None], recg, out)
-    # leftover pink glows / drop shadows from the old background -> soft navy shadow
-    r, g, b = out[..., 0], out[..., 1], out[..., 2]
-    glow = (r > 190) & (r - g > 8) & (np.abs(g - b) < 22) & (g > 110) & (a < 0.995)
-    if cards_fill is not None:
-        glow &= ~cv2.erode(cards_fill.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)
-    sh = np.clip((r - g) / 90.0, 0, 1)[..., None] * 0.22
-    out = np.where(glow[..., None], newbg * (1 - sh) + NAVY * sh, out)
-    # reds -> Solix red (hue-only, keeps shading)
-    r, g, b = out[..., 0], out[..., 1], out[..., 2]
-    reds = (r > 150) & (r - g > 90) & (r - b > 80) & ~protect
-    kr = np.clip((255 - g) / (255 - RED[1]), 0, 1)[..., None]
-    out = np.where(reds[..., None], newbg + (RED - newbg) * kr, out)
     return out
 
 
@@ -170,7 +164,14 @@ def process(job):
     # slow drift of the pattern (parallax feel), same everywhere
     dx = int(round(10 * np.sin(t / 12.0)))
     newbg = np.roll(_BG, dx, axis=1)
-    out = c + (1 - a[..., None]) * (newbg - b)
+    # smooth background mapping: anything not fully opaque is re-lit from the old
+    # background to the new one (c * new/old) - no thresholds, so no grain on
+    # translucent squares, glows, bolts or haze; solid pixels stay exactly as they are
+    a_s = cv2.GaussianBlur(a, (0, 0), 0.8)
+    w = np.clip((a_s - 0.86) / 0.12, 0, 1)
+    w = (w * w * (3 - 2 * w))[..., None]
+    mapped = c * (newbg / np.maximum(b, 1.0))
+    out = w * c + (1 - w) * mapped
     out = recolor(out, a, newbg, scene, fill if cards else None)
     if scene == PIL:
         o = pfade[k - cuts[PIL]]
@@ -207,7 +208,7 @@ def main():
     enc = subprocess.Popen([
         "ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W0}x{H0}", "-r", str(FPS),
         "-i", "-", "-i", video, "-map", "0:v", "-map", "1:a", "-vf", f"scale={W}:{H}:flags=lanczos",
-        "-c:v", "libx264", "-preset", "slow", "-crf", "16", "-pix_fmt", "yuv420p",
+        "-c:v", "libx264", "-preset", "slow", "-crf", "18", "-pix_fmt", "yuv420p",
         "-c:a", "copy", "-shortest", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
     jobs = ((k, fr, cuts, pfade) for k, fr in enumerate(read_frames(video)))
     with Pool(4, initializer=_init, initargs=(ref,)) as pool:
