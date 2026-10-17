@@ -164,9 +164,9 @@ class Background:
         self.corners = cm
 
     # heartbeat traces: (baseline y, amplitude, period, scroll px/s, colour, opacity, phase)
-    ECG = [(330, 95, 640, 70, np.float32([40, 110, 235]), 0.20, 0.0),
-           (690, 120, 780, 95, np.float32([225, 40, 70]), 0.15, 0.35),
-           (905, 70, 560, 55, np.float32([40, 110, 235]), 0.11, 0.7)]
+    ECG = [(330, 95, 640, 70, np.float32([40, 110, 235]), 0.09, 0.0),
+           (690, 120, 780, 95, np.float32([225, 40, 70]), 0.07, 0.35),
+           (905, 70, 560, 55, np.float32([40, 110, 235]), 0.05, 0.7)]
 
     @staticmethod
     def _ecg(layer, glow, t, yb, amp, per, speed, col, alpha, ph):
@@ -176,14 +176,14 @@ class Background:
         y = yb - amp * (0.13 * g(0.18, 0.035) - 0.16 * g(0.300, 0.010) + 1.0 * g(0.318, 0.009)
                         - 0.38 * g(0.338, 0.010) + 0.26 * g(0.55, 0.05))
         head = (t * 420 + ph * 900) % (W + 700) - 350               # monitor sweep highlight
-        boost = 1 + 1.6 * np.exp(-((xs - head) / 170) ** 2)
+        boost = 1 + 1.0 * np.exp(-((xs - head) / 170) ** 2)
         pts = np.column_stack([xs, y]) * 8
         for i in range(0, len(xs) - 1, 4):
             a = alpha * float(boost[i])
             cv2.polylines(layer, [np.int32(pts[i:i + 5])], False, (col * a).tolist(), 2, cv2.LINE_AA, shift=3)
         i = int(np.argmin(np.abs(xs - head)))
         if 0 < head < W:
-            cv2.circle(glow, (int(xs[i] * 8), int(y[i] * 8)), 5 * 8, (col * alpha * 1.4).tolist(), -1, cv2.LINE_AA,
+            cv2.circle(glow, (int(xs[i] * 8), int(y[i] * 8)), 5 * 8, (col * alpha * 1.0).tolist(), -1, cv2.LINE_AA,
                        shift=3)
 
     @staticmethod
@@ -203,9 +203,9 @@ class Background:
         glow = np.zeros((H, W, 3), np.float32)
         drift = t * 6.0
         self._ribbon(layer, t, lambda x: 930 - 0.30 * x + 40 * np.sin(x / 700 + 0.4) - drift * 0.1,
-                     np.float32([40, 90, 230]), 34, 150, 26, 260, 0.35, 0.06)
+                     np.float32([40, 90, 230]), 34, 150, 26, 260, 0.35, 0.03)
         self._ribbon(layer, t, lambda x: 1010 - 0.36 * x + 50 * np.sin(x / 820 + 2.0),
-                     np.float32([200, 40, 90]), 28, 120, 22, 300, 0.28, 0.05)
+                     np.float32([200, 40, 90]), 28, 120, 22, 300, 0.28, 0.025)
         for (yb, amp, per, speed, col, alpha, ph) in self.ECG:
             self._ecg(layer, glow, t, yb, amp, per, speed, col, alpha, ph)
         out += layer + cv2.GaussianBlur(layer, (0, 0), 3) * 0.8
@@ -214,7 +214,7 @@ class Background:
         for (bx, by, r, a, ph) in self.bokeh:
             k = a * (0.6 + 0.4 * np.sin(t * 0.7 + ph))
             cv2.circle(bok, (int(bx), int(by)), int(r), (np.float32([90, 120, 220]) * k * 3).tolist(), -1, cv2.LINE_AA)
-        out += cv2.GaussianBlur(bok, (0, 0), 2)
+        out += cv2.GaussianBlur(bok, (0, 0), 2) * 0.5
         out = out * (0.65 + 0.35 * self.vig[..., None])
         out += self.corners[..., None] * np.float32([95, 98, 120])
         return out
