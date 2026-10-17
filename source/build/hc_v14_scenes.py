@@ -162,6 +162,7 @@ class Fragmented:
     LEFT = [222, 328, 437, 545, 653, 763]
     RIGHT = [311, 480, 643]
     LOGO = (856.0, 452.0)
+    SOLID_LOGO = False
     NODE = (711.0, 455.0)
     L_START = [(338, 226), (469, 332), (360, 436), (398, 545), (425, 653), (482, 749)]
     R_END = [311.0, 478.0, 640.0]
@@ -197,7 +198,10 @@ class Fragmented:
         ha = np.clip((255 - halo.min(axis=2)) / (255 - 36.0), 0, 1)
         halo_pm = np.dstack([halo - 255 * (1 - ha[..., None]), ha])
         logo_m = np.clip(113.5 - r, 0, 1)
-        hub_pm = art * logo_m[..., None] + halo_pm * (1 - logo_m[..., None])
+        logo_src = art
+        if self.SOLID_LOGO:          # logo disc taken opaque (its white bolt carried checker noise)
+            logo_src = np.dstack([comp, np.ones((h, w), np.float32)])
+        hub_pm = logo_src * logo_m[..., None] + halo_pm * (1 - logo_m[..., None])
         hub_pm[r > 236] = 0
         # data squares: found on the artwork, redrawn clean (the source had checker baked in)
         diff = np.abs(comp - halo * (r[..., None] < 236) - 255 * (r[..., None] >= 236)).max(axis=2)
@@ -376,6 +380,7 @@ class Governance:
     RCOL = [(21, 122, 247), (6, 177, 187), (138, 83, 252), (252, 128, 8), (7, 146, 58), (11, 116, 240),
             (250, 173, 15), (131, 77, 250)]
     WH = (745.0, 430.0)
+    BOB, FEATHER, HAZE = 1.0, 0, 1.0
     L_IN = [11.25 + 0.27 * i for i in range(7)]     # "Solix AI Warehouse unifies healthcare data"
     R_IN = [13.95 + 0.29 * i for i in range(8)]     # "powering intelligent and personalized care"
     REGION_Y = 256
@@ -386,9 +391,21 @@ class Governance:
         yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
         art[(yy < 168) | ((yy < 200) & (xx > 300) & (xx < 1110))] = 0   # artwork title (video keeps its own)
         a = art[..., 3]
+        if self.HAZE < 1:            # soften the pale glow (made for white) on dark backgrounds
+            rgbn = art[..., :3] / np.maximum(art[..., 3:4], 1e-3)
+            pale = np.clip((rgbn.min(axis=2) - 170) / 60, 0, 1)
+            a0 = art[..., 3]
+            a1 = a0 * (1 - pale) + (a0 ** (1.0 / self.HAZE)) * pale
+            art = art * (a1 / np.maximum(a0, 1e-4))[..., None]
+            a = art[..., 3]
         larr = (xx >= 300) & (xx < 562)
         rarr = (xx >= 925) & (xx < 1118)
         wh = (xx >= 562) & (xx < 925)
+        if self.FEATHER:
+            whs = cv2.GaussianBlur(wh.astype(np.float32), (0, 0), self.FEATHER)
+            larr_s, rarr_s = (1 - whs) * (xx < 743), (1 - whs) * (xx >= 743)
+        else:
+            whs, larr_s, rarr_s = wh.astype(np.float32), larr.astype(np.float32), rarr.astype(np.float32)
         lrows = arrows_to_rows(art, larr, self.LEFT, self.LCOL, 310, 560, 425)
         rrows = arrows_to_rows(art, rarr, self.RIGHT, self.RCOL, 1110, 925, 425)
         s, ox, oy = self.S, self.OX, self.OY
@@ -403,16 +420,19 @@ class Governance:
         self.right = [Layer(C, m, (X(1160), Y(c))) for m, c in zip(rm, self.RIGHT)]
         revL = (Xc - X(300)) / (X(562) - X(300))
         revR = (X(1118) - Xc) / (X(1118) - X(925))
-        self.larr = [Layer(C, P(lrows == i), (0, 0), reveal=revL) for i in range(len(self.LEFT))]
-        self.rarr = [Layer(C, P(rrows == i), (0, 0), reveal=revR) for i in range(len(self.RIGHT))]
-        self.wh = Layer(C, P(wh), (X(self.WH[0]), Y(self.WH[1])))
+        if self.FEATHER:            # arrows keep their own pixels, the warehouse takes the soft rest
+            lrows = arrows_to_rows(art, (xx >= 300) & (xx < 743), self.LEFT, self.LCOL, 310, 560, 425)
+            rrows = arrows_to_rows(art, (xx >= 743) & (xx < 1118), self.RIGHT, self.RCOL, 1110, 925, 425)
+        self.larr = [Layer(C, P((lrows == i) * larr_s), (0, 0), reveal=revL) for i in range(len(self.LEFT))]
+        self.rarr = [Layer(C, P((rrows == i) * rarr_s), (0, 0), reveal=revR) for i in range(len(self.RIGHT))]
+        self.wh = Layer(C, P(whs), (X(self.WH[0]), Y(self.WH[1])))
 
     def render(self, t, plate):
         out = plate.copy()
         u = (t - 10.85) / 0.75
         if u > 0:
-            bob = 5 * np.sin((t - 10.85) * 2 * np.pi / 2.6)
-            pulse = 0.02 * smooth((t - 16.75) / 0.3) * smooth((17.9 - t) / 0.5)   # "transforming patient outcomes"
+            bob = 5 * np.sin((t - 10.85) * 2 * np.pi / 2.6) * self.BOB
+            pulse = 0.02 * smooth((t - 16.75) / 0.3) * smooth((17.9 - t) / 0.5) * self.BOB
             self.wh.draw(out, smooth(u * 1.3), (0.86 + 0.14 * ease_back(u)) * (1 + pulse), dy=bob * smooth(u))
         for i in range(len(self.LEFT)):
             u = (t - self.L_IN[i]) / 0.45

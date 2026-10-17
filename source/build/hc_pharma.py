@@ -101,6 +101,27 @@ def text_rgba(txt, size, weight="Bold", color=(255, 255, 255), spacing=0):
     return np.dstack([a[..., None] * col, a]), asc
 
 
+def ink(size, weight="Bold"):
+    """(cap top, descender bottom) of a text_rgba image, in pixels from its top."""
+    f = font(size, weight)
+    return 4 + f.getbbox("H")[1], 4 + f.getbbox("gpyq")[3]
+
+
+def boxed(out, pm, size, weight, x, box_top, frac_box, frac_text, op, pad_x=14):
+    """Blue highlight box with the text centred vertically inside it; returns the box bottom."""
+    cap, dsc = ink(size, weight)
+    pad = int(round(size * 0.2))
+    bh = (dsc - cap) + 2 * pad
+    bw = pm.shape[1] - 8 + 2 * pad_x
+    wd = int(bw * ease_out(frac_box))
+    if wd > 1:
+        x0 = int(x) - pad_x
+        reg = out[box_top:box_top + bh, max(x0, 0):x0 + wd]
+        reg[...] = reg * (1 - 0.95 * op) + BLUE * 0.95 * op
+    over(out, pm, x - 4, box_top + pad - cap, smooth(frac_text) * op)
+    return box_top + bh
+
+
 def text_w(txt, size, weight="Bold"):
     return font(size, weight).getlength(txt)
 
@@ -142,30 +163,28 @@ class Background:
             cv2.line(cm, (cx, cy), (cx, cy + sy * L), 1.0, 2, cv2.LINE_AA)
         self.corners = cm
 
+    # heartbeat traces: (baseline y, amplitude, period, scroll px/s, colour, opacity, phase)
+    ECG = [(330, 95, 640, 70, np.float32([40, 110, 235]), 0.20, 0.0),
+           (690, 120, 780, 95, np.float32([225, 40, 70]), 0.15, 0.35),
+           (905, 70, 560, 55, np.float32([40, 110, 235]), 0.11, 0.7)]
+
     @staticmethod
-    def _helix(layer, glow, t, x0, x1, yc, amp, lam, speed, alpha, beads=True):
-        xs = np.arange(x0, x1, 4, dtype=np.float32)
-        ph = 2 * np.pi * xs / lam + t * speed
-        c = yc(xs)
-        y1 = c + amp * np.sin(ph)
-        y2 = c + amp * np.sin(ph + np.pi)
-        dep1 = 0.55 + 0.45 * np.cos(ph)
-        dep2 = 0.55 - 0.45 * np.cos(ph)
-        for ys, dep, col in ((y1, dep1, RED), (y2, dep2, np.float32([40, 110, 230]))):
-            pts = np.int32(np.column_stack([xs, ys]) * 8)
-            for i in range(0, len(xs) - 1, 6):
-                seg = pts[i:i + 7]
-                a = alpha * float(dep[i])
-                cv2.polylines(layer, [seg], False, (col * a).tolist(), 2, cv2.LINE_AA, shift=3)
-            if beads:
-                for i in range(0, len(xs), 9):
-                    a = alpha * 1.3 * float(dep[i])
-                    cv2.circle(glow, (int(xs[i] * 8), int(ys[i] * 8)), 4 * 8, (col * a).tolist(), -1,
-                               cv2.LINE_AA, shift=3)
-        for i in range(0, len(xs), 5):
-            a = alpha * 0.45 * float(0.5 + 0.5 * abs(np.cos(ph[i])))
-            cv2.line(layer, (int(xs[i] * 8), int(y1[i] * 8)), (int(xs[i] * 8), int(y2[i] * 8)),
-                     (np.float32([150, 170, 230]) * a).tolist(), 1, cv2.LINE_AA, shift=3)
+    def _ecg(layer, glow, t, yb, amp, per, speed, col, alpha, ph):
+        xs = np.arange(-20, W + 20, 3, dtype=np.float32)
+        u = ((xs + t * speed) / per + ph) % 1.0
+        g = lambda c, w: np.exp(-((u - c) / w) ** 2)  # noqa: E731
+        y = yb - amp * (0.13 * g(0.18, 0.035) - 0.16 * g(0.300, 0.010) + 1.0 * g(0.318, 0.009)
+                        - 0.38 * g(0.338, 0.010) + 0.26 * g(0.55, 0.05))
+        head = (t * 420 + ph * 900) % (W + 700) - 350               # monitor sweep highlight
+        boost = 1 + 1.6 * np.exp(-((xs - head) / 170) ** 2)
+        pts = np.column_stack([xs, y]) * 8
+        for i in range(0, len(xs) - 1, 4):
+            a = alpha * float(boost[i])
+            cv2.polylines(layer, [np.int32(pts[i:i + 5])], False, (col * a).tolist(), 2, cv2.LINE_AA, shift=3)
+        i = int(np.argmin(np.abs(xs - head)))
+        if 0 < head < W:
+            cv2.circle(glow, (int(xs[i] * 8), int(y[i] * 8)), 5 * 8, (col * alpha * 1.4).tolist(), -1, cv2.LINE_AA,
+                       shift=3)
 
     @staticmethod
     def _ribbon(layer, t, base, col, n, spread, amp, w, speed, alpha):
@@ -184,44 +203,29 @@ class Background:
         glow = np.zeros((H, W, 3), np.float32)
         drift = t * 6.0
         self._ribbon(layer, t, lambda x: 930 - 0.30 * x + 40 * np.sin(x / 700 + 0.4) - drift * 0.1,
-                     np.float32([40, 90, 230]), 34, 150, 26, 260, 0.35, 0.13)
+                     np.float32([40, 90, 230]), 34, 150, 26, 260, 0.35, 0.06)
         self._ribbon(layer, t, lambda x: 1010 - 0.36 * x + 50 * np.sin(x / 820 + 2.0),
-                     np.float32([200, 40, 90]), 28, 120, 22, 300, 0.28, 0.11)
-        self._helix(layer, glow, t, -60, W + 60, lambda x: 300 + 0.16 * x + 70 * np.sin(x / 520 + 0.8),
-                    100, 760, 0.55, 0.55)
-        self._helix(layer, glow, t + 3.0, 1250, W + 60, lambda x: 560 + 0.12 * (x - 1250) + 40 * np.sin(x / 300),
-                    70, 520, -0.5, 0.35, beads=True)
+                     np.float32([200, 40, 90]), 28, 120, 22, 300, 0.28, 0.05)
+        for (yb, amp, per, speed, col, alpha, ph) in self.ECG:
+            self._ecg(layer, glow, t, yb, amp, per, speed, col, alpha, ph)
         out += layer + cv2.GaussianBlur(layer, (0, 0), 3) * 0.8
         out += glow * 0.8 + cv2.GaussianBlur(glow, (0, 0), 6) * 1.2
+        bok = np.zeros((H, W, 3), np.float32)
         for (bx, by, r, a, ph) in self.bokeh:
             k = a * (0.6 + 0.4 * np.sin(t * 0.7 + ph))
-            cv2.circle(out, (int(bx), int(by)), int(r), (np.float32([90, 120, 220]) * k * 3).tolist(), -1, cv2.LINE_AA)
+            cv2.circle(bok, (int(bx), int(by)), int(r), (np.float32([90, 120, 220]) * k * 3).tolist(), -1, cv2.LINE_AA)
+        out += cv2.GaussianBlur(bok, (0, 0), 2)
         out = out * (0.65 + 0.35 * self.vig[..., None])
         out += self.corners[..., None] * np.float32([95, 98, 120])
         return out
 
 
 # ---------------------------------------------------------------- logo
-def build_logo(video):
-    """SOLIX logo (white wordmark, red disc, white bolt) from the v13 intro frame."""
-    fr = None
-    for k, f in enumerate(read_frames(video)):
-        if k == 45:
-            fr = f.astype(np.float32)
-            break
-    c = fr[140:335, 540:1380]
-    lum = c.mean(2)
-    h, w = lum.shape
-    yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
-    disc = np.clip(86.5 - np.hypot(xx - 97.5, yy - 97.0), 0, 1)
-    ecg = (c[..., 2] - c[..., 0] > 8) & (lum > 150)
-    ink_l = np.minimum(cv2.erode(lum, np.ones((9, 9), np.uint8)), 170)
-    a = np.clip((255 - lum - 4) / np.maximum(255 - ink_l, 60), 0, 1)
-    a[ecg] = 0
-    a = a * (1 - disc)
-    pm = np.dstack([a[..., None] * WHITE, a])
-    pm = pm * (1 - disc[..., None]) + np.dstack([c, np.ones((h, w))]) * disc[..., None]
-    return pm
+def load_logo():
+    """Supplied SOLIX logo (white wordmark + tagline, red disc) as premultiplied RGBA."""
+    im = cv2.imread(os.path.join(v14.ASSETS, "solix_logo_white.webp"), cv2.IMREAD_UNCHANGED).astype(np.float32)
+    a = im[..., 3:4] / 255.0
+    return np.dstack([im[..., 2::-1] * a, a[..., 0]])
 
 
 def scaled(pm, s):
@@ -261,19 +265,18 @@ class Slide:
         y1 = yl + 52
         v = (t - self.t_in - 0.15) / 0.5
         over(out, self.l1, x - 4, y1 + 24 * (1 - ease_out(v)), smooth(v) * op)
-        y2 = y1 + int(self.size * 1.22)
+        cap, dsc = ink(self.size)
+        box_top = y1 + dsc + int(self.size * 0.24)            # line space under line 1
         v2 = (t - self.t_in - 0.35) / 0.45
+        bottom = box_top + (dsc - cap) + 2 * int(round(self.size * 0.2))
         if v2 > 0:
-            bw = self.l2.shape[1] + 18
-            bh = int(self.size * 1.0)
             if self.box:
-                wd = int(bw * ease_out(v2))
-                if wd > 1:
-                    reg = out[y2 + 8:y2 + 8 + bh, x - 12:x - 12 + wd]
-                    reg[...] = reg * (1 - 0.95 * op) + BLUE * 0.95 * op
-            over(out, self.l2, x - 2, y2 + 4, smooth((v2 - 0.35) / 0.5) * op)
+                boxed(out, self.l2, self.size, "Bold", x, box_top, v2, (v2 - 0.35) / 0.5, op)
+            else:
+                over(out, self.l2, x - 4, box_top - cap, smooth((v2 - 0.35) / 0.5) * op)
+        self.bottom = bottom
         if show_bullets and self.bul:
-            by = y2 + bh + 90 if v2 > 0 else y2 + int(self.size) + 90
+            by = bottom + 78
             for i, (dim, lit) in enumerate(self.bul):
                 tb = self.bul_t[i] if i < len(self.bul_t) else self.t_in + 0.8 + 0.25 * i
                 w_ = smooth((t - tb) / 0.4)
@@ -373,8 +376,8 @@ def extract_cards(video):
 class Renderer:
     def __init__(self, logo_pm):
         self.bg = Background()
-        self.logo_big = scaled(logo_pm, 0.62)
-        self.logo_small = scaled(logo_pm, 0.43)
+        self.logo_big = scaled(logo_pm, 0.26)
+        self.logo_small = scaled(logo_pm, 0.178)
         self.cards = {n: np.load(os.path.join(WORK, f"card_{n}.npy"), mmap_mode="r") for n in CARD_SRC}
         self.rm = {n: rounded_mask(m.shape[2], m.shape[1], 14) for n, m in self.cards.items()}
         self._lockup()
@@ -458,7 +461,8 @@ class Renderer:
     def _diagrams(self):
         # approved, animated diagrams from v14, placed for the Pharma layout
         class Frag(v14.Fragmented):
-            S, OX, OY = 0.86, 260.0, 236.0
+            S, OX, OY = 0.86, 260.0, 252.0
+            SOLID_LOGO = True
 
             def __init__(self):
                 super().__init__()
@@ -505,13 +509,14 @@ class Renderer:
                 self.right = [chip(1320, r, 51, e + 30) for r, e in zip(self.RIGHT, R_END)]
 
         class Gov(v14.Governance):
-            S, OX, OY = 1.10, 140.0, 165.0
+            S, OX, OY = 1.0, 210.0, 228.0
+            BOB, FEATHER, HAZE = 0.0, 14, 1.6
 
         class Glob(v14.Global):
             S, OX, OY = 0.60, 965.0, 230.0
         self.frag, self.gov, self.glob = Frag(), Gov(), Glob()
-        hc_pillars.SCALE = 0.62
-        hc_pillars.FRAME_CENTER = (1080.0, 640.0)
+        hc_pillars.SCALE = 0.64
+        hc_pillars.FRAME_CENTER = (946.0, 672.0)
         hc_pillars.PLACE = {k: k for k in hc_pillars.SLOTS}
         self.pil = hc_pillars.Pillars(os.path.join(v14.ASSETS, "six_pillars.png"), dark=True, original=True)
 
@@ -535,8 +540,9 @@ class Renderer:
         for i, s in enumerate(self.intro_steps):
             u = smooth((t - 1.0 - 0.3 * i) / 0.5)
             if i == 1 and u > 0:
-                bw = int((s.shape[1] + 10) * ease_out((t - 1.3) / 0.45))
-                reg = out[628:666, int(xx) - 8:int(xx) - 8 + bw]
+                cap, dsc = ink(22, "SemiBold")
+                bw = int((s.shape[1] + 12) * ease_out((t - 1.3) / 0.45))
+                reg = out[630 + cap - 9:630 + dsc - 3, int(xx) - 6:int(xx) - 6 + bw]
                 reg[...] = reg * (1 - 0.95 * op) + BLUE * 0.95 * op
             over(out, s, xx, 630, u * op)
             xx += s.shape[1]
@@ -571,12 +577,9 @@ class Renderer:
         over(out, self.p360_l1, (W - self.p360_l1.shape[1]) / 2, y + 50 + 20 * (1 - ease_out(v)), smooth(v) * op)
         v2 = (t - 36.55) / 0.45
         if v2 > 0:
-            bw = self.p360_l2.shape[1] + 24
-            bx = int((W - bw) / 2)
-            wd = int(bw * ease_out(v2))
-            reg = out[y + 168:y + 168 + 100, bx:bx + wd]
-            reg[...] = reg * (1 - 0.95 * op) + BLUE * 0.95 * op
-            over(out, self.p360_l2, bx + 8, y + 160, smooth((v2 - 0.3) / 0.5) * op)
+            cap, dsc = ink(96)
+            boxed(out, self.p360_l2, 96, "Bold", (W - self.p360_l2.shape[1] + 8) / 2, y + 50 + dsc + 22, v2,
+                  (v2 - 0.3) / 0.5, op, pad_x=18)
         k = fade_io(t, 36.3, 38.4, 0.3, 0.3) * op
         if k > 0:
             cv2.rectangle(out, (123, 963), (126, 995), (RED * k).tolist(), -1)
@@ -595,7 +598,7 @@ class Renderer:
 
     def _agents(self, out, t, t0, t1, op):
         self.s["agents"].draw(out, t, op)
-        self._card(out, "agents", t, 1170, 655, 1260, op, 38.75)
+        self._card(out, "agents", t, 1180, 672, 1230, op, 38.75)
 
     def _findings(self, out, t, t0, t1, op):
         self.s["findings"].draw(out, t, op)
@@ -633,8 +636,10 @@ class Renderer:
         over(out, self.end_tag1, x, 600, u)
         v = (t - 77.5) / 0.45
         if v > 0:
-            wd = int((self.end_tag2.shape[1] + 6) * ease_out(v))
-            reg = out[603:651, int(x + self.end_tag1.shape[1]) - 4:int(x + self.end_tag1.shape[1]) - 4 + wd]
+            cap, dsc = ink(34, "Medium")
+            wd = int((self.end_tag2.shape[1] + 8) * ease_out(v))
+            x2 = int(x + self.end_tag1.shape[1]) - 4
+            reg = out[600 + cap - 9:600 + dsc + 9, x2:x2 + wd]
             reg[...] = reg * 0.05 + BLUE * 0.95
         over(out, self.end_tag2, x + self.end_tag1.shape[1], 600, u)
         w_ = smooth((t - 78.0) / 0.6)
@@ -663,7 +668,7 @@ def main():
     test = [float(x) for x in sys.argv[3].split(",")] if len(sys.argv) > 3 else None
     if not os.path.exists(os.path.join(WORK, "card_clinic.npy")):
         extract_cards(video)
-    logo = build_logo(video)
+    logo = load_logo()
     n = int(round(80.6 * FPS))
     if test:
         _init(logo)
