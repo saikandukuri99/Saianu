@@ -381,6 +381,7 @@ class Governance:
             (250, 173, 15), (131, 77, 250)]
     WH = (745.0, 430.0)
     BOB, FEATHER, HAZE = 1.0, 0, 1.0
+    WH_IMAGE, WH_BOX = None, (745.0, 226.0, 370.0)     # supplied warehouse cut-out: centre x, top, width
     L_IN = [11.25 + 0.27 * i for i in range(7)]     # "Solix AI Warehouse unifies healthcare data"
     R_IN = [13.95 + 0.29 * i for i in range(8)]     # "powering intelligent and personalized care"
     REGION_Y = 256
@@ -401,7 +402,16 @@ class Governance:
         larr = (xx >= 300) & (xx < 562)
         rarr = (xx >= 925) & (xx < 1118)
         wh = (xx >= 562) & (xx < 925)
-        if self.FEATHER:
+        if self.WH_IMAGE:           # replace the warehouse with the supplied cut-out
+            pale = (art[..., :3] / np.maximum(art[..., 3:4], 1e-3)).min(axis=2) > 160
+            old = ((xx >= 557) & (xx < 933) & (yy > 160)) | \
+                (pale & ((((xx - 745) / 250) ** 2 + ((yy - 440) / 280) ** 2) < 1))
+            art[old] = 0
+            a = art[..., 3]
+        if self.WH_IMAGE:
+            whs = np.zeros((h, w), np.float32)
+            larr_s, rarr_s = (xx < 743).astype(np.float32), (xx >= 743).astype(np.float32)
+        elif self.FEATHER:
             whs = cv2.GaussianBlur(wh.astype(np.float32), (0, 0), self.FEATHER)
             larr_s, rarr_s = (1 - whs) * (xx < 743), (1 - whs) * (xx >= 743)
         else:
@@ -426,6 +436,17 @@ class Governance:
         self.larr = [Layer(C, P((lrows == i) * larr_s), (0, 0), reveal=revL) for i in range(len(self.LEFT))]
         self.rarr = [Layer(C, P((rrows == i) * rarr_s), (0, 0), reveal=revR) for i in range(len(self.RIGHT))]
         self.wh = Layer(C, P(whs), (X(self.WH[0]), Y(self.WH[1])))
+        if self.WH_IMAGE:
+            cx, top, width = self.WH_BOX
+            im = cv2.imread(self.WH_IMAGE, cv2.IMREAD_UNCHANGED).astype(np.float32)
+            al = im[..., 3] / 255.0
+            ys, xs = np.nonzero(al > 0.5)
+            k = width / (xs.max() - xs.min())
+            pm = np.dstack([im[..., 2::-1] * al[..., None], al])
+            ox_, oy_ = X(cx) - s * k * (xs.min() + xs.max()) / 2, Y(top) - s * k * ys.min()
+            Cw = place(pm, s * k, ox_, oy_)
+            hgt = s * k * (ys.max() - ys.min())
+            self.wh = Layer(Cw, np.ones((H, W)), (X(cx), Y(top) + hgt / 2))
 
     def render(self, t, plate):
         out = plate.copy()

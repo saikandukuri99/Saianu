@@ -236,7 +236,7 @@ def scaled(pm, s):
 class Slide:
     """Label + big outline number + headline (2nd line on a blue box) + bullets + captions."""
 
-    def __init__(self, label, number, line1, line2, bullets=(), x=120, y_label=242, size=72,
+    def __init__(self, label, number, line1, line2, bullets=(), x=120, y_label=200, size=72,
                  t_in=0.0, bullets_t=(), captions=(), line2_box=True):
         self.x = x
         self.t_in = t_in
@@ -415,38 +415,38 @@ class Renderer:
         cap = lambda *a: a  # noqa: E731
         self.s = {
             "frag": Slide("Fragmented data", "", "From fragmented data", "to better patient outcomes.", x=120,
-                          y_label=150, size=60, t_in=3.6,
+                          y_label=112, size=60, t_in=3.6,
                           captions=[cap(3.6, 6.4, "Every hospital holds a wealth of clinical data."),
                                     cap(6.55, 10.3, "Unlocking insights that drive better patient outcomes.")]),
-            "gov": Slide("Unify", "01", "AI ready foundation with", "Unified Governance.", x=120, y_label=150,
+            "gov": Slide("Unify", "01", "AI ready foundation with", "Unified Governance.", x=120, y_label=112,
                          size=60, t_in=10.6,
                          captions=[cap(10.6, 13.85, "Solix AI Warehouse unifies healthcare data,"),
                                    cap(13.9, 16.7, "powering intelligent and personalized care,"),
                                    cap(16.75, 19.1, "transforming patient outcomes.")]),
             "pillars": Slide("Foundation", "02", "Six pillars of AI ready foundation", "for healthcare intelligence.",
-                             x=120, y_label=150, size=56, t_in=19.45,
+                             x=120, y_label=112, size=56, t_in=19.45,
                              captions=[cap(19.45, 23.5, "Six pillars of an AI-ready foundation for healthcare intelligence."),
                                        cap(23.53, 30.05, "AI Warehouse. Federated Governance. Patient 360. Clinical Intelligence and Imaging."),
                                        cap(30.1, 35.6, "Multi-agentic intelligence, for every specialty.")]),
             "agents": Slide("AI Patient 360 Analytics", "03", "Purpose-built multi-agentic", "system for every specialty.",
-                            x=120, y_label=150, size=56, t_in=38.6,
+                            x=120, y_label=112, size=56, t_in=38.6,
                             captions=[cap(38.6, 43.9, "Every specialty has its own multi-agent clusters, with a consensus score."),
                                       cap(45.0, 48.8, "Purpose-built Solix agents bring every system into focus,"),
                                       cap(48.9, 52.7, "turning real-time insights into better patient outcomes.")]),
-            "findings": Slide("Specialty agent", "04", "Findings", "with Evidence.", x=120, y_label=242, size=72,
+            "findings": Slide("Specialty agent", "04", "Findings", "with Evidence.", x=120, y_label=200, size=72,
                               t_in=53.1, bullets=["Published guideline", "Readings cited", "Rule applied",
                                                   "Explainability by design"],
                               bullets_t=[54.4, 56.35, 57.73, 59.15],
                               captions=[cap(53.15, 56.3, "Every finding comes with its evidence, by design."),
                                         cap(56.35, 61.3, "The readings are cited. The rules are applied, based on the published guidelines.")]),
             "clinic": Slide("Clinician in control", "05", "Decisions are validated", "& approved by clinicians.",
-                            x=120, y_label=242, size=60, t_in=61.65,
+                            x=120, y_label=200, size=60, t_in=61.65,
                             bullets=["Review the evidence", "Refine the findings", "Approve with confidence"],
                             bullets_t=[63.8, 65.15, 66.6],
                             captions=[cap(61.8, 63.76, "Clinicians lead every decision."),
                                       cap(63.8, 69.3, "Review the evidence, refine the findings, and approve with confidence, before sign-off.")]),
             "global": Slide("Global", "06", "Built for global healthcare.", "Governed by design.", x=120,
-                            y_label=242, size=56, t_in=69.7,
+                            y_label=200, size=56, t_in=69.7,
                             bullets=["A unified Patient 360 knowledge layer", "Connected globally", "Governed by design"],
                             bullets_t=[69.9, 72.55, 73.95],
                             captions=[cap(69.75, 72.5, "A unified Patient 360 knowledge layer."),
@@ -511,6 +511,7 @@ class Renderer:
         class Gov(v14.Governance):
             S, OX, OY = 1.0, 210.0, 228.0
             BOB, FEATHER, HAZE = 0.0, 14, 1.6
+            WH_IMAGE = os.path.join(v14.ASSETS, "ai_warehouse_rgba.png")
 
         class Glob(v14.Global):
             S, OX, OY = 0.60, 965.0, 230.0
