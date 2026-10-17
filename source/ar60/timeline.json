@@ -1,5 +1,5 @@
 {
- "total": 61.77,
+ "total": 63.87,
  "lines": [
   {
    "i": 0,
@@ -8,8 +8,8 @@
    "caption": "Every enterprise has legacy applications it can't turn off, because the data inside still matters.",
    "pause": 0.4,
    "file": "00_p1.wav",
-   "start": 0.8,
-   "end": 6.405
+   "start": 2.9,
+   "end": 8.505
   },
   {
    "i": 1,
@@ -18,8 +18,8 @@
    "caption": "Keeping them running drains budget, adds security risk, and locks valuable data in silos.",
    "pause": 0.4,
    "file": "01_c1.wav",
-   "start": 6.805,
-   "end": 12.09
+   "start": 8.905,
+   "end": 14.19
   },
   {
    "i": 2,
@@ -28,8 +28,8 @@
    "caption": "Solix Application Retirement moves structured and unstructured data from legacy systems into the Solix Common Data Platform, a secure, governed archive.",
    "pause": 0.25,
    "file": "02_r1.wav",
-   "start": 12.49,
-   "end": 22.063
+   "start": 14.59,
+   "end": 24.163
   },
   {
    "i": 3,
@@ -38,8 +38,8 @@
    "caption": "Then you shut the old applications down for good.",
    "pause": 0.4,
    "file": "03_r2.wav",
-   "start": 22.313,
-   "end": 24.825
+   "start": 24.413,
+   "end": 26.925
   },
   {
    "i": 4,
@@ -48,8 +48,8 @@
    "caption": "Compliance is built in.",
    "pause": 0.3,
    "file": "04_m1.wav",
-   "start": 25.225,
-   "end": 26.648
+   "start": 27.325,
+   "end": 28.748
   },
   {
    "i": 5,
@@ -58,8 +58,8 @@
    "caption": "Policy-based retention, legal holds, and eDiscovery keep you audit-ready.",
    "pause": 0.3,
    "file": "05_m2.wav",
-   "start": 26.948,
-   "end": 31.295
+   "start": 29.048,
+   "end": 33.395
   },
   {
    "i": 6,
@@ -68,8 +68,8 @@
    "caption": "Sensitive data is identified and protected, and records are defensibly deleted when retention ends.",
    "pause": 0.4,
    "file": "06_m3.wav",
-   "start": 31.595,
-   "end": 37.669
+   "start": 33.695,
+   "end": 39.769
   },
   {
    "i": 7,
@@ -78,8 +78,8 @@
    "caption": "And your retired data doesn't sit idle.",
    "pause": 0.3,
    "file": "07_a1.wav",
-   "start": 38.069,
-   "end": 40.282
+   "start": 40.169,
+   "end": 42.382
   },
   {
    "i": 8,
@@ -88,8 +88,8 @@
    "caption": "With Data Ask in CDP Navigator, you can simply talk to your archived data.",
    "pause": 0.3,
    "file": "08_a2.wav",
-   "start": 40.582,
-   "end": 45.291
+   "start": 42.682,
+   "end": 47.391
   },
   {
    "i": 9,
@@ -98,8 +98,8 @@
    "caption": "Ask questions in plain language and get answers in seconds, with no reports to build and no legacy app to log into.",
    "pause": 0.4,
    "file": "09_a3.wav",
-   "start": 45.591,
-   "end": 52.753
+   "start": 47.691,
+   "end": 54.853
   },
   {
    "i": 10,
@@ -108,8 +108,8 @@
    "caption": "Lower costs, less risk, and new value from old data.",
    "pause": 0.35,
    "file": "10_e1.wav",
-   "start": 53.153,
-   "end": 56.155
+   "start": 55.253,
+   "end": 58.255
   },
   {
    "i": 11,
@@ -118,8 +118,8 @@
    "caption": "Retire, comply, and activate, with Solix.",
    "pause": 0.0,
    "file": "11_e2.wav",
-   "start": 56.505,
-   "end": 59.27
+   "start": 58.605,
+   "end": 61.37
   }
  ]
 }

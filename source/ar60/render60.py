@@ -29,6 +29,7 @@ def wt(lid, frag):
     L = LN[lid]; i = L["caption"].find(frag)
     return L["start"] + (L["end"] - L["start"])*max(0, i)/max(1, len(L["caption"]))
 
+T0 = LN["p1"]["start"] - .15         # the opening title plays before the narration
 ORDER = ["problem", "cost", "retire", "comply", "ai", "end"]
 FIRST = dict(problem="p1", cost="c1", retire="r1", comply="m1", ai="a1", end="e1")
 SC = {s: (0.0 if s == "problem" else LN[FIRST[s]]["start"] - .35) for s in ORDER}
@@ -107,12 +108,13 @@ def scene_problem(fr, t):
     s = "problem"
     if t > SC_END[s] + .1: return
     o = out(s, t); a = 1 - o
-    kicker(fr, t, "THE PROBLEM", 236, .3, E(s))
-    kinetic(fr, t, "Legacy apps you can't turn off.", LX, 330, 78, .45, E(s), maxw=700)
+    if t < T0 - .1: return
+    kicker(fr, t, "THE PROBLEM", 236, T0 + .3, E(s))
+    kinetic(fr, t, "Legacy apps you can't turn off.", LX, 330, 78, T0 + .45, E(s), maxw=700)
     fade_text(fr, t, "The data inside still matters.", LX, 560, 36, wt("p1", "because"), E(s), fname="InterDisplay-Medium.otf", rgb=np.array([.6, .8, 1.0]))
     cv = MG.Cv(860, 300, 1020, 660)
     for i, x in enumerate(RACK_X):
-        p = MG.back((t - .15 - i*.09)/.6)
+        p = MG.back((t - T0 - .15 - i*.09)/.6)
         if p <= 0: continue
         y0 = 545 + (1 - p)*360
         cv.rrect(x, y0, 160, 380, 10, fill=MG.rgba((12, 30, 72), .96*a), outline=MG.rgba((40, 110, 190), a), width=2)
@@ -125,7 +127,7 @@ def scene_problem(fr, t):
                 cv.circle(x + 118 + j*0 - j*12, yy + 14, 3.2, fill=MG.rgba(col, a*(.35 + .65*(ph > -.2))))
             cv.line([(x + 24, yy + 14), (x + 70, yy + 14)], MG.rgba((60, 100, 160), a), 2)
     for i, ((lab, kind), (sx, sy)) in enumerate(zip(APPS, SLOTS)):
-        ti = 1.0 + i*.42
+        ti = T0 + 1.0 + i*.42
         p = MG.back((t - ti)/.55, 1.3)
         if p <= 0: continue
         y = -80 + (sy - (-80))*p
@@ -330,6 +332,30 @@ def scene_end(fr, t):
         fade_text(fr, t, "www.solix.com", W/2, 730, 36, wt("e2", "with Solix"), T + 5, fname="Inter-SemiBold.otf", anchor="ms", rgb=np.array([.6, .82, 1.0]), track=2)
         fade_text(fr, t, "Solix Application Retirement", W/2, 790, 26, wt("e2", "with Solix") + .3, T + 5, fname="Inter-Medium.otf", anchor="ms", alpha=.8)
 
+# ---------------------------------------------------------------- 0. Opening title
+def scene_title(fr, t):
+    if t > T0 + .5: return
+    q = ease((t - (T0 - .35))/.6)                       # exit: rises and fades into the first scene
+    p = eout((t - .15)/.9)
+    RA.put_rgba(fr, LOGO_END, W/2 - LOGO_END.shape[1]/2 + 10, 250 + (1 - p)*30 - 60*q, p*(1 - q))
+    cv = MG.Cv(360, 120, 1200, 860)
+    sw = eout((t - .1)/1.4)
+    MG.ring_wipe(cv, 960, 540, 330, sw, MG.rgba(BL, .35*(1 - q)), 2)
+    MG.dashed_ring(cv, 960, 540, 372, (t*20) % 360, MG.rgba((0, 136, 207), .35*(1 - q)), n=80, width=2, sweep=sw)
+    cv.blit(fr, glow=.4)
+    fade_text(fr, t, "OVERVIEW", W/2, 470 - 60*q, 28, .6, T0 - .35, fname="Inter-SemiBold.otf", anchor="ms", track=10, rgb=BLUE*1.3)
+    kinetic(fr, t, "Application Retirement", W/2, 590 - 60*q, 104, .75, T0 - .35, align="center", maxw=1700, hl=("Retirement",))
+    words = [("Retire", 1.15), ("Comply", 1.35), ("Activate", 1.55)]
+    tw = sum(measure(w_, "Inter-SemiBold.otf", 34, 4) for w_, _ in words) + 2*70
+    x = W/2 - tw/2
+    for i, (w_, ti) in enumerate(words):
+        a = eout((t - ti)/.4)*(1 - q)
+        if a > 0: put(fr, w_.upper(), "Inter-SemiBold.otf", 34, x, 690 - 60*q + (1 - a)*14, a, track=4, rgb=(BLUE*1.25) if i == 2 else (1, 1, 1))
+        x += measure(w_.upper(), "Inter-SemiBold.otf", 34, 4)
+        if i < 2:
+            if a > 0: put(fr, "\u00b7", "Inter-SemiBold.otf", 34, x + 26, 690 - 60*q, a*.6, rgb=BLUE*1.25)
+            x += 70
+
 # ---------------------------------------------------------------- overlays
 def tracker(fr, t):
     t_on = SC["retire"] + .1; t_off = LN["e2"]["start"] - .3
@@ -359,11 +385,11 @@ def captions(fr, t):
 
 def frame(t):
     fr = background(t).astype(np.float32)*vignette()
-    for fn in (scene_problem, scene_cost, scene_retire, scene_comply, scene_ai, scene_end):
+    for fn in (scene_title, scene_problem, scene_cost, scene_retire, scene_comply, scene_ai, scene_end):
         try: fn(fr, t)
         except Exception as e: print("skip", fn.__name__, round(t, 3), e, flush=True)
     tracker(fr, t)
-    RA.put_rgba(fr, ICON_LOGO, W - 90 - ICON_LOGO.shape[1], 56, ease((t - .2)/.5)*(1 - ease((t - LN["e2"]["start"] + .4)/.4)))
+    RA.put_rgba(fr, ICON_LOGO, W - 90 - ICON_LOGO.shape[1], 56, ease((t - T0 - .2)/.5)*(1 - ease((t - LN["e2"]["start"] + .4)/.4)))
     captions(fr, t)
     fi = ease(t/.3); fo = 1 - ease((t - (T - .8))/.8)
     return (np.clip(fr*fi*fo, 0, 1)*255 + .5).astype(np.uint8)

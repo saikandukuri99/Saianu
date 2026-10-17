@@ -5,7 +5,7 @@ CHAIN = ("highpass=f=75,equalizer=f=220:t=q:w=1.0:g=-2,equalizer=f=3200:t=q:w=1.
          "equalizer=f=9000:t=h:w=1:g=1.5,deesser=i=0.3,"
          "acompressor=threshold=-21dB:ratio=2.4:attack=6:release=140:makeup=2,"
          "aecho=0.92:0.9:19|37:0.06|0.04,aresample=48000")
-SR = 48000; LEAD = 0.8; TAIL = 2.5
+SR = 48000; LEAD = 2.9; TAIL = 2.5
 lines = json.load(open(f"{B}/lines.json"))
 os.makedirs(f"{B}/vo", exist_ok=True)
 t = LEAD; clips = []
