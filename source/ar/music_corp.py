@@ -1,4 +1,4 @@
-# Original corporate score (royalty-free, procedural): 104 BPM, bright piano chords, plucked arpeggios,
+# Original upbeat corporate score (royalty-free, procedural): 120 BPM, driving four-on-the-floor groove throughout, bright piano chords, plucked arpeggios,
 # soft kick/clap/shaker groove, bass and pad. Follows the film: gentle intro, builds through the triggers,
 # full groove from "One engine", drops back at the switch-off, lifts into the sign-off and rings out.
 import json, os, numpy as np, soundfile as sf
@@ -8,7 +8,7 @@ TL = json.load(open(f"{B}/timeline.json")); T = TL["total"]; SR = 48000
 LNS = {l["id"]: l for l in TL["lines"]}
 N = int(T*SR); L = np.zeros(N); R = np.zeros(N)
 rng = np.random.default_rng(3)
-BPM = 104; BEAT = 60/BPM; BAR = 4*BEAT
+BPM = 120; BEAT = 60/BPM; BAR = 4*BEAT
 def hz(m): return 440*2**((m-69)/12)
 # C - G/B - Am - F (two bars each), uplifting corporate cadence
 PROG = [([48, 60, 64, 67, 72], 36), ([47, 59, 62, 67, 71], 43), ([45, 57, 60, 64, 69], 33), ([41, 57, 60, 65, 69], 29)]
@@ -49,6 +49,13 @@ _hs = butter(2, 7000, btype="high", fs=SR, output="sos")
 def shaker():
     n = int(.07*SR); t = np.arange(n)/SR
     return sosfilt(_hs, rng.standard_normal(n))*np.exp(-t*60)*.05
+def ohat():
+    n = int(.16*SR); t = np.arange(n)/SR
+    return sosfilt(_hs, rng.standard_normal(n))*np.exp(-t*18)*.06
+def riser(dur=1.8):
+    n = int(dur*SR); t = np.arange(n)/SR
+    s = sosfilt(butter(2, [2000, 9000], btype="band", fs=SR, output="sos"), rng.standard_normal(n))
+    return s*(t/dur)**2.2*.10
 def crash():
     n = int(2.5*SR); t = np.arange(n)/SR
     return sosfilt(_hs, rng.standard_normal(n))*np.exp(-t*1.6)*.09
@@ -56,9 +63,7 @@ def crash():
 # arrangement markers from the narration timeline
 t_trig, t_one, t_dark, t_access, t_sign = LNS["t1"]["start"] - .2, LNS["one"]["start"] + 1.0, LNS["dark"]["start"], LNS["access"]["start"] - .3, LNS["sign"]["start"] - .3
 def section(t):
-    if t < t_trig: return "intro"
-    if t < t_one: return "build"
-    if t_dark <= t < t_access: return "drop"
+    if t < BAR*.999: return "build"
     if t >= t_sign: return "outro"
     return "full"
 
@@ -83,7 +88,8 @@ for b in range(nb):
             add(L, R, t + s*BEAT/4, pluck(hz(m)), pan=.3 if s % 2 else .7, gain=.8 if sec == "build" else 1.0)
     # rhythm section
     if sec in ("full", "outro"):
-        add(L, R, t, kick() if beat_in_bar in (0, 2) else np.zeros(1), .5)
+        add(L, R, t, kick(), .5)
+        add(L, R, t + BEAT/2, ohat(), .55)
         if beat_in_bar in (1, 3): add(L, R, t, clap(), .5)
         for s in range(4): add(L, R, t + s*BEAT/4, shaker(), .65, .6 if s % 2 == 0 else 1.0)
         for e in range(2): add(L, R, t + e*BEAT/2, bass(hz(broot), BEAT/2*.95), .5)
@@ -102,7 +108,8 @@ for b in range(nb):
                 s = (np.sin(2*np.pi*f*tt) + .3*np.sin(2*np.pi*2*f*tt))*e*.035
                 add(PL, PR, t, s, .3 if det < 0 else .7)
 # lifts: crash at "One engine", after the drop, and at the sign-off
-for tc in (t_one, t_access, t_sign): add(L, R, tc, crash(), .5)
+for tc in (t_trig, t_one, t_access, t_sign):
+    add(L, R, tc, crash(), .5); add(L, R, tc - 1.8, riser(), .5)
 # final sustained chord rings out
 for k, m in enumerate([48, 60, 64, 67, 72, 76]): add(L, R, end_hit + k*.015, piano(hz(m), 4.2, 1.0), .35 + .06*k)
 add(L, R, end_hit, crash(), .5)
