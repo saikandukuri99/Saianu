@@ -8,7 +8,7 @@ win = int(.05*sr); env = np.sqrt(np.convolve(vo**2, np.ones(win)/win, "same"))
 act = (env > .01).astype(float)
 k = int(.35*sr); act = np.convolve(act, np.ones(k)/k, "same")
 duck = 1 - .5*np.clip(act*1.5, 0, 1)
-mix = np.stack([vo, vo], 1)*1.0 + mu*.42*duck[:, None]
+mix = np.stack([vo, vo], 1)*1.0 + mu*.34*duck[:, None]
 mix /= np.abs(mix).max()/.9
 sf.write(f"{B}/mix.wav", mix, sr)
 subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", f"{B}/mix.wav", "-af", "loudnorm=I=-16:TP=-1.5:LRA=9",
