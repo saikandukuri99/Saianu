@@ -1,3 +1,55 @@
+# Solix Application Retirement, 60-second film (Empower 2026)
+
+**Deliverable:** `output/Solix_Application_Retirement_60s_1080p.mp4` is 1920×1080, 30 fps, 1:10, with voice-over, music and on-screen captions.
+
+- **v10 (current):** v9 with the black ERP window and the GL, AP, PO, HR and INV module icons removed from the switch-off. Nothing else changes.
+- **v9:** v8 with three changes:
+  - **0:26-0:30:** three source data icons (table, spreadsheet file, stacked files) replace the ERP window, fly into the Preservation Zone and disappear.
+  - **Preservation Zone:** the left tick list is removed, so only the blue legal-check blocks remain.
+  - **Data Ask:** the answer reads "ABC Supplies, XYZ Industries, and PQR Enterprises.", with smaller sources below.
+- **v8:** based on "Version 3" (the red/indigo look with 3D particles, trigger cards and legacy windows). Only two moments change:
+  - **~0:29, Preservation Zone:** a Validation Report and a Governance Policy screen, plus legal-check blocks (VALIDATED, QUALITY CHECKED, RETENTION SET, LEGAL HOLD) that drop in and stack into a "Legal & compliance checks" tower as each check fires.
+  - **~0:38, switch-off:** ERP module icons (GL, AP, PO, HR, INV) pop in around the ERP window. A Decommission Request screen fills its fields live (application, records preserved, licenses, servers), then "Retire application" is clicked and the ERP window and its modules power off.
+
+  There is also a 4K master: `output/Solix_Application_Retirement_4K.mp4` (3840x2160, HEVC, upscaled from the 1080p render with Lanczos, under 95 MB).
+- **v7:** the 3D particle layer is removed from the whole film, along with the soft background light spots, so nothing is blurry. The background is dark Solix blue with the AI network lines at low opacity. In place of every particle shape there are crisp, After Effects-style vector animations (`mg_ar.py`), drawn supersampled with stroke draw-ons, ring wipes, overshoot pop-ins, dashed rotating rings and flowing data dots:
+  - an icon badge for each trigger (Cost $, Risk shield, M&A merge, Old archive drawers, AI chip), plus a 5-step tracker under the word
+  - the five triggers converging into a Solix Engine hub with a shockwave ring
+  - six source nodes (ERP, Mainframe, Custom apps, SaaS, Files, Email) wiring into the hub with data flowing
+  - a Preservation Zone vault (lock plus data rows filling) with packets dropping in from the source window, which moves aside and stays lit at the switch-off
+  - a light stage line under the Access documents
+  - a crisp knowledge graph for Data Ask (Supplier, Invoice and Payment light up, with pulses along the links)
+  - an AI-readiness ring whose missing segments fill with governed history
+  - dashed orbit rings around the end-card logo
+
+  The screens, cards, text, voice-over, music and timing are unchanged.
+- **v6, colour theme only:** a dark navy-blue background with light network lines (drifting connected nodes) and a soft brand-blue glow behind each 3D subject, replacing the red/indigo field. Red is kept as an accent only: the Solix logo, the Risk alert, the PAID stamp and the switch-off. Everything else is identical to v5: animation, screens, text, captions, VO, music and timing.
+- **v5 changes:** the Migrate & Validate and switch-off beats now follow the script's "Real" direction with realistic 3D screens:
+  - **Migrate & Validate:** the legacy Finance ERP window (the source) hovers above the governed Preservation Zone vault while data streams down into it. A Validation Report counts the archive rows up to match the source (✓ on each row, then "Validation passed"). A Governance Policy screen follows, with 10-year retention, 4 of 4 quality checks and the legal-hold switch flipping on.
+  - **Switch-off:** the ERP window moves to the front and powers off like an old monitor, collapsing into a line of light. The Licenses, Servers and Unpatched risk tags fall away. An Application Inventory screen then flips Finance ERP R11 from Active to Retired, with its data preserved, while the vault stays lit.
+- **v4 changes:** following the reference video, each of the five triggers now has a realistic 3D notification screen that flies in beside its extruded word, with a small animation inside (`screens_ar.py`, fictional data):
+  - **Cost:** a maintenance renewal amount counting up to $480,000 a year, due in 14 days.
+  - **Risk:** a flashing critical security alert with a CVSS 9.8 badge, for an unpatched server.
+  - **M&A:** "Acquisition closed", with inherited systems (ERP, CRM, HR, Billing and more) stacking in.
+  - **Old archive:** an archive renewal date circled on the calendar.
+  - **AI:** historical-data bars filling, with dashed empty slots marking the missing history.
+
+  The particle shape for each trigger moves behind the screen, to the upper right, for depth. "Applications you've moved on from." now sits under three realistic legacy windows floating in 3D: a finance ERP ledger, a green-screen mainframe terminal and a custom maintenance app. Each has a pulsing "Still running" light and a short stat ($1.2M a year to keep it running, 3 users a month, last patched in 2017).
+- **v3 changes:** the film opens on a main title: the original Solix logo and an extruded 3D "Application Retirement" (with EMPOWER 2026) over the legacy-screens fly-in, before the narration starts. The Access beat now follows the script's "Real" direction, built as realistic 3D documents (`docs_ar.py`, fictional demo data):
+  1. Solix Search types the vendor and shows its records.
+  2. Purchase order, goods receipt, invoice and payment (with a PAID stamp) fly in one by one in perspective and settle into a row labelled Ordered, Received, Invoiced and Paid.
+  3. Glowing arcs draw between the four documents to form an Enterprise Business Record.
+  4. A standard report (Invoices by vendor, FY2019) flies forward for "Users get the reports they know."
+- **v2 changes (after review):** the original Solix logo (red disc, white bolt) is used unaltered. The palette is Solix red #ee2424 as the key light behind every subject, indigo #30267b framing the edges and the text side, and blue #0088cf for highlights (key words, check marks, data streams, lit nodes, the active step). The film opens on a 3D camera fly-in through glowing legacy screens, so frame 1 is full. The 3D reads more clearly: particles are lit with a key light and depth-graded in size and haze, objects get a floor reflection, the camera orbit and pitch are deeper, and the five trigger words and "Enable AI" use extruded 3D type.
+- **Look:** no boxes, cards or rules. Kinetic typography: words rise and sharpen into place one by one.
+- **3D motion graphics:** a procedural particle engine with perspective, depth of field, bloom and soft bokeh. One particle system re-forms beat by beat:
+  dormant dot-matrix legacy apps → Cost (coin), Risk (glitching sphere), M&A (absorbed sphere), Old archive (straining stack), AI (sphere with a missing wedge) → everything collapses to a point and bursts into the Solix engine → six sources stream in (ERP, Mainframe, Custom apps, SaaS, Files, Email) → a lattice Preservation Zone fills bottom-up with four checks → the application shell powers down and falls away while the vault stays lit → linked record graph (Invoice, PO, Receipt, Payment) → Data Ask knowledge graph with a typed question → the AI sphere's missing wedge fills with governed history (a callback to the AI trigger) → a halo around the Solix mark for the sign-off.
+- **Narration:** the script's voice-over, trimmed to fit about 60 seconds (Kokoro `af_heart`, studio voice chain). The "150+ source types" claim is left out until it is verified, as the script's claims check asks.
+- **Music:** an original, slow ambient score (pads, sparse felt piano, sub swell), royalty-free. It ducks under the voice, dips at the switch-off and lifts into the sign-off. Loudness is −16 LUFS.
+- **Build** (`source/ar/`): `vo_ar.py` → `timeline_ar.py` → `music_ar.py` → `render_ar.py` → `mix_ar.py`. Use `python3 render_ar.py preview 12 30 45` to render single frames.
+
+---
+
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
 **Current: 90-second cut, delivered as separate parts for Premiere Pro.** Everything is in `output/90s_cut_parts/`:
