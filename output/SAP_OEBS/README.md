@@ -1,3 +1,6 @@
+# FINAL v2: `Solix_SAP_OEBS_FINAL_v2_*` (81.1 s)
+Built from SAP-Updated_Video_Script.docx and the manager's screenshots: "SAP and Oracle Applications run the business."; chips ECC / S/4HANA / OEBS / PEOPLESOFT / JDE / SIEBEL; "Solix Common Data Platform" with CDP under the logo; "Archiving Development Kit"; "legacy databases"; "AI-activated data"; "Solix". New natural voice (one take per sentence, level-matched, warmth/air chain, real pauses, room tone); scene timing follows the voice. Ambient and CorporateMusic versions; 4K files follow.
+
 # FINAL: `Solix_SAP_OEBS_FINAL_*` (77.8 s)
 Opening slide order: "SAP and Oracle E-Business Suite run the business." -> module boxes -> underline last. "SOLIX" only (screen and end-line voice: "Solix. Built for SAP. Built for Oracle."). Ambient and CorporateMusic versions; 4K files follow.
 
