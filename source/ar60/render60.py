@@ -110,7 +110,7 @@ def scene_problem(fr, t):
     o = out(s, t); a = 1 - o
     if t < T0 - .1: return
     kicker(fr, t, "THE PROBLEM", 236, T0 + .3, E(s))
-    kinetic(fr, t, "Legacy apps you can't turn off.", LX, 330, 78, T0 + .45, E(s), maxw=700)
+    kinetic(fr, t, "Legacy apps you can't switch off.", LX, 330, 78, T0 + .45, E(s), maxw=700)
     fade_text(fr, t, "The data inside still matters.", LX, 560, 36, wt("p1", "because"), E(s), fname="InterDisplay-Medium.otf", rgb=np.array([.6, .8, 1.0]))
     cv = MG.Cv(860, 300, 1020, 660)
     for i, x in enumerate(RACK_X):
@@ -148,9 +148,9 @@ def scene_cost(fr, t):
     o = out(s, t); a = 1 - o; s0 = SC[s]
     kicker(fr, t, "THE COST", 236, s0 + .2, E(s))
     kinetic(fr, t, "Rising cost. Growing risk.", LX, 330, 78, s0 + .3, E(s), maxw=720, hl=("Growing", "risk"), hlc=RED*.35 + .65*np.array([1, .6, .6]))
-    t1 = wt("c1", "drains budget"); t2 = wt("c1", "security risk"); t3 = wt("c1", "silos")
+    t1 = wt("c1", "drains budget"); t2 = wt("c1", "attack surface"); t3 = wt("c1", "locks history")
     rows = [("Licenses", "cost", .72, "$1.2M / yr", t1, BL), ("Infrastructure", "db", .58, "$860K / yr", t1 + .45, BL),
-            ("Security exposure", "risk", .88, "High", t2, (238, 70, 70))]
+            ("Attack surface", "risk", .88, "Widening", t2, (238, 70, 70))]
     cv = MG.Cv(920, 230, 900, 700)
     for i, (lab, kind, f, val, ti, col) in enumerate(rows):
         p = MG.back((t - ti)/.5)
@@ -183,7 +183,7 @@ def scene_cost(fr, t):
         cv2.rrect(x - 60, yb - hgt, 120, hgt, 14, fill=MG.rgba((20, 50, 105), a), outline=MG.rgba(BL, a), width=2)
         for k in range(3): cv2.d.ellipse((*cv2.p(x - 60, yb - hgt + k*hgt/3 - 10), *cv2.p(x + 60, yb - hgt + k*hgt/3 + 10)), outline=MG.rgba(BL, a), width=4)
         MG.icon(cv2, "lock", x, yb - hgt - 46, 56*p, (255, 120, 120), a)
-    if t > t3: cv2.text(150, 900, "Valuable data locked in silos", 26, MG.rgba(WH, a*clamp((t - t3 - .3)/.4)), "InterDisplay-SemiBold.otf", anchor="lm")
+    if t > t3: cv2.text(150, 900, "History locked in silos", 26, MG.rgba(WH, a*clamp((t - t3 - .3)/.4)), "InterDisplay-SemiBold.otf", anchor="lm")
     cv2.blit(fr, glow=.35)
 
 # ---------------------------------------------------------------- 3. Retire: data flows into the Solix Common Data Platform, apps shut down
@@ -191,9 +191,9 @@ LEG = [("erp", 360, 470), ("mf", 440, 615), ("form", 520, 760)]
 def scene_retire(fr, t):
     s = "retire"
     if not (SC[s] - .1 <= t <= SC_END[s] + .1): return
-    o = out(s, t); a = 1 - o; s0 = SC[s]; tr2 = LN["r2"]["start"]
-    kicker(fr, t, "RETIRE", 176, s0 + .2, E(s))
-    kinetic(fr, t, "Move the data. Retire the app.", LX, 250, 64, s0 + .3, E(s), maxw=1500, hl=("Retire",))
+    o = out(s, t); a = 1 - o; s0 = SC[s]; tr2 = wt("r2", "switches") - .5; tv = wt("r2", "validates")
+    kicker(fr, t, "RETIRE & PRESERVE", 176, s0 + .2, E(s))
+    kinetic(fr, t, "Preserve the data. Retire the app.", LX, 250, 64, s0 + .3, E(s), maxw=1500, hl=("Retire",))
     # legacy application windows (left), dim and stamped Retired at "shut ... down"
     offs = []
     for i, (kind, X, Y) in enumerate(LEG):
@@ -206,12 +206,16 @@ def scene_retire(fr, t):
         if q is None or dark <= 0: continue
         cx, cy = q[:, 0].mean(), q[:, 1].mean()
         p = MG.back(dark/.6, 2.0)
-        cv.rrect(cx - 105*p, cy - 30*p, 210*p, 60*p, 10, outline=MG.rgba((238, 50, 50), a), width=4, fill=MG.rgba((40, 10, 20), .55*a))
-        cv.text(cx, cy, "RETIRED", int(30*p) if p > .05 else 1, MG.rgba((255, 90, 90), a), "InterDisplay-Bold.otf")
+        cv.rrect(cx - 128*p, cy - 30*p, 256*p, 60*p, 10, outline=MG.rgba((238, 50, 50), a), width=4, fill=MG.rgba((40, 10, 20), .55*a))
+        if p > .3:      # power symbol: open ring + stem
+            px = cx - 92*p
+            MG.ring_wipe(cv, px, cy, 15*p, .82, MG.rgba((255, 90, 90), a), 4, start=-60)
+            cv.line([(px, cy - 20*p), (px, cy - 2*p)], MG.rgba((255, 90, 90), a), 4)
+        cv.text(cx + 22*p, cy, "POWERED OFF", int(26*p) if p > .05 else 1, MG.rgba((255, 90, 90), a), "InterDisplay-Bold.otf")
     cv.blit(fr, glow=.4, gcol=(1, .3, .3))
     # Solix Common Data Platform console (right)
     tc = s0 + .6
-    place(fr, S6.cdp(int(clamp((t - tc - .8)/7.5)*30)), 1440, 590, 700, t, (t - tc)/.7, o, sheen_t=(t - tc - .2)/.6)
+    place(fr, S6.cdp(int(clamp((t - tc - .8)/((tv - tc - .8)/.62))*30)), 1440, 590, 700, t, (t - tc)/.7, o, sheen_t=(t - tc - .2)/.6)
     # data flowing: structured and unstructured
     cv = MG.Cv(640, 330, 520, 560)
     flow = clamp((t - s0 - 1.0)/.5)*(1 - ease((t - tr2 - .2)/.6))*a
@@ -228,17 +232,26 @@ def scene_retire(fr, t):
         cv.text(900, 400, "STRUCTURED", 17, MG.rgba(BL, flow), "Inter-SemiBold.otf")
         cv.text(900, 860, "UNSTRUCTURED", 17, MG.rgba(BL, flow), "Inter-SemiBold.otf")
     cv.blit(fr, glow=.5)
-    fade_text(fr, t, "Shut them down. For good.", LX, 320, 40, tr2 + .2, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([1, .6, .6]))
+    # validation tick between source and Preservation Zone
+    pv = MG.back((t - tv + .1)/.5, 2.0)
+    if pv > 0:
+        cv = MG.Cv(760, 470, 320, 320); va = a*(1 - ease((t - tr2 - 1.4)/.5))
+        MG.ring_wipe(cv, 920, 615, 78, clamp((t - tv)/.6), MG.rgba(BL, va), 3)
+        cv.circle(920, 615, 62*pv, fill=MG.rgba((0, 136, 207), va))
+        cv.text(920, 612, "✓", int(64*pv) if pv > .05 else 1, MG.rgba(WH, va), "InterDisplay-Bold.otf")
+        cv.text(920, 725, "VALIDATED", 20, MG.rgba(WH, va*clamp((t - tv - .2)/.3)), "Inter-SemiBold.otf")
+        cv.blit(fr, glow=.6)
+    fade_text(fr, t, "Switched off. For good.", LX, 320, 40, tr2 + .2, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([1, .6, .6]))
 
 # ---------------------------------------------------------------- 4. Comply: built-in compliance
-CAPS = [("Retention", "archive", ("m2", "retention")), ("Legal hold", "lock", ("m2", "legal holds")), ("eDiscovery", "file", ("m2", "eDiscovery")),
-        ("Masking", "risk", ("m3", "protected")), ("Audit trail", "app", ("m2", "audit-ready"))]
+CAPS = [("Retention", "archive", ("m1", "Retention")), ("Legal hold", "lock", ("m1", "legal hold")), ("eDiscovery", "file", ("m1", "eDiscovery")),
+        ("Masking", "risk", ("m1", "masking")), ("Audit trail", "app", ("m2", "audit-ready"))]
 def scene_comply(fr, t):
     s = "comply"
     if not (SC[s] - .1 <= t <= SC_END[s] + .1): return
     o = out(s, t); a = 1 - o; s0 = SC[s]
-    kicker(fr, t, "COMPLY", 176, s0 + .2, E(s))
-    kinetic(fr, t, "Compliance, built in.", LX, 262, 76, s0 + .3, E(s), maxw=800, hl=("built", "in"))
+    kicker(fr, t, "GOVERNED FROM DAY ONE", 176, s0 + .2, E(s))
+    kinetic(fr, t, "Governed from day one.", LX, 262, 66, s0 + .3, E(s), maxw=1000, hl=("day", "one"))
     cv = MG.Cv(120, 300, 760, 640)
     for i, (lab, kind, (lid, frag)) in enumerate(CAPS):
         ti = wt(lid, frag) - .15
@@ -250,50 +263,65 @@ def scene_comply(fr, t):
         MG.icon(cv, kind, 190, y, 38*p, MG.WHITE, a)
         cv.text(242, y, lab, 32, MG.rgba(WH, a*clamp((t - ti)/.3)), "InterDisplay-SemiBold.otf", anchor="lm")
         cv.text(560, y, "✓", 30, MG.rgba(BL, a*clamp((t - ti - .3)/.3)), "InterDisplay-Bold.otf")
-    # regulation badges
-    tb = s0 + .7
-    for i, lab in enumerate(("GDPR", "HIPAA", "SOX")):
-        p = MG.back((t - tb - i*.15)/.45)
-        if p <= 0: continue
-        x = 200 + i*150; y = 830
-        pts = [(x, y - 52*p), (x + 46*p, y - 36*p), (x + 42*p, y + 14*p), (x, y + 50*p), (x - 42*p, y + 14*p), (x - 46*p, y - 36*p)]
-        cv.poly(pts, fill=MG.rgba((14, 40, 95), a), outline=MG.rgba(BL, a), width=3)
-        cv.text(x, y - 2, lab, int(20*p) if p > .05 else 1, MG.rgba(WH, a), "InterDisplay-Bold.otf")
     cv.blit(fr, glow=.45)
+    tb = wt("m2", "audit-ready") + .2
+    fade_text(fr, t, "Supports retention, legal hold,", LX + 8, 820, 30, tb, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([.6, .82, 1.0]))
+    fade_text(fr, t, "and audit requirements", LX + 8, 862, 30, tb + .1, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([.6, .82, 1.0]))
     # policy screen (right)
     tp = s0 + .5
-    place(fr, S6.policy(int(clamp((t - LN["m2"]["start"] + .3)/(LN["m3"]["end"] - LN["m2"]["start"] + .2))*30)), 1390, 575, 780, t,
+    place(fr, S6.policy(int(clamp((t - LN["m1"]["start"] + .3)/(LN["m2"]["end"] - LN["m1"]["start"] - .4))*30)), 1390, 575, 780, t,
           (t - tp)/.7, o, sheen_t=(t - tp - .2)/.6)
 
-# ---------------------------------------------------------------- 5. Activate with AI: Data Ask in CDP Navigator
+# ---------------------------------------------------------------- 5. Activate with AI: Solix Data Ask + Knowledge Graph
+KG = [("Vendor", 400, 640, 0), ("Invoice", 230, 520, 1), ("Payment", 580, 520, 2), ("Purchase order", 225, 780, 0),
+      ("GL account", 585, 770, 0), ("Contract", 400, 860, 0)]
+KG_E = [(0, 1), (0, 2), (0, 3), (0, 4), (1, 2), (3, 5), (0, 5), (1, 4)]
 def scene_ai(fr, t):
     s = "ai"
     if not (SC[s] - .1 <= t <= SC_END[s] + .1): return
     o = out(s, t); a = 1 - o; s0 = SC[s]
+    tp = wt("a2", "people ask")
     kicker(fr, t, "ACTIVATE WITH AI", 176, s0 + .2, E(s))
-    kinetic(fr, t, "Talk to your archived data.", LX, 262, 72, wt("a2", "simply talk") - .6, E(s), maxw=560, hl=("Talk",))
-    fade_text(fr, t, "Retired data doesn't sit idle.", LX, 262, 44, s0 + .3, wt("a2", "simply talk") - .8, fname="InterDisplay-SemiBold.otf")
-    tq = wt("a2", "simply talk") - .2; nq = int(clamp((t - tq)/2.0)*len(S6.Q))
-    tth = tq + 2.1; tans = wt("a3", "get answers") - .2
+    kinetic(fr, t, "Ask in plain English.", LX, 262, 72, tp - .5, E(s), maxw=620, hl=("plain", "English"))
+    fade_text(fr, t, "Preserved data doesn't sit idle.", LX, 262, 44, s0 + .3, tp - .7, fname="InterDisplay-SemiBold.otf")
+    tq = tp - .2; nq = int(clamp((t - tq)/1.8)*len(S6.Q))
+    tth = tq + 1.9; tans = LN["a2"]["end"] - .45
     think = clamp((t - tth)/1.0) if t >= tth else 0.0
     ans = clamp((t - tans)/1.6) if t >= tans else 0.0
     ts = s0 + .4
-    place(fr, S6.data_ask(nq, round(think*12)/12 if ans <= 0 else 0, round(ans*24)/24), 1270, 590, 960, t, (t - ts)/.7, o, sheen_t=(t - ts - .2)/.6)
-    cv = MG.Cv(120, 440, 560, 420)
-    chips = [("Plain-language questions", wt("a3", "Ask questions")), ("Answers in seconds", wt("a3", "seconds")),
-             ("No reports to build", wt("a3", "no reports")), ("No legacy app to log into", wt("a3", "no legacy"))]
-    for i, (lab, ti) in enumerate(chips):
-        p = MG.back((t - ti + .1)/.4)
+    place(fr, S6.data_ask(nq, round(think*12)/12 if ans <= 0 else 0, round(ans*24)/24), 1280, 590, 940, t, (t - ts)/.7, o, sheen_t=(t - ts - .2)/.6)
+    # Knowledge Graph: nodes light up while the question is answered; cited nodes stay highlighted
+    tg = s0 + .6
+    gp = eout((t - tg)/.8)
+    if gp <= 0: return
+    cv = MG.Cv(110, 420, 680, 520)
+    lit = [clamp((t - tth + .3 - k*.22)/.3) for k in range(len(KG))]
+    cite = clamp((t - wt("a3", "Knowledge Graph"))/.4)
+    for i, j in KG_E:
+        xa, ya = KG[i][1:3]; xb, yb = KG[j][1:3]; l = min(lit[i], lit[j])
+        cv.line([(xa, ya), (xa + (xb - xa)*gp, ya + (yb - ya)*gp)], MG.rgba(BL if l > .5 else (60, 100, 160), a*(.45 + .5*l)), 2 + int(l > .5))
+        if l > 0 and ans <= 0:
+            u = (t*1.4 + i*.3) % 1
+            cv.circle(xa + (xb - xa)*u, ya + (yb - ya)*u, 4, fill=MG.rgba(WH, a*l))
+    for k, (lab, x, y, c) in enumerate(KG):
+        p = MG.back((t - tg - k*.08)/.45)
         if p <= 0: continue
-        y = 500 + i*82
-        cv.rrect(150, y - 30, 480*p, 60, 30, fill=MG.rgba((14, 44, 100), .95*a), outline=MG.rgba(BL, a), width=2)
-        cv.circle(182, y, 15*p, fill=MG.rgba((0, 136, 207), a))
-        cv.text(182, y, "✓", 18, MG.rgba(WH, a), "InterDisplay-Bold.otf")
-        cv.text(212, y, lab, 26, MG.rgba(WH, a*clamp((t - ti)/.3)), "InterDisplay-SemiBold.otf", anchor="lm")
-    cv.blit(fr, glow=.4)
+        l = lit[k]; hot = c > 0 or k == 0
+        r = (40 if k == 0 else 30)*p
+        col = (0, 136, 207) if l > 0 else (18, 44, 96)
+        cv.circle(x, y, r + 10*l*(.5 + .5*math.sin(t*5 + k)) if l > 0 and ans <= 0 else r, fill=MG.rgba(col, .25*a*l))
+        cv.circle(x, y, r, fill=MG.rgba(col, a*(.55 + .45*l)), outline=MG.rgba(BL, a), width=2)
+        cv.text(x, y + r + 20, lab, 22, MG.rgba(WH, a*(.6 + .4*l)), "InterDisplay-SemiBold.otf")
+        if hot and cite > 0:
+            n = c if c else 3
+            cv.circle(x + r*.75, y - r*.75, 14*cite, fill=MG.rgba(WH, a))
+            cv.text(x + r*.75, y - r*.75, str(n), 16, MG.rgba((0, 100, 170), a*cite), "InterDisplay-Bold.otf")
+    MG.icon(cv, "ai", 400, 640, 40*eout((t - tg)/.5), MG.WHITE, a)
+    cv.text(140, 460, "KNOWLEDGE GRAPH", 18, MG.rgba(BL, a*gp), "Inter-SemiBold.otf", anchor="lm")
+    cv.blit(fr, glow=.5)
 
 # ---------------------------------------------------------------- 6. Payoff and CTA
-PILLARS = [("Lower costs", "cost", "Lower costs"), ("Less risk", "risk", "less risk"), ("New value from old data", "ai", "new value")]
+PILLARS = [("Lower cost", "cost", "Lower cost"), ("Less risk", "risk", "Less risk"), ("Governed history,\nready for AI", "ai", "Governed")]
 def scene_end(fr, t):
     s = "end"
     if t < SC[s] - .1: return
@@ -309,7 +337,7 @@ def scene_end(fr, t):
             cv.circle(x, 470, 92*p, fill=MG.rgba(NAVY, .95*a), outline=MG.rgba((0, 136, 207), a), width=4)
             MG.dashed_ring(cv, x, 470, 118*p, (t*30) % 360, MG.rgba(BL, .5*a), n=40, width=2)
             MG.icon(cv, kind, x, 470, 110*p, MG.WHITE, a)
-            cv.text(x, 640, lab, 34, MG.rgba(WH, a*clamp((t - ti)/.3)), "InterDisplay-SemiBold.otf")
+            for j, ln in enumerate(lab.split("\n")): cv.text(x, 640 + j*44, ln, 34, MG.rgba(WH, a*clamp((t - ti)/.3)), "InterDisplay-SemiBold.otf")
         cv.blit(fr, glow=.55)
     if t >= t2:
         p = eout((t - t2)/.9)
@@ -322,7 +350,7 @@ def scene_end(fr, t):
                 pts = [(960 + rx*math.cos(a0 + (a1 - a0)*j/4), 335 + ry*math.sin(a0 + (a1 - a0)*j/4)) for j in range(5)]
                 cv.line(pts, MG.rgba(BL if k == 0 else (0, 136, 207), al), w_)
         cv.blit(fr, glow=.5)
-        words = [("Retire.", t2 + .5), ("Comply.", wt("e2", "comply") - .05), ("Activate.", wt("e2", "activate") - .05)]
+        words = [("Retire.", t2 + .5), ("Preserve.", wt("e2", "preserve") - .05), ("Activate.", wt("e2", "activate") - .05)]
         tw = sum(measure(w, "InterDisplay-Bold.otf", 84) for w, _ in words) + 2*34
         x = W/2 - tw/2
         for i, (wd, ti) in enumerate(words):
@@ -331,6 +359,7 @@ def scene_end(fr, t):
             x += measure(wd, "InterDisplay-Bold.otf", 84) + 34
         fade_text(fr, t, "www.solix.com", W/2, 730, 36, wt("e2", "with Solix"), T + 5, fname="Inter-SemiBold.otf", anchor="ms", rgb=np.array([.6, .82, 1.0]), track=2)
         fade_text(fr, t, "Solix Application Retirement", W/2, 790, 26, wt("e2", "with Solix") + .3, T + 5, fname="Inter-Medium.otf", anchor="ms", alpha=.8)
+        fade_text(fr, t, "Data Ask is part of Solix Enterprise AI", W/2, 1010, 20, wt("e2", "with Solix") + .6, T + 5, fname="Inter-Medium.otf", anchor="ms", alpha=.55)
 
 # ---------------------------------------------------------------- 0. Opening title
 def scene_title(fr, t):
@@ -345,7 +374,7 @@ def scene_title(fr, t):
     cv.blit(fr, glow=.4)
     fade_text(fr, t, "OVERVIEW", W/2, 470 - 60*q, 28, .6, T0 - .35, fname="Inter-SemiBold.otf", anchor="ms", track=10, rgb=BLUE*1.3)
     kinetic(fr, t, "Application Retirement", W/2, 590 - 60*q, 104, .75, T0 - .35, align="center", maxw=1700, hl=("Retirement",))
-    words = [("Retire", 1.15), ("Comply", 1.35), ("Activate", 1.55)]
+    words = [("Retire", 1.15), ("Preserve", 1.35), ("Activate", 1.55)]
     tw = sum(measure(w_, "Inter-SemiBold.otf", 34, 4) for w_, _ in words) + 2*70
     x = W/2 - tw/2
     for i, (w_, ti) in enumerate(words):
@@ -357,18 +386,23 @@ def scene_title(fr, t):
             x += 70
 
 # ---------------------------------------------------------------- overlays
+STEPS = ("CONNECT", "MIGRATE & VALIDATE", "GOVERN", "ENABLE AI")
 def tracker(fr, t):
+    """Step bar: Connect > Migrate & Validate > Govern > Enable AI, lighting as the story moves on."""
     t_on = SC["retire"] + .1; t_off = LN["e2"]["start"] - .3
     if not (t_on - .1 < t <= t_off + .5): return
     ga = ease((t - t_on)/.5)*(1 - ease((t - t_off)/.4))
-    cur = {"retire": 0, "comply": 1, "ai": 2}.get(next((s for s in reversed(ORDER) if t >= SC[s]), "problem"), 3)
+    starts = [t_on, wt("r1", "moves"), SC["comply"] + .2, SC["ai"] + .2]
+    cur = max(i for i in range(4) if t >= starts[i] or i == 0)
     x = LX
-    for i, lab in enumerate(("RETIRE", "COMPLY", "ACTIVATE")):
-        act = (i == cur) or cur == 3
-        if act and cur != 3: put(fr, "●", "Inter-SemiBold.otf", 18, x, 98, ga, rgb=BLUE*1.2); x += 26
-        put(fr, lab, "Inter-SemiBold.otf", 24, x, 100, ga*(1.0 if act else (.6 if i < cur else .32)), track=4)
+    for i, lab in enumerate(STEPS):
+        on = clamp((t - starts[i])/.35)
+        act = i == cur and t < SC["end"]
+        if act: put(fr, "●", "Inter-SemiBold.otf", 18, x, 98, ga*on, rgb=BLUE*1.2); x += 26*on
+        put(fr, lab, "Inter-SemiBold.otf", 24, x, 100, ga*(.32 + .68*on if (act or t >= SC["end"]) else (.32 + .3*on)), track=4,
+            rgb=(BLUE*1.25) if act else (1, 1, 1))
         x += measure(lab, "Inter-SemiBold.otf", 24, 4) + 22
-        if i < 2: put(fr, "›", "Inter-SemiBold.otf", 24, x, 100, ga*.4); x += 34
+        if i < 3: put(fr, "›", "Inter-SemiBold.otf", 24, x, 100, ga*.4); x += 34
 
 def captions(fr, t):
     LS = TL["lines"]
