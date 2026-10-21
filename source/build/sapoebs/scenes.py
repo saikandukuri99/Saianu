@@ -225,7 +225,7 @@ def scene_C(c, t):
 def scene_D(c, t):
     t0 = line_t(4)[0]
     kicker(c, "SAP  ·  ARCHIVING DEVELOPMENT KIT", 120, 215, t0 - .05, t, bar=BLUE)
-    words(c, [("For", WHITE, None), ("SAP.", WHITE, BLUE)], 120, 300, 140, [t0 - .02, t0 + .15], t)
+    words(c, [("For", WHITE, None), ("SAP", WHITE, BLUE)], 120, 300, 140, [t0 - .02, t0 + .15], t)
     a = E(pr(t, cue(4, "works natively") - .1, .5))
     c.text("Works natively through", 120, 535 + (1 - a) * 14, "i", "Medium", 40, TXT, a)
     c.text("SAP's Archiving Development Kit", 120, 590 + (1 - a) * 14, "i", "Bold", 40, WHITE, a)
@@ -283,7 +283,7 @@ def retire_grid(c, x, y, t, t0, A=1.0):
 def scene_E(c, t):
     t0 = line_t(3)[0]
     kicker(c, "ORACLE  ·  CERTIFIED", 120, 215, t0 - .05, t, bar=RED)
-    words(c, [("For", WHITE, None), ("EBS.", WHITE, RED)], 120, 300, 140, [t0 - .02, t0 + .3], t)
+    words(c, [("For", WHITE, None), ("Oracle", WHITE, RED)], 120, 312, 120, [t0 - .02, t0 + .3], t)
     a = E(pr(t, t0 + .3, .5))
     c.text("Oracle E-Business Suite", 120, 535 + (1 - a) * 14, "i", "Medium", 40, TXT, a)
     c.blit(BAR(int(420 * E(pr(t, t0 + .5, .8))) // 6 * 6 + 6, 6, RED), 120, 600, a)
@@ -305,6 +305,23 @@ def scene_E(c, t):
         c.blit(BAR(int(80 * a), 5, col), xs + 30, 636, a)
         if kind == "arch": rows_to_vault(c, xs + 30, 670, 370, 130, t, ti, a)
         else: retire_grid(c, xs + 40, 680, t, ti, a)
+    # other connected apps, bottom left, once "certified by Oracle" has been said
+    ta = cue(3, "by Oracle", end=True) + .1; pa = E(pr(t, ta, .5))
+    if pa > .01:
+        px, py, pw, ph = 120 - (1 - pa) * 30, 668, 740, 330
+        c.card(px, py, pw, ph, pa, outline=RED + (190,), r=24)
+        c.blit(BAR(28, 5, RED), px + 34, py + 36, pa); ctext(c, "CONNECT", px + 76, py + 38, "i", "Bold", 22, SKY, pa, track=8)
+        x = px + 34
+        for i, nm in enumerate(("EBS", "PEOPLESOFT", "JDE", "SIEBEL")):
+            ca = E(pr(t, ta + .3 + i * .16, .35)); w = int(tw(nm, "i", "Bold", 22, 3) + 50); col = RED if i % 2 == 0 else BLUE
+            c.card(x, py + 86 + (1 - ca) * 10, w, 54, ca * pa, outline=col + (220,), fill=CARD + (235,), r=27)
+            ctext(c, nm, x + w / 2, py + 113 + (1 - ca) * 10, "i", "Bold", 22, WHITE, ca * pa, track=3, anchor="c"); x += w + 16
+        sa = E(pr(t, ta + 1.05, .4)) * pa
+        f = font("i", "Bold", 46); w1 = f.getlength("& "); w2 = f.getlength("100+")
+        ctext(c, "& ", px + 34, py + 190, "i", "Bold", 46, WHITE, sa); ctext(c, "100+", px + 34 + w1, py + 190, "i", "Bold", 46, RED, sa)
+        ctext(c, " Sources", px + 34 + w1 + w2, py + 190, "i", "Bold", 46, WHITE, sa)
+        fa = E(pr(t, ta + 1.4, .4)) * pa
+        c.blit(BOLT(36), px + 52, py + 266, fa, 1, True); ctext(c, "Through Solix Connect", px + 86, py + 266, "i", "Medium", 30, TXT, fa)
     badge = E(pr(t, cue(3, "both") - .1, .5))
     c.text("BOTH  ·  ONE PLATFORM", 1085, 888, "i", "Bold", 17, SKY, badge * (1 - E(pr(t, line_t(3)[1] - .5, .4))), track=6, anchor="c")
 
@@ -561,8 +578,8 @@ def scene_J(c, t):
     c.text("SOLIX", xx, 250, "d", "Bold", 156, WHITE, a, track=14)
     c.blit(BAR(int(wS) // 6 * 6, 8, BLUE), xx, 450, a); c.blit(BAR(int(wS * .32) // 6 * 6, 8, RED), xx + wS * .68, 450, a)
     t1 = cue(11, "Built for S A P") - .12; t2 = cue(11, "Built for Oracle") - .1
-    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("SAP.", WHITE, BLUE)], 960, 505, 90, [t1, t1 + .1, t1 + .22], t, anchor="c")
-    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("Oracle.", WHITE, RED)], 960, 685, 90, [t2, t2 + .1, t2 + .22], t, anchor="c")
+    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("SAP", WHITE, BLUE)], 960, 505, 90, [t1, t1 + .1, t1 + .22], t, anchor="c")
+    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("Oracle", WHITE, RED)], 960, 685, 90, [t2, t2 + .1, t2 + .22], t, anchor="c")
     c.ga = g0
     # end card
     ea = E(pr(t, tend + .15, .8))
