@@ -59,7 +59,7 @@ CUTS = []          # hard cuts: no transition effects
 # --------------------------------------------------------------------------- T  video title card (music only, before the voice-over starts)
 def scene_T(c, t):
     kicker(c, "SOLIXEMPOWER 2026", 960, 330, .15, t, anchor="c")
-    size = 104; items = [("SAP", WHITE, None), ("+", SKY, None), ("Oracle E-Business Suite", WHITE, None)]
+    size = 104; items = [("SAP", WHITE, None), ("+", SKY, None), ("Oracle", WHITE, None)]
     while sum(tw(i[0], "d", "Bold", size) for i in items) + size * .27 * 2 > 1640: size -= 2
     words(c, items, 960, 395, size, [.35, .55, .75], t, anchor="c")
     f = font("d", "Bold", size); wd = sum(f.getlength(i[0]) for i in items) + size * .27 * 2
@@ -207,7 +207,7 @@ def scene_C(c, t):
     # both: SAP + Oracle nodes linked
     tb = cue(2, "to both") - .05; act = E(pr(t, tb, .6))
     na = E(pr(t, t0 + .2, .6))
-    node_ring(c, 300, 560, 220, "Oracle", "E-BUSINESS|SUITE", RED, na, t, act)
+    node_ring(c, 300, 560, 220, "Oracle", "ERP", RED, na, t, act)
     node_ring(c, 1620, 560, 220, "SAP", "ERP", BLUE, na, t, act)
     for (p0, p1, col, ph) in (((560, 560), (300 + 112, 560), RED, 0), ((1360, 560), (1620 - 112, 560), BLUE, .5)):
         c.dashed((960 - 0, 560) if False else p0, p1, col, .25 * na + .6 * act, 3, 12, 9, t * 50)

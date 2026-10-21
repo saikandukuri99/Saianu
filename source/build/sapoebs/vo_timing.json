@@ -2,73 +2,73 @@
  {
   "i": 0,
   "start": 0.25,
-  "end": 3.412,
+  "end": 3.39,
   "text": "S A P and Oracle Applications run the business."
  },
  {
   "i": 1,
-  "start": 4.462,
-  "end": 12.765,
+  "start": 6.44,
+  "end": 14.743,
   "text": "But years of inactive data keep bloating databases, slowing performance, and driving up costs, right when you're planning a move to the cloud."
  },
  {
   "i": 2,
-  "start": 13.265,
-  "end": 19.669,
+  "start": 15.243,
+  "end": 21.648,
   "text": "Solix Common Data Platform brings more than twenty years of E R P archiving expertise, to both."
  },
  {
   "i": 3,
-  "start": 20.119,
-  "end": 27.886,
+  "start": 22.098,
+  "end": 29.864,
   "text": "For Oracle E Business Suite, Solix is certified by Oracle, and covers both archiving and full application retirement."
  },
  {
   "i": 4,
-  "start": 28.336,
-  "end": 39.633,
+  "start": 30.314,
+  "end": 41.465,
   "text": "For S A P, Solix works natively through S A P's Archiving Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."
  },
  {
   "i": 5,
-  "start": 40.133,
-  "end": 47.241,
+  "start": 41.965,
+  "end": 49.073,
   "text": "Inactive data moves out on policy, and stays searchable, reportable, and under legal hold, for as long as you need it."
  },
  {
   "i": 6,
-  "start": 47.791,
-  "end": 50.697,
+  "start": 49.623,
+  "end": 52.529,
   "text": "Ask your archive in plain language, with Data Ask."
  },
  {
   "i": 7,
-  "start": 51.097,
-  "end": 56.373,
+  "start": 52.928,
+  "end": 58.205,
   "text": "Every answer cites its source. And every question is permission checked, and audit logged."
  },
  {
   "i": 8,
-  "start": 57.173,
-  "end": 58.054,
+  "start": 59.005,
+  "end": 59.886,
   "text": "The result?"
  },
  {
   "i": 9,
-  "start": 59.313,
-  "end": 66.23,
+  "start": 61.145,
+  "end": 68.061,
   "text": "Leaner production systems, cleaner migrations, and legacy databases, up to thirty to sixty percent smaller."
  },
  {
   "i": 10,
-  "start": 66.73,
-  "end": 70.998,
+  "start": 68.561,
+  "end": 73.082,
   "text": "Your E R P history becomes A I activated data, not dead weight."
  },
  {
   "i": 11,
-  "start": 71.548,
-  "end": 74.517,
+  "start": 73.632,
+  "end": 76.73,
   "text": "Solix. Built for S A P. Built for Oracle."
  }
 ]

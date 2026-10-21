@@ -1,7 +1,7 @@
 # v8 voice-over: updated script ("SAP-Updated_Video_Script"), natural pacing, one take per sentence,
 # per-take level matching, warmth/air chain, real pauses, light room tone.
 #   python3 vo_v8.py KOKORO_DIR WORK_DIR OUT_VO.wav OUT_TIMING.json
-import sys, os, json, subprocess, numpy as np, soundfile as sf
+import sys, os, re, json, subprocess, numpy as np, soundfile as sf
 from kokoro_onnx import Kokoro
 K, WORK, OUT_WAV, OUT_JSON = sys.argv[1:5]
 os.makedirs(WORK, exist_ok=True)
@@ -22,7 +22,7 @@ LINES = [
  ["Solix. Built for S A P. Built for Oracle."],
 ]
 # silence after each line before the next one (s). Line 0 -> 1 leaves room for chips + underline; 8 -> 9 is set by the 2 s hold.
-GAP = {0: 1.05, 1: .50, 2: .45, 3: .45, 4: .50, 5: .55, 6: .40, 7: .80, 9: .50, 10: .55}
+GAP = {0: 3.05, 1: .50, 2: .45, 3: .45, 4: .50, 5: .55, 6: .40, 7: .80, 9: .50, 10: .55}
 HOLD_NEXT = 2.14                        # "The result?" stays on screen 2.0 s; next line starts this long after it begins
 SENT_GAP = .34
 TARGET_RMS = 10 ** (-20 / 20)
@@ -31,10 +31,26 @@ CHAIN = ("aresample=48000:resampler=soxr,highpass=f=80,equalizer=f=240:t=q:w=1.0
          "deesser=i=0.35,acompressor=threshold=-22dB:ratio=2.2:attack=8:release=170:makeup=2,aecho=0.9:0.9:23|47:0.05|0.035")
 k = Kokoro(K + "/kokoro-v1.0.onnx", K + "/voices-v1.0.bin")
 rs = np.random.RandomState(21)
+# "S A P" / "A I" must be spoken as letters: the engine would read "S A P" as "S-uh-P" and "A I" as "uh-eye".
+# So those tokens are given as exact sounds (ess-ay-pee, ay-eye); everything else is phonemized normally.
+PAT = re.compile(r"S A P(?:'s)?|A I")
+def ph(text):
+    out = ""; pos = 0
+    def add(p):
+        nonlocal out
+        out += (p if (not out or p[0] in ",.?!;:") else " " + p)
+    for m in PAT.finditer(text):
+        seg = text[pos:m.start()].strip()
+        if seg: add(k.tokenizer.phonemize(seg, "en-us"))
+        tok = m.group(0); add("ˌɛsˌeɪpˈiːz" if tok.endswith("'s") else ("ˌɛsˌeɪpˈiː" if tok[0] == "S" else "ˌeɪˈaɪ")); pos = m.end()
+    seg = text[pos:].strip()
+    if seg: add(k.tokenizer.phonemize(seg, "en-us"))
+    return out
 
 def take(text, n):
     sp = float(np.clip(1.01 + rs.uniform(-.025, .025), .98, 1.04))            # calm, slightly varied pace
-    a, sr = k.create(text, voice="af_heart", speed=sp, lang="en-us")
+    if PAT.search(text): a, sr = k.create(ph(text), voice="af_heart", speed=sp, lang="en-us", is_phonemes=True)
+    else: a, sr = k.create(text, voice="af_heart", speed=sp, lang="en-us")
     env = np.abs(a) > .012; ix = np.where(env)[0]
     a = a[max(0, ix[0] - int(.05 * sr)): min(len(a), ix[-1] + int(.16 * sr))].astype(np.float64)
     f = int(.012 * sr); a[:f] *= np.linspace(0, 1, f); a[-f:] *= np.linspace(1, 0, f)
