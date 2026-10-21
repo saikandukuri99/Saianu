@@ -1,3 +1,6 @@
+# FINAL v3: `Solix_SAP_OEBS_FINAL_v3_*` (83.3 s)
+Manager's 4 changes: voice-over says "A I" correctly (and "S A P" as S-A-P) on the AI-activated slide; "ERP" under the Oracle circle (like SAP); opening screen stays 2 s longer; title card shows "SAP + Oracle" only. Ambient and CorporateMusic versions; 4K files follow.
+
 # FINAL v2: `Solix_SAP_OEBS_FINAL_v2_*` (81.1 s)
 Built from SAP-Updated_Video_Script.docx and the manager's screenshots: "SAP and Oracle Applications run the business."; chips ECC / S/4HANA / OEBS / PEOPLESOFT / JDE / SIEBEL; "Solix Common Data Platform" with CDP under the logo; "Archiving Development Kit"; "legacy databases"; "AI-activated data"; "Solix". New natural voice (one take per sentence, level-matched, warmth/air chain, real pauses, room tone); scene timing follows the voice. Ambient and CorporateMusic versions; 4K files follow.
 
