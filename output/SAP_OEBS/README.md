@@ -1,3 +1,6 @@
+# FINAL v4: `Solix_SAP_OEBS_FINAL_v4_*` (83.3 s)
+Oracle slide title "For Oracle" (voice unchanged); connected-apps panel (EBS, PEOPLESOFT, JDE, SIEBEL, & 100+ Sources, Through Solix Connect) bottom left after "certified by Oracle"; no full stop after "SAP" / "Oracle" in titles and the last slide. Voice and music identical to v3. Ambient and CorporateMusic versions; 4K files follow.
+
 # FINAL v3: `Solix_SAP_OEBS_FINAL_v3_*` (83.3 s)
 Manager's 4 changes: voice-over says "A I" correctly (and "S A P" as S-A-P) on the AI-activated slide; "ERP" under the Oracle circle (like SAP); opening screen stays 2 s longer; title card shows "SAP + Oracle" only. Ambient and CorporateMusic versions; 4K files follow.
 
