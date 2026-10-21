@@ -1,125 +1,115 @@
 {
- "total": 63.87,
+ "total": 59.907,
  "lines": [
   {
    "i": 0,
    "id": "p1",
    "scene": "problem",
-   "caption": "Every enterprise has legacy applications it can't turn off, because the data inside still matters.",
-   "pause": 0.4,
+   "caption": "Every enterprise runs legacy applications it can't switch off, because the data inside still matters.",
+   "pause": 0.55,
    "file": "00_p1.wav",
    "start": 2.9,
-   "end": 8.505
+   "end": 9.294
   },
   {
    "i": 1,
    "id": "c1",
    "scene": "cost",
-   "caption": "Keeping them running drains budget, adds security risk, and locks valuable data in silos.",
-   "pause": 0.4,
+   "caption": "Keeping them alive drains budget, widens the attack surface, and locks history in silos.",
+   "pause": 0.55,
    "file": "01_c1.wav",
-   "start": 8.905,
-   "end": 14.19
+   "start": 9.844,
+   "end": 15.513
   },
   {
    "i": 2,
    "id": "r1",
    "scene": "retire",
-   "caption": "Solix Application Retirement moves structured and unstructured data from legacy systems into the Solix Common Data Platform, a secure, governed archive.",
-   "pause": 0.25,
+   "caption": "Solix Application Retirement moves structured and unstructured data into a governed Preservation Zone,",
+   "pause": 0.12,
    "file": "02_r1.wav",
-   "start": 14.59,
-   "end": 24.163
+   "start": 16.063,
+   "end": 22.436
   },
   {
    "i": 3,
    "id": "r2",
    "scene": "retire",
-   "caption": "Then you shut the old applications down for good.",
-   "pause": 0.4,
+   "caption": "validates it against the source, then switches the old applications off for good.",
+   "pause": 0.6,
    "file": "03_r2.wav",
-   "start": 24.413,
-   "end": 26.925
+   "start": 22.556,
+   "end": 27.244
   },
   {
    "i": 4,
    "id": "m1",
    "scene": "comply",
-   "caption": "Compliance is built in.",
+   "caption": "Retention, legal hold, eDiscovery and masking apply from the day data lands.",
    "pause": 0.3,
    "file": "04_m1.wav",
-   "start": 27.325,
-   "end": 28.748
+   "start": 27.844,
+   "end": 32.977
   },
   {
    "i": 5,
    "id": "m2",
    "scene": "comply",
-   "caption": "Policy-based retention, legal holds, and eDiscovery keep you audit-ready.",
-   "pause": 0.3,
+   "caption": "You stay audit-ready, and records are defensibly deleted when retention ends.",
+   "pause": 0.6,
    "file": "05_m2.wav",
-   "start": 29.048,
-   "end": 33.395
+   "start": 33.277,
+   "end": 37.794
   },
   {
    "i": 6,
-   "id": "m3",
-   "scene": "comply",
-   "caption": "Sensitive data is identified and protected, and records are defensibly deleted when retention ends.",
-   "pause": 0.4,
-   "file": "06_m3.wav",
-   "start": 33.695,
-   "end": 39.769
+   "id": "a1",
+   "scene": "ai",
+   "caption": "And preserved data doesn't sit idle.",
+   "pause": 0.5,
+   "file": "06_a1.wav",
+   "start": 38.394,
+   "end": 40.546
   },
   {
    "i": 7,
-   "id": "a1",
+   "id": "a2",
    "scene": "ai",
-   "caption": "And your retired data doesn't sit idle.",
-   "pause": 0.3,
-   "file": "07_a1.wav",
-   "start": 40.169,
-   "end": 42.382
+   "caption": "With Solix Data Ask, people ask in plain English and get cited answers,",
+   "pause": 0.1,
+   "file": "07_a2.wav",
+   "start": 41.046,
+   "end": 45.542
   },
   {
    "i": 8,
-   "id": "a2",
+   "id": "a3",
    "scene": "ai",
-   "caption": "With Data Ask in CDP Navigator, you can simply talk to your archived data.",
-   "pause": 0.3,
-   "file": "08_a2.wav",
-   "start": 42.682,
-   "end": 47.391
+   "caption": "grounded in the application's own Knowledge Graph.",
+   "pause": 0.8,
+   "file": "08_a3.wav",
+   "start": 45.642,
+   "end": 48.41
   },
   {
    "i": 9,
-   "id": "a3",
-   "scene": "ai",
-   "caption": "Ask questions in plain language and get answers in seconds, with no reports to build and no legacy app to log into.",
-   "pause": 0.4,
-   "file": "09_a3.wav",
-   "start": 47.691,
-   "end": 54.853
+   "id": "e1",
+   "scene": "end",
+   "caption": "Lower cost. Less risk. Governed history, ready for AI.",
+   "pause": 0.5,
+   "file": "09_e1.wav",
+   "start": 49.21,
+   "end": 52.955
   },
   {
    "i": 10,
-   "id": "e1",
-   "scene": "end",
-   "caption": "Lower costs, less risk, and new value from old data.",
-   "pause": 0.35,
-   "file": "10_e1.wav",
-   "start": 55.253,
-   "end": 58.255
-  },
-  {
-   "i": 11,
    "id": "e2",
    "scene": "end",
-   "caption": "Retire, comply, and activate, with Solix.",
+   "caption": "Retire, preserve, and activate, with Solix.",
    "pause": 0.0,
-   "file": "11_e2.wav",
-   "start": 58.605,
-   "end": 61.37
+   "file": "10_e2.wav",
+   "start": 53.455,
+   "end": 56.407
   }
  ]
 }
