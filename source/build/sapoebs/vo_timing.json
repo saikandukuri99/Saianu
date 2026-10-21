@@ -2,73 +2,73 @@
  {
   "i": 0,
   "start": 0.25,
-  "end": 3.252,
-  "text": "S A P and Oracle E Business Suite run the business."
+  "end": 3.412,
+  "text": "S A P and Oracle Applications run the business."
  },
  {
   "i": 1,
-  "start": 3.517,
-  "end": 11.789,
+  "start": 4.462,
+  "end": 12.765,
   "text": "But years of inactive data keep bloating databases, slowing performance, and driving up costs, right when you're planning a move to the cloud."
  },
  {
   "i": 2,
-  "start": 12.983,
-  "end": 18.183,
-  "text": "Solix Cloud brings more than twenty years of ERP archiving expertise, to both."
+  "start": 13.265,
+  "end": 19.669,
+  "text": "Solix Common Data Platform brings more than twenty years of E R P archiving expertise, to both."
  },
  {
   "i": 3,
-  "start": 18.383,
-  "end": 25.84,
+  "start": 20.119,
+  "end": 27.886,
   "text": "For Oracle E Business Suite, Solix is certified by Oracle, and covers both archiving and full application retirement."
  },
  {
   "i": 4,
-  "start": 26.01,
-  "end": 36.355,
-  "text": "For S A P, Solix Cloud works natively through SAP's Archive Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."
+  "start": 28.336,
+  "end": 39.633,
+  "text": "For S A P, Solix works natively through S A P's Archiving Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."
  },
  {
   "i": 5,
-  "start": 36.617,
-  "end": 43.331,
+  "start": 40.133,
+  "end": 47.241,
   "text": "Inactive data moves out on policy, and stays searchable, reportable, and under legal hold, for as long as you need it."
  },
  {
   "i": 6,
-  "start": 43.65,
-  "end": 46.546,
+  "start": 47.791,
+  "end": 50.697,
   "text": "Ask your archive in plain language, with Data Ask."
  },
  {
   "i": 7,
-  "start": 47.683,
-  "end": 52.819,
-  "text": "Every answer cites its source, and every question is permission checked, and audit logged."
+  "start": 51.097,
+  "end": 56.373,
+  "text": "Every answer cites its source. And every question is permission checked, and audit logged."
  },
  {
   "i": 8,
-  "start": 53.983,
-  "end": 54.874,
+  "start": 57.173,
+  "end": 58.054,
   "text": "The result?"
  },
  {
   "i": 9,
-  "start": 56.117,
-  "end": 63.13,
-  "text": "Leaner production systems, cleaner migrations, and S A P databases, up to thirty to sixty percent smaller."
+  "start": 59.313,
+  "end": 66.23,
+  "text": "Leaner production systems, cleaner migrations, and legacy databases, up to thirty to sixty percent smaller."
  },
  {
   "i": 10,
-  "start": 63.25,
-  "end": 67.148,
-  "text": "Your ERP history becomes AI-ready data, not dead weight."
+  "start": 66.73,
+  "end": 70.998,
+  "text": "Your E R P history becomes A I activated data, not dead weight."
  },
  {
   "i": 11,
-  "start": 67.85,
-  "end": 70.767,
+  "start": 71.548,
+  "end": 74.517,
   "text": "Solix. Built for S A P. Built for Oracle."
  }
 ]

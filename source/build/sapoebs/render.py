@@ -6,7 +6,7 @@ import numpy as np, cv2
 from lib import *
 from scenes import SCENES, SC, energy
 
-TOTAL = 2333
+TOTAL = int(round(SC['J'][1] * FPS))
 _G = {}
 def init():
     _G["bg"] = make_bg()[..., ::-1].copy(); _G["net"] = Net()

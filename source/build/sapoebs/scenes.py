@@ -2,7 +2,7 @@
 # Every cue is derived from the voice-over timing in cues.py.
 import math
 from lib import *
-from cues import cue, line_t, OFF
+from cues import cue, line_t, OFF, VO
 
 # --------------------------------------------------------------------------- shared helpers
 def ctext(c, st, x, yc, kind="i", weight="Bold", size=40, color=WHITE, a=1.0, track=0, anchor="l"):
@@ -49,9 +49,11 @@ def mono(c, s, x, y, size, color, a=1.0, w="Regular", anchor="l"):
     c.text(s, x, y, "m", w, size, color, a, anchor=anchor)
 
 # --------------------------------------------------------------------------- scene windows (absolute seconds)
-_SC0 = {"A": (0.0, 3.70), "B": (3.70, 12.95), "C": (12.95, 18.35), "E": (18.35, 26.00), "D": (26.00, 36.55),
-        "F": (36.55, 43.45), "DA": (43.45, 53.95), "G": (53.95, 55.95), "H": (55.95, 63.20), "I": (63.20, 67.80), "J": (67.80, 74.77)}
-SC = {"T": (0.0, OFF)}; SC.update({k: (a + OFF, b + OFF) for k, (a, b) in _SC0.items()})
+_V = lambda i: VO[i]["start"] - .07                    # scene windows follow the voice-over, so pacing changes move the visuals with it
+SC = {"T": (0.0, OFF), "A": (OFF, _V(1)), "B": (_V(1), _V(2)), "C": (_V(2), _V(3)), "E": (_V(3), _V(4)), "D": (_V(4), _V(5)),
+      "F": (_V(5), _V(6)), "DA": (_V(6), VO[8]["start"] - .03)}
+SC["G"] = (SC["DA"][1], SC["DA"][1] + 2.0)                # "The result?" holds 2 s
+SC["H"] = (SC["G"][1], _V(10)); SC["I"] = (_V(10), _V(11)); SC["J"] = (_V(11), round(VO[11]["end"] + 3.6, 2))
 CUTS = []          # hard cuts: no transition effects
 
 # --------------------------------------------------------------------------- T  video title card (music only, before the voice-over starts)
@@ -69,8 +71,8 @@ def scene_T(c, t):
 # --------------------------------------------------------------------------- A  (HEAD) opening headline
 def scene_A(c, t):
     kicker(c, "SOLIXEMPOWER 2026   ·   SOLIX", 960, 292, .15 + OFF, t, anchor="c")
-    L1 = [("SAP", WHITE, BLUE), ("and", TXT, None), ("Oracle", WHITE, RED), ("E-Business Suite", WHITE, None)]   # "E-Business Suite" reveals as one word, like the voice
-    T1 = [cue(0, k) - .1 for k in ("S A P", "and", "Oracle", "E Business")]
+    L1 = [("SAP", WHITE, BLUE), ("and", TXT, None), ("Oracle", WHITE, RED), ("Applications", WHITE, None)]
+    T1 = [cue(0, k) - .1 for k in ("S A P", "and", "Oracle", "Applications")]
     size = 104
     while sum(tw(i[0], "d", "Bold", size) + (2 * int(size * .5) if i[2] else 0) for i in L1) + size * .27 * 4 > 1640: size -= 2
     words(c, L1, 960, 350, size, T1, t, anchor="c")
@@ -84,7 +86,7 @@ def scene_A(c, t):
         h = int(uw * .55) // 6 * 6
         c.blit(BAR(max(6, h), 10, BLUE), bx, 700, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 10, RED), bx + h - 6, 700, 1)
     # module chips: the business that SAP / Oracle run
-    mods = ["FINANCE", "SUPPLY CHAIN", "SALES", "PROCUREMENT", "MANUFACTURING", "HR"]
+    mods = ["ECC", "S/4HANA", "OEBS", "PEOPLESOFT", "JDE", "SIEBEL"]
     ws = [tw(m, "i", "Bold", 21, 5) + 56 for m in mods]; tot = sum(ws) + 18 * (len(mods) - 1); x = 960 - tot / 2
     t0 = T2[2] + .34                                               # module chips arrive only after the underline has landed
     for i, (m, w) in enumerate(zip(mods, ws)):
@@ -110,7 +112,7 @@ def db_rows(c, x, y, w, n, t, t_from, t_to, hot_color, row_h=25, pitch=33, label
         mono(c, "ACTIVE" if act else "INACTIVE", x + w - 14, yy + 4, label_size, WHITE if act else (140, 90, 110), a, "Regular", "r")
 
 def scene_B(c, t):
-    kicker(c, "THE CHALLENGE", 120, 205, 3.5 + OFF, t)
+    kicker(c, "THE CHALLENGE", 120, 205, line_t(1)[0] - .1, t)
     T0 = cue(1, "years") - .1
     words(c, [("Years", WHITE, None), ("of", WHITE, None)], 120, 232, 92, [T0, T0 + .12], t)
     words(c, [("inactive", WHITE, RED), ("data", WHITE, None)], 120, 378, 92, [cue(1, "inactive") - .15, cue(1, "data") - .05], t)
@@ -192,13 +194,16 @@ def scene_C(c, t):
     wS = tw("SOLIX", "d", "Bold", 74, 8); x = 960 - (78 + 14 + wS) / 2
     c.blit(BOLT(78), x, 232, a0, 1, False)
     c.text("SOLIX", x + 92, 228, "d", "Bold", 74, WHITE, a0, track=8)
+    ac = E(pr(t, cue(2, "Common") - .15, .5))                    # CDP = Solix Common Data Platform, below the logo
+    ctext(c, "CDP", 960, 352, "d", "Bold", 46, SKY, ac, track=16, anchor="c")
+    ctext(c, "COMMON DATA PLATFORM", 960, 398, "i", "Bold", 17, DIM, ac, track=7, anchor="c")
     # counter
     tn = cue(2, "twenty") - .25; k = E(pr(t, tn, 1.5)); n = int(round(20 * k))
     s = E(pr(t, tn, .4)); sc = lerp(.94, 1.0, s)
     c.text(str(n), 960 - 62, 380, "d", "Bold", 270, WHITE, s, anchor="c", sc=sc)
     wd = tw(str(n), "d", "Bold", 270)
     c.text("+", 960 - 62 + wd / 2 * sc + 12, 380, "d", "Bold", 270, RED, s, sc=sc)
-    c.text("YEARS OF ERP ARCHIVING EXPERTISE", 960, 705, "i", "Bold", 30, SKY, E(pr(t, cue(2, "ERP") - .15, .5)), track=7, anchor="c")
+    c.text("YEARS OF ERP ARCHIVING EXPERTISE", 960, 705, "i", "Bold", 30, SKY, E(pr(t, cue(2, "E R P") - .15, .5)), track=7, anchor="c")
     # both: SAP + Oracle nodes linked
     tb = cue(2, "to both") - .05; act = E(pr(t, tb, .6))
     na = E(pr(t, t0 + .2, .6))
@@ -219,20 +224,20 @@ def scene_C(c, t):
 # --------------------------------------------------------------------------- D  (BODY) For SAP
 def scene_D(c, t):
     t0 = line_t(4)[0]
-    kicker(c, "SAP  ·  ARCHIVE DEVELOPMENT KIT", 120, 215, t0 - .05, t, bar=BLUE)
+    kicker(c, "SAP  ·  ARCHIVING DEVELOPMENT KIT", 120, 215, t0 - .05, t, bar=BLUE)
     words(c, [("For", WHITE, None), ("SAP.", WHITE, BLUE)], 120, 300, 140, [t0 - .02, t0 + .15], t)
     a = E(pr(t, cue(4, "works natively") - .1, .5))
     c.text("Works natively through", 120, 535 + (1 - a) * 14, "i", "Medium", 40, TXT, a)
-    c.text("SAP's Archive Development Kit", 120, 590 + (1 - a) * 14, "i", "Bold", 40, WHITE, a)
+    c.text("SAP's Archiving Development Kit", 120, 590 + (1 - a) * 14, "i", "Bold", 40, WHITE, a)
     c.blit(BAR(int(520 * E(pr(t, cue(4, "works natively") + .3, .8))) // 6 * 6 + 6, 6, BLUE), 120, 664, a)
     # pipeline: SAP -> ADK -> SOLIXCloud
     pa = E(pr(t, t0 + .1, .6)); y = 300
     c.card(930 + (1 - pa) * 50, y, 250, 150, pa, outline=BLUE + (210,))
     c.text("SAP", 1055 + (1 - pa) * 50, y + 34, "d", "Bold", 52, WHITE, pa, anchor="c"); c.text("SYSTEM", 1055 + (1 - pa) * 50, y + 98, "i", "Bold", 18, SKY, pa, track=6, anchor="c")
-    ak = E(pr(t, cue(4, "Archive Development") - .5, .6))
+    ak = E(pr(t, cue(4, "Archiving Development") - .5, .6))
     c.blit(CIRCLE(140, (10, 70, 140, 240), BLUE + (255,), 3, glow=BLUE if ak > .4 else None), 1395, y + 75, ak, 1, True)
     c.text("ADK", 1395, y + 46, "d", "Bold", 44, WHITE, ak, anchor="c"); c.text("NATIVE", 1395, y + 100, "i", "Bold", 15, SKY, ak, track=5, anchor="c")
-    sa = E(pr(t, cue(4, "Archive Development") - .1, .6))
+    sa = E(pr(t, cue(4, "Archiving Development") - .1, .6))
     c.card(1570 + (1 - sa) * 50, y, 250, 150, sa, outline=RED + (210,))
     c.blit(BOLT(54), 1625 + (1 - sa) * 50, y + 30, sa)
     c.text("SOLIXCloud", 1695 + (1 - sa) * 50, y + 30, "d", "Bold", 28, WHITE, sa, anchor="c") if False else c.text("SOLIX", 1692 + (1 - sa) * 50, y + 38, "d", "Bold", 30, WHITE, sa, track=3)
@@ -447,7 +452,7 @@ def scene_H(c, t):
         c.text(lab, 206 - (1 - a) * 30, y + 5, "d", "Bold", 58, WHITE, a)
     # 30-60%
     tn = cue(9, "thirty") - .2; a = E(pr(t, tn, .4))
-    da_ = E(pr(t, cue(9, "S A P databases") - .1, .45))
+    da_ = E(pr(t, cue(9, "legacy") - .1, .45))
     c.text("Legacy databases, up to", 120, 505 + (1 - da_) * 16, "d", "Bold", 52, SKY, da_)
     c.text("30–60%", 120, 560 + (1 - a) * 24, "d", "Bold", 214, WHITE, a, sc=1.0)
     wn = tw("30–60%", "d", "Bold", 214)
@@ -499,8 +504,8 @@ EDGES = [(0, 11), (11, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (6, 7), (7, 8
 def scene_I(c, t):
     t0 = line_t(10)[0]
     words(c, [("Your", WHITE, None), ("ERP", WHITE, None), ("history", WHITE, None), ("becomes", WHITE, None)], 960, 98, 80,
-          [cue(10, "Your") - .1, cue(10, "ERP") - .1, cue(10, "history") - .1, cue(10, "becomes") - .1], t, anchor="c")
-    words(c, [("AI-activated", WHITE, BLUE), ("data", WHITE, None)], 960, 232, 128, [cue(10, "AI-ready") - .12, cue(10, "data") - .08], t, anchor="c")
+          [cue(10, "Your") - .1, cue(10, "E R P") - .1, cue(10, "history") - .1, cue(10, "becomes") - .1], t, anchor="c")
+    words(c, [("AI-activated", WHITE, BLUE), ("data", WHITE, None)], 960, 232, 128, [cue(10, "activated") - .12, cue(10, "data") - .08], t, anchor="c")
     ta = t0; fa = E(pr(t, ta, .6)); tb = cue(10, "becomes")
     # archive records table
     x0, y0, w0, h0 = 170, 478, 520, 390
@@ -547,7 +552,7 @@ def scene_I(c, t):
 
 # --------------------------------------------------------------------------- J  (TAIL) SOLIXCloud. Built for SAP. Built for Oracle. -> logo card
 def scene_J(c, t):
-    t0 = line_t(11)[0]; tend = t0 + 4.2
+    t0 = line_t(11)[0]; tend = VO[11]["end"] + .8
     out = 1 - E(pr(t, tend, .5))
     # wordmark
     g0 = c.ga; c.ga = g0 * out
@@ -577,5 +582,5 @@ def energy(t):
     e = .35
     if SC["G"][0] - .05 < t < SC["G"][1] + .6: e = lerp(.35, 1.7, E(pr(t, SC["G"][0] - .05, .3))) * (1 - .5 * E(pr(t, SC["G"][1], .6)))
     if SC["I"][0] < t < SC["J"][0]: e = lerp(.4, 1.5, E(pr(t, cue(10, "becomes"), 1.2)))
-    if t >= SC["J"][0]: e = lerp(1.2, .85, E(pr(t, SC["J"][0] + 4.1, 1.5)))
+    if t >= SC["J"][0]: e = lerp(1.2, .85, E(pr(t, VO[11]["end"] + .5, 1.5)))
     return e

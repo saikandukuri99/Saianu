@@ -3,7 +3,8 @@ import sys, numpy as np, soundfile as sf, subprocess
 from scipy.signal import butter, sosfilt, fftconvolve
 sys.path.insert(0, ".")
 from cues import cue, VO
-SR = 48000; T = 77.77; N = int(T * SR); rs = np.random.RandomState(3)
+from scenes import SC
+SR = 48000; T = SC['J'][1]; N = int(T * SR); rs = np.random.RandomState(3)
 t = np.arange(N) / SR
 def lp(x, f, o=2): return sosfilt(butter(o, f, "low", fs=SR, output="sos"), x)
 def bp(x, a, b, o=2): return sosfilt(butter(o, [a, b], "band", fs=SR, output="sos"), x)
