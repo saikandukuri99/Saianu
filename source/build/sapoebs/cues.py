@@ -5,7 +5,8 @@ import json, os
 HERE = os.path.dirname(os.path.abspath(__file__))
 VO = json.load(open(os.path.join(HERE, "vo_timing.json")))
 AL = json.load(open(os.path.join(HERE, "vo_align.json")))
-OFF = 3.0                    # a 3 s title card now opens the film; every voice-over time moves later by this much
+TITLE = json.load(open(os.path.join(HERE, "vo_title.json"))) if os.path.exists(os.path.join(HERE, "vo_title.json")) else dict(off=3.0, s1=.45, s2=1.9, end=2.6)
+OFF = TITLE["off"]           # the opening title card (spoken title) lasts this long; every narration time moves later by this much
 for _v in VO: _v["start"] = round(_v["start"] + OFF, 3); _v["end"] = round(_v["end"] + OFF, 3)
 for _l in AL:
     for _s in _l: _s["t0"] = round(_s["t0"] + OFF, 3); _s["t1"] = round(_s["t1"] + OFF, 3)

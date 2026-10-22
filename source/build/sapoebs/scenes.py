@@ -2,7 +2,7 @@
 # Every cue is derived from the voice-over timing in cues.py.
 import math
 from lib import *
-from cues import cue, line_t, OFF, VO
+from cues import cue, line_t, OFF, VO, TITLE
 
 # --------------------------------------------------------------------------- shared helpers
 def ctext(c, st, x, yc, kind="i", weight="Bold", size=40, color=WHITE, a=1.0, track=0, anchor="l"):
@@ -61,12 +61,12 @@ def scene_T(c, t):
     kicker(c, "SOLIXEMPOWER 2026", 960, 330, .15, t, anchor="c")
     size = 104; items = [("SAP", WHITE, None), ("+", SKY, None), ("Oracle", WHITE, None)]
     while sum(tw(i[0], "d", "Bold", size) for i in items) + size * .27 * 2 > 1640: size -= 2
-    words(c, items, 960, 395, size, [.35, .55, .75], t, anchor="c")
+    words(c, items, 960, 395, size, [TITLE['s1'] - .05, TITLE['s1'] + .85, TITLE['s1'] + 1.0], t, anchor="c")     # revealed with the spoken title
     f = font("d", "Bold", size); wd = sum(f.getlength(i[0]) for i in items) + size * .27 * 2
-    u = E(pr(t, 1.2, .6)); uw = int(wd * u) // 6 * 6
+    u = E(pr(t, TITLE['s1'] + 1.45, .6)); uw = int(wd * u) // 6 * 6
     if uw > 6:
         h = int(uw * .66) // 6 * 6; c.blit(BAR(max(6, h), 8, BLUE), 960 - wd / 2, 560, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 8, RED), 960 - wd / 2 + h - 6, 560, 1)
-    ctext(c, "ERP Archiving & Application Retirement", 960, 625, "i", "Medium", 44, TXT, E(pr(t, 1.45, .5)), anchor="c")
+    ctext(c, "ERP Archiving & Application Retirement", 960, 625, "i", "Medium", 44, TXT, E(pr(t, TITLE['s2'] - .1, .5)), anchor="c")
 
 # --------------------------------------------------------------------------- A  (HEAD) opening headline
 def scene_A(c, t):

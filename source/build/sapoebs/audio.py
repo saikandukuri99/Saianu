@@ -2,7 +2,7 @@
 import sys, numpy as np, soundfile as sf, subprocess
 from scipy.signal import butter, sosfilt, fftconvolve
 sys.path.insert(0, ".")
-from cues import cue, VO
+from cues import cue, VO, OFF
 from scenes import SC
 SR = 48000; T = SC['J'][1]; N = int(T * SR); rs = np.random.RandomState(3)
 t = np.arange(N) / SR
@@ -71,11 +71,56 @@ def corporate():
     tt = np.arange(int(3.2 * SR)) / SR                                       # closing chime: C major shimmer
     for f, g in ((523.3, 1.0), (659.3, .8), (784.0, .7), (1046.5, .5)): put(np.sin(2 * np.pi * f * tt) * np.exp(-tt * 1.3) * np.minimum(1, tt / .02), END, .045 * g)
     return out
+def upbeat():
+    """upbeat corporate bed: 124 bpm, C major (C - G - Am - F), four-on-the-floor kick, claps, off-beat hats, bass, chord stabs, bright plucked arpeggio"""
+    r = np.random.RandomState(13); out = np.zeros(N); bpm = 124.0; beat = 60 / bpm; bar = 4 * beat; END = T - 3.4; G0 = OFF   # full groove starts with the story
+    TRI = [[261.6, 329.6, 392.0], [246.9, 293.7, 392.0], [220.0, 261.6, 329.6], [220.0, 261.6, 349.2]]; ROOT = [65.4, 98.0, 110.0, 87.3]
+    def put(x, at, g=1.0):
+        a_ = int(at * SR)
+        if 0 <= a_ < N: x = x[:N - a_]; out[a_:a_ + len(x)] += x * g
+    def saw(f, L, n=7): tt = np.arange(L) / SR; return sum(np.sin(2 * np.pi * f * k_ * tt) / k_ for k_ in range(1, n + 1))
+    nb = int(T / bar) + 1
+    for b in range(nb):
+        t_b = b * bar
+        if t_b >= END: break
+        ch = 0 if t_b >= END - bar else b % 4
+        L = int((bar + .8) * SR); tt = np.arange(L) / SR; pad = np.zeros(L)                      # pad
+        for f in TRI[ch] + [TRI[ch][0] / 2]:
+            for d in (-.003, 0, .003): pad += np.sin(2 * np.pi * f * (1 + d) * tt + r.rand() * 6.28) * .5
+        put(lp(pad, 2200) * np.minimum(1, tt / .5) * np.minimum(1, (tt[-1] - tt) / .7) * .05, t_b)
+        for bt_, gB in ((0, 1), (.75, .8), (1.5, .9), (2.5, 1), (3.0, .8), (3.5, .9)):               # bass
+            at = t_b + bt_ * beat
+            if at < G0 - bar or at >= END: continue
+            L2 = int(.3 * SR); put(lp(saw(ROOT[ch] * (2 if bt_ in (.75, 3.0) else 1), L2, 8), 380) * np.exp(-np.arange(L2) / SR * 8) * np.minimum(1, np.arange(L2) / SR / .005), at, .16 * gB * (1 if at >= G0 else .0))
+        for bt_ in (.5, 1.5, 2.5, 3.5):                                                           # off-beat chord stabs
+            at = t_b + bt_ * beat
+            if at < G0 or at >= END: continue
+            L2 = int(.22 * SR); seg = sum(saw(f, L2, 6) for f in TRI[ch]); put(lp(seg, 3200) * np.exp(-np.arange(L2) / SR * 14), at, .028)
+    for i in range(int(END / (beat / 4))):                                                       # 16th grid: arp, hats
+        at = i * beat / 4; b = int(at // bar); ch = 0 if at >= END - bar else b % 4; k16 = i % 16
+        if at >= G0 - 2 * bar:                                                                    # bright plucked arpeggio (also lightly through the title)
+            f = TRI[ch][[0, 1, 2, 1][i % 4]] * 2; L2 = int(.3 * SR); tt = np.arange(L2) / SR
+            pl = (np.sin(2 * np.pi * f * tt) + .35 * np.sin(2 * np.pi * 2 * f * tt)) * np.exp(-tt * 9)
+            g = .026 * (1.35 if i % 4 == 0 else 1.0) * (1 if at >= G0 else .6); put(pl, at, g); put(pl, at + beat * .75, g * .35)
+        if k16 % 2 == 0 and k16 % 4 != 0 or (at < G0 and k16 % 4 == 2):                            # off-beat hats
+            tt = np.arange(int(.06 * SR)) / SR; put(sosfilt(butter(2, 7000, "high", fs=SR, output="sos"), r.randn(len(tt))) * np.exp(-tt * 55), at, .028)
+        elif k16 % 2 == 1 and at >= G0:
+            tt = np.arange(int(.03 * SR)) / SR; put(sosfilt(butter(2, 8000, "high", fs=SR, output="sos"), r.randn(len(tt))) * np.exp(-tt * 90), at, .009)
+        if at >= G0 and k16 % 4 == 0:                                                              # kick on every beat
+            tt = np.arange(int(.3 * SR)) / SR; put(np.sin(2 * np.pi * (46 + 85 * np.exp(-tt * 32)) * tt) * np.exp(-tt * 9), at, .16)
+        if at >= G0 and k16 in (4, 12):                                                            # clap on 2 and 4
+            tt = np.arange(int(.16 * SR)) / SR; put(bp(r.randn(len(tt)), 1200, 5500) * np.exp(-tt * 26), at, .06)
+    rs_ = np.arange(int(1.9 * SR)) / SR; put(bp(r.randn(len(rs_)), 1500, 9000, 2) * (rs_ / rs_[-1]) ** 2.2, G0 - 1.9, .06)   # riser into the story
+    tt = np.arange(int(3.4 * SR)) / SR                                                             # final hit: C major chord + crash
+    for f, g in ((130.8, 1.0), (261.6, 1.0), (329.6, .8), (392.0, .8), (523.3, .6), (1046.5, .35)): put(np.sin(2 * np.pi * f * tt) * np.exp(-tt * 1.1) * np.minimum(1, tt / .01), END, .06 * g)
+    put(sosfilt(butter(2, 3500, "high", fs=SR, output="sos"), r.randn(len(tt))) * np.exp(-tt * 1.6), END, .05)
+    return out
+
 STYLE = sys.argv[3] if len(sys.argv) > 3 else "ambient"
-if STYLE == "corporate":
-    ref = np.sqrt(np.mean(music ** 2)); music = corporate(); music *= ref / np.sqrt(np.mean(music ** 2))
+if STYLE in ("corporate", "upbeat"):
+    ref = np.sqrt(np.mean(music ** 2)); music = (corporate() if STYLE == "corporate" else upbeat()); music *= ref / np.sqrt(np.mean(music ** 2)) * (1.15 if STYLE == "upbeat" else 1.0)
 music *= np.clip(t / 1.2, 0, 1) * np.clip((T - t) / 3.0, 0, 1)
-if STYLE == "corporate" and len(sys.argv) > 4: sf.write(sys.argv[4], music / np.abs(music).max() * .8, SR, subtype="PCM_24")   # music-only file
+if STYLE in ("corporate", "upbeat") and len(sys.argv) > 4: sf.write(sys.argv[4], music / np.abs(music).max() * .8, SR, subtype="PCM_24")   # music-only file
 sfx = np.zeros(N)                    # sound effects removed: music bed + voice-over only
 # ---- duck music + sfx under the voice, then mix
 voL, _ = sf.read(sys.argv[1]); vo = voL[:, 0] if voL.ndim > 1 else voL; vo = np.pad(vo, (0, max(0, N - len(vo))))[:N]
