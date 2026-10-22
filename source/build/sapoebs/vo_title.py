@@ -16,14 +16,14 @@ def take(text, n):
     subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", raw, "-af", CHAIN, "-ac", "1", out], check=True)
     y, _ = sf.read(out); act = np.abs(y) > .02; return y * (TARGET_RMS / np.sqrt(np.mean(y[act] ** 2)))
 # letters spoken as letters (the engine would say "S-uh-P" for "S A P"): exact sounds, as in vo_v8.py
-s1 = k.tokenizer.phonemize("and Oracle.", "en-us"); p1 = "ˌɛsˌeɪpˈiː " + s1
+s1 = k.tokenizer.phonemize("and Oracle Applications.", "en-us"); p1 = "ˌɛsˌeɪpˈiː " + s1
 y1 = None
 a, sr = k.create(p1, voice="af_heart", speed=1.0, lang="en-us", is_phonemes=True)
 ix = np.where(np.abs(a) > .012)[0]; a = a[max(0, ix[0] - int(.05 * sr)): min(len(a), ix[-1] + int(.16 * sr))].astype(np.float64)
 f = int(.012 * sr); a[:f] *= np.linspace(0, 1, f); a[-f:] *= np.linspace(1, 0, f); sf.write(f"{WORK}/t0_raw.wav", a, sr)
 subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-i", f"{WORK}/t0_raw.wav", "-af", CHAIN, "-ac", "1", f"{WORK}/t0.wav"], check=True)
 y1, _ = sf.read(f"{WORK}/t0.wav"); act = np.abs(y1) > .02; y1 = y1 * (TARGET_RMS / np.sqrt(np.mean(y1[act] ** 2)))
-p2 = "ˌiːˌɑːɹpˈiː " + k.tokenizer.phonemize("archiving and application retirement.", "en-us")
+p2 = k.tokenizer.phonemize("PeopleSoft, J D Edwards, Siebel, and O E B S.", "en-us")
 a, sr = k.create(p2, voice="af_heart", speed=1.0, lang="en-us", is_phonemes=True)
 ix = np.where(np.abs(a) > .012)[0]; a = a[max(0, ix[0] - int(.05 * sr)): min(len(a), ix[-1] + int(.16 * sr))].astype(np.float64)
 f = int(.012 * sr); a[:f] *= np.linspace(0, 1, f); a[-f:] *= np.linspace(1, 0, f); sf.write(f"{WORK}/t1_raw.wav", a, sr)

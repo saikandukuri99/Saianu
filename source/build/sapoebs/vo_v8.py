@@ -14,6 +14,7 @@ LINES = [
  ["For Oracle E Business Suite, Solix is certified by Oracle, and covers both archiving and full application retirement."],
  ["For S A P, Solix works natively through S A P's Archiving Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."],
  ["Inactive data moves out on policy, and stays searchable, reportable, and under legal hold, for as long as you need it."],
+ ["Solix includes pre-built Application Knowledge Graphs, or A K Gs, for these applications."],
  ["Ask your archive in plain language, with Data Ask."],
  ["Every answer cites its source.", "And every question is permission checked, and audit logged."],
  ["The result?"],
@@ -22,7 +23,7 @@ LINES = [
  ["Solix. Built for S A P. Built for Oracle."],
 ]
 # silence after each line before the next one (s). Line 0 -> 1 leaves room for chips + underline; 8 -> 9 is set by the 2 s hold.
-GAP = {0: 3.00, 1: .38, 2: .36, 3: .36, 4: .40, 5: .46, 6: .32, 7: .55, 9: .40, 10: .46}   # tighter, continuous flow like the reference
+GAP = {0: 3.00, 1: .38, 2: .36, 3: .36, 4: .40, 5: .46, 6: .42, 7: .32, 8: .55, 10: .40, 11: .46}   # tighter, continuous flow like the reference
 HOLD_NEXT = 2.14                        # "The result?" stays on screen 2.0 s; next line starts this long after it begins
 SENT_GAP = .28
 TARGET_RMS = 10 ** (-20 / 20)
@@ -34,7 +35,7 @@ k = Kokoro(K + "/kokoro-v1.0.onnx", K + "/voices-v1.0.bin")
 rs = np.random.RandomState(21)
 # "S A P" / "A I" must be spoken as letters: the engine would read "S A P" as "S-uh-P" and "A I" as "uh-eye".
 # So those tokens are given as exact sounds (ess-ay-pee, ay-eye); everything else is phonemized normally.
-PAT = re.compile(r"S A P(?:'s)?|A I")
+PAT = re.compile(r"S A P(?:'s)?|A I|A K Gs?")
 def ph(text):
     out = ""; pos = 0
     def add(p):
@@ -43,7 +44,8 @@ def ph(text):
     for m in PAT.finditer(text):
         seg = text[pos:m.start()].strip()
         if seg: add(k.tokenizer.phonemize(seg, "en-us"))
-        tok = m.group(0); add("ˌɛsˌeɪpˈiːz" if tok.endswith("'s") else ("ˌɛsˌeɪpˈiː" if tok[0] == "S" else "ˌeɪˈaɪ")); pos = m.end()
+        tok = m.group(0)
+        add("ˌɛsˌeɪpˈiːz" if tok.endswith("'s") else "ˌɛsˌeɪpˈiː" if tok.startswith("S A P") else "ˌeɪˈaɪ" if tok == "A I" else "ˌeɪkˌeɪdʒˈiːz" if tok.endswith("s") else "ˌeɪkˌeɪdʒˈiː"); pos = m.end()
     seg = text[pos:].strip()
     if seg: add(k.tokenizer.phonemize(seg, "en-us"))
     return out
@@ -77,7 +79,7 @@ for i, sents in enumerate(LINES):
 starts = []; t = .25
 for i, y in enumerate(pieces):
     starts.append(t); end = t + len(y) / SR
-    t = starts[i] + HOLD_NEXT if i == 8 else (end + GAP[i] if i in GAP else end)
+    t = starts[i] + HOLD_NEXT if i == 9 else (end + GAP[i] if i in GAP else end)
 T = starts[-1] + len(pieces[-1]) / SR + 3.6
 buf = np.zeros(int(T * SR))
 for st, y in zip(starts, pieces): i0 = int(st * SR); buf[i0:i0 + len(y)] += y
