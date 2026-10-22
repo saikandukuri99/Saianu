@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><link rel=stylesheet href=../lib/kit.css><script src=../lib/common.js></script><script src=../lib/kit.js></script>
+<style>
+.pc{position:absolute;top:330px;width:540px;height:470px;padding:30px 34px}
+.pc h3{font-size:34px;font-weight:800;line-height:1.15;margin-top:6px}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-top:1px solid rgba(255,255,255,.1);font-size:17px;color:#c9d6f2}
+.q2{width:26px;height:26px;border-radius:50%;background:#ee2424;color:#fff;font-weight:800;font-size:16px;text-align:center;line-height:26px;box-shadow:0 0 14px rgba(238,36,36,.7)}
+.sys{position:absolute;width:150px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;font-weight:700}
+.xx{position:absolute;width:34px;height:34px;border-radius:50%;background:#ee2424;box-shadow:0 0 18px rgba(238,36,36,.8);display:flex;align-items:center;justify-content:center}
+.xx svg{width:18px;height:18px;stroke:#fff;stroke-width:3.4;fill:none;stroke-linecap:round}
+.dc{position:absolute;left:34px;width:360px;height:74px;border-radius:12px;padding:12px 16px;font-size:17px;font-weight:600}
+</style></head><body><div id=stage>
+ <div class=hd><div class=eyebrow style="margin:0" data-in=10.25 data-dur=.5>The problem</div>
+  <div class=ttl style="font-size:72px;margin-top:6px"><span data-in=10.3 data-dur=.5 style="display:inline-block">Data that AI</span> <span class=red data-in=10.6 data-dur=.5 style="display:inline-block">can't use.</span></div></div>
+ <!-- 1 tables -->
+ <div class=pc style="left:110px" data-in=10.5 data-dur=.6 data-fx=up><div class="card bad" style="position:absolute;inset:0;padding:30px 34px">
+   <div class=cap2>ERP · Finance</div><div class="mono" style="font-size:25px;font-weight:700;margin:10px 0 12px">GL_JE_LINES</div>
+   <div class=tr><span class=mono>SEG2_ATTR14</span><span class=q2 data-in=11.1 data-fx=pop>?</span></div>
+   <div class=tr><span class=mono>CCID_X07</span><span class=q2 data-in=11.25 data-fx=pop>?</span></div>
+   <div class=tr><span class=mono>PRD_FLG</span><span class=q2 data-in=11.4 data-fx=pop>?</span></div>
+   <div class=tr><span class=mono>AMT_ENT_DR</span><span class=q2 data-in=11.55 data-fx=pop>?</span></div>
+   <div style="position:absolute;left:34px;bottom:28px;right:34px"><h3>Tables with<br>cryptic names</h3></div></div></div>
+ <!-- 2 systems -->
+ <div class=pc style="left:690px" data-in=12.25 data-dur=.6 data-fx=up><div class="card bad" style="position:absolute;inset:0">
+   <div class=sys style="left:195px;top:36px;background:rgba(0,136,207,.16);border:1.5px solid #0088cf" data-in=12.5 data-fx=pop><span class=ico data-ic=server></span>ERP</div>
+   <div class=sys style="left:46px;top:190px;background:rgba(0,136,207,.16);border:1.5px solid #0088cf" data-in=12.7 data-fx=pop><span class=ico data-ic=user></span>CRM</div>
+   <div class=sys style="left:344px;top:190px;background:rgba(0,136,207,.16);border:1.5px solid #0088cf" data-in=12.9 data-fx=pop><span class=ico data-ic=cloud></span>Cloud</div>
+   <svg style="position:absolute;left:0;top:0" width=540 height=470 viewBox="0 0 540 470"><path d="M240 100 L130 190 M300 100 L410 190 M196 222 H344" fill=none stroke="#ee2424" stroke-width=3 stroke-dasharray="6 9" data-draw=13.1 data-dur=.6 data-dots=1 style="stroke:#ee2424"/></svg>
+   <div class=xx style="left:158px;top:122px" data-in=13.5 data-fx=pop><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+   <div class=xx style="left:350px;top:122px" data-in=13.65 data-fx=pop><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+   <div class=xx style="left:253px;top:206px" data-in=13.8 data-fx=pop><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+   <div style="position:absolute;left:34px;bottom:28px;right:34px"><h3>Systems that don't<br>talk to each other</h3></div></div></div>
+ <!-- 3 documents -->
+ <div class=pc style="left:1270px" data-in=14.25 data-dur=.6 data-fx=up><div class="card bad" style="position:absolute;inset:0">
+   <div class="dc card" style="top:34px;box-shadow:none;transform:rotate(-1.5deg)" data-in=14.5 data-fx=left><div class=row style="gap:10px"><span class=ico data-ic=file style="font-size:26px;color:#7fd0ff"></span>Contract_v7.pdf</div><div class=cap2 style="margin-top:6px;font-size:12px">Not indexed</div></div>
+   <div class="dc card" style="top:122px;left:70px;box-shadow:none;transform:rotate(1deg)" data-in=14.8 data-fx=left><div class=row style="gap:10px"><span class=ico data-ic=mail style="font-size:26px;color:#7fd0ff"></span>Re: Supplier dispute</div><div class=cap2 style="margin-top:6px;font-size:12px">Not indexed</div></div>
+   <div class="dc card" style="top:210px;box-shadow:none;transform:rotate(-.8deg)" data-in=15.1 data-fx=left><div class=row style="gap:10px"><span class=ico data-ic=file style="font-size:26px;color:#7fd0ff"></span>Scan_0042.pdf</div><div class=cap2 style="margin-top:6px;font-size:12px">Not indexed</div></div>
+   <div style="position:absolute;left:34px;bottom:28px;right:34px"><h3>Documents no one<br>has indexed</h3></div></div></div>
+ <!-- result -->
+ <div class="abs c" style="top:840px" data-in=17.05 data-dur=.55 data-fx=pop><div class="pill red" style="height:72px;font-size:32px;padding:0 40px;gap:18px;color:#fff"><span class=bub2 style="width:44px;height:44px;font-size:18px;font-weight:800;border-radius:12px;color:#fff;border-color:#ee2424;background:rgba(238,36,36,.18)">AI</span>So your AI can't use it.</div></div>
+</div><script>window.SCENE={VS:10.0,VE:19.7,update(t){}};window.ready=true;</script></body></html>

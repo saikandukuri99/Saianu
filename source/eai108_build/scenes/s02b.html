@@ -1,0 +1,33 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><link rel=stylesheet href=../lib/kit.css><script src=../lib/common.js></script><script src=../lib/kit.js></script>
+<style>
+.gauge{position:absolute;left:300px;top:810px;width:1320px}
+.trk{height:22px;border-radius:12px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.14);overflow:hidden;position:relative}
+.fil{height:100%;width:0;border-radius:12px;background:linear-gradient(90deg,#0088cf,#52c1ff)}
+.lim{position:absolute;top:-10px;width:3px;height:42px;background:#ee2424;box-shadow:0 0 14px #ee2424}
+.tile{width:160px;height:110px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:15px;font-weight:700}
+.tile .ico{font-size:34px}
+</style></head><body><div id=stage>
+ <div class=hd style="top:90px"><div class=eyebrow style="margin:0" data-in=5.6 data-dur=.5>Readiness</div>
+  <div class=ttl style="font-size:80px"><span data-in=5.7 data-dur=.55 style="display:inline-block">Your AI is only as ready as</span><br><span class=acc data-in=6.1 data-dur=.55 style="display:inline-block">your enterprise data.</span></div></div>
+ <!-- AI card -->
+ <div class="abs" style="left:150px;top:370px" data-float="5,8,0"><div class="card" style="width:560px;height:360px;padding:38px 42px" data-in=6.4 data-dur=.7 data-fx=left>
+   <div class=cap2 style="color:#7fd0ff">Your AI</div>
+   <div class=row style="gap:26px;margin-top:20px"><div class=bub2 style="width:110px;height:110px;font-size:46px;font-weight:800;border-radius:26px">AI</div><div class=mid style="font-size:30px">Agents, models<br>and copilots</div></div>
+   <div class=row style="gap:12px;margin-top:30px"><span class=tag2>Agentic AI</span><span class=tag2>LLMs</span><span class=tag2>Copilots</span></div></div></div>
+ <!-- data card -->
+ <div class="abs" style="left:1210px;top:370px" data-float="5,8,2"><div class="card" style="width:560px;height:360px;padding:38px 42px" data-in=6.7 data-dur=.7 data-fx=right>
+   <div class=cap2 style="color:#7fd0ff">Your enterprise data</div>
+   <div class=row style="gap:16px;margin-top:22px">
+    <div class="tile card" style="box-shadow:none;opacity:1"><span class=ico data-ic=table style="color:#7fd0ff"></span>Tables</div>
+    <div class="tile card" style="box-shadow:none"><span class=ico data-ic=server style="color:#7fd0ff"></span>Systems</div>
+    <div class="tile card" style="box-shadow:none"><span class=ico data-ic=file style="color:#7fd0ff"></span>Documents</div></div>
+   <div class=row style="gap:12px;margin-top:30px"><span class="tag2 r" data-in=7.7 data-fx=pop>Cryptic</span><span class="tag2 r" data-in=7.85 data-fx=pop>Disconnected</span><span class="tag2 r" data-in=8.0 data-fx=pop>Unindexed</span></div></div></div>
+ <!-- link -->
+ <svg class=ln><path d="M710 550 H1210" data-draw=7.0 data-dur=.7 data-dots=1 style="stroke:#7fd0ff;stroke-width:3"/></svg>
+ <!-- gauge -->
+ <div class=gauge>
+  <div class=row style="justify-content:space-between;margin-bottom:14px" data-in=7.3 data-dur=.5><div class=cap2>AI readiness</div><div class=cap2 style="color:#ff9a9a">Limited by data readiness</div></div>
+  <div class=trk data-in=7.3 data-dur=.5><div class=fil id=f1></div></div>
+  <div class=lim style="left:42%;top:30px" data-in=7.9 data-dur=.4></div>
+ </div>
+</div><script>shiftTimes(1.7);window.SCENE={VS:7.0,VE:10.3,update(t){floats(t);bar('f1',t,9.2,1.0,42)}};window.ready=true;</script></body></html>

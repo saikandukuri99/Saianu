@@ -1,0 +1,152 @@
+1
+00:00:00,250 --> 00:00:03,240
+Your teams are asking AI real business questions.
+
+2
+00:00:03,850 --> 00:00:05,840
+But it can't give a complete answer.
+
+3
+00:00:07,150 --> 00:00:10,220
+Because your AI is only as ready as your enterprise data is.
+
+4
+00:00:10,250 --> 00:00:12,120
+Tables with cryptic names.
+
+5
+00:00:12,150 --> 00:00:14,160
+Systems that don't talk to each other.
+
+6
+00:00:14,190 --> 00:00:16,180
+Documents no one has indexed.
+
+7
+00:00:16,950 --> 00:00:18,700
+So your AI can't use it.
+
+8
+00:00:19,750 --> 00:00:23,170
+Solix Enterprise AI gets your data ready for AI.
+
+9
+00:00:23,250 --> 00:00:25,550
+So you can understand it, ask it anything,
+
+10
+00:00:25,650 --> 00:00:27,660
+build on it, and put it to work.
+
+11
+00:00:29,250 --> 00:00:32,590
+Data Sense makes sense of all your data, structured and unstructured.
+
+12
+00:00:32,620 --> 00:00:35,520
+It drafts the business meaning, and your experts review it.
+
+13
+00:00:35,550 --> 00:00:38,910
+Ready-made knowledge graphs for your ERPs and cloud platforms
+
+14
+00:00:38,940 --> 00:00:40,410
+get you started in minutes.
+
+15
+00:00:40,440 --> 00:00:43,500
+And a content library does the same for your documents.
+
+16
+00:00:44,750 --> 00:00:46,620
+Here's what sets Solix apart.
+
+17
+00:00:46,650 --> 00:00:50,480
+One knowledge graph that connects meaning across all your applications.
+
+18
+00:00:50,850 --> 00:00:54,490
+The same supplier in three systems becomes one record you can trust.
+
+19
+00:00:54,520 --> 00:00:56,540
+One shared meaning, everywhere.
+
+20
+00:00:56,650 --> 00:00:59,620
+No migration. Your records stay where they are.
+
+21
+00:00:59,750 --> 00:01:02,090
+Data Ask answers questions in plain language,
+
+22
+00:01:02,120 --> 00:01:04,420
+across structured and unstructured data,
+
+23
+00:01:04,450 --> 00:01:06,510
+grounded in your business context,
+
+24
+00:01:07,450 --> 00:01:09,220
+with every answer cited.
+
+25
+00:01:10,750 --> 00:01:13,280
+Then the people who know your business take over.
+
+26
+00:01:13,650 --> 00:01:15,880
+They describe the application they need,
+
+27
+00:01:16,050 --> 00:01:19,160
+and AI Warehouse builds it on governed, version-tracked data.
+
+28
+00:01:19,190 --> 00:01:21,010
+Your AI, on your data.
+
+29
+00:01:21,250 --> 00:01:24,780
+Agentic goes further. Just describe the work you need done.
+
+30
+00:01:25,150 --> 00:01:28,010
+Agentic AI builds it, tests it, and runs it.
+
+31
+00:01:28,550 --> 00:01:31,100
+Less manual work, more done every day.
+
+32
+00:01:31,750 --> 00:01:33,850
+And it works with what you already have.
+
+33
+00:01:34,050 --> 00:01:35,330
+Any LLM.
+
+34
+00:01:35,850 --> 00:01:37,270
+Any application.
+
+35
+00:01:37,650 --> 00:01:39,240
+Any data platform.
+
+36
+00:01:39,850 --> 00:01:42,140
+It fits right into your existing stack.
+
+37
+00:01:43,350 --> 00:01:44,980
+Solix Enterprise AI.
+
+38
+00:01:45,010 --> 00:01:47,210
+Put AI in the hands of your business.
+

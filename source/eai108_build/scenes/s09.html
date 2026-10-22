@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset=utf-8><link rel=stylesheet href=../lib/common.css><link rel=stylesheet href=../lib/kit.css><script src=../lib/common.js></script><script src=../lib/kit.js></script>
+<style>
+.stp{display:flex;align-items:center;gap:14px;padding:11px 0;border-top:1px solid rgba(255,255,255,.1);font-size:22px;font-weight:600}
+.stp .ico{font-size:28px;color:#3ddc84}
+.lp{position:absolute;width:150px;height:150px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:26px;font-weight:800;gap:4px}
+.lp .ico{font-size:30px}
+.stat{position:absolute;top:790px;width:820px}
+.stat .trk{height:20px;border-radius:12px;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.14);overflow:hidden}
+.stat .fil{height:100%;width:0;border-radius:12px}
+</style></head><body><div id=stage>
+ <div class=hd><div class=crumb data-in=81.3 data-dur=.4><span>Data Sense</span><span>Data Ask</span><span>AI Warehouse</span><span class=on>Agentic</span></div>
+  <div class=eyebrow data-in=81.35 data-dur=.5>04 · Put to work</div>
+  <div class=ttl data-in=81.45 data-dur=.5><span class=acc>Agentic</span> AI</div>
+  <div class=sub data-in=81.7 data-dur=.5>Describe it. Build it. Run it.</div></div>
+ <div class="card hot" style="position:absolute;left:110px;top:340px;width:520px;height:300px;padding:30px 34px" data-in=81.8 data-dur=.6 data-fx=left>
+   <div class=row style="gap:14px"><div class=bub2 style="width:56px;height:56px"><span class=ico data-ic=user style="font-size:30px"></span></div><div class=cap2 style="color:#7fd0ff">Domain expert</div></div>
+   <div style="font-size:29px;font-weight:600;line-height:1.38;margin-top:20px" data-type=82.3 data-cps=22>Follow up on every late supplier invoice and update the ERP.</div></div>
+ <svg class=ln><path d="M630 490 H760" data-draw=84.9 data-dur=.5 /><path d="M1190 540 H1270" data-draw=86.3 data-dur=.5 /></svg>
+ <!-- agent loop -->
+ <div class="abs" style="left:760px;top:330px;width:430px;height:430px" data-float="4,8,0">
+  <svg width=430 height=430 viewBox="0 0 430 430" style="position:absolute;left:0;top:0;overflow:visible"><circle cx=215 cy=215 r=150 fill=none stroke="rgba(0,136,207,.5)" stroke-width=2.5 stroke-dasharray="4 10" data-draw=85.2 data-dur=1.2 data-dots=1 /></svg>
+  <div class="lp card hot" style="left:140px;top:140px;width:150px;height:150px" data-in=85.3 data-dur=.6 data-fx=pop><span class=ico data-ic=bot style="color:#7fd0ff;font-size:44px"></span><span style="font-size:19px">AI agents</span></div>
+  <div class="lp card" style="left:140px;top:0;width:150px;height:110px;border-radius:24px;font-size:24px" data-in=85.7 data-dur=.5 data-fx=pop><span class=ico data-ic=gear style="font-size:30px;color:#7fd0ff"></span>Build</div>
+  <div class="lp card" style="left:280px;top:290px;width:150px;height:110px;border-radius:24px;font-size:24px" data-in=86.3 data-dur=.5 data-fx=pop><span class=ico data-ic=check style="font-size:30px;color:#7fd0ff"></span>Test</div>
+  <div class="lp card ok" style="left:0;top:290px;width:150px;height:110px;border-radius:24px;font-size:24px" data-in=86.9 data-dur=.5 data-fx=pop><span class=ico data-ic=play style="font-size:30px;color:#3ddc84"></span>Run</div>
+ </div>
+ <div class="card ok" style="position:absolute;left:1270px;top:340px;width:540px;height:400px;padding:28px 34px" data-in=86.4 data-dur=.6 data-fx=right>
+   <div class=cap2 style="color:#8ff0bb">Supplier follow-up · runs on its own</div>
+   <div class=stp style="border-top:none;margin-top:10px" data-in=86.9 data-fx=left><span class=ico data-ic=check></span>Detect the late invoice</div>
+   <div class=stp data-in=87.3 data-fx=left><span class=ico data-ic=check></span>Check stock and alternates</div>
+   <div class=stp data-in=87.7 data-fx=left><span class=ico data-ic=check></span>Notify the buyer</div>
+   <div class=stp data-in=88.1 data-fx=left><span class=ico data-ic=check></span>Update the ERP</div></div>
+ <!-- less manual work -->
+ <div class=stat style="left:110px" data-in=88.7 data-dur=.5 data-fx=up><div class=row style="justify-content:space-between;margin-bottom:12px"><div class=cap2>Manual work</div><div class=mid style="font-size:30px;color:#ff9a9a"><span id=n1>100</span>%</div></div><div class=trk><div class=fil id=f1 style="background:linear-gradient(90deg,#ee2424,#ff7a7a);width:100%"></div></div></div>
+ <div class=stat style="left:990px" data-in=88.9 data-dur=.5 data-fx=up><div class=row style="justify-content:space-between;margin-bottom:12px"><div class=cap2>Done every day</div><div class=mid style="font-size:30px;color:#8ff0bb"><span id=n2>1</span>x</div></div><div class=trk><div class=fil id=f2 style="background:linear-gradient(90deg,#1aa863,#3ddc84)"></div></div></div>
+</div><script>window.SCENE={VS:81.0,VE:91.75,update(t){floats(t);const p=P(t,89.0,1.6,E.io);document.getElementById('f1').style.width=(100-65*p).toFixed(1)+'%';document.getElementById('n1').textContent=Math.round(100-65*p);document.getElementById('f2').style.width=(25+70*p).toFixed(1)+'%';document.getElementById('n2').textContent=(1+2*p).toFixed(1)}};window.ready=true;</script></body></html>
