@@ -22,13 +22,14 @@ LINES = [
  ["Solix. Built for S A P. Built for Oracle."],
 ]
 # silence after each line before the next one (s). Line 0 -> 1 leaves room for chips + underline; 8 -> 9 is set by the 2 s hold.
-GAP = {0: 3.05, 1: .50, 2: .45, 3: .45, 4: .50, 5: .55, 6: .40, 7: .80, 9: .50, 10: .55}
+GAP = {0: 3.00, 1: .38, 2: .36, 3: .36, 4: .40, 5: .46, 6: .32, 7: .55, 9: .40, 10: .46}   # tighter, continuous flow like the reference
 HOLD_NEXT = 2.14                        # "The result?" stays on screen 2.0 s; next line starts this long after it begins
-SENT_GAP = .34
+SENT_GAP = .28
 TARGET_RMS = 10 ** (-20 / 20)
-CHAIN = ("aresample=48000:resampler=soxr,highpass=f=80,equalizer=f=240:t=q:w=1.0:g=-2.2,equalizer=f=3100:t=q:w=1.1:g=2.4,"
-         "equalizer=f=5800:t=q:w=1.0:g=1.2,aexciter=level_in=1:level_out=1:amount=0.3:drive=6:blend=0:freq=7000:ceil=16000,"
-         "deesser=i=0.35,acompressor=threshold=-22dB:ratio=2.2:attack=8:release=170:makeup=2,aecho=0.9:0.9:23|47:0.05|0.035")
+# tone matched to the reference voice (Solix_AR_Update): warmer, less upper-mid presence, less top-end sparkle
+CHAIN = ("aresample=48000:resampler=soxr,highpass=f=70,equalizer=f=240:t=q:w=1.0:g=-3,lowshelf=f=130:g=1.6,"
+         "equalizer=f=1500:t=q:w=1.0:g=-1.4,equalizer=f=3100:t=q:w=1.1:g=1.2,equalizer=f=6000:t=q:w=0.9:g=-2.0,highshelf=f=8500:g=1.8,"
+         "deesser=i=0.4,acompressor=threshold=-22dB:ratio=2.4:attack=8:release=170:makeup=2,aecho=0.9:0.9:23|47:0.05|0.035")
 k = Kokoro(K + "/kokoro-v1.0.onnx", K + "/voices-v1.0.bin")
 rs = np.random.RandomState(21)
 # "S A P" / "A I" must be spoken as letters: the engine would read "S A P" as "S-uh-P" and "A I" as "uh-eye".
