@@ -1,3 +1,6 @@
+# FINAL v6 (upbeat): `Solix_SAP_OEBS_FINAL_v6_*` (85.1 s)
+Only two changes vs v5: (1) upbeat background music (124 bpm, C major, kick/clap/bass/stabs/plucked arpeggio, riser into the story, final chord hit); (2) the opening title card is now spoken ("SAP and Oracle. ERP archiving and application retirement."), so the card runs 5.9 s instead of 3 s and everything after it starts later. Same narration, visuals and theme. The calm v5 files remain. 4K follows.
+
 # FINAL v5: `Solix_SAP_OEBS_FINAL_v5_*` (82.2 s)
 The updated script file is identical to the previous one (no wording changes). Voice and music were matched to the reference video (Solix_AR_Update): same voice pitch and pace, spectrum matched within ~1.4 dB, tighter pauses; music bed in C major at 120 bpm (warm pad, soft pulse, gentle piano, chime tail), same loudness (-15.6 LUFS). Visuals and theme unchanged. 4K follows.
 
