@@ -1,3 +1,6 @@
+# FINAL v5: `Solix_SAP_OEBS_FINAL_v5_*` (82.2 s)
+The updated script file is identical to the previous one (no wording changes). Voice and music were matched to the reference video (Solix_AR_Update): same voice pitch and pace, spectrum matched within ~1.4 dB, tighter pauses; music bed in C major at 120 bpm (warm pad, soft pulse, gentle piano, chime tail), same loudness (-15.6 LUFS). Visuals and theme unchanged. 4K follows.
+
 # FINAL v4: `Solix_SAP_OEBS_FINAL_v4_*` (83.3 s)
 Oracle slide title "For Oracle" (voice unchanged); connected-apps panel (EBS, PEOPLESOFT, JDE, SIEBEL, & 100+ Sources, Through Solix Connect) bottom left after "certified by Oracle"; no full stop after "SAP" / "Oracle" in titles and the last slide. Voice and music identical to v3. Ambient and CorporateMusic versions; 4K files follow.
 
