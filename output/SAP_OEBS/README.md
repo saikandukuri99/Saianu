@@ -1,3 +1,6 @@
+# FINAL v7: `Solix_SAP_OEBS_FINAL_v7_*` (93.0 s)
+Manager feedback applied: new splash ("SAP + Oracle Applications" with a smaller sub-heading PEOPLESOFT / JD EDWARDS / SIEBEL / OEBS, spoken as the title); pre-built Application Knowledge Graphs (AKGs) for these applications added to the narration and as a new slide; narration pronunciations fixed (SAP, AI, AKG, OEBS as letters). Upbeat music kept. The narrator is still a synthetic voice (the connected premium voice service has no credits): `Solix_SAP_OEBS_recording_script.txt` is ready for a human recording. 4K follows.
+
 # FINAL v6 (upbeat): `Solix_SAP_OEBS_FINAL_v6_*` (85.1 s)
 Only two changes vs v5: (1) upbeat background music (124 bpm, C major, kick/clap/bass/stabs/plucked arpeggio, riser into the story, final chord hit); (2) the opening title card is now spoken ("SAP and Oracle. ERP archiving and application retirement."), so the card runs 5.9 s instead of 3 s and everything after it starts later. Same narration, visuals and theme. The calm v5 files remain. 4K follows.
 
