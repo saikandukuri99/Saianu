@@ -1,0 +1,203 @@
+1
+00:00:00,300 --> 00:00:02,130
+Your content is everywhere.
+
+2
+00:00:03,250 --> 00:00:06,660
+Inboxes, drives, old servers, someone's laptop.
+
+3
+00:00:08,550 --> 00:00:10,270
+Four moves change that.
+
+4
+00:00:11,150 --> 00:00:11,840
+The problem:
+
+5
+00:00:11,880 --> 00:00:14,780
+the same file lives in seven places.
+
+6
+00:00:15,650 --> 00:00:17,720
+Move one: bring it all in.
+
+7
+00:00:18,100 --> 00:00:20,480
+Drop in files, and whole folders.
+
+8
+00:00:20,550 --> 00:00:21,260
+Send a link,
+
+9
+00:00:21,300 --> 00:00:23,610
+and clients upload without an account.
+
+10
+00:00:23,750 --> 00:00:25,390
+Capture email from Gmail,
+
+11
+00:00:25,430 --> 00:00:27,710
+and unpack old PST archives.
+
+12
+00:00:27,750 --> 00:00:30,470
+Move Exchange, Google Drive and SFTP in,
+
+13
+00:00:30,510 --> 00:00:32,410
+mapped to their owners.
+
+14
+00:00:32,450 --> 00:00:35,300
+Now there's one place, and one set of rules.
+
+15
+00:00:35,850 --> 00:00:37,870
+The problem: finding the right version,
+
+16
+00:00:37,910 --> 00:00:39,640
+and sharing it safely.
+
+17
+00:00:41,050 --> 00:00:43,690
+Move two: find it, share it, finish it.
+
+18
+00:00:44,850 --> 00:00:45,990
+Search across files,
+
+19
+00:00:46,030 --> 00:00:48,300
+scans and email, in seconds.
+
+20
+00:00:48,850 --> 00:00:50,170
+Preview without downloading,
+
+21
+00:00:50,210 --> 00:00:52,840
+mark it up, and redact what's private.
+
+22
+00:00:52,950 --> 00:00:55,580
+Share inside and out, with links that expire,
+
+23
+00:00:55,620 --> 00:00:57,420
+and downloads switched off.
+
+24
+00:00:57,950 --> 00:01:00,110
+Comment, tag, and send for signature,
+
+25
+00:01:00,150 --> 00:01:01,830
+without leaving the page.
+
+26
+00:01:02,150 --> 00:01:04,030
+No more “can you resend it?”
+
+27
+00:01:04,850 --> 00:01:05,540
+The problem:
+
+28
+00:01:05,580 --> 00:01:08,350
+rules that live in spreadsheets, and memory.
+
+29
+00:01:09,750 --> 00:01:12,250
+Move three: let it run by the rules.
+
+30
+00:01:13,250 --> 00:01:14,470
+Workflows route review,
+
+31
+00:01:14,510 --> 00:01:16,950
+approval and signature, on their own.
+
+32
+00:01:17,650 --> 00:01:20,020
+Retention keeps every record on schedule,
+
+33
+00:01:20,060 --> 00:01:22,340
+and deletes only with approval.
+
+34
+00:01:22,450 --> 00:01:25,060
+Legal hold freezes what a case needs.
+
+35
+00:01:25,250 --> 00:01:28,290
+Labels, roles and single sign-on decide who can see,
+
+36
+00:01:28,330 --> 00:01:30,090
+share, or delete.
+
+37
+00:01:30,650 --> 00:01:32,410
+And every action is on the record,
+
+38
+00:01:32,450 --> 00:01:34,030
+ready to export.
+
+39
+00:01:34,850 --> 00:01:37,530
+The problem: content that just sits there.
+
+40
+00:01:38,850 --> 00:01:40,820
+Move four: put it to work.
+
+41
+00:01:41,350 --> 00:01:44,210
+Document AI reads scans and fills in the fields,
+
+42
+00:01:44,250 --> 00:01:45,710
+tables included.
+
+43
+00:01:45,750 --> 00:01:47,560
+Search by what's inside.
+
+44
+00:01:47,850 --> 00:01:49,830
+Or ask a folder, and get an answer,
+
+45
+00:01:49,870 --> 00:01:51,260
+with its sources.
+
+46
+00:01:53,050 --> 00:01:54,180
+Bring it in.
+
+47
+00:01:54,450 --> 00:01:55,480
+Find it.
+
+48
+00:01:55,750 --> 00:01:56,830
+Govern it.
+
+49
+00:01:57,050 --> 00:01:58,280
+Put it to work.
+
+50
+00:01:59,050 --> 00:02:00,710
+Solix ECS.
+
+51
+00:02:00,850 --> 00:02:02,200
+Keep the proof.

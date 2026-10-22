@@ -1,0 +1,723 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-400-normal.woff2);font-weight:400}
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-500-normal.woff2);font-weight:500}
+@font-face{font-family:JBM;src:url(assets/package/files/jetbrains-mono-latin-700-normal.woff2);font-weight:700}
+:root{--blue:#0088cf;--red:#ee2424;--purple:#30267b;--navy:#122046;--ink:#1b1740;--grey:#6b6f85;--g1:#4a4d5a;--g2:#8a8d99}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;font-family:Inter,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;background:#f5f6fa}
+.a{position:absolute;will-change:transform,opacity}
+.full{left:0;top:0;width:1920px;height:1080px}
+#paper{background:radial-gradient(1400px 900px at 50% 42%,#fbfbfd 0%,#f3f4f8 60%,#eceef4 100%)}
+#greyw{background:radial-gradient(1400px 900px at 50% 45%,#e4e5e9 0%,#d6d8dd 70%,#cbcdd3 100%)}
+.pan{left:0;top:0;width:1920px;height:1080px}
+#pan1{background:radial-gradient(1300px 900px at 35% 40%,#0a97dd 0%,#0088cf 50%,#0071ad 100%)}
+#pan2{background:radial-gradient(1300px 900px at 30% 30%,#3a2f8c 0%,#30267b 45%,#231b5e 100%)}
+#pan3{background:radial-gradient(1300px 900px at 35% 35%,#f43a3a 0%,#ee2424 50%,#c81414 100%)}
+#pan4{background:radial-gradient(1300px 900px at 35% 35%,#1d3166 0%,#122046 55%,#0b1430 100%)}
+.lbl{font-family:JBM;font-size:16px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);white-space:nowrap}
+.disp{font-family:'Inter Display',Inter;font-weight:700;letter-spacing:-.03em;line-height:1.04}
+.wm{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .02em .1em;margin-bottom:-.1em}
+.wi{display:inline-block}
+.hl{position:relative;display:inline-block;padding:0 .14em;margin:0 -.06em}
+.hl>i{position:absolute;left:0;right:0;top:.1em;bottom:.02em;background:var(--purple);border-radius:.08em;transform-origin:left center;transform:scaleX(0)}
+.hl>span{position:relative}
+.pline{height:6px;background:var(--red);border-radius:3px;transform-origin:left center}
+.dash{display:inline-block;width:26px;height:3px;background:var(--red);vertical-align:middle;margin-right:14px;transform:translateY(-3px)}
+/* grey world */
+.gw{background:#f0f1f3;border-radius:12px;box-shadow:0 18px 40px rgba(40,42,55,.18),0 0 0 1px rgba(0,0,0,.06);color:var(--g1);overflow:hidden}
+.gw .wh{height:34px;background:#e3e4e8;display:flex;align-items:center;gap:7px;padding:0 12px;font-size:12px;font-weight:600;color:#5d606c}
+.gw .wh i{width:9px;height:9px;border-radius:50%;background:#c3c5cb;display:inline-block}
+.gw .rw{padding:9px 14px;border-bottom:1px solid #e1e2e6;font-size:13px;white-space:nowrap;overflow:hidden}
+.ping{position:absolute;right:-10px;top:-10px;min-width:28px;height:28px;border-radius:14px;background:#4a4d5a;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 8px;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.fi{width:34px;height:42px;border-radius:4px;background:#b9bcc4;position:relative;flex:none}
+.fi:after{content:'';position:absolute;right:0;top:0;width:11px;height:11px;background:#d8dade;clip-path:polygon(0 0,100% 100%,0 100%)}
+.prob{left:150px;top:128px}
+.prob .lbl{color:var(--g1)}
+.prob .lbl .dash{background:var(--g1)}
+.prob .sub{font-family:JBM;font-size:14px;letter-spacing:.18em;color:var(--g2);margin-top:10px;text-transform:uppercase}
+.badge{display:inline-flex;align-items:center;gap:16px;background:#2f313b;color:#fff;border-radius:40px;padding:14px 28px 14px 16px;font-size:26px;font-weight:600;box-shadow:0 18px 40px rgba(0,0,0,.22);white-space:nowrap}
+.badge b{font-family:JBM;font-size:14px;letter-spacing:.18em;background:rgba(255,255,255,.14);padding:7px 12px;border-radius:20px;font-weight:700}
+.big{font-family:'Inter Display',Inter;font-weight:700;letter-spacing:-.04em;line-height:1;white-space:nowrap}
+/* move card */
+.mv{left:150px;top:340px;color:#fff}
+.mv .lbl{color:rgba(255,255,255,.8);margin-bottom:28px}
+.mv .lbl .dash{background:#fff}
+.mv h1{font-family:'Inter Display',Inter;font-size:150px;font-weight:700;letter-spacing:-.035em;line-height:1.02;white-space:nowrap}
+.mv .bf{font-size:28px;font-weight:500;color:rgba(255,255,255,.85);margin-top:40px;white-space:nowrap}
+.mv .bf span{font-family:JBM;font-size:15px;letter-spacing:.2em;color:rgba(255,255,255,.6);margin-right:14px}
+/* tracker */
+#trk{right:56px;top:104px;display:flex;gap:8px}
+#trk div{width:44px;height:24px;border-radius:12px;border:1.5px solid #b5b8c6;font-family:JBM;font-size:11px;font-weight:700;color:#8b8fa3;display:flex;align-items:center;justify-content:center}
+/* chapter header */
+.ch{left:150px;top:118px;white-space:nowrap}
+.ch .lbl{margin-bottom:14px}
+.ch h1{font-family:'Inter Display',Inter;font-size:76px;font-weight:700;letter-spacing:-.03em;line-height:1;color:var(--ink)}
+.sup{right:150px;top:160px;text-align:right;font-size:24px;line-height:1.45;font-weight:500;color:#4c5068;white-space:nowrap}
+.foot{left:150px;top:1036px;font-size:15px;color:#8b8fa3;white-space:nowrap}
+.res{left:150px;top:128px}
+/* laptop */
+#device{left:0;top:0;width:1920px;height:1080px;transform-origin:960px 600px}
+#lap{left:470px;top:300px;width:980px;height:570px;border-radius:24px;background:#15151b;box-shadow:0 50px 90px rgba(20,20,60,.28),0 0 0 1px rgba(0,0,0,.2)}
+#lap:before{content:'';position:absolute;left:50%;top:5px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#2c2c36}
+#lapbase{left:395px;top:866px;width:1130px;height:24px;border-radius:2px 2px 16px 16px;background:linear-gradient(#e7e8ee,#c4c7d1);box-shadow:0 18px 30px rgba(20,20,60,.22)}
+#lapbase:after{content:'';position:absolute;left:50%;top:0;width:150px;height:9px;margin-left:-75px;border-radius:0 0 9px 9px;background:#b3b6c2}
+#scr{position:absolute;left:14px;top:14px;width:952px;height:542px;border-radius:8px;overflow:hidden;background:#fff}
+.pg{position:absolute;left:0;top:0;width:952px;height:542px;background:#fff;color:#1d2433}
+.top{height:46px;border-bottom:1px solid #e6e9f0;display:flex;align-items:center;padding:0 18px;gap:10px;font-size:13px;background:#fff}
+.top img{height:18px}
+.top .brand{font-weight:800;letter-spacing:.04em;font-size:14px}.top .brand span{font-weight:400;color:#8a90a0;margin:0 6px}
+.top .srch{margin-left:30px;width:260px;height:28px;border-radius:7px;background:#f2f4f8;color:#9aa0ad;font-size:12px;display:flex;align-items:center;padding:0 10px}
+.top .av{margin-left:auto;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.side{position:absolute;left:0;top:46px;bottom:0;width:176px;background:#f6f8fb;border-right:1px solid #e6e9f0;padding:14px 0;font-size:13px;color:#4a5263}
+.side div{padding:9px 18px;position:relative;white-space:nowrap}
+.side .on{color:var(--blue);font-weight:600;background:#e8f3fa}
+.side .on:before{content:'';position:absolute;left:0;top:5px;bottom:5px;width:3px;background:var(--blue)}
+.side .h{font-size:10px;letter-spacing:.16em;color:#9aa0ad;padding-top:14px;font-weight:600}
+.body{position:absolute;left:176px;right:0;top:46px;bottom:0;padding:18px 24px}
+.body.nos{left:0}
+.crumb{font-size:12px;color:#7a8191;margin-bottom:5px;white-space:nowrap}.crumb b{color:#1d2433;font-weight:600}
+.ttl{font-size:21px;font-weight:700;margin-bottom:14px;white-space:nowrap}
+.tr{display:flex;align-items:center;height:40px;border-bottom:1px solid #eef0f4;padding:0 6px;position:relative;font-size:13px;white-space:nowrap}
+.tr.hd{height:28px;font-size:10px;letter-spacing:.12em;color:#9aa0ad;font-weight:600}
+.tr .c1{flex:1;display:flex;align-items:center;gap:10px;overflow:hidden}
+.pdf{width:20px;height:25px;border-radius:3px;background:#e2403a;color:#fff;font-size:6.5px;font-weight:800;display:flex;align-items:flex-end;justify-content:center;padding-bottom:3px;flex:none}
+.pdf.img{background:#2fa36b}.pdf.doc{background:#2f6fe0}.pdf.xls{background:#1f9d55}.pdf.eml{background:#7a5af0}
+.chp{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:11px;font-size:11px;font-weight:600;white-space:nowrap}
+.chp.blue{background:#e3f2fb;color:#006aa3}.chp.amber{background:#fff1d6;color:#9a6200}.chp.green{background:#e2f6ea;color:#1c7a45}.chp.redc{background:#fde6e6;color:#c41c1c}.chp.pur{background:#ece9fb;color:#30267b}.chp.grey{background:#eef0f4;color:#5a6273}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:34px;padding:0 16px;border-radius:7px;background:var(--blue);color:#fff;font-size:13px;font-weight:600;white-space:nowrap}
+.btn.ghost{background:#fff;color:#4a5263;border:1px solid #d9dde6}
+.modal{background:#fff;border-radius:12px;box-shadow:0 24px 60px rgba(10,20,50,.3),0 0 0 1px #e6e9f0;padding:20px 22px;color:#1d2433}
+.modal h3{font-size:16px;margin-bottom:14px;white-space:nowrap}
+.fld{margin-bottom:11px}.fld label{display:block;font-size:11px;color:#7a8191;margin-bottom:5px;font-weight:500}
+.fld .in{height:34px;border:1px solid #d9dde6;border-radius:7px;display:flex;align-items:center;padding:0 11px;font-size:13px;white-space:nowrap;overflow:hidden}
+.tog{display:flex;align-items:center;gap:10px;font-size:13px;margin:4px 0 12px;white-space:nowrap}
+.tog i{width:36px;height:20px;border-radius:10px;background:var(--blue);position:relative;flex:none}
+.tog i:after{content:'';position:absolute;right:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:none}
+.tog.off i{background:#c9cdd6}.tog.off i:after{right:19px}
+.toast{background:#1d2433;color:#fff;border-radius:9px;padding:11px 16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 14px 30px rgba(0,0,0,.25);white-space:nowrap}
+.toast b{width:18px;height:18px;border-radius:50%;background:#2fb36b;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.card{background:#fff;border-radius:12px;box-shadow:0 24px 50px rgba(10,20,50,.2),0 0 0 1px #e6e9f0;color:#1d2433;padding:16px 18px}
+.fcard{width:132px;height:112px;border:1px solid #e6e9f0;border-radius:10px;padding:12px;font-size:11px;font-weight:600;display:flex;flex-direction:column;gap:8px;background:#fff;white-space:nowrap;overflow:hidden}
+.fcard .th{height:52px;border-radius:6px;background:#f2f4f8;display:flex;align-items:center;justify-content:center}
+.src{width:200px;height:120px;border:1px solid #e6e9f0;border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px;font-size:14px;font-weight:700}
+.src .ic{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:800}
+.node{width:138px;height:64px;border-radius:12px;border:1.5px solid #d9dde6;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;gap:4px;background:#fff}
+.node span{font-size:10px;font-weight:600;color:#9aa0ad;letter-spacing:.08em}
+.node.done{border-color:#2fb36b;background:#effaf3}.node.done span{color:#1c7a45}
+.node.act{border-color:var(--blue);background:#eef7fc}.node.act span{color:#006aa3}
+.arrow{width:30px;height:2px;background:#c9cdd6;position:relative;flex:none}
+.arrow:after{content:'';position:absolute;right:-1px;top:-4px;border-left:7px solid #c9cdd6;border-top:5px solid transparent;border-bottom:5px solid transparent}
+/* phone */
+.phone{width:250px;height:510px;border-radius:38px;background:#15151b;padding:12px;box-shadow:0 40px 80px rgba(20,20,60,.3)}
+.phone .ps{width:100%;height:100%;border-radius:28px;background:#fff;overflow:hidden;position:relative;color:#1d2433}
+.phone .notch{position:absolute;left:50%;top:8px;width:80px;height:20px;margin-left:-40px;border-radius:10px;background:#15151b;z-index:2}
+/* result & misc */
+.lib{width:520px;height:320px;border-radius:18px;background:#fff;box-shadow:0 30px 70px rgba(20,20,60,.18),0 0 0 1px #e6e9f0}
+.rpill{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 22px;border-radius:24px;background:#fff;box-shadow:0 14px 30px rgba(20,20,60,.15),0 0 0 1px #e6e9f0;font-size:20px;font-weight:700;color:var(--ink);white-space:nowrap}
+.rpill i{width:12px;height:12px;border-radius:50%}
+.tile{width:560px;height:250px;border-radius:20px;display:flex;flex-direction:column;justify-content:center;padding:0 40px;transform-origin:center}
+.tile .n{font-family:JBM;font-size:15px;letter-spacing:.2em;font-weight:700;margin-bottom:14px}
+.tile .h{font-family:'Inter Display',Inter;font-size:60px;font-weight:700;letter-spacing:-.03em;white-space:nowrap}
+.mt{width:300px;height:170px;border-radius:16px;color:#fff;padding:22px 24px;display:flex;flex-direction:column;justify-content:space-between}
+.mt .n{font-family:JBM;font-size:14px;letter-spacing:.2em;font-weight:700;opacity:.8}
+.mt .h{font-size:26px;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+#cap{left:160px;width:1600px;top:978px;text-align:center;font-size:36px;font-weight:600;letter-spacing:-.005em}
+#cursor{left:0;top:0;width:24px;height:31px}
+.lg2{position:absolute;right:56px;top:42px;width:200px}
+.ss{font-family:JBM;font-size:12px}
+</style></head><body>
+<div id="paper" class="a full"></div>
+<div id="greyw" class="a full"></div>
+<div id="pan1" class="a pan"></div><div id="pan2" class="a pan"></div><div id="pan3" class="a pan"></div><div id="pan4" class="a pan"></div>
+
+<!-- ===== S01 open ===== -->
+<div id="s01" class="a full">
+  <div id="wins" class="a full">
+    <div id="w1" class="a gw" style="left:150px;top:330px;width:470px;height:270px"><div class="wh"><i></i><i></i><i></i>&nbsp; Inbox · claims@</div>
+      <div class="rw"><b>RE: RE: FW: Claim 2291 estimate</b></div><div class="rw">FW: final version attached</div><div class="rw">RE: Can you resend it?</div><div class="rw">RE: RE: updated pdf (2)</div><div class="rw">FW: FW: photos from site</div><div class="ping">14</div></div>
+    <div id="w2" class="a gw" style="left:690px;top:290px;width:540px;height:290px"><div class="wh"><i></i><i></i><i></i>&nbsp; Shared drive › Claims</div>
+      <div id="fgrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;padding:18px"></div><div class="ping">3</div></div>
+    <div id="w3" class="a gw" style="left:1300px;top:330px;width:440px;height:200px"><div class="wh"><i></i><i></i><i></i>&nbsp; FS-02 · \\fileserver\claims</div>
+      <div style="padding:20px 18px"><div style="font-size:14px;font-weight:600;margin-bottom:10px">Disk usage · 87% full</div><div style="height:12px;border-radius:6px;background:#dcdde2"><div style="width:87%;height:100%;border-radius:6px;background:#6b6e7a"></div></div><div style="font-size:12px;margin-top:12px;color:#8a8d99">Last backup: 214 days ago</div></div><div class="ping">!</div></div>
+    <div id="w4" class="a gw" style="left:300px;top:660px;width:520px;height:250px"><div class="wh"><i></i><i></i><i></i>&nbsp; Desktop · someone's laptop</div>
+      <div style="display:flex;gap:26px;padding:24px 22px;font-size:12px;text-align:center">
+        <div><div class="fi" style="margin:0 auto 8px"></div>final_v3.pdf</div><div><div class="fi" style="margin:0 auto 8px"></div>final_v3 (1).pdf</div><div><div class="fi" style="margin:0 auto 8px"></div>estimate_copy.pdf</div><div><div class="fi" style="margin:0 auto 8px"></div>scan0001.jpg</div></div><div class="ping">2</div></div>
+    <div id="w5" class="a gw" style="left:960px;top:640px;width:340px;height:200px"><div class="wh"><i></i><i></i><i></i>&nbsp; Outlook data file</div>
+      <div style="display:flex;gap:16px;align-items:center;padding:26px 20px"><div class="fi" style="width:46px;height:56px"></div><div><div style="font-size:15px;font-weight:700">archive_2017.pst</div><div style="font-size:12px;color:#8a8d99;margin-top:4px">14.2 GB · not indexed</div></div></div></div>
+    <div id="w6" class="a gw" style="left:1390px;top:610px;width:320px;height:200px"><div class="wh"><i></i><i></i><i></i>&nbsp; USB DRIVE (E:)</div>
+      <div style="display:flex;gap:16px;align-items:center;padding:26px 20px"><div style="width:30px;height:58px;border-radius:6px;background:#9fa2ab"></div><div><div style="font-size:15px;font-weight:700">claims_backup</div><div style="font-size:12px;color:#8a8d99;margin-top:4px">Modified 3 years ago</div></div></div></div>
+  </div>
+  <div id="t01" class="a disp" style="left:0;width:1920px;top:470px;text-align:center;font-size:104px;color:#2f313b"><span class="sw">Your content is everywhere.</span></div>
+</div>
+
+<!-- ===== S02 four moves ===== -->
+<div id="s02" class="a full">
+  <div id="fm" class="a disp" style="left:0;width:1920px;top:320px;text-align:center;font-size:72px;color:#2f313b"><span class="sw">Four moves.</span></div>
+  <div id="tiles4" class="a" style="left:0;top:0"></div>
+</div>
+
+<!-- ===== problem scenes ===== -->
+<div id="s03" class="a full">
+  <div class="a prob"><div class="lbl"><i class="dash"></i>The problem</div><div class="sub">01 · Unify content</div></div>
+  <div id="c7" class="a big" style="left:150px;top:300px;font-size:200px;color:#2f313b">7<span style="font-size:64px;letter-spacing:-.02em;margin-left:18px">copies</span></div>
+  <div id="cps" class="a" style="left:0;top:0"></div>
+  <div id="b03" class="a" style="left:150px;top:770px"><div class="badge"><b>OPERATIONS</b>Which one is current?</div></div>
+</div>
+<div id="s10" class="a full">
+  <div class="a prob"><div class="lbl"><i class="dash"></i>The problem</div><div class="sub">02 · Find &amp; collaborate</div></div>
+  <div id="c14" class="a big" style="left:150px;top:300px;font-size:200px;color:#2f313b"><span id="c14n">1</span><span style="font-size:64px;letter-spacing:-.02em;margin-left:18px">replies</span></div>
+  <div id="thr" class="a gw" style="left:860px;top:250px;width:900px;height:640px"><div class="wh"><i></i><i></i><i></i>&nbsp; RE: RE: FW: Claim 2291 · 14 messages</div><div id="thrl"></div></div>
+  <div id="b10" class="a" style="left:150px;top:770px"><div class="badge"><b>SECURITY</b>Who has the attachment now?</div></div>
+</div>
+<div id="s17" class="a full">
+  <div class="a prob"><div class="lbl"><i class="dash"></i>The problem</div><div class="sub">03 · Automate &amp; govern</div></div>
+  <div id="xls" class="a gw" style="left:520px;top:240px;width:820px;height:520px"><div class="wh"><i></i><i></i><i></i>&nbsp; Retention_schedule_FINAL.xlsx</div><div id="xlsg"></div></div>
+  <div id="stick" class="a" style="left:1240px;top:220px;width:200px;height:170px;background:#e9e3b8;filter:grayscale(.6);box-shadow:0 14px 30px rgba(0,0,0,.18);transform:rotate(5deg);padding:22px;font-size:30px;font-weight:600;font-family:'Inter Display',Inter;color:#4a4d5a">ask Maria?</div>
+  <div id="appr" class="a gw" style="left:1300px;top:470px;width:440px;height:150px"><div class="wh"><i></i><i></i><i></i>&nbsp; Approval request</div><div style="padding:16px 18px;font-size:15px"><b>Delete: Claims 2015 batch</b><div style="margin-top:10px;display:flex;gap:10px;align-items:center"><span style="background:#6b6e7a;color:#fff;font-size:12px;font-weight:700;padding:4px 10px;border-radius:10px">PENDING</span><span style="color:#8a8d99">23 days</span></div></div></div>
+  <div id="logr" class="a gw" style="left:560px;top:790px;width:700px;height:56px;display:flex;align-items:center;gap:30px;padding:0 20px;font-family:JBM;font-size:14px"><span>2026-03-02 17:41</span><span>DELETE · Claims_2015/*.pdf</span><span style="font-weight:700">Deleted by: unknown</span></div>
+  <div id="b17" class="a" style="left:150px;top:880px"><div class="badge"><b>LEGAL</b>Who approved this deletion?</div></div>
+</div>
+<div id="s24" class="a full">
+  <div class="a prob"><div class="lbl"><i class="dash"></i>The problem</div><div class="sub">04 · Make content intelligent</div></div>
+  <div id="flds" class="a" style="left:0;top:0"></div>
+  <div id="scan" class="a" style="left:420px;top:250px;width:420px;height:560px;background:#f1f1ee;box-shadow:0 20px 40px rgba(0,0,0,.18);transform:rotate(-2deg);padding:34px;color:#555"><div style="font-weight:800;font-size:22px;letter-spacing:.02em">INVOICE</div><div style="font-size:13px;margin-top:6px">Coastline Restoration LLC</div><div id="scanl"></div></div>
+  <div id="sheet" class="a gw" style="left:900px;top:260px;width:860px;height:470px"><div class="wh"><i></i><i></i><i></i>&nbsp; invoices_manual_entry.xlsx</div><div id="sheetg"></div></div>
+  <div id="rowc" class="a big" style="left:900px;top:760px;font-size:76px;color:#2f313b">Row <span id="rown">2,141</span><span style="color:#8a8d99;font-size:48px"> of 9,000</span></div>
+  <div id="b24" class="a" style="left:150px;top:880px"><div class="badge"><b>FINANCE</b>When will the invoice data be ready?</div></div>
+</div>
+
+<!-- ===== move snap cards ===== -->
+<div id="m1" class="a mv"><div class="lbl"><i class="dash"></i>Move 01 · Unify content</div><h1><span class="sw">Bring it all in.</span></h1><div class="bf"><span>BUILT FOR</span>Operations · IT · Applications · Clients</div></div>
+<div id="m2" class="a mv"><div class="lbl"><i class="dash"></i>Move 02 · Find &amp; collaborate</div><h1><span class="sw" id="m2a">Find it.</span> <span class="sw" id="m2b">Share it.</span> <span class="sw" id="m2c">Finish it.</span></h1><div class="bf"><span>BUILT FOR</span>Operations · Clients · Security</div></div>
+<div id="m3" class="a mv"><div class="lbl"><i class="dash"></i>Move 03 · Automate &amp; govern</div><h1><span class="sw">Let it run by the rules.</span></h1><div class="bf"><span>BUILT FOR</span>Legal &amp; records · Finance · Security · IT</div></div>
+<div id="m4" class="a mv"><div class="lbl"><i class="dash"></i>Move 04 · Make content intelligent</div><h1><span class="sw">Put it to work.</span></h1><div class="bf"><span>BUILT FOR</span>Operations · Finance · Leadership</div></div>
+
+<!-- ===== chapter headers ===== -->
+<div id="h1" class="a ch"><div class="lbl"><i class="dash"></i>01 · Unify content</div><h1><span class="sw">Bring it all in.</span></h1></div>
+<div id="h2" class="a ch"><div class="lbl"><i class="dash"></i>02 · Find &amp; collaborate</div><h1><span class="sw">Find it. Share it. Finish it.</span></h1></div>
+<div id="h3" class="a ch"><div class="lbl"><i class="dash"></i>03 · Automate &amp; govern</div><h1><span class="sw">Let it run by the rules.</span></h1></div>
+<div id="h4" class="a ch"><div class="lbl"><i class="dash"></i>04 · Make content intelligent</div><h1><span class="sw">Put it to work.</span></h1></div>
+<div id="sup" class="a sup"></div>
+<div id="foot" class="a foot"></div>
+
+<!-- ===== results ===== -->
+<div id="s09" class="a full">
+  <div class="a res"><div class="lbl"><i class="dash"></i>Result</div></div>
+  <div id="r09t" class="a big" style="left:150px;top:420px;font-size:120px;color:var(--ink)">7 places <span style="color:var(--blue)">→ 1</span></div>
+  <div id="lib" class="a lib" style="left:1050px;top:330px"><div style="padding:18px 22px;border-bottom:1px solid #eef0f4;display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700"><img src="assets/mark.png" style="height:18px">Library · Claims › Claim 2291</div></div>
+  <div id="one" class="a" style="left:1190px;top:440px;width:240px;height:120px;background:#fff;border:2px solid var(--blue);border-radius:14px;display:flex;align-items:center;gap:14px;padding:0 18px;font-size:14px;font-weight:700;box-shadow:0 14px 30px rgba(0,136,207,.2)"><span class="pdf" style="width:34px;height:42px">PDF</span><div>Claim_2291<br>_estimate.pdf<div style="font-size:11px;color:#1c7a45;margin-top:4px">Current · v7</div></div></div>
+  <div id="fly7" class="a" style="left:0;top:0"></div>
+  <div id="rp1" class="a rpill" style="left:1080px;top:690px"><i style="background:var(--blue)"></i>Retention</div>
+  <div id="rp2" class="a rpill" style="left:1240px;top:690px"><i style="background:var(--purple)"></i>Access</div>
+  <div id="rp3" class="a rpill" style="left:1385px;top:690px"><i style="background:var(--red)"></i>Audit</div>
+  <div id="r09s" class="a" style="left:150px;top:570px;font-size:30px;font-weight:500;color:#4c5068">One place. One set of rules.</div>
+</div>
+<div id="s16" class="a full">
+  <div class="a res"><div class="lbl"><i class="dash"></i>Result</div></div>
+  <div id="r16t" class="a big" style="left:150px;top:420px;font-size:120px;color:var(--ink)">14 emails <span style="color:var(--purple)">→ 1 link</span></div>
+  <div id="fold" class="a" style="left:1180px;top:260px"></div>
+  <div id="link1" class="a" style="left:1080px;top:470px;width:640px;height:130px;border-radius:20px;background:var(--purple);color:#fff;display:flex;align-items:center;gap:22px;padding:0 30px;box-shadow:0 30px 60px rgba(48,38,123,.35)">
+    <div style="width:62px;height:62px;border-radius:16px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:30px">🔗</div>
+    <div><div style="font-size:26px;font-weight:700">Claim 2291</div><div style="font-size:17px;opacity:.85;margin-top:4px">Expires in 7 days · Download off</div></div></div>
+</div>
+
+<!-- ===== S29 flip grid ===== -->
+<div id="s29" class="a full"><div id="grid4" class="a" style="left:380px;top:250px;width:1160px;height:540px"></div></div>
+
+<!-- ===== S30 end ===== -->
+<div id="s30" class="a full">
+  <div id="kp" class="a disp" style="left:0;width:1920px;top:200px;text-align:center;font-size:150px"><span class="wm"><span class="wi" id="kp1">Keep</span></span> <span class="wm"><span class="wi" id="kp2">the</span></span> <span class="wm"><span class="wi" id="kp3"><span class="hl" id="kphl"><i></i><span id="kpw">proof.</span></span></span></span></div>
+  <div id="pl4" class="a" style="left:640px;top:410px;width:640px;height:6px;display:flex;gap:6px"><i style="flex:1;background:var(--blue);border-radius:3px"></i><i style="flex:1;background:var(--purple);border-radius:3px"></i><i style="flex:1;background:var(--red);border-radius:3px"></i><i style="flex:1;background:var(--navy);border-radius:3px"></i></div>
+  <div id="appr4" class="a" style="left:0;width:1920px;top:440px;text-align:center;font-family:JBM;font-size:15px;letter-spacing:.16em;color:#6b6f85;text-transform:uppercase">Unify content · Find &amp; collaborate · Automate &amp; govern · Make content intelligent</div>
+  <div id="lock2" class="a" style="left:0;width:1920px;top:520px;display:flex;justify-content:center;align-items:center;gap:22px"><img src="assets/mark.png" style="width:66px;height:66px"><div style="font-size:60px;line-height:1;color:var(--ink)"><b style="font-weight:800">SOLIX</b> <b style="font-weight:800">ECS</b></div></div>
+  <div id="desc" class="a" style="left:0;width:1920px;top:622px;text-align:center;font-size:24px;color:var(--grey);font-weight:500">Audit-ready document management and archiving for regulated organizations.</div>
+  <div id="azure" class="a" style="left:0;width:1920px;top:662px;text-align:center;font-size:22px;color:var(--grey);font-weight:500">Azure-native SaaS. Nothing to install.</div>
+  <div id="cta" class="a" style="left:0;width:1920px;top:726px;text-align:center;font-size:30px;font-weight:600;color:var(--ink)">Start your 30-day trial. No card needed. <span style="color:#b5b8c6;margin:0 10px">·</span><span style="color:var(--blue)">solix.com</span></div>
+  <div id="built" class="a" style="left:0;width:1920px;top:800px;text-align:center;font-family:JBM;font-size:15px;letter-spacing:.18em;color:#8b8fa3;text-transform:uppercase">Built by Solix. Two decades of archiving.</div>
+</div>
+
+<!-- ===== DEVICE ===== -->
+<div id="device" class="a">
+  <div id="lapbase" class="a"></div>
+  <div id="lap" class="a"><div id="scr">
+    <!-- P05 My Files -->
+    <div id="p05" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search</div><div class="av">JA</div></div>
+      <div class="side"><div class="on">My Files</div><div>Shared with me</div><div>Workgroups</div><div>Recent</div><div class="h">FORMS</div><div>Create Link</div><div class="h">ADMIN</div><div>Integrations</div><div>Data Migration</div></div>
+      <div class="body"><div class="crumb">My Files › Claims › <b>Claim 2291</b></div><div class="ttl">Claim 2291</div>
+        <div id="p05g" style="display:grid;grid-template-columns:repeat(5,132px);gap:14px"></div>
+        <div id="tray" class="a card" style="left:470px;top:360px;width:280px;padding:14px 16px"><div style="font-size:13px;font-weight:700;display:flex"><span id="trayt">Uploading 12 items</span><span id="trayp" style="margin-left:auto;color:#7a8191">0%</span></div><div style="height:6px;border-radius:3px;background:#eef0f4;margin-top:10px"><div id="trayb" style="height:100%;width:0;border-radius:3px;background:var(--blue)"></div></div></div>
+      </div></div>
+    <!-- P06 Create Link -->
+    <div id="p06" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search</div><div class="av">JA</div></div>
+      <div class="side"><div>My Files</div><div>Shared with me</div><div>Workgroups</div><div>Recent</div><div class="h">FORMS</div><div class="on">Create Link</div><div class="h">ADMIN</div><div>Integrations</div><div>Data Migration</div></div>
+      <div class="body"><div class="crumb">Forms › <b>Create Link</b></div><div class="ttl">Upload request links</div>
+        <div class="tr hd"><div class="c1">LINK</div><div style="width:150px">FOLDER</div><div style="width:110px">UPLOADS</div></div>
+        <div class="tr"><div class="c1">Claim 2287 · photos</div><div style="width:150px">Claim 2287</div><div style="width:110px">4 files</div></div>
+        <div class="tr"><div class="c1">Claim 2290 · documents</div><div style="width:150px">Claim 2290</div><div style="width:110px">2 files</div></div>
+        <div class="tr" id="p06new" style="background:#eef7fc"><div class="c1"><b>Claim 2291 · photos &amp; estimate</b></div><div style="width:150px">Claim 2291</div><div style="width:110px" id="p06cnt">0 files</div></div>
+        <div id="p06m" class="a modal" style="left:200px;top:40px;width:400px"><h3>Create link · Upload request</h3>
+          <div class="fld"><label>Upload to folder</label><div class="in">Claims › Claim 2291</div></div>
+          <div class="tog"><i></i>No account needed to upload</div>
+          <div class="fld"><label>Link expires</label><div class="in">In 7 days</div></div>
+          <div style="display:flex;justify-content:flex-end;gap:8px"><div class="btn ghost">Cancel</div><div class="btn" id="p06b">Create link</div></div></div>
+      </div></div>
+    <!-- P07 Email capture / PST -->
+    <div id="p07" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search</div><div class="av">JA</div></div>
+      <div class="side"><div>My Files</div><div>Shared with me</div><div>Workgroups</div><div class="h">ADMIN</div><div class="on">Integrations</div><div>Data Migration</div><div>Governance</div></div>
+      <div class="body"><div class="crumb">Integrations › <b>Email Capture</b></div><div class="ttl">Email capture</div>
+        <div style="display:flex;gap:16px">
+          <div class="card" style="width:330px;box-shadow:0 0 0 1px #e6e9f0"><div style="display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:10px;background:#fff;border:1px solid #e6e9f0;display:flex;align-items:center;justify-content:center;font-weight:800;color:#ea4335;font-size:20px">M</div><div><div style="font-weight:700;font-size:15px">Gmail</div><div style="font-size:12px;color:#7a8191">claims@example.com</div></div><span id="gst" class="chp grey" style="margin-left:auto">Connect</span></div>
+            <div class="tog" style="margin:14px 0 0" id="gtog"><i></i>Capture to Claims › Inbox</div></div>
+          <div class="card" style="flex:1;box-shadow:0 0 0 1px #e6e9f0" id="pstc"><div style="font-weight:700;font-size:15px">PST extraction</div><div style="font-size:12px;color:#7a8191;margin-top:4px">archive_2017.pst · 14.2 GB</div>
+            <div style="margin-top:16px;font-family:'Inter Display',Inter;font-size:44px;font-weight:700;letter-spacing:-.02em"><span id="pstn">0</span><span style="font-size:16px;color:#7a8191;font-family:Inter;font-weight:600;margin-left:10px">emails extracted</span></div>
+            <div style="height:6px;border-radius:3px;background:#eef0f4;margin-top:10px"><div id="pstb" style="height:100%;width:0;border-radius:3px;background:var(--blue)"></div></div>
+            <div id="psta" style="font-size:12px;color:#1c7a45;font-weight:600;margin-top:10px">✓ Attachments included</div></div>
+        </div>
+        <div id="pstrows" style="margin-top:14px"></div>
+      </div></div>
+    <!-- P08 Data migration -->
+    <div id="p08" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="srch">Search</div><div class="av">JA</div></div>
+      <div class="side"><div>My Files</div><div>Workgroups</div><div class="h">ADMIN</div><div>Integrations</div><div class="on">Data Migration</div><div>Governance</div></div>
+      <div class="body"><div class="crumb">Data Migration › <b>Source Manager</b></div><div class="ttl">Sources</div>
+        <div style="display:flex;gap:14px">
+          <div class="src" id="sx1"><div class="ic" style="background:#0f6cbd">EX</div>Exchange Server<span class="chp grey">Connect</span></div>
+          <div class="src" id="sx2"><div class="ic" style="background:#1fa463">GD</div>Google Drive<span class="chp grey">Connect</span></div>
+          <div class="src" id="sx3"><div class="ic" style="background:#5a6273">SF</div>SFTP<span class="chp grey">Connect</span></div>
+        </div>
+        <div id="job8" style="margin-top:16px"><div style="font-size:12px;font-weight:700;letter-spacing:.1em;color:#7a8191;margin-bottom:6px;display:flex">MIGRATION JOB · MAPPED TO OWNERS<span id="jst" style="margin-left:auto" class="chp blue">Running</span></div><div id="jrows"></div></div>
+      </div></div>
+    <!-- P12 Search -->
+    <div id="p12" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div class="body nos"><div style="height:46px;border-radius:10px;border:2px solid var(--blue);display:flex;align-items:center;padding:0 16px;font-size:17px;gap:12px"><span style="width:16px;height:16px;border:2.5px solid #7a8191;border-radius:50%"></span><span id="q12"></span><i style="display:inline-block;width:2px;height:20px;background:var(--blue)" id="q12c"></i><span class="chp grey" style="margin-left:auto">Advanced</span></div>
+        <div style="display:flex;gap:26px;margin:16px 0 6px;font-size:14px;font-weight:600;color:#7a8191;border-bottom:1px solid #eef0f4"><span style="color:var(--blue);border-bottom:2px solid var(--blue);padding-bottom:9px">Files</span><span>Emails</span><span>Metadata</span><span>Saved Searches</span></div>
+        <div id="res12"></div></div></div>
+    <!-- P13 Preview -->
+    <div id="p13" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><span class="chp blue" style="margin-left:20px">Preview · not downloaded</span><div class="av">JA</div></div>
+      <div style="position:absolute;left:0;right:0;top:46px;bottom:0;background:#eef0f4">
+        <div style="position:absolute;left:30px;top:16px;font-size:13px;font-weight:600;color:#4a5263">Policy_HO-3_Ramirez.pdf</div>
+        <div id="doc13" style="position:absolute;left:190px;top:44px;width:560px;height:440px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.08);padding:30px 36px;font-size:12px;color:#4a5263">
+          <div style="font-weight:800;font-size:16px;color:#1d2433">Homeowners Policy · HO-3</div>
+          <div style="margin-top:14px;display:flex;gap:10px;align-items:center">Policy no. <span style="position:relative">HO3-4471-2291-88<i id="rd1" class="a" style="left:-3px;right:-3px;top:-2px;bottom:-2px;background:#111"></i></span></div>
+          <div style="margin-top:8px;display:flex;gap:10px;align-items:center">Account no. <span style="position:relative">0099 2214 7781<i id="rd2" class="a" style="left:-3px;right:-3px;top:-2px;bottom:-2px;background:#111"></i></span></div>
+          <div style="margin-top:8px;display:flex;gap:10px;align-items:center">Insured <span style="position:relative">D. Ramirez</span></div>
+          <div id="lines13" style="margin-top:20px"></div>
+          <div style="margin-top:6px;padding:8px 10px;border-left:3px solid #f0b54a;background:#fff8e8;color:#1d2433" id="cl13">Section I · Water damage: sudden and accidental discharge is covered.</div>
+        </div>
+        <div id="note13" class="a" style="left:690px;top:250px;width:210px;background:#fff1c2;border-radius:8px;box-shadow:0 10px 24px rgba(0,0,0,.15);padding:12px 14px;font-size:12px;color:#5a4200"><b>J. Alvarez</b><br>Check water damage clause before approval.</div>
+      </div></div>
+    <!-- P14 Share -->
+    <div id="p14" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div style="position:absolute;left:0;right:0;top:46px;bottom:0;background:#f6f8fb"></div>
+      <div id="sh14" class="a modal" style="left:226px;top:66px;width:500px"><h3>Share · Claim 2291</h3>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:#7a8191;margin-bottom:8px">INSIDE</div>
+        <div class="tr" style="height:38px"><div class="c1"><span style="width:24px;height:24px;border-radius:50%;background:#30267b;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700">CT</span>Claims team</div><span class="chp blue" id="pm1">Can edit</span></div>
+        <div class="tr" style="height:38px"><div class="c1"><span style="width:24px;height:24px;border-radius:50%;background:#0088cf;color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700">MP</span>M. Patel</div><span class="chp grey" id="pm2">Can view</span></div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.1em;color:#7a8191;margin:16px 0 8px">OUTSIDE · EXTERNAL LINK</div>
+        <div class="fld"><label>Link expires</label><div class="in" id="exp14">Never</div></div>
+        <div class="tog" id="dl14"><i></i>Allow download</div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px"><div class="btn ghost">Cancel</div><div class="btn" id="cp14">Copy link</div></div></div>
+      <div id="t14" class="a toast" style="left:20px;top:476px"><b>✓</b>Link copied · guest d.ramirez</div>
+    </div>
+    <!-- P15 Comments / sign -->
+    <div id="p15" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div style="position:absolute;left:0;width:600px;top:46px;bottom:0;background:#eef0f4"><div style="position:absolute;left:60px;top:30px;width:480px;height:440px;background:#fff;box-shadow:0 6px 18px rgba(0,0,0,.08);padding:28px 32px;font-size:12px;color:#4a5263"><div style="font-weight:800;font-size:16px;color:#1d2433">Settlement release · Claim 2291</div><div id="lines15" style="margin-top:16px"></div><div style="margin-top:26px;border-top:1.5px solid #c9cdd6;width:200px;padding-top:6px">Signature</div></div></div>
+      <div style="position:absolute;left:600px;right:0;top:46px;bottom:0;border-left:1px solid #e6e9f0;padding:16px 18px">
+        <div style="font-size:13px;font-weight:700;margin-bottom:10px">Comments &amp; tags</div>
+        <div id="cm15" style="font-size:12.5px;background:#f6f8fb;border-radius:10px;padding:10px 12px;line-height:1.45"><b>M. Patel</b> <span style="color:#7a8191">· now</span><br><span style="color:var(--blue);font-weight:600">@J. Alvarez</span> estimate matches. Ready to sign.</div>
+        <div style="display:flex;gap:6px;margin-top:10px"><span class="chp pur" id="tg1">#water-damage</span><span class="chp pur" id="tg2">#settlement</span></div>
+        <div class="btn" id="ds15" style="margin-top:22px;width:100%;background:#ffcc22;color:#1d2433">Send to DocuSign</div>
+        <div id="sent15" style="margin-top:10px;font-size:12px;color:#1c7a45;font-weight:600">✓ Sent to d.ramirez@example.com</div>
+      </div></div>
+    <!-- P19 Workflows -->
+    <div id="p19" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div class="side"><div>My Files</div><div class="on">Workflows</div><div>My Tasks</div><div class="h">GOVERNANCE</div><div>Retention</div><div>Legal Hold</div><div>Labels</div><div>Audit</div></div>
+      <div class="body"><div class="crumb">Workflows › Workflow Templates › <b>Claim settlement</b></div><div class="ttl">Claim settlement</div>
+        <div style="font-size:12px;color:#7a8191;margin-bottom:16px"><span class="chp grey">Trigger</span>&nbsp; When a file arrives in Claims › Settlements</div>
+        <div style="display:flex;align-items:center;gap:6px"><div class="node" id="nd1">Review<span>STEP 1</span></div><div class="arrow"></div><div class="node" id="nd2">Approve<span>STEP 2</span></div><div class="arrow"></div><div class="node" id="nd3">File movement<span>STEP 3</span></div><div class="arrow"></div><div class="node" id="nd4">E-sign<span>STEP 4</span></div></div>
+        <div style="margin-top:22px;font-size:12px;font-weight:700;letter-spacing:.1em;color:#7a8191;margin-bottom:6px">MY TASKS</div>
+        <div class="tr" style="height:48px;border:1px solid #e6e9f0;border-radius:10px"><div class="c1"><span class="pdf">PDF</span>Approve · Claim 2291 settlement</div><span class="chp amber" id="tk19">Waiting</span>&nbsp;&nbsp;<div class="btn" id="ap19" style="height:30px;background:#2fb36b">APPROVE</div></div>
+      </div></div>
+    <!-- P20 Retention -->
+    <div id="p20" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div class="side"><div>My Files</div><div>Workflows</div><div class="h">GOVERNANCE</div><div class="on">Retention</div><div>Legal Hold</div><div>Labels</div><div>Audit</div></div>
+      <div class="body"><div class="crumb">Governance › <b>Retention</b></div><div class="ttl">Retention policies</div>
+        <div id="rc20" class="a card" style="z-index:2;left:24px;top:76px;width:400px;box-shadow:0 0 0 1.5px var(--blue),0 18px 36px rgba(0,136,207,.15)"><div style="display:flex;align-items:center;gap:8px"><div style="font-size:17px;font-weight:700">Claims</div><span class="chp green">10 years</span><span class="chp redc" style="margin-left:auto">Delete post approval</span></div>
+          <div style="font-size:11px;color:#7a8191;margin:14px 0 6px;font-weight:600;letter-spacing:.08em">NOTICES BEFORE DELETION</div>
+          <div style="display:flex;gap:8px"><span class="chp grey" id="nt1">30 days</span><span class="chp grey" id="nt2">7 days</span><span class="chp grey" id="nt3">1 day</span></div></div>
+        <div id="fd20" class="a" style="left:500px;top:110px;width:200px;text-align:center;font-size:14px;font-weight:700"><div style="width:150px;height:110px;margin:0 auto 10px;border-radius:12px;background:#ffd36b;position:relative"><div style="position:absolute;left:0;top:-12px;width:60px;height:24px;border-radius:8px 8px 0 0;background:#ffd36b"></div></div>Claims</div>
+        <div id="st20" class="a" style="left:520px;top:300px;font-family:JBM;font-size:12px;font-weight:700;color:#1c7a45;letter-spacing:.08em;white-space:nowrap">✓ POLICY APPLIED · 1,904 FILES</div>
+      </div></div>
+    <!-- P21 Legal hold -->
+    <div id="p21" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div class="side"><div>My Files</div><div>Workflows</div><div class="h">GOVERNANCE</div><div>Retention</div><div class="on">Legal Hold</div><div>Labels</div><div>Audit</div></div>
+      <div class="body"><div class="crumb">Governance › <b>Legal Hold</b></div><div style="display:flex;align-items:center;margin-bottom:12px"><div class="ttl" style="margin:0">Subrogation · Claim 2291</div><span class="chp amber" id="lh21" style="margin-left:14px">Applied</span></div>
+        <div id="lhrows"></div></div></div>
+    <!-- P22 Labels -->
+    <div id="p22" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><span id="sso22" class="chp green" style="margin-left:20px">Signed in with SAML single sign-on</span><div class="av">JA</div></div>
+      <div class="side"><div>My Files</div><div class="h">GOVERNANCE</div><div class="on">Labels</div><div>Admins &amp; roles</div><div>SSO</div><div>Audit</div></div>
+      <div class="body"><div class="crumb">Governance › <b>Classification labels</b></div><div class="ttl">Claim_2291_estimate.pdf</div>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><span style="font-size:12px;color:#7a8191">Label</span><span id="lb22" class="chp redc">Confidential · Claim</span></div>
+        <div id="menu22" class="card" style="position:absolute;left:24px;top:110px;width:220px;padding:6px 0;box-shadow:0 0 0 1px #e6e9f0,0 14px 30px rgba(10,20,50,.12)"></div>
+        <div id="role22" class="a card" style="left:300px;top:110px;width:330px;box-shadow:0 0 0 1px #e6e9f0,0 14px 30px rgba(10,20,50,.12)"><div style="font-size:11px;color:#7a8191;font-weight:600;letter-spacing:.08em">ROLE</div><div style="font-size:18px;font-weight:700;margin:4px 0 10px">Records auditor</div>
+          <div class="tr" style="height:30px">View audit<span class="chp green" style="margin-left:auto">Allowed</span></div><div class="tr" style="height:30px">Share<span class="chp redc" style="margin-left:auto">Blocked</span></div><div class="tr" style="height:30px;border:0">Delete<span class="chp redc" style="margin-left:auto">Blocked</span></div></div>
+      </div></div>
+    <!-- P26 Document AI -->
+    <div id="p26" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><span class="chp blue" style="margin-left:20px">Document AI</span><div class="av">JA</div></div>
+      <div style="position:absolute;left:0;width:470px;top:46px;bottom:0;background:#eef0f4"><div id="inv26" style="position:absolute;left:36px;top:20px;width:400px;height:460px;background:#fbfbf8;box-shadow:0 6px 18px rgba(0,0,0,.08);padding:24px 26px;font-size:11.5px;color:#4a5263;transform:rotate(-.8deg)">
+        <div style="font-weight:800;font-size:18px;color:#2a2d38">INVOICE</div>
+        <div style="margin-top:6px;position:relative;display:inline-block;padding:1px 3px" id="hv1">Coastline Restoration LLC</div>
+        <div style="display:flex;gap:30px;margin-top:10px"><div>Invoice no.<br><b style="position:relative;display:inline-block;padding:1px 3px" id="hv2">INV-20418</b></div><div>Date<br><b style="position:relative;display:inline-block;padding:1px 3px" id="hv3">Mar 12, 2026</b></div></div>
+        <div style="margin-top:14px;border-top:1px solid #ccc"></div><div id="invl"></div>
+        <div style="margin-top:10px;text-align:right;font-size:13px">Total <b style="position:relative;display:inline-block;padding:1px 3px" id="hv4">$8,460.00</b></div></div></div>
+      <div style="position:absolute;left:470px;right:0;top:46px;bottom:0;padding:16px 20px">
+        <div style="font-size:11px;color:#7a8191;font-weight:600;letter-spacing:.1em">METADATA TEMPLATE</div><div style="font-size:17px;font-weight:700;margin:4px 0 12px">Contractor invoice</div>
+        <div class="fld"><label>Vendor</label><div class="in"><span id="mv1"></span></div></div>
+        <div style="display:flex;gap:10px"><div class="fld" style="flex:1"><label>Invoice number</label><div class="in"><span id="mv2"></span></div></div><div class="fld" style="flex:1"><label>Invoice date</label><div class="in"><span id="mv3"></span></div></div></div>
+        <div class="fld"><label>Total amount</label><div class="in"><span id="mv4"></span></div></div>
+        <div id="tb26" style="font-size:11.5px;border:1px solid #e6e9f0;border-radius:8px;overflow:hidden"></div>
+      </div></div>
+    <!-- P27 Metadata search -->
+    <div id="p27" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div class="body nos"><div class="crumb">Advanced search › <b>Metadata</b></div>
+        <div style="display:flex;gap:10px;margin:8px 0 14px"><div class="fld" style="flex:1"><label>Template</label><div class="in">Contractor invoice</div></div><div class="fld" style="flex:1"><label>Total amount</label><div class="in">Greater than &nbsp;<b>$5,000</b></div></div><div class="btn" style="align-self:flex-end;margin-bottom:11px" id="sb27">Search</div></div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px"><span style="font-family:'Inter Display',Inter;font-size:30px;font-weight:700" id="n27">38</span><span style="font-size:13px;color:#7a8191">invoices match</span></div>
+        <div id="res27"></div></div></div>
+    <!-- P28 Solix GPT -->
+    <div id="p28" class="pg"><div class="top"><img src="assets/mark.png"><div class="brand">SOLIX<span>|</span>ECS</div><div class="av">JA</div></div>
+      <div class="side"><div class="h">CLAIMS</div><div class="on">Claim 2291</div><div>Claim 2290</div><div>Claim 2287</div></div>
+      <div class="body"><div class="crumb">Claims › Claim 2291 › <b>Solix GPT for folders</b></div>
+        <div id="ask28" style="margin:10px 0 0 auto;max-width:420px;background:var(--blue);color:#fff;border-radius:14px 14px 4px 14px;padding:10px 14px;font-size:13.5px;width:fit-content"><span id="q28"></span></div>
+        <div id="ans28" style="margin-top:14px;border:1px solid #e6e9f0;border-radius:14px 14px 14px 4px;padding:12px 14px;font-size:12.5px;width:560px">
+          <div style="font-weight:700;margin-bottom:8px">Claim 2291 · summary</div>
+          <div class="tr hd" style="height:24px"><div class="c1">ITEM</div><div style="width:170px">STATUS</div></div>
+          <div class="tr" style="height:30px" id="a1"><div class="c1">Contractor estimate</div><div style="width:170px"><span class="chp green">Approved</span></div></div>
+          <div class="tr" style="height:30px" id="a2"><div class="c1">Invoice INV-20418</div><div style="width:170px"><span class="chp amber">Awaiting approval</span></div></div>
+          <div class="tr" style="height:30px;border:0" id="a3"><div class="c1">Signed settlement release</div><div style="width:170px"><span class="chp redc">Open</span></div></div>
+          <div style="font-size:11px;color:#7a8191;font-weight:600;letter-spacing:.08em;margin:10px 0 6px">REFERENCE DOCUMENTS</div>
+          <div style="display:flex;gap:6px" id="refs"><span class="chp blue">Estimate_2291.pdf</span><span class="chp blue">INV-20418.pdf</span><span class="chp blue">Release_2291.pdf</span></div></div>
+        <div style="position:absolute;left:24px;bottom:14px;font-size:10.5px;color:#9aa0ad">AI can make mistakes. Check important information.</div>
+      </div></div>
+  </div></div>
+</div>
+
+<!-- stage-level props -->
+<div id="drag" class="a" style="left:0;top:0;display:flex;align-items:center;gap:12px;background:#fff;color:#1d2433;padding:12px 18px;border-radius:12px;box-shadow:0 18px 36px rgba(20,20,60,.25);font-size:15px;font-weight:700;white-space:nowrap"><div style="width:30px;height:22px;border-radius:4px;background:#ffd36b"></div>Claim_2291_photos <span class="chp blue">12 items</span></div>
+<div id="ph" class="a phone" style="left:1500px;top:360px"><div class="ps"><div class="notch"></div><div id="phc" style="position:absolute;inset:0"></div></div></div>
+<div id="flyers" class="a" style="left:0;top:0"></div>
+<div id="exp23" class="a full"></div>
+
+<!-- S23 audit result (paper) -->
+<div id="s23" class="a full">
+  <div class="a res"><div class="lbl"><i class="dash"></i>Result</div></div>
+  <div id="r23t" class="a big" style="left:150px;top:190px;font-size:96px;color:var(--ink)">Every action, <span class="hl" id="r23hl"><i></i><span id="r23w">on the record.</span></span></div>
+  <div id="aud" class="a card" style="left:150px;top:360px;width:1240px;height:520px;padding:20px 26px">
+    <div style="display:flex;align-items:center;margin-bottom:10px"><div style="font-size:18px;font-weight:700">Audit · Claim 2291</div><div class="btn" id="ex23" style="margin-left:auto">Export</div></div>
+    <div class="tr hd"><div style="width:160px">TIME</div><div style="width:140px">EVENT</div><div style="width:180px">USER</div><div class="c1">ITEM</div></div>
+    <div id="arows"></div></div>
+  <div id="csv" class="a" style="left:1450px;top:520px;width:220px;height:260px;background:#fff;border-radius:14px;box-shadow:0 30px 60px rgba(20,20,60,.22),0 0 0 1px #e6e9f0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-size:15px;font-weight:700"><div style="width:70px;height:88px;border-radius:8px;background:#1f9d55;color:#fff;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;font-size:13px">CSV</div>Audit_Claim2291.csv</div>
+</div>
+
+<div id="trk" class="a"><div>01</div><div>02</div><div>03</div><div>04</div></div>
+<svg id="cursor" class="a" viewBox="0 0 26 34"><path d="M2 2 L2 27 L8.5 21 L13 31 L17 29.3 L12.6 19.6 L21 19.4 Z" fill="#fff" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg>
+<img id="logoD" class="a lg2" src="assets/logo_dark.png">
+<img id="logoW" class="a lg2" src="assets/logo.png">
+<div id="cap" class="a"></div>
+
+<script src="cues_f.js"></script><script src="capdata_f.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const E={l:x=>x,io:x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2,o:x=>1-Math.pow(1-x,3),i:x=>x*x*x,o5:x=>1-Math.pow(1-x,5),ob:x=>{const c=1.4,d=c+1;return 1+d*Math.pow(x-1,3)+c*Math.pow(x-1,2)}};
+const cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x));
+const R=(t,a,b,e=E.io)=>t<=a?0:t>=b?1:e((t-a)/(b-a));
+const L=(a,b,p)=>a+(b-a)*p;
+const V=(t,a,b,fi=.35,fo=.35)=>R(t,a,a+fi)*(1-R(t,b-fo,b));
+const ws=(k,i)=>CUES[k][i][1], st=k=>CUES[k][0][1], en=k=>CUES[k][CUES[k].length-1][2];
+function S(el,o={}){const {op=1,x=0,y=0,s=1,sx=null,sy=null,r=0,b=0}=o;el.style.opacity=op;el.style.visibility=op<=0.002?'hidden':'';
+ el.style.transform=`translate(${x}px,${y}px) rotate(${r}deg) scale(${sx??s},${sy??s})`;el.style.filter=b>0.05?`blur(${b}px)`:'none';}
+const hide=el=>{el.style.opacity=0;el.style.visibility='hidden'};
+const show=(el,v)=>{el.style.visibility=v?'':'hidden';if(v&&el.style.opacity==='0')el.style.opacity=1;};
+const vis=(el,v)=>{el.style.visibility=v?'':'hidden';};
+function hlP(el,p){el.querySelector('i').style.transform=`scaleX(${p})`}
+document.querySelectorAll('.sw').forEach(sw=>{sw.innerHTML=sw.textContent.split(' ').map(w=>`<span class="wm"><span class="wi">${w}</span></span>`).join(' ');});
+function rise(el,t,t0,stag=0.06,dur=0.55){el.querySelectorAll('.wi').forEach((w,i)=>{const p=R(t,t0+i*stag,t0+i*stag+dur,E.o5);w.style.transform=`translateY(${(1-p)*108}%)`;});}
+const pop=(el,t,t0,d=0.35)=>{const p=R(t,t0,t0+d,E.o5);S(el,{op:p,y:L(18,0,p)});return p;};
+const popb=(el,t,t0,d=0.3)=>{const p=R(t,t0,t0+d,E.ob);S(el,{op:cl(p*2),s:L(.6,1,p)});return p;};
+const typ=(el,txt,t,t0,t1)=>{el.textContent=txt.slice(0,Math.round(txt.length*R(t,t0,t1,E.l)));};
+
+/* ---------- dynamic builds ---------- */
+['Claims','Claims_old','Claims (2)','Estimates','Estimates_final','Scans','Misc','Archive'].forEach(n=>{$('fgrid').insertAdjacentHTML('beforeend',`<div style="text-align:center;font-size:11px"><div style="width:58px;height:42px;margin:0 auto 6px;border-radius:6px;background:#b9bcc4"></div>${n}</div>`);});
+const CP=[['Inbox','Mar 02 · 412 KB','Claim_2291_estimate.pdf'],['Desktop','Mar 04 · 418 KB','Claim_2291_estimate.pdf'],['Shared drive','Feb 27 · 409 KB','Claim_2291_estimate.pdf'],['Laptop','Mar 06 · 421 KB','Claim_2291_estimate (1).pdf'],['Old server','Jan 19 · 377 KB','Claim_2291_estimate.pdf'],['USB','Mar 01 · 412 KB','Claim_2291_estimate.pdf'],['Downloads','Mar 09 · 425 KB','Claim_2291_final_FINAL.pdf']];
+const CPP=[[760,250],[1140,230],[1480,280],[820,470],[1200,500],[1520,520],[1000,700]];
+CP.forEach((c,i)=>{$('cps').insertAdjacentHTML('beforeend',`<div id="cp${i}" class="a gw" style="left:${CPP[i][0]}px;top:${CPP[i][1]}px;width:300px;height:150px"><div class="wh">${c[0]}</div><div style="display:flex;gap:12px;padding:16px 14px;align-items:center"><div class="fi"></div><div><div style="font-size:13px;font-weight:700;color:#3b3d4a;white-space:nowrap">${c[2]}</div><div style="font-size:12px;color:#8a8d99;margin-top:4px">${c[1]}</div></div></div></div>`);});
+const TH=['Can you resend it?','Attachment too large','Is this the latest?','Wrong one, sorry.','Resending now…','Still not getting it','Can you resend it?','Which version did legal see?','Attachment too large','Is this the latest?','Use the one from Tuesday','Wrong one, sorry.','Can you resend it?','Who has the attachment now?'];
+const WHO=['D. Ramirez','J. Alvarez','M. Patel','Claims desk','J. Alvarez','D. Ramirez','R. Singh','Legal','M. Patel','D. Ramirez','J. Alvarez','Claims desk','D. Ramirez','Security'];
+TH.forEach((x,i)=>{$('thrl').insertAdjacentHTML('beforeend',`<div class="rw" id="th${i}" style="display:flex;gap:16px;padding:7px 18px"><b style="width:140px">${WHO[i]}</b><span style="color:#8a8d99;width:200px">RE: RE: FW: Claim 2291</span><span>${x}</span></div>`);});
+(function(){let h='<div style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr 1.1fr;font-size:13px">';const hd=['RECORD SERIES','RETENTION','TRIGGER','OWNER','STATUS'];hd.forEach(x=>h+=`<div style="padding:9px 12px;background:#e3e4e8;font-weight:700;font-size:11px;letter-spacing:.06em">${x}</div>`);
+ const rows=[['Claims 2015','7 yrs','Close date','?','OVERDUE'],['Claims 2016','7 yrs','Close date','Maria','OVERDUE'],['Policies','10 yrs','Expiry','?','—'],['Invoices','7 yrs','Paid date','Finance','OVERDUE'],['Emails','3 yrs?','—','?','?'],['Scans','—','—','—','—'],['Claims 2017','7 yrs','Close date','Maria','Due'],['Payroll','7 yrs','—','HR','—']];
+ rows.forEach(r=>r.forEach((c,j)=>{const od=c==='OVERDUE';h+=`<div style="padding:9px 12px;border-bottom:1px solid #e1e2e6;border-right:1px solid #e1e2e6;${od?'background:#d9b9b9;color:#7a3a3a;font-weight:700':''}">${c}</div>`;}));
+ $('xlsg').innerHTML=h+'</div>';})();
+(function(){for(let i=0;i<9;i++)$('scanl').insertAdjacentHTML('beforeend',`<div style="display:flex;justify-content:space-between;margin-top:${i?9:28}px;font-size:12px"><span style="background:#ddd;height:9px;width:${120+((i*37)%110)}px;display:inline-block"></span><span style="background:#ddd;height:9px;width:50px;display:inline-block"></span></div>`);
+ let h='<div style="display:grid;grid-template-columns:70px 1.4fr 1fr 1fr 1fr;font-size:13px;font-family:JBM">';['ROW','VENDOR','INVOICE #','DATE','TOTAL'].forEach(x=>h+=`<div style="padding:8px 10px;background:#e3e4e8;font-weight:700;font-size:11px">${x}</div>`);
+ const V=[['2,141','Bayside Plumbing','INV-8812','02/11/26','$1,240.00'],['2,142','Coastline Rest.','INV-20377','02/14/26','$3,915.50'],['2,143','Metro Roofing','MR-4471','02/15/26','$12,300.00'],['2,144','Bayside Plumbing','INV-8830','02/19/26','$860.00'],['2,145','Coastline Rest.','INV-20399','02/22/26','$5,120.00'],['2,146','Allied Drywall','AD-0912','02/25/26','$2,480.00'],['2,147','Metro Roofing','MR-4490','03/01/26','$7,750.00']];
+ V.forEach(r=>r.forEach(c=>h+=`<div style="padding:8px 10px;border-bottom:1px solid #e1e2e6;white-space:nowrap">${c}</div>`));
+ h+=`<div style="padding:8px 10px;border-bottom:1px solid #e1e2e6">2,148</div><div style="padding:8px 10px;border-bottom:1px solid #e1e2e6;outline:2px solid #6b6e7a;outline-offset:-2px;white-space:nowrap"><span id="typ24"></span><i style="display:inline-block;width:2px;height:14px;background:#333;vertical-align:-2px"></i></div><div style="padding:8px 10px"></div><div style="padding:8px 10px"></div><div style="padding:8px 10px"></div>`;
+ $('sheetg').innerHTML=h+'</div>';
+ [[150,330],[160,520],[150,700]].forEach((p,i)=>$('flds').insertAdjacentHTML('beforeend',`<div class="a" style="left:${p[0]}px;top:${p[1]}px;width:200px;text-align:center;font-size:13px;color:#6b6e7a;opacity:.55"><div style="width:120px;height:86px;margin:0 auto 8px;border-radius:10px;background:#b9bcc4"></div>Claims_${2017+i}<br><b>Last opened 2019</b></div>`));})();
+// four move tiles (S02)
+const MC=['#0088cf','#30267b','#ee2424','#122046'],MN=['Unify content','Find & collaborate','Automate & govern','Make content intelligent'];
+MN.forEach((n,i)=>$('tiles4').insertAdjacentHTML('beforeend',`<div id="mt${i}" class="a mt" style="left:${330+i*320}px;top:470px;background:${MC[i]}"><div class="n">0${i+1}</div><div class="h">${n.replace('&','&amp;')}</div></div><div id="md${i}" class="a" style="left:${330+i*320+138}px;top:543px;width:24px;height:24px;border-radius:50%;background:${MC[i]}"></div>`));
+// P05 file cards
+const P5=[['img','site_photo_01.jpg'],['img','site_photo_02.jpg'],['img','site_photo_03.jpg'],['pdf','estimate.pdf'],['pdf','policy_HO-3.pdf'],['img','site_photo_04.jpg'],['doc','adjuster_notes.docx'],['pdf','invoice_20418.pdf'],['img','site_photo_05.jpg'],['xls','line_items.xlsx']];
+P5.forEach((f,i)=>$('p05g').insertAdjacentHTML('beforeend',`<div class="fcard" id="fc${i}"><div class="th"><span class="pdf ${f[0]}" style="width:24px;height:30px">${f[0].toUpperCase()}</span></div>${f[1]}</div>`));
+// PST rows
+[['RE: Claim 1844 adjuster visit','Mar 2017','2 attachments'],['FW: Subrogation notice','Jun 2017','1 attachment'],['Estimate approval · 1902','Sep 2017','3 attachments']].forEach((r,i)=>$('pstrows').insertAdjacentHTML('beforeend',`<div class="tr" id="pr${i}"><div class="c1"><span class="pdf eml">EML</span>${r[0]}</div><div style="width:110px;color:#7a8191">${r[1]}</div><div style="width:120px"><span class="chp grey">${r[2]}</span></div></div>`));
+// migration rows
+[['alvarez@corp.local','J. Alvarez','Exchange',4120],['Drive · Claims shared','Claims team','Google Drive',2210],['sftp://scan01/claims','Records','SFTP',1388],['okafor@corp.local','N. Okafor','Exchange',2988]].forEach((r,i)=>$('jrows').insertAdjacentHTML('beforeend',`<div class="tr" id="jr${i}"><div class="c1">${r[0]}</div><div style="width:140px;color:#4a5263">→ ${r[1]}</div><div style="width:110px;color:#7a8191">${r[2]}</div><div style="width:70px;text-align:right" class="ss" data-n="${r[3]}">0</div><div style="width:90px;text-align:right"><span class="chp green">Mapped</span></div></div>`));
+// search results
+[['img','IMG_2291_water_kitchen.jpg','Photo · Claim 2291','Mar 03'],['pdf','Invoice_2291_water_mitigation.pdf','Invoice · scanned · text found','Mar 12'],['eml','RE: 2291 water damage photos','Email · 3 attachments','Mar 04']].forEach((r,i)=>$('res12').insertAdjacentHTML('beforeend',`<div class="tr" id="sr${i}" style="height:58px"><div class="c1"><span class="pdf ${r[0]}" style="width:26px;height:32px">${r[0].toUpperCase()}</span><div><div style="font-weight:600">${r[1].replace(/(2291|water)/g,'<mark style="background:#fff1c2">$1</mark>')}</div><div style="font-size:11.5px;color:#7a8191">${r[2]}</div></div></div><div style="width:80px;color:#7a8191">${r[3]}</div></div>`));
+for(let i=0;i<9;i++){$('lines13').insertAdjacentHTML('beforeend',`<div style="height:8px;background:#eef0f4;margin-top:9px;width:${70+((i*29)%30)}%"></div>`);$('lines15').insertAdjacentHTML('beforeend',`<div style="height:8px;background:#eef0f4;margin-top:9px;width:${65+((i*23)%35)}%"></div>`);}
+// legal hold rows
+[['folder','Claims › Claim 2291','Folder · 64 files'],['mail','j.alvarez@corp.local (migrated)','Mailbox · 4,120 items'],['pdf','Claim_2291_estimate.pdf','File'],['pdf','Invoice_20418.pdf','File'],['img','IMG_2291_water_kitchen.jpg','File']].forEach((r,i)=>$('lhrows').insertAdjacentHTML('beforeend',`<div class="tr" id="lr${i}" style="height:46px"><div class="c1"><span class="pdf ${r[0]==='folder'?'':r[0]==='mail'?'eml':r[0]}" style="${r[0]==='folder'?'background:#ffd36b':''}">${r[0]==='folder'?'':r[0]==='mail'?'EML':r[0].toUpperCase()}</span><div><div style="font-weight:600">${r[1]}</div><div style="font-size:11px;color:#7a8191">${r[2]}</div></div></div><span class="chp amber lk">🔒 Held</span></div>`));
+// menu
+['Open','Share','Download','Move','Trash'].forEach((m,i)=>$('menu22').insertAdjacentHTML('beforeend',`<div id="mi${i}" style="padding:0 16px;height:36px;display:flex;align-items:center;font-size:13.5px;overflow:hidden;position:relative">${m}</div>`));
+// invoice lines & table
+[['Water extraction','$1,850.00'],['Drying equipment · 5 days','$2,300.00'],['Drywall removal','$1,610.00'],['Antimicrobial treatment','$940.00'],['Haul-away','$1,760.00']].forEach((r,i)=>{$('invl').insertAdjacentHTML('beforeend',`<div style="display:flex;justify-content:space-between;margin-top:9px"><span>${r[0]}</span><span>${r[1]}</span></div>`);});
+$('tb26').innerHTML='<div style="display:flex;background:#f6f8fb;font-weight:700;font-size:10.5px;letter-spacing:.06em;color:#7a8191"><div style="flex:1;padding:6px 10px">LINE ITEM</div><div style="width:90px;padding:6px 10px;text-align:right">AMOUNT</div></div>'+[['Water extraction','$1,850.00'],['Drying equipment','$2,300.00'],['Drywall removal','$1,610.00'],['Antimicrobial','$940.00'],['Haul-away','$1,760.00']].map((r,i)=>`<div id="tl${i}" style="display:flex;border-top:1px solid #eef0f4"><div style="flex:1;padding:5px 10px">${r[0]}</div><div style="width:90px;padding:5px 10px;text-align:right">${r[1]}</div></div>`).join('');
+[['INV-20418','Coastline Restoration LLC','$8,460.00'],['MR-4471','Metro Roofing','$12,300.00'],['MR-4490','Metro Roofing','$7,750.00'],['INV-20399','Coastline Restoration LLC','$5,120.00'],['AD-1007','Allied Drywall','$6,045.00']].forEach((r,i)=>$('res27').insertAdjacentHTML('beforeend',`<div class="tr" id="mr${i}"><div class="c1"><span class="pdf">PDF</span>${r[0]}</div><div style="width:260px;color:#4a5263">${r[1]}</div><div style="width:110px;text-align:right;font-weight:600">${r[2]}</div></div>`));
+// audit rows
+const AU=[['09:41:02','UPLOAD','guest · d.ramirez','site_photo_01.jpg'],['09:58:17','PREVIEW','j.alvarez','Policy_HO-3_Ramirez.pdf'],['10:04:40','REDACT','j.alvarez','Policy_HO-3_Ramirez.pdf'],['10:12:44','SHARE','m.patel','Claim 2291 · external link'],['11:20:09','SIGN','d.ramirez','Settlement release'],['11:31:55','APPROVE','m.patel','Claim 2291 settlement'],['11:32:10','HOLD','legal.admin','Subrogation · Claim 2291'],['11:40:03','RETAIN','system','Claims · 10 years']];
+AU.forEach((r,i)=>$('arows').insertAdjacentHTML('beforeend',`<div class="tr" id="au${i}" style="height:46px;font-size:14px"><div style="width:160px" class="ss">2026-03-12 ${r[0]}</div><div style="width:140px;font-weight:700;color:${['#0088cf','#30267b','#ee2424','#30267b','#1c7a45','#1c7a45','#c47a00','#0088cf'][i]}">${r[1]}</div><div style="width:180px">${r[2]}</div><div class="c1">${r[3]}</div></div>`));
+// flip grid
+const G=[['7 copies','Bring it in.'],['14 replies','Find it.'],['Retention_schedule_FINAL.xlsx','Govern it.'],['Row 2,148 of 9,000','Put it to work.']];
+G.forEach((g,i)=>$('grid4').insertAdjacentHTML('beforeend',`<div id="gt${i}" class="a tile" style="left:${(i%2)*590}px;top:${Math.floor(i/2)*280}px;background:#d9dbe0;color:#4a4d5a"><div class="n" id="gn${i}">THE PROBLEM</div><div class="h" id="gh${i}" style="font-size:${i===2?40:60}px">${g[0]}</div></div>`));
+// flyers (7 copies colored + client files + emails)
+for(let i=0;i<7;i++)$('flyers').insertAdjacentHTML('beforeend',`<div id="fy${i}" class="a" style="left:0;top:0;width:220px;height:66px;background:#fff;border-radius:12px;box-shadow:0 12px 26px rgba(20,20,60,.18);display:flex;align-items:center;gap:10px;padding:0 14px;font-size:12.5px;font-weight:700;white-space:nowrap"><span class="pdf">PDF</span>${CP[i][2]}</div>`);
+for(let i=0;i<14;i++)$('fold').insertAdjacentHTML('beforeend',`<div id="fo${i}" class="a" style="left:0;top:${i*34}px;width:540px;height:30px;background:#e4e5e9;border-radius:8px;font-size:13px;color:#5d606c;display:flex;align-items:center;padding:0 14px;white-space:nowrap">RE: RE: FW: Claim 2291 · ${TH[i]}</div>`);
+
+document.querySelectorAll('.pg').forEach(p=>p.style.visibility='hidden');
+const sceneOn=(id,t,a,b)=>{const v=t>=a&&t<b;vis($(id),v);if(v)$(id).style.opacity=1;return v;};
+const SUP=[[18.0,20.5,'Upload files and whole folders'],[20.5,23.65,'Upload request links<br>No account needed'],[23.65,27.85,'Email capture (Gmail)<br>PST extraction'],[27.85,32.4,'Migrate Exchange, Google Drive and SFTP<br>Mapped to owners'],
+ [44.8,48.8,'Search files, scans and email'],[48.8,52.9,'Preview, mark up and redact<br>No download'],[52.9,57.9,'Share inside and out<br>Links that expire · download off'],[57.9,62.1,'Comments and tags<br>DocuSign e-signature'],
+ [73.2,77.6,'Workflows: review, approve, sign<br>My Tasks'],[77.6,82.4,'Retention with notices<br>Delete only after approval'],[82.4,85.2,'Legal hold on folders, files<br>and migration sources'],[85.2,90.6,'Labels · roles · single sign-on'],
+ [101.3,105.7,'Document AI fills metadata from scans<br>Tables included'],[105.7,107.8,'Search by metadata'],[107.8,113.0,'Ask a folder<br>Answers with sources']];
+const FOOT=[[57.9,62.1,'E-signature via DocuSign; limits apply.'],[101.3,105.7,'Document AI reads PDF, TIFF, JPG and PNG; clean tables only.'],[107.8,113.0,'AI can make mistakes. Check important information.']];
+let lastSup='',lastFoot='';
+
+function seekG(t){
+ // ---------- backgrounds ----------
+ const GREY=[[0,11.0],[11.0,15.6],[35.8,41.0],[64.8,69.7],[94.8,98.8]];
+ const inGrey=GREY.some(([a,b])=>t>=a&&t<b);
+ vis($('greyw'),inGrey);
+ const PAN=[['pan1',15.6,18.0],['pan2',41.0,44.8],['pan3',69.7,73.2],['pan4',98.8,101.3]];
+ let onPanel=false;
+ PAN.forEach(([id,a,b])=>{const el=$(id);if(t<a||t>=b){vis(el,false);return;}vis(el,true);onPanel=true;
+  const r=R(t,a,a+0.45,E.io)*1250;el.style.clipPath=`circle(${r}px at 960px 540px)`;});
+ const lw=PAN.reduce((m,[id,a,b])=>Math.max(m,t>=a&&t<b?R(t,a+0.25,a+0.45):0),0);
+ $('logoW').style.opacity=lw;$('logoD').style.opacity=1-lw;
+ // ---------- tracker ----------
+ {const tk=$('trk');const tv=t>=10.6&&t<118.6;vis(tk,tv);
+  if(tv){S(tk,{op:R(t,10.6,10.95)*(1-R(t,118.3,118.6))});
+   const lit=[15.85,41.25,69.95,99.05];
+   tk.querySelectorAll('div').forEach((d,i)=>{const on=t>=lit[i];const cur=on&&(i===3||t<lit[i+1]);
+    d.style.background=on?MC[i]:'transparent';d.style.borderColor=on?MC[i]:(onPanel?'rgba(255,255,255,.55)':'#b5b8c6');d.style.color=on?'#fff':(onPanel?'rgba(255,255,255,.8)':'#8b8fa3');
+    d.style.transform=`scale(${cur?1+0.12*R(t,lit[i],lit[i]+0.2,E.ob)-0.12*R(t,lit[i]+0.2,lit[i]+0.5):1})`;
+    d.style.boxShadow=onPanel&&on?'0 0 0 1.5px #fff':'none';});}}
+
+ // ---------- S01 ----------
+ if(sceneOn('s01',t,0,9.2)){
+  const s=$('s01');const fall=R(t,8.5,9.1,E.i);S(s,{op:1-fall,y:fall*30,b:fall*6});
+  const wi=$('wins');S(wi,{s:L(1,1.07,R(t,0,8.6,E.l))});
+  const tt=$('t01');rise(tt,t,st('q01a')-0.05,0.07);const up=R(t,st('q01b')-0.3,st('q01b')+0.3,E.io);S(tt,{y:L(0,-330,up),s:L(1,.62,up)});
+  const W=[['w1',ws('q01b',0)],['w2',ws('q01b',1)],['w6',ws('q01b',1)+0.15],['w3',ws('q01b',2)],['w5',ws('q01b',3)],['w4',ws('q01b',4)]];
+  const app=st('q01b')-0.1;
+  W.forEach(([id,lt],i)=>{const el=$(id);const a=R(t,app+i*0.06,app+i*0.06+0.5,E.o5);const lit=R(t,lt,lt+0.2,E.o);const pk=R(t,lt,lt+0.15)-R(t,lt+0.15,lt+0.45);
+   const dep=[0.8,1,1.1,0.9,1.05,0.85][i];
+   S(el,{op:a*L(.45,1,lit),y:L(30,0,a)-t*4*dep,x:(i%2?-1:1)*t*3*dep,s:1+0.04*pk});
+   const pg=el.querySelector('.ping');if(pg)pg.style.transform=`scale(${R(t,lt,lt+0.3,E.ob)})`;});
+ }
+ // ---------- S02 ----------
+ if(sceneOn('s02',t,8.5,11.0)){
+  rise($('fm'),t,8.65,0.08);S($('fm'),{op:1-R(t,10.3,10.6)});
+  for(let i=0;i<4;i++){const d=$('md'+i),m=$('mt'+i);const dp=R(t,8.75+i*0.08,8.95+i*0.08,E.ob);const op=R(t,9.25+i*0.08,9.7+i*0.08,E.o5);
+   S(d,{op:dp*(1-op),s:dp});
+   const sh=R(t,10.35,10.85,E.io);const tx=1920-56-(4-i)*52+4+22-(330+i*320+150), ty=104+12-(470+85);
+   S(m,{op:op*(1-R(t,10.7,10.9)),sx:L(L(0.08,1,op),0.15,sh),sy:L(L(0.14,1,op),0.14,sh),x:tx*sh,y:ty*sh});}
+ }
+ // ---------- problems ----------
+ if(sceneOn('s03',t,11.0,15.6)){
+  rise($('c7'),t,11.15,0.08);
+  for(let i=0;i<7;i++){const el=$('cp'+i);const p=R(t,11.3+i*0.22,11.75+i*0.22,E.o5);S(el,{op:p,y:L(26,0,p)+Math.sin(t*0.9+i)*3,r:(i%2?-1:1)*1.5});}
+  pop($('b03'),t,13.7,0.4);
+ }
+ if(sceneOn('s10',t,35.8,41.0)){
+  rise($('c14'),t,35.95,0.08);
+  for(let i=0;i<14;i++){const tt=36.1+i*0.24;const p=R(t,tt,tt+0.25,E.o5);const el=$('th'+i);el.style.opacity=p;el.style.transform=`translateX(${(1-p)*30}px)`;}
+  $('c14n').textContent=Math.max(1,Math.min(14,Math.floor((t-36.1)/0.24)+1));
+  S($('thr'),{op:R(t,35.85,36.2)});
+  pop($('b10'),t,39.3,0.4);
+ }
+ if(sceneOn('s17',t,64.8,69.7)){
+  pop($('xls'),t,64.9,0.45);popb($('stick'),t,65.9,0.35);$('stick').style.transform+=' rotate(5deg)';
+  pop($('appr'),t,66.6,0.4);pop($('logr'),t,67.3,0.4);pop($('b17'),t,68.0,0.4);
+ }
+ if(sceneOn('s24',t,94.8,98.8)){
+  pop($('scan'),t,94.9,0.45);$('scan').style.transform+=' rotate(-2deg)';pop($('sheet'),t,95.1,0.45);
+  [0,1,2].forEach(i=>{});
+  typ($('typ24'),'Coastline Rest',t,95.6,98.4);
+  $('rown').textContent=['2,141','2,143','2,145','2,147','2,148'][Math.min(4,Math.floor(R(t,95.2,96.2,E.l)*4.99))];
+  pop($('rowc'),t,95.3,0.4);pop($('b24'),t,96.9,0.4);
+ }
+ // ---------- move cards ----------
+ [['m1',15.6,18.0,'q04'],['m2',41.0,44.8,'q11'],['m3',69.7,73.2,'q18'],['m4',98.8,101.3,'q25']].forEach(([id,a,b,k])=>{
+  const el=$(id);if(t<a||t>=b){vis(el,false);return;}vis(el,true);el.style.opacity=1;
+  el.querySelector('.lbl').style.opacity=R(t,a+0.3,a+0.6);
+  if(id==='m2'){rise($('m2a'),t,ws('q11',2)-0.1,0.06);rise($('m2b'),t,ws('q11',4)-0.1,0.06);rise($('m2c'),t,ws('q11',6)-0.1,0.06);}
+  else rise(el.querySelector('h1'),t,a+0.4,0.07);
+  const bf=el.querySelector('.bf');const p=R(t,a+1.0,a+1.4,E.o5);bf.style.opacity=p;bf.style.transform=`translateY(${(1-p)*14}px)`;
+  S(el,{s:L(1,1.025,R(t,a,b,E.l))});
+ });
+ // ---------- chapter headers & supers ----------
+ [['h1',18.0,32.4],['h2',44.8,62.1],['h3',73.2,90.6],['h4',101.3,113.0]].forEach(([id,a,b])=>{const el=$(id);if(t<a||t>=b){vis(el,false);return;}vis(el,true);el.style.opacity=1;rise(el,t,a+0.05,0.05);el.querySelector('.lbl').style.opacity=R(t,a,a+0.3);});
+ {const s=SUP.find(s=>t>=s[0]&&t<s[1]);const el=$('sup');if(!s){vis(el,false);}else{vis(el,true);if(lastSup!==s[2]){el.innerHTML=s[2];lastSup=s[2];}const p=R(t,s[0]+0.15,s[0]+0.5,E.o5);S(el,{op:p,y:L(12,0,p)});}}
+ {const s=FOOT.find(s=>t>=s[0]&&t<s[1]);const el=$('foot');if(!s){vis(el,false);}else{vis(el,true);if(lastFoot!==s[2]){el.textContent=s[2];lastFoot=s[2];}el.style.opacity=R(t,s[0]+0.3,s[0]+0.6);}}
+
+ // ---------- device ----------
+ const DEV=[[18.0,32.4],[44.8,62.1],[73.2,90.6],[101.3,113.0]];
+ const dseg=DEV.find(([a,b])=>t>=a&&t<b);
+ const dev=$('device');
+ if(!dseg){vis(dev,false);}else{vis(dev,true);dev.style.opacity=1;
+  const [a,b]=dseg;const di=R(t,a,a+0.6,E.o5);
+  S(dev,{y:L(70,0,di),s:L(1,1.025,R(t,a,b,E.l))});
+  const PG=[['p05',18.0,20.5],['p06',20.5,23.65],['p07',23.65,27.85],['p08',27.85,32.4],['p12',44.8,48.8],['p13',48.8,52.9],['p14',52.9,57.9],['p15',57.9,62.1],['p19',73.2,77.6],['p20',77.6,82.4],['p21',82.4,85.2],['p22',85.2,90.6],['p26',101.3,105.7],['p27',105.7,107.8],['p28',107.8,113.0]];
+  PG.forEach(([id,pa,pb])=>{const el=$(id);const first=DEV.some(d=>d[0]===pa);
+   if(t<pa-0.3||t>=pb+0.3){el.style.visibility='hidden';return;}
+   const inP=first?1:R(t,pa-0.15,pa+0.3,E.io),outP=DEV.some(d=>d[1]===pb)?0:R(t,pb-0.15,pb+0.3,E.io);
+   el.style.visibility=(inP<=0||outP>=1)?'hidden':'';el.style.transform=`translateX(${(1-inP)*952-outP*952}px)`;});
+ }
+ // P05
+ if(t>=17.9&&t<20.8){
+  const ds=18.2,de=18.95;const dp=R(t,ds,de,E.io);
+  if(t<de+0.1){S($('drag'),{op:cl(dp*5)*(1-R(t,de-0.05,de+0.1)),x:L(1700,900,dp),y:L(200,560,dp)-Math.sin(Math.PI*dp)*60,r:L(6,0,dp)});}else hide($('drag'));
+  const tp=R(t,de,19.85,E.io);pop($('tray'),t,de-0.05,0.25);$('trayb').style.width=(tp*100)+'%';$('trayp').textContent=Math.round(tp*100)+'%';$('trayt').textContent=tp>=1?'Upload complete · 12 items':'Uploading 12 items';
+  for(let i=0;i<10;i++){const p=R(t,19.2+i*0.08,19.5+i*0.08,E.ob);S($('fc'+i),{op:cl(p*2),s:L(.7,1,p)});}
+ } else hide($('drag'));
+ // P06 + phone
+ {const pa=20.5,pb=23.65;
+  const mv=R(t,pa+0.15,pa+0.45,E.o5)*(1-R(t,21.75,21.95,E.i));S($('p06m'),{op:mv,s:L(.95,1,mv)});
+  $('p06b').style.transform=`scale(${t>21.55&&t<21.7?0.94:1})`;
+  const ph=$('ph');const PHW=[[pa+0.9,pb],[57.9+1.0,62.1]];const pw=PHW.find(([x,y])=>t>=x-0.1&&t<y);
+  if(pw){const p=R(t,pw[0],pw[0]+0.5,E.o5);S(ph,{op:p,y:L(60,0,p)});}else hide(ph);
+  if(t>=pa&&t<pb){
+   const up=[R(t,22.0,22.25,E.ob),R(t,22.2,22.45,E.ob),R(t,22.4,22.65,E.ob)];const done=t>22.85;
+   $('phc').innerHTML=`<div style="padding:44px 18px 0;font-size:11px;color:#7a8191;font-weight:600;letter-spacing:.08em">SOLIX ECS · UPLOAD</div><div style="padding:6px 18px;font-size:17px;font-weight:700;line-height:1.25">Upload files for<br>Claim 2291</div><div style="margin:10px 18px;height:120px;border:2px dashed #c9cdd6;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#7a8191">Drop photos or files</div><div style="display:flex;gap:8px;padding:0 18px">${[0,1,2].map(i=>`<div style="width:62px;height:62px;border-radius:10px;background:${i<2?'#cfe6d8':'#fde6e6'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${i<2?'#1c7a45':'#c41c1c'};transform:scale(${up[i]});opacity:${cl(up[i]*2)}">${i<2?'JPG':'PDF'}</div>`).join('')}</div><div style="margin:18px;height:40px;border-radius:10px;background:${done?'#2fb36b':'#0088cf'};color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center">${done?'✓ Uploaded':'Upload'}</div><div style="text-align:center;font-size:11px;color:#9aa0ad">No account needed</div>`;
+   const fl=R(t,22.95,23.5,E.io);$('p06cnt').textContent=fl>0.95?'3 files':'0 files';
+   $('p06new').style.background=`rgba(0,136,207,${0.08+0.12*(fl>0.95?1-R(t,23.5,23.65):0)})`;
+  }
+  for(let i=0;i<3;i++){const el=$('fy'+i);if(t>=22.95&&t<23.55&&!(t>=32.4&&t<35.8)){const p=R(t,22.95+i*0.06,23.45+i*0.06,E.io);el.innerHTML=`<span class="pdf ${i<2?'img':''}">${i<2?'JPG':'PDF'}</span>${['site_photo_06.jpg','site_photo_07.jpg','estimate_signed.pdf'][i]}`;S(el,{op:cl(p*4)*(1-R(t,23.4,23.55)),x:L(1520,980,p),y:L(560,720,p)-Math.sin(Math.PI*p)*80,s:L(.8,.9,p)});}}
+ }
+ // P07
+ if(t>=23.5&&t<28.1){const cn=ws('q07',3)-0.05;
+  const gst=$('gst');if(t>cn){gst.className='chp green';gst.textContent='Connected';}else{gst.className='chp grey';gst.textContent='Connect';}
+  $('gtog').className=t>cn+0.2?'tog':'tog off';
+  const ps=ws('q07',6)-0.1;const pp=R(t,ps,ps+1.6,E.o);$('pstn').textContent=Math.round(1284*pp).toLocaleString('en-US');$('pstb').style.width=(pp*100)+'%';
+  $('psta').style.opacity=R(t,ps+1.2,ps+1.5);pop($('pstc'),t,ps-0.4,0.35);
+  for(let i=0;i<3;i++)pop($('pr'+i),t,ps+0.3+i*0.25,0.3);}
+ // P08
+ if(t>=27.7&&t<32.5){const tc=[ws('q08',1),ws('q08',2)+0.1,ws('q08',5)+0.1];
+  ['sx1','sx2','sx3'].forEach((id,i)=>{const c=$(id).querySelector('.chp');const on=t>tc[i];c.className=on?'chp green':'chp grey';c.textContent=on?'Connected':'Connect';$(id).style.borderColor=on?'#2fb36b':'#e6e9f0';$(id).style.transform=`scale(${1+0.05*(R(t,tc[i],tc[i]+0.12)-R(t,tc[i]+0.12,tc[i]+0.35))})`;});
+  const js=ws('q08',7);for(let i=0;i<4;i++){const r=$('jr'+i);pop(r,t,js+i*0.15,0.3);const n=r.querySelector('.ss');n.textContent=Math.round(+n.dataset.n*R(t,js+i*0.15,31.4,E.o)).toLocaleString('en-US');}
+  const jst=$('jst');if(t>31.5){jst.className='chp green';jst.textContent='Completed';}else{jst.className='chp blue';jst.textContent='Running';}pop($('job8'),t,js-0.2,0.3);}
+ // ---------- S09 result ----------
+ if(sceneOn('s09',t,32.4,35.8)){
+  const r=$('r09t');S(r,{op:R(t,32.5,32.9),y:L(20,0,R(t,32.5,32.9,E.o5))});pop($('lib'),t,32.45,0.4);
+  const mg=R(t,33.6,33.9,E.ob);
+  const SRC=[[-200,100],[700,-120],[1950,120],[-220,600],[1960,640],[800,1150],[1400,-150]];
+  for(let i=0;i<7;i++){const el=$('fy'+i);el.innerHTML=`<span class="pdf">PDF</span>${CP[i][2]}`;const p=R(t,32.55+i*0.08,33.45+i*0.08,E.io);S(el,{op:cl(p*3)*(1-R(t,33.45+i*0.08,33.6+i*0.08)),x:L(SRC[i][0],1200,p),y:L(SRC[i][1],470,p),s:L(1,.6,p)});}
+  S($('one'),{op:cl(mg*2),s:L(.6,1,mg)});
+  pop($('r09s'),t,ws('q09',4),0.4);
+  ['rp1','rp2','rp3'].forEach((id,i)=>popb($(id),t,ws('q09',6)+i*0.15,0.3));
+ } else if(!(t>=22.9&&t<23.6)){for(let i=0;i<7;i++)hide($('fy'+i));}
+ // P12 search
+ if(t>=44.7&&t<49.1){typ($('q12'),'2291 water',t,45.0,45.8);$('q12c').style.opacity=(t<45.8||Math.floor(t*2.4)%2===0)?1:0;for(let i=0;i<3;i++)pop($('sr'+i),t,ws('q12',2)+i*0.35,0.3);}
+ // P13
+ if(t>=48.7&&t<53.1){popb($('note13'),t,ws('q13',4),0.35);$('rd1').style.transform=`scaleX(${R(t,ws('q13',8)-0.05,ws('q13',8)+0.2,E.o)})`;$('rd1').style.transformOrigin='left';$('rd2').style.transform=`scaleX(${R(t,ws('q13',8)+0.25,ws('q13',8)+0.5,E.o)})`;$('rd2').style.transformOrigin='left';}
+ // P14
+ if(t>=52.8&&t<58.1){pop($('sh14'),t,53.0,0.35);
+  const e=ws('q14',6);$('exp14').textContent=t>e?'In 7 days':'Never';$('exp14').style.borderColor=t>e&&t<e+0.6?'var(--blue)':'';
+  const d=ws('q14',8);$('dl14').className=t>d?'tog off':'tog';$('dl14').innerHTML=`<i></i>${t>d?'Download off':'Allow download'}`;
+  $('cp14').style.transform=`scale(${t>56.6&&t<56.75?0.94:1})`;pop($('t14'),t,56.8,0.3);}
+ // P15
+ if(t>=57.8&&t<62.3){pop($('cm15'),t,58.2,0.35);popb($('tg1'),t,ws('q15',1),0.3);popb($('tg2'),t,ws('q15',1)+0.15,0.3);
+  const ds=ws('q15',5);$('ds15').style.transform=`scale(${t>ds&&t<ds+0.15?0.95:1})`;$('sent15').style.opacity=R(t,ds+0.2,ds+0.4);
+  if(t>=57.9){const sg=R(t,60.2,61.0,E.io);const ok=t>61.1;
+   $('phc').innerHTML=`<div style="padding:44px 18px 0;font-size:11px;color:#7a8191;font-weight:600;letter-spacing:.08em">DOCUSIGN</div><div style="padding:6px 18px;font-size:16px;font-weight:700;line-height:1.25">Settlement release<br>Claim 2291</div><div style="margin:14px 18px;height:150px;border-radius:12px;background:#f6f8fb;position:relative;overflow:hidden"><svg viewBox="0 0 200 100" style="position:absolute;inset:10px;width:calc(100% - 20px);height:calc(100% - 20px)"><path d="M10 70 C30 20,45 90,60 55 S85 30,95 60 S120 80,135 40 S165 60,190 45" fill="none" stroke="#1d2433" stroke-width="3" stroke-linecap="round" stroke-dasharray="320" stroke-dashoffset="${320*(1-sg)}"/></svg><div style="position:absolute;left:14px;bottom:10px;font-size:10px;color:#9aa0ad">Sign here · D. Ramirez</div></div><div style="margin:0 18px;height:40px;border-radius:10px;background:${ok?'#2fb36b':'#ffcc22'};color:${ok?'#fff':'#1d2433'};font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center">${ok?'✓ Successful':'Finish'}</div>`;}}
+ // ---------- S16 ----------
+ if(sceneOn('s16',t,62.1,64.8)){
+  S($('r16t'),{op:R(t,62.2,62.6),y:L(20,0,R(t,62.2,62.6,E.o5))});
+  for(let i=0;i<14;i++){const f=R(t,62.6+i*0.04,63.3+i*0.04,E.io);S($('fo'+i),{op:1-R(t,63.1+i*0.04,63.35+i*0.04),y:L(0,240-i*34,f),s:L(1,.9,f),x:-60*f});}
+  const lp=R(t,63.5,63.85,E.ob);S($('link1'),{op:cl(lp*2),s:L(.7,1,lp)});
+ }
+ // P19
+ if(t>=73.1&&t<77.8){const ap=ws('q19',4)+0.1;
+  ['nd1','nd2','nd3','nd4'].forEach((id,i)=>{const done=(i===0&&t>73.8)||(i===1&&t>ap+0.15)||(i===2&&t>ap+0.7)||(i===3&&t>ap+1.3);const act=!done&&((i===1&&t>73.8)||(i===2&&t>ap+0.15)||(i===3&&t>ap+0.7));$(id).className='node'+(done?' done':act?' act':'');$(id).querySelector('span').textContent=done?'DONE':act?'IN PROGRESS':'STEP '+(i+1);});
+  $('ap19').style.transform=`scale(${t>ap&&t<ap+0.15?0.93:1})`;const tk=$('tk19');if(t>ap){tk.className='chp green';tk.textContent='Approved';}else{tk.className='chp amber';tk.textContent='Waiting';}}
+ // P20
+ if(t>=77.5&&t<82.6){const dr=ws('q20',5);const dp=R(t,dr-0.4,dr+0.25,E.io);$('rc20').style.transformOrigin='0 0';S($('rc20'),{x:L(0,452,dp),y:L(0,64,dp)-60*Math.sin(Math.PI*dp),s:L(1,0.62,dp)});
+  const lt=ws('q20',8);['nt1','nt2','nt3'].forEach((id,i)=>{$(id).className=t>78.3+i*0.2?'chp amber':'chp grey';});
+  S($('fd20'),{s:1+0.06*(R(t,dr+0.2,dr+0.3)-R(t,dr+0.3,dr+0.55))});pop($('st20'),t,dr+0.35,0.3);}
+ // P21
+ if(t>=82.3&&t<85.4){popb($('lh21'),t,ws('q21',1),0.3);for(let i=0;i<5;i++){const lk=$('lr'+i).querySelector('.lk');popb(lk,t,ws('q21',2)+0.1+i*0.12,0.25);}}
+ // P22
+ if(t>=85.1&&t<90.8){const lb=ws('q22',0);popb($('lb22'),t,lb+0.1,0.3);
+  [1,2,4].forEach((k,j)=>{const el=$('mi'+k);const p=R(t,lb+0.6+j*0.15,lb+0.95+j*0.15,E.io);el.style.height=(36*(1-p))+'px';el.style.opacity=1-p;});
+  pop($('role22'),t,ws('q22',1),0.35);popb($('sso22'),t,ws('q22',3),0.3);}
+ // ---------- S23 ----------
+ if(sceneOn('s23',t,90.6,94.8)){
+  S($('r23t'),{op:R(t,90.7,91.1),y:L(20,0,R(t,90.7,91.1,E.o5))});const hp=R(t,ws('q23',5),ws('q23',6)+0.3,E.io);hlP($('r23hl'),hp);$('r23w').style.color=hp>0.5?'#fff':'';
+  pop($('aud'),t,90.75,0.4);for(let i=0;i<8;i++)pop($('au'+i),t,91.0+i*0.17,0.25);
+  const ex=ws('q23',8);$('ex23').style.transform=`scale(${t>ex&&t<ex+0.15?0.93:1})`;
+  const cp=R(t,ex+0.15,ex+0.6,E.ob);S($('csv'),{op:cl(cp*2),y:L(-80,0,cp),s:L(.7,1,cp)});
+ }
+ // P26
+ if(t>=101.2&&t<105.9){const vals=[['mv1','Coastline Restoration LLC','hv1'],['mv2','INV-20418','hv2'],['mv3','Mar 12, 2026','hv3'],['mv4','$8,460.00','hv4']];
+  vals.forEach(([m,v,h],i)=>{const tt=ws('q26',3)+i*0.32;typ($(m),v,t,tt,tt+0.28);const hp=R(t,tt-0.1,tt+0.1);$(h).style.background=`rgba(0,136,207,${0.18*hp})`;$(h).style.boxShadow=hp>0?`0 0 0 1.5px rgba(0,136,207,${hp})`:'none';});
+  for(let i=0;i<5;i++)pop($('tl'+i),t,ws('q26',9)+i*0.1,0.25);}
+ // P27
+ if(t>=105.6&&t<108){$('sb27').style.transform=`scale(${t>106.0&&t<106.15?0.94:1})`;$('n27').textContent=Math.round(38*R(t,106.2,106.8,E.o));for(let i=0;i<5;i++)pop($('mr'+i),t,106.25+i*0.08,0.25);}
+ // P28
+ if(t>=107.7&&t<113.1){typ($('q28'),"Summarize claim 2291. What's still open?",t,108.1,109.4);pop($('ask28'),t,108.0,0.25);
+  pop($('ans28'),t,ws('q28',7)-0.2,0.35);['a1','a2','a3'].forEach((id,i)=>pop($(id),t,ws('q28',7)+i*0.18,0.25));
+  $('refs').querySelectorAll('.chp').forEach((c,i)=>popb(c,t,ws('q28',10)+i*0.12,0.3));}
+ // ---------- S29 ----------
+ if(sceneOn('s29',t,113.0,118.5)){
+  const ft=[st('q29a'),st('q29b'),st('q29c'),st('q29d')];
+  for(let i=0;i<4;i++){const el=$('gt'+i);const ap=R(t,113.05+i*0.06,113.4+i*0.06,E.o5);const f=R(t,ft[i]-0.05,ft[i]+0.35,E.io);const sxv=Math.abs(Math.cos(Math.PI*f));
+   const back=f>=0.5;el.style.background=back?MC[i]:'#d9dbe0';el.style.color=back?'#fff':'#4a4d5a';
+   $('gn'+i).textContent=back?`MOVE 0${i+1} · ${MN[i].toUpperCase()}`:'THE PROBLEM';$('gh'+i).textContent=back?G[i][1]:G[i][0];$('gh'+i).style.fontSize=(back?60:(i===2?40:60))+'px';
+   S(el,{op:ap,sx:Math.max(0.02,sxv)*L(.96,1,ap),sy:L(.96,1,ap)});}
+ }
+ // ---------- S30 ----------
+ if(sceneOn('s30',t,118.5,999)){
+  S($('s30'),{s:L(1,1.015,R(t,118.5,126.3,E.l))});
+  const la=st('q30a');const lp=R(t,la-0.1,la+0.45,E.o5);S($('lock2'),{op:lp,y:L(22,0,lp)});
+  ['kp1','kp2','kp3'].forEach((id,i)=>{const tt=ws('q30b',i)-0.1;const p=R(t,tt,tt+0.45,E.o5);$(id).style.transform=`translateY(${(1-p)*108}%)`;});
+  const hp=R(t,ws('q30b',2),ws('q30b',2)+0.35,E.io);hlP($('kphl'),hp);$('kpw').style.color=hp>0.5?'#fff':'';
+  $('pl4').querySelectorAll('i').forEach((s,i)=>{s.style.transform=`scaleX(${R(t,118.7+i*0.15,119.1+i*0.15,E.io)})`;s.style.transformOrigin='left';});
+  pop($('appr4'),t,119.4,0.4);pop($('desc'),t,120.3,0.4);pop($('azure'),t,120.6,0.4);pop($('cta'),t,121.9,0.45);pop($('built'),t,122.4,0.45);
+ }
+ // ---------- cursor ----------
+ const cu=$('cursor');let cv=false;
+ const CUR=[['p06b',20.9,21.55],['ap19',ws('q19',4)-0.7,ws('q19',4)+0.1],['ex23',ws('q23',8)-0.7,ws('q23',8)],['ds15',ws('q15',5)-0.7,ws('q15',5)],['cp14',56.0,56.6],['sb27',105.75,106.0]];
+ for(const [id,t0,t1] of CUR){if(t>t0-0.2&&t<t1+0.5){const b=$(id).getBoundingClientRect();const tx=b.left+b.width*.55,ty=b.top+b.height*.6;const p=R(t,t0,t1,E.io);S(cu,{op:V(t,t0-0.2,t1+0.5,0.2,0.25),x:L(tx+170,tx,p),y:L(ty+120,ty,p),s:(t>t1&&t<t1+0.15)?0.88:1});cv=true;break;}}
+ if(!cv)hide(cu);
+ // ---------- captions ----------
+ const c=CAPS.find(c=>t>=c[0]&&t<c[1]);const ce=$('cap');
+ if(!c){ce.style.opacity=0;}else{ce.textContent=c[2];ce.style.opacity=Math.min(1,(t-c[0])/0.1,(c[1]-t)/0.1);
+  ce.style.color=onPanel?'#fff':'var(--ink)';ce.style.textShadow=onPanel?'0 2px 10px rgba(0,0,0,.3)':'none';}
+}
+document.fonts.ready.then(()=>{window.READY=true;});
+window.seek=seekG;
+</script>
+</body></html>
