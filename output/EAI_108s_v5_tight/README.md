@@ -5,7 +5,7 @@ The voice-over had long empty gaps (28.8 s of silence in total, up to 2 s betwee
 ## Files
 | File | What |
 |---|---|
-| `EAI_108s_A_RGBA_with_VO.mov` | **ONE file: the entire video, RGB with straight alpha, voice-over included** (QuickTime Animation video + 48 kHz stereo PCM audio). 1920x1080, 30 fps. About 750 MB, stored with Git LFS. Solix logo top-right is included; no background, no captions, no music. |
+| `EAI_108s_A_RGBA_with_VO.mov` | **ONE file: the entire video, RGB with straight alpha, voice-over included** (QuickTime Animation video + 48 kHz stereo PCM audio). 1920x1080, 30 fps. About 750 MB. GitHub rejects files over 100 MB and its large-file service is blocked in this session, so this file is delivered through the Claude app file card, not through GitHub; the GitHub folder has the .webm (same picture and voice-over, 13 MB). Solix logo top-right is included; no background, no captions, no music. |
 | `EAI_108s_A_RGBA_with_VO.webm` | The same single file as VP9 with alpha + Opus audio, only 13 MB. Opens directly in browsers and in editors that read WebM alpha; quality is close to the .mov (about 38 to 44 dB PSNR). |
 | `audio/EAI_108s_A_VO_narration_synced.wav` | The single voice-over file on its own (same audio as in the .mov), 101.4 s. |
 | `audio/EAI_108s_A_subtitles_synced.srt` | Subtitles timed to the new voice-over. |
