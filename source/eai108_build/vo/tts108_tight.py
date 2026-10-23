@@ -13,7 +13,7 @@ def gen(txt):
 SECTION={5.5,10.3,19.8,29.3,44.8,59.8,70.8,81.3,91.8,103.4}
 def gap_before(i):
     t,txt=A[i];prev=A[i-1][1]
-    if prev.rstrip().endswith(',') or txt.startswith(('Ready-made','build on')) or prev.startswith('Ready-made'): return 0.12
+    if prev.rstrip().endswith(',') or txt.startswith(('Knowledge graphs for your','build on')) or prev.startswith('Knowledge graphs for your'): return 0.12
     if t in SECTION: return 0.75
     return 0.42
 T0=0.3;t=T0;out=[];audio=[]
