@@ -6,7 +6,10 @@ pulse/percussion and a long hall reverb. The structure follows the video:
 intro swell, arpeggio from the first scene, light pulse once the platform
 story starts, a lift for the Patient 360 reveal and a resolved ending chord.
 
-usage: python3 corporate_ambient.py OUT.wav DURATION_SECONDS END_SECONDS
+usage: python3 corporate_ambient.py OUT.wav DURATION_SECONDS END_SECONDS [steady]
+
+"steady": one constant, even bed for the whole video (no build-ups, swells,
+breathing filter or ending hit) - only a short fade in and out.
 """
 import sys
 import wave
@@ -51,6 +54,9 @@ def chord_at(t):
     return CHORDS[int(t // (2 * BAR)) % len(CHORDS)]
 
 
+STEADY = len(sys.argv) > 4 and sys.argv[4] == "steady"
+
+
 def pad(dur, end):
     n = int(dur * SR)
     t = np.arange(n) / SR
@@ -80,7 +86,7 @@ def pad(dur, end):
         if t0 >= end:
             break
     # slow filter movement (breathing): crossfade a darker and a brighter version
-    m = (0.5 + 0.5 * np.sin(2 * np.pi * t / 19.0))[:, None]
+    m = (0.5 + 0.5 * np.sin(2 * np.pi * t / 19.0))[:, None] * (0 if STEADY else 1) + (0.5 if STEADY else 0)
     dark = np.column_stack([lp(out[:, c], 850) for c in range(2)])
     bright = np.column_stack([lp(out[:, c], 1900) for c in range(2)])
     return dark * (1 - m) + bright * m
@@ -205,6 +211,20 @@ def main():
     end = float(sys.argv[3])          # final chord from here
     n = int(dur * SR)
     mix = np.zeros((n, 2))
+    if STEADY:
+        mix += pad(dur, dur + 60)
+        mix += piano(dur, 0.2, dur) * 0.9
+        b = bass(dur, 0.0, dur)
+        mix += np.column_stack([b, b])
+        mix += drums(dur, 0.0, dur, lambda t: 0.55)
+        mix = reverb(mix)
+        mix = np.column_stack([hp(mix[:, 0], 35), hp(mix[:, 1], 35)])
+        t = np.arange(n) / SR
+        mix *= smooth(t / 1.5)[:, None] * smooth((dur - t) / 2.2)[:, None]
+        mix /= np.max(np.abs(mix)) + 1e-9
+        mix *= 10 ** (-1.0 / 20)
+        write(out_path, mix)
+        return
     mix += pad(dur, end) * 1.0
     mix += piano(dur, 3.5, end + 1.2) * smoothstep_env(n, [(3.3, 0.0), (4.2, 0.85), (10.4, 0.85), (11.0, 1.0)])
     b = bass(dur, 10.4, end + 2 * BAR)
@@ -234,7 +254,11 @@ def main():
     mix *= smooth(t / 1.2)[:, None] * smooth((dur - t) / 2.2)[:, None]
     mix /= np.max(np.abs(mix)) + 1e-9
     mix *= 10 ** (-1.0 / 20)
-    with wave.open(out_path, "wb") as w:
+    write(out_path, mix)
+
+
+def write(path, mix):
+    with wave.open(path, "wb") as w:
         w.setnchannels(2)
         w.setsampwidth(2)
         w.setframerate(SR)
