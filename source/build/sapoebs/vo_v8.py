@@ -23,7 +23,7 @@ LINES = [
  ["Solix. Built for S A P. Built for Oracle."],
 ]
 # silence after each line before the next one (s). Line 0 -> 1 leaves room for chips + underline; 8 -> 9 is set by the 2 s hold.
-GAP = {0: 3.00, 1: .38, 2: .36, 3: .36, 4: .40, 5: .46, 6: .42, 7: .32, 8: .55, 10: .40, 11: .46}   # tighter, continuous flow like the reference
+GAP = {0: 2.00, 1: .38, 2: .36, 3: .36, 4: .40, 5: .46, 6: .42, 7: .32, 8: .55, 10: .40, 11: .46}   # tighter, continuous flow like the reference
 HOLD_NEXT = 2.14                        # "The result?" stays on screen 2.0 s; next line starts this long after it begins
 SENT_GAP = .28
 TARGET_RMS = 10 ** (-20 / 20)
