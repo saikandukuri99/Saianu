@@ -73,7 +73,7 @@ def policy(step):
         d.rounded_rectangle((28, y - 8, w - 28, y + 52), 14, fill=(253, 236, 236) if (found and not mk) else TINT)
         d.text((48, y + 4), k, font=F("Inter-Medium.otf", 28), fill=INK)
         d.text((560, y + 2), masked if mk else raw, font=F("InterDisplay-SemiBold.otf", 30), fill=BLUE if mk else (INK if not found else RED))
-        tag = "Masked" if mk else ("Identified" if found else "")
+        tag = "Protected" if mk else ("Identified" if found else "")
         if tag:
             f = F("Inter-SemiBold.otf", 20); tw = f.getlength(tag) + 28
             col = BLUE if mk else RED

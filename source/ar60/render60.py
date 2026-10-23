@@ -97,7 +97,12 @@ def place(fr, tex, X, Y, wpx, t, a_in, a_out=0.0, alpha=1.0, sheen_t=None, from_
 def kicker(fr, t, text, y, t0, t1):
     fade_text(fr, t, text, LX + 2, y, 26, t0, t1, fname="Inter-SemiBold.otf", track=7, rgb=BLUE*1.25)
 
-ICON_LOGO = RA.logo_scaled(50); LOGO_END = RA.logo_scaled(170)
+# official Solix logos (white wordmark for dark backgrounds) and the Solix EMPOWER logo
+def _logo(fn, h):
+    im = Image.open(os.path.join(B, "..", "assets", fn)).convert("RGBA"); im = im.crop(im.getbbox())
+    return np.asarray(im.resize((int(im.width*h/im.height), h), Image.LANCZOS), np.float32)/255
+ICON_LOGO = _logo("solix_logo_official_white.png", 50); LOGO_END = _logo("solix_logo_official_white.png", 170)
+LOGO_EMP = _logo("solix_empower_logo.png", 46)
 
 # ---------------------------------------------------------------- 1. The problem: a cluttered data center, legacy apps stacking up
 APPS = [("ERP", "app"), ("CRM", "app"), ("HR", "file"), ("Mainframe", "mainframe"), ("Billing", "cost"),
@@ -245,12 +250,12 @@ def scene_retire(fr, t):
 
 # ---------------------------------------------------------------- 4. Comply: built-in compliance
 CAPS = [("Retention", "archive", ("m1", "Retention")), ("Legal hold", "lock", ("m1", "legal hold")), ("eDiscovery", "file", ("m1", "eDiscovery")),
-        ("Masking", "risk", ("m1", "masking")), ("Audit trail", "app", ("m2", "audit-ready"))]
+        ("Access & privacy", "risk", ("m1", "access and privacy")), ("Audit trail", "app", ("m2", "audit-ready"))]
 def scene_comply(fr, t):
     s = "comply"
     if not (SC[s] - .1 <= t <= SC_END[s] + .1): return
     o = out(s, t); a = 1 - o; s0 = SC[s]
-    kicker(fr, t, "GOVERNED FROM DAY ONE", 176, s0 + .2, E(s))
+    kicker(fr, t, "COMPLIANCE, BUILT IN", 176, s0 + .2, E(s))
     kinetic(fr, t, "Governed from day one.", LX, 262, 66, s0 + .3, E(s), maxw=1000, hl=("day", "one"))
     cv = MG.Cv(120, 300, 760, 640)
     for i, (lab, kind, (lid, frag)) in enumerate(CAPS):
@@ -265,8 +270,8 @@ def scene_comply(fr, t):
         cv.text(560, y, "✓", 30, MG.rgba(BL, a*clamp((t - ti - .3)/.3)), "InterDisplay-Bold.otf")
     cv.blit(fr, glow=.45)
     tb = wt("m2", "audit-ready") + .2
-    fade_text(fr, t, "Supports retention, legal hold,", LX + 8, 820, 30, tb, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([.6, .82, 1.0]))
-    fade_text(fr, t, "and audit requirements", LX + 8, 862, 30, tb + .1, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([.6, .82, 1.0]))
+    fade_text(fr, t, "Audit-ready across every retired", LX + 8, 820, 32, tb, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([.35, .72, 1.0]))
+    fade_text(fr, t, "application.", LX + 8, 864, 32, tb + .1, E(s), fname="InterDisplay-SemiBold.otf", rgb=np.array([.35, .72, 1.0]))
     # policy screen (right)
     tp = s0 + .5
     place(fr, S6.policy(int(clamp((t - LN["m1"]["start"] + .3)/(LN["m2"]["end"] - LN["m1"]["start"] - .4))*30)), 1390, 575, 780, t,
@@ -282,8 +287,8 @@ def scene_ai(fr, t):
     o = out(s, t); a = 1 - o; s0 = SC[s]
     tp = wt("a2", "people ask")
     kicker(fr, t, "ACTIVATE WITH AI", 176, s0 + .2, E(s))
-    kinetic(fr, t, "Ask in plain English.", LX, 262, 72, tp - .5, E(s), maxw=620, hl=("plain", "English"))
-    fade_text(fr, t, "Preserved data doesn't sit idle.", LX, 262, 44, s0 + .3, tp - .7, fname="InterDisplay-SemiBold.otf")
+    kinetic(fr, t, "Ask in plain English.", LX, 262, 72, tp - .15, E(s), maxw=620, hl=("plain", "English"))
+    fade_text(fr, t, "Preserved data doesn't sit idle.", LX, 262, 44, s0 + .3, tp - 1.0, fname="InterDisplay-SemiBold.otf")
     tq = tp - .2; nq = int(clamp((t - tq)/1.8)*len(S6.Q))
     tth = tq + 1.9; tans = LN["a2"]["end"] - .45
     think = clamp((t - tth)/1.0) if t >= tth else 0.0
@@ -359,6 +364,8 @@ def scene_end(fr, t):
             x += measure(wd, "InterDisplay-Bold.otf", 84) + 34
         fade_text(fr, t, "www.solix.com", W/2, 730, 36, wt("e2", "with Solix"), T + 5, fname="Inter-SemiBold.otf", anchor="ms", rgb=np.array([.6, .82, 1.0]), track=2)
         fade_text(fr, t, "Solix Application Retirement", W/2, 790, 26, wt("e2", "with Solix") + .3, T + 5, fname="Inter-Medium.otf", anchor="ms", alpha=.8)
+        ea = eout((t - wt("e2", "with Solix") - .4)/.6)
+        RA.put_rgba(fr, LOGO_EMP, W/2 - LOGO_EMP.shape[1]/2, 870 + (1 - ea)*14, ea*.95)
         fade_text(fr, t, "Data Ask is part of Solix Enterprise AI", W/2, 1010, 20, wt("e2", "with Solix") + .6, T + 5, fname="Inter-Medium.otf", anchor="ms", alpha=.55)
 
 # ---------------------------------------------------------------- 0. Opening title
