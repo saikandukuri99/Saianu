@@ -1,3 +1,6 @@
+# FINAL v9: `Solix_SAP_OEBS_FINAL_v9_*` (94.9 s)
+Same as v8 (CEO brief) with one change: the pause after the opening line (10-13 s portion) is 1 s shorter, so the next line starts at 12.8 s instead of 13.8 s and everything after moves 1 s earlier.
+
 # FINAL v8 (CEO brief): `Solix_SAP_OEBS_FINAL_v8_*` (95.9 s)
 CEO/manager "final changes" applied: one logo and one SOLIXEMPOWER tag per frame (corner tag hidden on the title/hook, corner logo hidden on the Solix CDP shot, both fade as the end card starts); original Solix logo files used throughout; "SAP S/4HANA" in full; "Solix CDP" on one line; "Solix is Validated by Oracle" (no "certified" anywhere); policy chips Searchable / Accessible / Reportable (key icon); new closing slide (SAP and Oracle pills merge into "Solix CDP", proof row, logo + solix.com + CTA, hold 2 s, fade to black). Narration lines re-recorded in the same synthetic voice. CTA text "Book a 30-minute archive assessment" is the brief's example - Solix must supply the final line/QR. 4K is a ~50 MB web-size encode (not the 40-60 Mbps stage master, which exceeds GitHub's file limit). Voice-only and music-only WAVs (48 kHz) included; voice = Kokoro-82M af_heart (Apache-2.0), music = original synthesized track (no third-party licence).
 
