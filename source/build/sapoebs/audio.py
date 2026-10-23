@@ -73,7 +73,7 @@ def corporate():
     return out
 def upbeat():
     """upbeat corporate bed: 124 bpm, C major (C - G - Am - F), four-on-the-floor kick, claps, off-beat hats, bass, chord stabs, bright plucked arpeggio"""
-    r = np.random.RandomState(13); out = np.zeros(N); bpm = 124.0; beat = 60 / bpm; bar = 4 * beat; END = T - 3.4; G0 = OFF   # full groove starts with the story
+    r = np.random.RandomState(13); out = np.zeros(N); bpm = 124.0; beat = 60 / bpm; bar = 4 * beat; END = T - 4.3; G0 = OFF   # full groove starts with the story
     TRI = [[261.6, 329.6, 392.0], [246.9, 293.7, 392.0], [220.0, 261.6, 329.6], [220.0, 261.6, 349.2]]; ROOT = [65.4, 98.0, 110.0, 87.3]
     def put(x, at, g=1.0):
         a_ = int(at * SR)

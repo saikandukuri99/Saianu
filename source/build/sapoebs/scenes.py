@@ -53,7 +53,7 @@ _V = lambda i: VO[i]["start"] - .07                    # scene windows follow th
 SC = {"T": (0.0, OFF), "A": (OFF, _V(1)), "B": (_V(1), _V(2)), "C": (_V(2), _V(3)), "E": (_V(3), _V(4)), "D": (_V(4), _V(5)),
       "F": (_V(5), _V(6)), "K": (_V(6), _V(7)), "DA": (_V(7), VO[9]["start"] - .03)}
 SC["G"] = (SC["DA"][1], SC["DA"][1] + 2.0)                # "The result?" holds 2 s
-SC["H"] = (SC["G"][1], _V(11)); SC["I"] = (_V(11), _V(12)); SC["J"] = (_V(12), round(VO[12]["end"] + 3.6, 2))
+SC["H"] = (SC["G"][1], _V(11)); SC["I"] = (_V(11), _V(12)); SC["J"] = (_V(12), round(VO[12]["end"] + 6.6, 2))
 CUTS = []          # hard cuts: no transition effects
 
 # --------------------------------------------------------------------------- T  video title card (music only, before the voice-over starts)
@@ -78,7 +78,7 @@ def scene_T(c, t):
 
 # --------------------------------------------------------------------------- A  (HEAD) opening headline
 def scene_A(c, t):
-    kicker(c, "SOLIXEMPOWER 2026   ·   SOLIX", 960, 292, .15 + OFF, t, anchor="c")
+    kicker(c, "SOLIXEMPOWER 2026", 960, 292, .15 + OFF, t, anchor="c")
     L1 = [("SAP", WHITE, BLUE), ("and", TXT, None), ("Oracle", WHITE, RED), ("Applications", WHITE, None)]
     T1 = [cue(0, k) - .1 for k in ("S A P", "and", "Oracle", "Applications")]
     size = 104
@@ -94,7 +94,7 @@ def scene_A(c, t):
         h = int(uw * .55) // 6 * 6
         c.blit(BAR(max(6, h), 10, BLUE), bx, 700, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 10, RED), bx + h - 6, 700, 1)
     # module chips: the business that SAP / Oracle run
-    mods = ["ECC", "S/4HANA", "OEBS", "PEOPLESOFT", "JDE", "SIEBEL"]
+    mods = ["ECC", "SAP S/4HANA", "OEBS", "PEOPLESOFT", "JDE", "SIEBEL"]
     ws = [tw(m, "i", "Bold", 21, 5) + 56 for m in mods]; tot = sum(ws) + 18 * (len(mods) - 1); x = 960 - tot / 2
     t0 = T2[2] + .34                                               # module chips arrive only after the underline has landed
     for i, (m, w) in enumerate(zip(mods, ws)):
@@ -181,7 +181,9 @@ def scene_B(c, t):
         c.card(x0, y0, w0, h0, da, outline=BLUE + (230,), glow=BLUE)
         c.text("PLANNED MIGRATION", x0 + w0 / 2, y0 + 30, "i", "Bold", 18, SKY, da, track=5, anchor="c")
         c.icon("cloud", x0 + w0 / 2, y0 + 140, 140, SKY, da)
-        c.text("Oracle  /  S/4HANA", x0 + w0 / 2, y0 + 232, "d", "Bold", 38, WHITE, da, anchor="c")
+        sz_ = 38
+        while tw("Oracle  /  SAP S/4HANA", "d", "Bold", sz_) > w0 - 40: sz_ -= 1
+        c.text("Oracle  /  SAP S/4HANA", x0 + w0 / 2, y0 + 232, "d", "Bold", sz_, WHITE, da, anchor="c")
         p0, p1 = (dbx + dbw + 22, dby + 320), (x0 - 12, y0 + 165)
         c.dashed(p0, p1, SKY, da * .8, 3, 14, 10, t * 60)
         c.pulse(p0, p1, t, 0.55, 0.0, WHITE, 6, da)
@@ -198,13 +200,12 @@ def node_ring(c, cx, cy, d, label, sub, col, a, t, active):
 def scene_C(c, t):
     t0 = line_t(2)[0]
     a0 = E(pr(t, t0 - .1, .5))
-    # wordmark: SOLIX only
-    wS = tw("SOLIX", "d", "Bold", 74, 8); x = 960 - (78 + 14 + wS) / 2
+    # lockup: Solix mark + "Solix CDP" on one line (same size and weight), Common Data Platform smaller beneath
+    wS = tw("Solix CDP", "d", "Bold", 74, 4); x = 960 - (78 + 18 + wS) / 2
     c.blit(BOLT(78), x, 232, a0, 1, False)
-    c.text("SOLIX", x + 92, 228, "d", "Bold", 74, WHITE, a0, track=8)
-    ac = E(pr(t, cue(2, "Common") - .15, .5))                    # CDP = Solix Common Data Platform, below the logo
-    ctext(c, "CDP", 960, 352, "d", "Bold", 46, SKY, ac, track=16, anchor="c")
-    ctext(c, "COMMON DATA PLATFORM", 960, 398, "i", "Bold", 17, DIM, ac, track=7, anchor="c")
+    c.text("Solix CDP", x + 96, 228, "d", "Bold", 74, WHITE, a0, track=4)
+    ac = E(pr(t, cue(2, "Common") - .15, .5))
+    ctext(c, "COMMON DATA PLATFORM", 960, 350, "i", "Bold", 17, DIM, ac, track=7, anchor="c")
     # counter
     tn = cue(2, "twenty") - .25; k = E(pr(t, tn, 1.5)); n = int(round(20 * k))
     s = E(pr(t, tn, .4)); sc = lerp(.94, 1.0, s)
@@ -247,7 +248,7 @@ def scene_D(c, t):
     c.text("ADK", 1395, y + 46, "d", "Bold", 44, WHITE, ak, anchor="c"); c.text("NATIVE", 1395, y + 100, "i", "Bold", 15, SKY, ak, track=5, anchor="c")
     sa = E(pr(t, cue(4, "Archiving Development") - .1, .6))
     c.card(1570 + (1 - sa) * 50, y, 250, 150, sa, outline=RED + (210,))
-    c.blit(BOLT(54), 1625 + (1 - sa) * 50, y + 30, sa)
+    c.icon("db", 1650 + (1 - sa) * 50, y + 50, 46, SKY, sa)
     c.text("SOLIXCloud", 1695 + (1 - sa) * 50, y + 30, "d", "Bold", 28, WHITE, sa, anchor="c") if False else c.text("SOLIX", 1692 + (1 - sa) * 50, y + 38, "d", "Bold", 30, WHITE, sa, track=3)
     c.text("ARCHIVE", 1695 + (1 - sa) * 50, y + 100, "i", "Bold", 18, SKY, sa, track=6, anchor="c")
     for (p0, p1, vis) in (((1190, y + 75), (1320, y + 75), ak), ((1470, y + 75), (1560, y + 75), sa)):
@@ -290,19 +291,23 @@ def retire_grid(c, x, y, t, t0, A=1.0):
 
 def scene_E(c, t):
     t0 = line_t(3)[0]
-    kicker(c, "ORACLE  ·  CERTIFIED", 120, 215, t0 - .05, t, bar=RED)
+    kicker(c, "ORACLE  ·  VALIDATED", 120, 215, t0 - .05, t, bar=RED)
     words(c, [("For", WHITE, None), ("Oracle", WHITE, RED)], 120, 312, 120, [t0 - .02, t0 + .3], t)
     a = E(pr(t, t0 + .3, .5))
     c.text("Oracle E-Business Suite", 120, 535 + (1 - a) * 14, "i", "Medium", 40, TXT, a)
     c.blit(BAR(int(420 * E(pr(t, t0 + .5, .8))) // 6 * 6 + 6, 6, RED), 120, 600, a)
-    # certified badge
-    tc = cue(3, "certified") - .15; ca = EB(pr(t, tc, .6))
+    # validated badge
+    tc = cue(3, "validated") - .15; ca = EB(pr(t, tc, .6))
     ca = clamp(ca); x0, y0 = 930, 290
     c.card(x0 + (1 - E(pr(t, tc, .6))) * 60, y0, 870, 170, ca, outline=RED + (230,), glow=RED)
     c.blit(CIRCLE(104, RED + (255,), glow=RED), x0 + 96 + (1 - E(pr(t, tc, .6))) * 60, y0 + 85, ca, 1, True)
     c.icon("shield", x0 + 96 + (1 - E(pr(t, tc, .6))) * 60, y0 + 85, 64, WHITE, ca)
-    c.text("Certified by Oracle", x0 + 178 + (1 - E(pr(t, tc, .6))) * 60, y0 + 38, "d", "Bold", 60, WHITE, ca)
-    c.text("SOLIX FOR ORACLE E-BUSINESS SUITE", x0 + 180 + (1 - E(pr(t, tc, .6))) * 60, y0 + 116, "i", "Bold", 19, SKY, ca, track=5)
+    s1_ = 60
+    while tw("Solix is Validated by Oracle", "d", "Bold", s1_) > 660: s1_ -= 1
+    s2_ = 19
+    while tw("ORACLE VALIDATED INTEGRATION  ·  ORACLE E-BUSINESS SUITE", "i", "Bold", s2_, 4) > 660: s2_ -= 1
+    c.text("Solix is Validated by Oracle", x0 + 178 + (1 - E(pr(t, tc, .6))) * 60, y0 + 38, "d", "Bold", s1_, WHITE, ca)
+    c.text("ORACLE VALIDATED INTEGRATION  ·  ORACLE E-BUSINESS SUITE", x0 + 180 + (1 - E(pr(t, tc, .6))) * 60, y0 + 116, "i", "Bold", s2_, SKY, ca, track=4)
     c.ring((x0 + 96, y0 + 85), int(52 + 70 * E(pr(t, tc + .1, .9))), RED, (1 - E(pr(t, tc + .1, .9))) * .8, 3)
     # archiving + application retirement
     for (nm, sub, ti, col, x, kind) in (("Archiving", "Inactive data out of production", cue(3, "archiving") - .12, BLUE, 930, "arch"),
@@ -313,7 +318,7 @@ def scene_E(c, t):
         c.blit(BAR(int(80 * a), 5, col), xs + 30, 636, a)
         if kind == "arch": rows_to_vault(c, xs + 30, 670, 370, 130, t, ti, a)
         else: retire_grid(c, xs + 40, 680, t, ti, a)
-    # other connected apps, bottom left, once "certified by Oracle" has been said
+    # other connected apps, bottom left, once "validated by Oracle" has been said
     ta = cue(3, "by Oracle", end=True) + .1; pa = E(pr(t, ta, .5))
     if pa > .01:
         px, py, pw, ph = 120 - (1 - pa) * 30, 668, 740, 330
@@ -329,7 +334,7 @@ def scene_E(c, t):
         ctext(c, "& ", px + 34, py + 190, "i", "Bold", 46, WHITE, sa); ctext(c, "100+", px + 34 + w1, py + 190, "i", "Bold", 46, RED, sa)
         ctext(c, " Sources", px + 34 + w1 + w2, py + 190, "i", "Bold", 46, WHITE, sa)
         fa = E(pr(t, ta + 1.4, .4)) * pa
-        c.blit(BOLT(36), px + 52, py + 266, fa, 1, True); ctext(c, "Through Solix Connect", px + 86, py + 266, "i", "Medium", 30, TXT, fa)
+        c.icon("layers", px + 52, py + 266, 36, SKY, fa); ctext(c, "Through Solix Connect", px + 86, py + 266, "i", "Medium", 30, TXT, fa)
     badge = E(pr(t, cue(3, "both") - .1, .5))
     c.text("BOTH  ·  ONE PLATFORM", 1085, 888, "i", "Bold", 17, SKY, badge * (1 - E(pr(t, line_t(3)[1] - .5, .4))), track=6, anchor="c")
 
@@ -346,7 +351,7 @@ def scene_F(c, t):
     # frames
     c.card(150, y0, 360, h0, fa, outline=BLUE + (170,)); mono(c, "PRODUCTION", 330, y0 + 18, 16, SKY, fa, "Bold", "c")
     c.card(1410, y0, 360, h0, fa, outline=RED + (170,)); mono(c, "SOLIX ARCHIVE", 1590, y0 + 18, 16, SKY, fa, "Bold", "c")
-    c.icon("lock", 1690, y0 + 152, 54, RED, fa * E(pr(t, cue(5, "legal hold") - .3, .8)))
+    c.icon("lock", 1690, y0 + 152, 54, RED, fa * E(pr(t, cue(5, "searchable") - .3, .8)))
     c.line((510, y0 + 110), (gx - 175, y0 + 110), BLUE, fa * .35, 2); c.line((gx + 175, y0 + 110), (1410, y0 + 110), BLUE, fa * .35, 2)
     # records: each glides in ONE continuous eased move from its production slot to its archive slot (no pops, no resizing)
     NROW, GAP, FLY = 5, 1.0, 2.7; t_dep = cue(5, "moves") + .15
@@ -365,10 +370,10 @@ def scene_F(c, t):
     c.card(gx - 175, y0 + 6, 350, h0 - 12, fa, outline=BLUE + (230,))
     c.icon("gear", gx - 118, y0 + 62, 44, SKY, fa); c.text("POLICY", gx - 80, y0 + 40, "i", "Bold", 22, SKY, fa, track=6)
     c.text("Older than 7 years", gx, y0 + 98, "d", "Bold", 36, WHITE, fa, anchor="c"); c.text("→  ARCHIVE", gx, y0 + 150, "i", "Bold", 20, BLUE, fa, track=5, anchor="c")
-    # searchable / reportable / legal hold
-    bl = [("Searchable", "search", cue(5, "searchable")), ("Reportable", "chart", cue(5, "reportable")), ("Under legal hold", "lock", cue(5, "legal hold"))]
+    # searchable / accessible / reportable
+    bl = [("Searchable", "search", cue(5, "searchable")), ("Accessible", "key", cue(5, "accessible")), ("Reportable", "chart", cue(5, "reportable"))]
     for i, (lab, ic, ti) in enumerate(bl):
-        a = E(pr(t, ta + .6 + i * .12, .5)); on = E(pr(t, ti - .05, .45)); col = RED if i == 2 else BLUE
+        a = E(pr(t, ta + .6 + i * .12, .5)); on = E(pr(t, ti - .05, .45)); col = RED if i == 1 else BLUE
         x = 150 + i * 560
         c.card(x, 808, 500, 104, a, outline=mix((60, 80, 140), col, on) + (int(lerp(100, 240, on)),), fill=CARD + (int(lerp(180, 238, on)),))
         c.blit(CIRCLE(68, col + (int(lerp(70, 255, on)),)), x + 62, 860, a, 1, True); c.icon(ic, x + 62, 860, 38, WHITE, a)
@@ -390,9 +395,9 @@ def scene_K(c, t):
     c.text("Application Knowledge Graphs", 120, 575 + (1 - a1) * 14, "i", "Medium", 40, TXT, a1)
     c.text("for these applications", 120, 630 + (1 - a2) * 14, "i", "Bold", 40, WHITE, a2)
     # the applications that ship with pre-built AKGs
-    apps = ["ECC", "S/4HANA", "OEBS", "PEOPLESOFT", "JDE", "SIEBEL"]; ta = cue(6, "these applications") - .05
+    apps = ["ECC", "SAP S/4HANA", "OEBS", "PEOPLESOFT", "JDE", "SIEBEL"]; ta = cue(6, "these applications") - .05
     for i, nm in enumerate(apps):
-        on = E(pr(t, ta + i * .14, .4)); w = 226; gx, gy = 120 + (i % 3) * (w + 16), 730 + (i // 3) * 82; col = BLUE if i % 2 == 0 else RED
+        on = E(pr(t, ta + i * .14, .4)); w = 240; gx, gy = 120 + (i % 3) * (w + 12), 730 + (i // 3) * 82; col = BLUE if i % 2 == 0 else RED
         c.card(gx, gy, w, 64, on, outline=col + (220,), fill=CARD + (236,), r=32)
         c.blit(CIRCLE(30, col + (255,), glow=col), gx + 34, gy + 32, on, 1, True); c.icon("check", gx + 34, gy + 32, 18, WHITE, on)
         ctext(c, nm, gx + 62, gy + 32, "i", "Bold", 19, WHITE, on, track=2)
@@ -617,29 +622,46 @@ def scene_I(c, t):
     ymid = 905 + f.getmetrics()[0] - .30 * 50
     if st > .01: c.blit(BAR(int(w2 * st) // 6 * 6 + 6, 6, RED), gx + w1 - 4, ymid - 3, da)
 
-# --------------------------------------------------------------------------- J  (TAIL) SOLIXCloud. Built for SAP. Built for Oracle. -> logo card
+# --------------------------------------------------------------------------- J  (TAIL) closing: SAP + Oracle pills merge into "Solix CDP", proof row, logo + CTA
+CTA = "Book a 30-minute archive assessment"          # example wording from the brief; [to be supplied by Solix]
+PROOF = ["20+ years of ERP archiving", "Native to SAP's Archive Development Kit", "Validated by Oracle for E-Business Suite"]
+def end_card_t(): return VO[12]["end"] + 2.3
 def scene_J(c, t):
-    t0 = line_t(12)[0]; tend = VO[12]["end"] + .8
-    out = 1 - E(pr(t, tend, .5))
-    # wordmark
-    g0 = c.ga; c.ga = g0 * out
-    ta = cue(12, "Solix") - .12; a = E(pr(t, ta, .5))
-    wS = tw("SOLIX", "d", "Bold", 156, 14); xx = 960 - wS / 2
-    c.text("SOLIX", xx, 250, "d", "Bold", 156, WHITE, a, track=14)
-    c.blit(BAR(int(wS) // 6 * 6, 8, BLUE), xx, 450, a); c.blit(BAR(int(wS * .32) // 6 * 6, 8, RED), xx + wS * .68, 450, a)
-    t1 = cue(12, "Built for S A P") - .12; t2 = cue(12, "Built for Oracle") - .1
-    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("SAP", WHITE, BLUE)], 960, 505, 90, [t1, t1 + .1, t1 + .22], t, anchor="c")
-    words(c, [("Built", WHITE, None), ("for", WHITE, None), ("Oracle", WHITE, RED)], 960, 685, 90, [t2, t2 + .1, t2 + .22], t, anchor="c")
-    c.ga = g0
-    # end card
-    ea = E(pr(t, tend + .15, .8))
+    E12 = VO[12]["end"]; t1 = cue(12, "Built for S A P") - .12; t2 = cue(12, "Built for Oracle") - .1; tm = E12 - .05
+    ph = 96; cy = 330; ps = 58
+    L, R = "Built for SAP", "Built for Oracle"
+    wL = int(tw(L, "d", "Bold", ps) + 90); wR = int(tw(R, "d", "Bold", ps) + 90); gap = 36; x0 = 960 - (wL + wR + gap) / 2
+    m = E(pr(t, tm, .5)); aL = E(pr(t, t1, .55)); aR = E(pr(t, t2, .55))
+    for (lab, w, xt, side, col, a) in ((L, wL, x0, -1, BLUE, aL), (R, wR, x0 + wL + gap, 1, RED, aR)):
+        if a <= .01: continue
+        cx = lerp((-w / 2 - 40) if side < 0 else (W + w / 2 + 40), xt + w / 2, a)
+        cx = lerp(cx, 960, m); al = a * (1 - m)
+        if al <= .01: continue
+        c.blit(BAR(w, ph, col), cx, cy, al, 1 - .3 * m, True)
+        ctext(c, lab, cx, cy, "d", "Bold", ps, WHITE, al * (1 - m), anchor="c")
+    ca = E(pr(t, tm + .15, .55))
+    if ca > .01:
+        sz = 140; wd = tw("Solix CDP", "d", "Bold", sz, 3)
+        ctext(c, "Solix CDP", 960, cy + (1 - ca) * 14, "d", "Bold", sz, WHITE, ca, track=3, anchor="c")
+        k = E(pr(t, tm + .55, .6)); uw = int(wd * k) // 6 * 6
+        if uw > 6:
+            hh = int(uw * .62) // 6 * 6; c.blit(BAR(max(6, hh), 10, BLUE), 960 - wd / 2, 430, 1); c.blit(BAR(max(6, uw - hh + 6) // 6 * 6, 10, RED), 960 - wd / 2 + hh - 6, 430, 1)
+    # proof row: three items 0.3 s apart
+    sz = 28
+    while sum(tw(p_, "i", "Medium", sz) + 62 for p_ in PROOF) + 44 * 2 > 1760: sz -= 1
+    ws = [tw(p_, "i", "Medium", sz) + 62 for p_ in PROOF]; x = 960 - (sum(ws) + 44 * 2) / 2; tp = E12 + .75
+    for i, p_ in enumerate(PROOF):
+        a = E(pr(t, tp + i * .3, .45)); yy = 575 + (1 - a) * 22; col = BLUE if i != 1 else RED
+        c.blit(CIRCLE(36, col + (255,), glow=col), x + 18, yy, a, 1, True); c.icon("check", x + 18, yy, 20, WHITE, a)
+        ctext(c, p_, x + 50, yy, "i", "Medium", sz, TXT, a); x += ws[i] + 44
+    # end card: the only Solix logo on screen
+    ea = E(pr(t, end_card_t(), .8))
     if ea > .01:
-        c.ring((960, 470), int(80 + 900 * E(pr(t, tend + .1, 1.0))), BLUE, (1 - E(pr(t, tend + .1, 1.0))) * .6, 3)
-        lg = LOGO(230); c.blit(lg, 960 - lg.width / 2, 360 - 20 * (1 - ea), ea * 1.0)
-        c.blit(BAR(int(360 * E(pr(t, tend + .5, .8))) // 6 * 6 + 6, 5, RED), 960 - 180, 650, E(pr(t, tend + .5, .8)))
-        c.text("solix.com", 960, 690, "d", "Bold", 56, SKY, E(pr(t, tend + .7, .7)), anchor="c")
-        c.text("SOLIXEMPOWER 2026", 960, 790, "m", "Bold", 18, DIM, E(pr(t, tend + .9, .7)), anchor="c", track=6)
-        fa = E(pr(t, tend + 1.1, .7)) * .8
+        lg = LOGO(130); c.blit(lg, 960 - lg.width / 2, 680 - 14 * (1 - ea), ea)
+        cta = E(pr(t, end_card_t() + .5, .6))
+        ctext(c, "solix.com", 960 - tw("solix.com   ·   " + CTA, "d", "Bold", 36) / 2, 880, "d", "Bold", 36, SKY, cta)
+        ctext(c, "   ·   " + CTA, 960 - tw("solix.com   ·   " + CTA, "d", "Bold", 36) / 2 + tw("solix.com", "d", "Bold", 36), 880, "d", "Bold", 36, WHITE, cta)
+        fa = E(pr(t, end_card_t() + .8, .7)) * .8
         c.text("SAP and SAP S/4HANA are trademarks or registered trademarks of SAP SE.", 960, 985, "i", "Regular", 15, (98, 120, 176), fa, anchor="c")
         c.text("Oracle and E-Business Suite are trademarks or registered trademarks of Oracle and/or its affiliates.", 960, 1010, "i", "Regular", 15, (98, 120, 176), fa, anchor="c")
 

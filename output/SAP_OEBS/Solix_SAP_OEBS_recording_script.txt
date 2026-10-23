@@ -8,9 +8,9 @@ NARRATION
  01. SAP and Oracle Applications run the business.
  02. But years of inactive data keep bloating databases, slowing performance and driving up costs, right when you're planning a move to the cloud.
  03. Solix Common Data Platform brings more than twenty years of ERP archiving expertise to both.
- 04. For Oracle E-Business Suite, Solix is certified by Oracle and covers both archiving and full application retirement.
+ 04. For Oracle E-Business Suite, Solix is validated by Oracle and covers both archiving and full application retirement.
  05. For SAP, Solix works natively through SAP's Archiving Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales and more.
- 06. Inactive data moves out on policy, and stays searchable, reportable and under legal hold for as long as you need it.
+ 06. Inactive data moves out on policy, and stays searchable, accessible and reportable for as long as you need it.
  07. Solix includes pre-built Application Knowledge Graphs, or AKGs, for these applications.
  08. Ask your archive in plain language with Data Ask.
  09. Every answer cites its source. And every question is permission checked and audit logged.

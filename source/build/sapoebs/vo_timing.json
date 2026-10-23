@@ -20,61 +20,61 @@
  {
   "i": 3,
   "start": 21.838,
-  "end": 29.604,
-  "text": "For Oracle E Business Suite, Solix is certified by Oracle, and covers both archiving and full application retirement."
+  "end": 29.711,
+  "text": "For Oracle E Business Suite, Solix is validated by Oracle, and covers both archiving and full application retirement."
  },
  {
   "i": 4,
-  "start": 29.964,
-  "end": 41.115,
+  "start": 30.071,
+  "end": 41.221,
   "text": "For S A P, Solix works natively through S A P's Archiving Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."
  },
  {
   "i": 5,
-  "start": 41.515,
-  "end": 48.623,
-  "text": "Inactive data moves out on policy, and stays searchable, reportable, and under legal hold, for as long as you need it."
+  "start": 41.621,
+  "end": 48.495,
+  "text": "Inactive data moves out on policy, and stays searchable, accessible, and reportable, for as long as you need it."
  },
  {
   "i": 6,
-  "start": 49.083,
-  "end": 55.039,
+  "start": 48.955,
+  "end": 54.911,
   "text": "Solix includes pre-built Application Knowledge Graphs, or A K Gs, for these applications."
  },
  {
   "i": 7,
-  "start": 55.459,
-  "end": 58.322,
+  "start": 55.331,
+  "end": 58.194,
   "text": "Ask your archive in plain language, with Data Ask."
  },
  {
   "i": 8,
-  "start": 58.642,
-  "end": 63.859,
+  "start": 58.514,
+  "end": 63.731,
   "text": "Every answer cites its source. And every question is permission checked, and audit logged."
  },
  {
   "i": 9,
-  "start": 64.409,
-  "end": 65.292,
+  "start": 64.281,
+  "end": 65.164,
   "text": "The result?"
  },
  {
   "i": 10,
-  "start": 66.549,
-  "end": 73.38,
+  "start": 66.421,
+  "end": 73.252,
   "text": "Leaner production systems, cleaner migrations, and legacy databases, up to thirty to sixty percent smaller."
  },
  {
   "i": 11,
-  "start": 73.78,
-  "end": 78.456,
+  "start": 73.652,
+  "end": 78.328,
   "text": "Your E R P history becomes A I activated data, not dead weight."
  },
  {
   "i": 12,
-  "start": 78.916,
-  "end": 82.014,
+  "start": 78.788,
+  "end": 81.886,
   "text": "Solix. Built for S A P. Built for Oracle."
  }
 ]

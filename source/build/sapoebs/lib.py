@@ -111,6 +111,9 @@ def ICON(kind, size, color, lw=0.075):
         d.rounded_rectangle((n*.2, n*.44, n*.8, n*.9), n*.08, fill=255)
         d.arc((n*.3, n*.1, n*.7, n*.7), 180, 360, fill=255, width=L); d.line((n*.3, n*.4, n*.3, n*.46), fill=255, width=L); d.line((n*.7, n*.4, n*.7, n*.46), fill=255, width=L)
         d.ellipse((n*.45, n*.58, n*.55, n*.68), fill=0)
+    elif kind == "key":
+        d.ellipse((n*.1, n*.3, n*.46, n*.66), outline=255, width=L)
+        d.line((n*.46, n*.48, n*.92, n*.48), fill=255, width=L); d.line((n*.74, n*.48, n*.74, n*.68), fill=255, width=L); d.line((n*.9, n*.48, n*.9, n*.64), fill=255, width=L)
     elif kind == "check":
         d.line((n*.16, n*.54, n*.4, n*.78), fill=255, width=int(L*1.5)); d.line((n*.4, n*.78, n*.86, n*.24), fill=255, width=int(L*1.5))
     elif kind == "shield":
@@ -163,12 +166,17 @@ def ICON(kind, size, color, lw=0.075):
 
 @lru_cache(None)
 def LOGO(h):
-    im = Image.open(os.path.join(ASSETS, "logo_white.png")).convert("RGBA")
+    im = Image.open(os.path.join(ASSETS, "original", "solix_logo_white_tagline.png")).convert("RGBA")
+    return im.resize((int(im.width * h / im.height), h), Image.LANCZOS)
+
+@lru_cache(None)
+def EVENT_LOGO(h):
+    im = Image.open(os.path.join(ASSETS, "original", "solix_ai_data_cloud_red.png")).convert("RGBA")
     return im.resize((int(im.width * h / im.height), h), Image.LANCZOS)
 
 @lru_cache(None)
 def BOLT(d):
-    im = Image.open(os.path.join(ASSETS, "icon.png")).convert("RGBA"); return im.resize((d, d), Image.LANCZOS)
+    im = Image.open(os.path.join(ASSETS, "original", "solix_mark_bolt.png")).convert("RGBA"); return im.resize((d, d), Image.LANCZOS)
 
 # ---------------------------------------------------------------- compositing context
 class Ctx:

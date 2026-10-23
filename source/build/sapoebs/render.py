@@ -4,7 +4,7 @@
 import sys, os, subprocess, multiprocessing as mp
 import numpy as np, cv2
 from lib import *
-from scenes import SCENES, SC, energy
+from scenes import SCENES, SC, energy, end_card_t
 
 TOTAL = int(round(SC['J'][1] * FPS))
 _G = {}
@@ -12,6 +12,8 @@ def init():
     _G["bg"] = make_bg()[..., ::-1].copy(); _G["net"] = Net()
     rs = np.random.RandomState(5); _G["noise"] = [rs.randint(-3, 4, (H, W, 1)).astype(np.int16) for _ in range(6)]
     _G["logo"] = np.asarray(LOGO(46)).astype(np.float32) / 255
+    ev = EVENT_LOGO(26); yr = T("2026", "m", "Bold", 22, (110, 140, 205), 4); tg = Image.new("RGBA", (ev.width + 14 + yr.width, 30), (0, 0, 0, 0))
+    tg.alpha_composite(ev, (0, 2)); tg.alpha_composite(yr, (ev.width + 14, 0)); _G["tag"] = np.asarray(tg).astype(np.float32) / 255
 
 def frame(i):
     t = i / FPS; bg, net = _G["bg"], _G["net"]
@@ -29,14 +31,21 @@ def frame(i):
     if zoom != 1.0:
         M = np.float32([[zoom, 0, -(zoom - 1) * W / 2], [0, zoom, -(zoom - 1) * H / 2]]); f = cv2.warpAffine(f, M, (W, H), flags=cv2.INTER_LINEAR)
     f = np.clip(f.astype(np.int16) + _G["noise"][i % 6], 0, 255).astype(np.uint8)
-    # fixed brand furniture: logo top-right (entire film) + event tag top-left
-    la = E(pr(t, .1, .5)); lg = _G["logo"]; h, w = lg.shape[:2]; x, y = W - 64 - w, 46
-    reg = f[y:y + h, x:x + w].astype(np.float32); a2 = lg[..., 3:4] * la
-    f[y:y + h, x:x + w] = (reg * (1 - a2) + lg[..., [2, 1, 0]] * 255 * a2).astype(np.uint8)
-    tag = np.asarray(T("SOLIXEMPOWER 2026", "m", "Bold", 15, (110, 140, 205), 4)).astype(np.float32) / 255
-    th, tw_ = tag.shape[:2]; a3 = tag[..., 3:4] * la * .9
-    f[52:52 + th, 64:64 + tw_] = (f[52:52 + th, 64:64 + tw_].astype(np.float32) * (1 - a3) + tag[..., [2, 1, 0]] * 255 * a3).astype(np.uint8)
+    # fixed brand furniture: one of each per frame. Corner logo hidden while the Solix CDP lockup / end card carry the mark;
+    # corner event tag hidden while the centred kicker (title card, hook line) is on, and gone once the end card starts.
+    endt = end_card_t(); ca_, cb_ = SC["C"]
+    la = E(pr(t, .1, .5)) * (1 - (E(pr(t, ca_ - .1, .25)) - E(pr(t, cb_ - .1, .25)))) * (1 - E(pr(t, endt - .5, .4)))
+    ta_ = E(pr(t, SC["B"][0], .4)) * (1 - E(pr(t, endt - .5, .4)))
+    lg = _G["logo"]; h, w = lg.shape[:2]; x, y = W - 64 - w, 40
+    if la > .002:
+        reg = f[y:y + h, x:x + w].astype(np.float32); a2 = lg[..., 3:4] * la
+        f[y:y + h, x:x + w] = (reg * (1 - a2) + lg[..., [2, 1, 0]] * 255 * a2).astype(np.uint8)
+    if ta_ > .002:
+        tag = _G["tag"]; th, tw_ = tag.shape[:2]; a3 = tag[..., 3:4] * ta_
+        f[52:52 + th, 64:64 + tw_] = (f[52:52 + th, 64:64 + tw_].astype(np.float32) * (1 - a3) + tag[..., [2, 1, 0]] * 255 * a3).astype(np.uint8)
     f = (f.astype(np.float32) * E(pr(t, 0, .35))).astype(np.uint8) if t < .4 else f
+    tf = SC["J"][1] - 1.2                                                     # last frame fades to black
+    if t > tf: f = (f.astype(np.float32) * (1 - E(pr(t, tf, 1.15)))).astype(np.uint8)
     return f
 
 def work(args):
