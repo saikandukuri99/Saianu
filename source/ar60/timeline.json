@@ -1,5 +1,5 @@
 {
- "total": 59.907,
+ "total": 61.638,
  "lines": [
   {
    "i": 0,
@@ -45,11 +45,11 @@
    "i": 4,
    "id": "m1",
    "scene": "comply",
-   "caption": "Retention, legal hold, eDiscovery and masking apply from the day data lands.",
+   "caption": "Retention, legal hold, eDiscovery, and access and privacy controls apply from the day data lands.",
    "pause": 0.3,
    "file": "04_m1.wav",
    "start": 27.844,
-   "end": 32.977
+   "end": 34.708
   },
   {
    "i": 5,
@@ -58,8 +58,8 @@
    "caption": "You stay audit-ready, and records are defensibly deleted when retention ends.",
    "pause": 0.6,
    "file": "05_m2.wav",
-   "start": 33.277,
-   "end": 37.794
+   "start": 35.008,
+   "end": 39.525
   },
   {
    "i": 6,
@@ -68,8 +68,8 @@
    "caption": "And preserved data doesn't sit idle.",
    "pause": 0.5,
    "file": "06_a1.wav",
-   "start": 38.394,
-   "end": 40.546
+   "start": 40.125,
+   "end": 42.276
   },
   {
    "i": 7,
@@ -78,8 +78,8 @@
    "caption": "With Solix Data Ask, people ask in plain English and get cited answers,",
    "pause": 0.1,
    "file": "07_a2.wav",
-   "start": 41.046,
-   "end": 45.542
+   "start": 42.776,
+   "end": 47.272
   },
   {
    "i": 8,
@@ -88,8 +88,8 @@
    "caption": "grounded in the application's own Knowledge Graph.",
    "pause": 0.8,
    "file": "08_a3.wav",
-   "start": 45.642,
-   "end": 48.41
+   "start": 47.372,
+   "end": 50.14
   },
   {
    "i": 9,
@@ -98,8 +98,8 @@
    "caption": "Lower cost. Less risk. Governed history, ready for AI.",
    "pause": 0.5,
    "file": "09_e1.wav",
-   "start": 49.21,
-   "end": 52.955
+   "start": 50.94,
+   "end": 54.685
   },
   {
    "i": 10,
@@ -108,8 +108,8 @@
    "caption": "Retire, preserve, and activate, with Solix.",
    "pause": 0.0,
    "file": "10_e2.wav",
-   "start": 53.455,
-   "end": 56.407
+   "start": 55.185,
+   "end": 58.138
   }
  ]
 }
