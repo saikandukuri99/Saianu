@@ -1,0 +1,83 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Solix Enterprise AI</title>
+<style>
+:root{
+  --blue:#0088cf; --blue2:#33a9ff; --red:#ee2424; --indigo:#30267b; --violet:#7d6bff; --teal:#26c6b0; --amber:#f5a524; --green:#2fd18a;
+  --ink:#ffffff; --mute:#9aa3cf; --dim:#6a7099; --line:rgba(130,150,255,.22);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#06051a}
+body{font-family:'Inter',sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+#bg{position:absolute;left:0;top:0;width:1920px;height:1080px}
+#stage{position:absolute;inset:0;overflow:hidden}
+.scene{position:absolute;inset:0;transform-origin:50% 50%;display:none}
+.a{position:absolute}
+.w{display:inline-block;will-change:transform}
+.mono{font-family:'JetBrains Mono',monospace}
+.disp{font-family:'Inter Display','Inter',sans-serif}
+svg{overflow:visible}
+.caret{display:inline-block;width:2px;height:1em;background:currentColor;vertical-align:-0.12em;margin-left:2px}
+
+/* chrome */
+#logo{position:absolute;right:64px;top:50px;height:34px}
+.corner{position:absolute;width:26px;height:26px;border-color:rgba(160,175,255,.35);border-style:solid;border-width:0}
+#cTL{left:34px;top:34px;border-left-width:1.5px;border-top-width:1.5px}
+#cTR{right:34px;top:34px;border-right-width:1.5px;border-top-width:1.5px}
+#cBL{left:34px;bottom:34px;border-left-width:1.5px;border-bottom-width:1.5px}
+#cBR{right:34px;bottom:34px;border-right-width:1.5px;border-bottom-width:1.5px}
+#cap{position:absolute;left:78px;bottom:52px;font-size:21px;font-weight:500;color:#e6e9ff;display:flex;align-items:center;gap:14px;text-shadow:0 2px 12px rgba(0,0,0,.8)}
+#cap::before{content:'';width:3px;height:24px;background:var(--red);border-radius:2px}
+#flash{position:absolute;inset:-200px;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(120,190,255,.10) 47%,rgba(255,255,255,.22) 50%,rgba(255,90,90,.10) 53%,transparent 60%);mix-blend-mode:screen}
+
+/* headline block (top-left) */
+.head{position:absolute;left:96px;top:66px}
+.kick{font:500 14px/1 'JetBrains Mono',monospace;letter-spacing:.32em;color:#a9b3e6;text-transform:uppercase;display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.kick::before{content:'';width:26px;height:2px;background:var(--red)}
+.h1{font:700 46px/1.12 'Inter Display','Inter',sans-serif;letter-spacing:-.01em}
+.pill{position:relative;display:inline-block;margin-top:6px;padding:2px 14px 6px 12px}
+.pill .bar{position:absolute;inset:0;background:var(--blue);transform-origin:0 50%;border-radius:3px;box-shadow:0 0 40px rgba(0,136,207,.45)}
+.pill .tx{position:relative;font:700 46px/1.12 'Inter Display','Inter',sans-serif;letter-spacing:-.01em;white-space:nowrap}
+.center{left:0;right:0;text-align:center}
+
+/* cards */
+.card{position:absolute;border-radius:16px;background:linear-gradient(180deg,rgba(34,30,92,.88),rgba(16,14,48,.92));border:1px solid rgba(130,150,255,.24);box-shadow:0 24px 70px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.07)}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:9px;background:rgba(40,36,110,.75);border:1px solid rgba(130,150,255,.28);font-size:16px;font-weight:600;color:#dfe4ff;white-space:nowrap}
+.ico{display:inline-flex;align-items:center;justify-content:center;border-radius:10px;flex:none}
+.ico svg{width:58%;height:58%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tag{font:600 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;padding:5px 8px;border-radius:5px;text-transform:uppercase}
+.lbl{font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.22em;color:#8f99cc;text-transform:uppercase}
+.glow{box-shadow:0 0 0 1.5px var(--gc,#33a9ff),0 0 46px var(--gc,#33a9ff),0 24px 70px rgba(0,0,0,.5)!important}
+
+/* app window */
+.win{position:absolute;left:250px;top:248px;width:1420px;height:724px;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,#121034,#0c0a26);border:1px solid rgba(130,150,255,.25);box-shadow:0 40px 120px rgba(0,0,0,.65),0 0 0 1px rgba(0,0,0,.4)}
+.win .tb{height:46px;display:flex;align-items:center;gap:10px;padding:0 18px;border-bottom:1px solid rgba(130,150,255,.14);background:rgba(255,255,255,.02);font-size:15px;font-weight:600;color:#cfd5ff}
+.win .tb .dots{display:flex;gap:7px;margin-right:10px}.win .tb .dots i{width:11px;height:11px;border-radius:50%;background:#3a3770}
+.win .side{position:absolute;left:0;top:46px;bottom:0;width:232px;border-right:1px solid rgba(130,150,255,.12);padding:16px 12px;background:rgba(0,0,0,.12)}
+.win .side .it{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:8px;font-size:14.5px;color:#9aa3cf;margin-bottom:2px}
+.win .side .it.on{background:rgba(51,169,255,.16);color:#fff}
+.win .side .it b{width:14px;height:14px;border-radius:4px;border:1.6px solid currentColor;opacity:.8}
+.win .main{position:absolute;left:232px;top:46px;right:0;bottom:0;padding:26px 32px}
+.view{position:absolute;inset:0;padding:26px 32px}
+.vt{font:700 24px/1.2 'Inter Display';margin-bottom:4px}
+.vs{font-size:14px;color:#8f99cc;margin-bottom:20px}
+table.t{border-collapse:collapse;width:100%;font-size:16px}
+table.t th{font:600 12px/1 'JetBrains Mono';letter-spacing:.14em;color:#7f89bb;text-align:left;padding:12px 14px;border-bottom:1px solid rgba(130,150,255,.18);text-transform:uppercase}
+table.t td{padding:15px 14px;border-bottom:1px solid rgba(130,150,255,.10);color:#e2e6ff;white-space:nowrap}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;padding:5px 10px;border-radius:6px}
+.st.draft{background:rgba(125,107,255,.18);color:#b9adff}
+.st.ok{background:rgba(47,209,138,.16);color:#5fe3a6}
+.st.rev{background:rgba(245,165,36,.16);color:#ffc35c}
+.av{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:linear-gradient(135deg,#0088cf,#30267b);color:#fff}
+</style></head>
+<body>
+<canvas id="bg"></canvas>
+<div id="stage"></div>
+<div id="flash"></div>
+<img id="logo" src="assets/logo_white.png">
+<div class="corner" id="cTL"></div><div class="corner" id="cTR"></div><div class="corner" id="cBL"></div><div class="corner" id="cBR"></div>
+<div id="cap"><span id="capt"></span></div>
+<script src="timeline.js"></script>
+<script src="engine.js"></script>
+<script src="icons.js"></script>
+<script src="scenes.js"></script>
+</body></html>

@@ -1,0 +1,228 @@
+window.TIMELINE = {
+ "intro": 6.0,
+ "total": 124.01,
+ "lines": [
+  {
+   "i": 0,
+   "start": 6.3,
+   "end": 10.134,
+   "cap": "Agentic AI is transforming how enterprises run and grow."
+  },
+  {
+   "i": 1,
+   "start": 11.5,
+   "end": 15.164,
+   "cap": "But your AI is only as ready as your enterprise data is."
+  },
+  {
+   "i": 2,
+   "start": 16.3,
+   "end": 17.916,
+   "cap": "Tables with cryptic names."
+  },
+  {
+   "i": 3,
+   "start": 18.416,
+   "end": 20.458,
+   "cap": "Systems that don't talk to each other."
+  },
+  {
+   "i": 4,
+   "start": 20.958,
+   "end": 22.812,
+   "cap": "Documents no one has indexed."
+  },
+  {
+   "i": 5,
+   "start": 23.312,
+   "end": 24.885,
+   "cap": "So your AI can't use it."
+  },
+  {
+   "i": 6,
+   "start": 25.885,
+   "end": 29.186,
+   "cap": "Solix Enterprise AI gets your data ready for AI."
+  },
+  {
+   "i": 7,
+   "start": 29.686,
+   "end": 31.942,
+   "cap": "So you can understand it, ask it anything,"
+  },
+  {
+   "i": 8,
+   "start": 32.142,
+   "end": 33.944,
+   "cap": "build on it, and put it to work."
+  },
+  {
+   "i": 9,
+   "start": 35.3,
+   "end": 39.22,
+   "cap": "Data Sense makes sense of all your data, structured and unstructured."
+  },
+  {
+   "i": 10,
+   "start": 39.72,
+   "end": 42.786,
+   "cap": "It drafts the business meaning, and your experts review it."
+  },
+  {
+   "i": 11,
+   "start": 43.286,
+   "end": 46.587,
+   "cap": "Knowledge graphs for your applications and cloud platforms"
+  },
+  {
+   "i": 12,
+   "start": 47.087,
+   "end": 48.567,
+   "cap": "get you started in minutes."
+  },
+  {
+   "i": 13,
+   "start": 49.067,
+   "end": 53.648,
+   "cap": "And a steward's worklist keeps your experts in the loop, ranked by what matters most."
+  },
+  {
+   "i": 14,
+   "start": 54.648,
+   "end": 56.37,
+   "cap": "Here's what sets Solix apart."
+  },
+  {
+   "i": 15,
+   "start": 56.87,
+   "end": 60.726,
+   "cap": "One knowledge graph that connects meaning across all your applications."
+  },
+  {
+   "i": 16,
+   "start": 61.226,
+   "end": 65.338,
+   "cap": "The same supplier in three systems becomes one record you can trust."
+  },
+  {
+   "i": 17,
+   "start": 65.838,
+   "end": 67.697,
+   "cap": "One shared meaning, everywhere."
+  },
+  {
+   "i": 18,
+   "start": 68.197,
+   "end": 70.986,
+   "cap": "No migration. Your records stay where they are."
+  },
+  {
+   "i": 19,
+   "start": 71.986,
+   "end": 74.713,
+   "cap": "Data Ask answers questions in plain language,"
+  },
+  {
+   "i": 20,
+   "start": 74.913,
+   "end": 77.126,
+   "cap": "across structured and unstructured data,"
+  },
+  {
+   "i": 21,
+   "start": 77.326,
+   "end": 79.176,
+   "cap": "grounded in your business context,"
+  },
+  {
+   "i": 22,
+   "start": 79.376,
+   "end": 80.906,
+   "cap": "with every answer cited."
+  },
+  {
+   "i": 23,
+   "start": 81.906,
+   "end": 84.29,
+   "cap": "Then the people who know your business take over."
+  },
+  {
+   "i": 24,
+   "start": 84.79,
+   "end": 86.871,
+   "cap": "They describe the application they need,"
+  },
+  {
+   "i": 25,
+   "start": 87.071,
+   "end": 90.671,
+   "cap": "and AI Warehouse builds it on governed, version-tracked data."
+  },
+  {
+   "i": 26,
+   "start": 91.171,
+   "end": 92.796,
+   "cap": "Your AI, on your data."
+  },
+  {
+   "i": 27,
+   "start": 93.796,
+   "end": 97.268,
+   "cap": "Agentic goes further. Just describe the work you need done."
+  },
+  {
+   "i": 28,
+   "start": 97.768,
+   "end": 100.685,
+   "cap": "Agentic AI builds it, tests it, and runs it."
+  },
+  {
+   "i": 29,
+   "start": 101.185,
+   "end": 103.572,
+   "cap": "Less manual work, more done every day."
+  },
+  {
+   "i": 30,
+   "start": 104.572,
+   "end": 106.465,
+   "cap": "And it works with what you already have."
+  },
+  {
+   "i": 31,
+   "start": 106.965,
+   "end": 108.111,
+   "cap": "Any LLM."
+  },
+  {
+   "i": 32,
+   "start": 108.611,
+   "end": 109.779,
+   "cap": "Any application."
+  },
+  {
+   "i": 33,
+   "start": 110.279,
+   "end": 111.639,
+   "cap": "Any data platform."
+  },
+  {
+   "i": 34,
+   "start": 112.139,
+   "end": 114.224,
+   "cap": "It fits right into your existing stack."
+  },
+  {
+   "i": 35,
+   "start": 115.224,
+   "end": 116.882,
+   "cap": "Solix Enterprise AI."
+  },
+  {
+   "i": 36,
+   "start": 117.382,
+   "end": 119.51,
+   "cap": "Put AI in the hands of your business."
+  }
+ ]
+};

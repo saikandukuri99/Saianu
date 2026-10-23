@@ -1,3 +1,21 @@
+# Solix Enterprise AI – Teaser (Storyline A, 4K)
+
+**Deliverables in `output/EAI_Teaser_4K/`:**
+- `Solix_Enterprise_AI_Teaser_4K.mp4`: 3840×2160, 30 fps, H.264 High with AAC stereo, 2:04. Natively rendered at 4K, not upscaled.
+- `Solix_Enterprise_AI_Teaser_1080p.mp4`: 1080p copy for laptops and email.
+- `Solix_EAI_Teaser_captions.srt`: subtitles matching the final timing.
+- `Solix_EAI_Teaser_VO.wav`: the voice-over alone.
+
+**How it is built** (`source/eai_teaser/`):
+- **Structure:** a 6-second title opening ("Solix Enterprise AI"), then the 37-line narration following the Variant A storyboard (Hub → Problem → AI-Activated Data → Data Sense → Cross-application knowledge graph → Data Ask → AI Warehouse → Agentic → Open by design → end card).
+- **Voice:** female neural TTS (Kokoro `af_heart`), one line at a time, with the studio polish chain (`polish.py`). `vo_track.py` places each line at its storyboard cue, adding a natural pause where a line runs long.
+- **Visuals:** a keyframed motion-graphics composition in HTML/JS (`web/`). The background is the Solix palette (#30267b indigo, #0088cf blue and #ee2424 red glows) with a low-opacity animated AI network of red and blue nodes and pulses.
+- **Rendering:** `render.mjs` renders every frame in headless Chromium at device scale 2 (3840×2160).
+- **Music:** `music.py` is an original procedural score, so it is royalty-free. `mix.sh` ducks the music under the voice and masters to -16 LUFS.
+- **Rebuild steps:** `python3 vo.py af_heart 1.0 <raw>` → `polish.py <raw> <pol>` → `vo_track.py <pol> vo_track.wav` → `music.py music.wav` → `mix.sh <dir>` → `node render.mjs frames <dir> 2 30 <w> 4` → ffmpeg.
+
+---
+
 # Solix Empower 2026 – AV ("The Agentic Enterprise")
 
 **Current: 90-second cut, delivered as separate parts for Premiere Pro.** Everything is in `output/90s_cut_parts/`:
