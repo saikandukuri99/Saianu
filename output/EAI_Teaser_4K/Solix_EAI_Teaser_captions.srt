@@ -1,6 +1,6 @@
 1
-00:00:06,300 --> 00:00:10,534
-Agentic AI is transforming how enterprises run and grow.
+00:00:06,300 --> 00:00:09,809
+AI is transforming how enterprises run and grow.
 
 2
 00:00:11,500 --> 00:00:15,564

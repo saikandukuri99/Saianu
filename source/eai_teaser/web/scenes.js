@@ -124,7 +124,7 @@ scene(5.55, L[2] - .75, root => {
   const outs = ['Faster cycle times', 'Higher productivity', 'Always-on operations', 'Better, faster decisions'];
   const orow = el(`<div class="a center" style="top:478px;display:flex;justify-content:center;gap:14px">${outs.map(o => `<span class="chip" style="font-size:15px;color:#c9d0ff;background:rgba(30,28,80,.6)">${o}</span>`).join('')}</div>`);
   root.appendChild(orow); const ochips = $$('.chip', orow);
-  const h1 = el(`<div class="a center disp" style="top:568px;font-size:62px;font-weight:700;line-height:1.14">Agentic AI is transforming<br>how enterprises run and grow.</div>`);
+  const h1 = el(`<div class="a center disp" style="top:568px;font-size:62px;font-weight:700;line-height:1.14">AI is transforming<br>how enterprises run and grow.</div>`);
   const h2 = el(`<div class="a center disp" style="top:568px;font-size:62px;font-weight:700;line-height:1.14">But your AI is only as ready<br>as <span style="color:#43b4ff">your enterprise data</span> is.</div>`);
   root.appendChild(h1); root.appendChild(h2);
   const w1 = splitWords(h1), w2 = splitWords(h2);

@@ -138,10 +138,10 @@ const BG = (() => {
   const R = rng(20260);
   const COLS = [[0, 136, 207], [238, 36, 36], [92, 120, 255], [0, 160, 230], [238, 36, 36], [120, 96, 230]];
   const nodes = [];
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 92; i++) {
     nodes.push({
       x: R() * 2300 - 190, y: R() * 1400 - 160, z: .45 + R() * .85,
-      vx: (R() - .5) * 7, vy: (R() - .5) * 5, ph: R() * 6.28, amp: 10 + R() * 22, c: COLS[Math.floor(R() * COLS.length)],
+      vx: (R() - .5) * 4, vy: (R() - .5) * 3, ph: R() * 6.28, amp: 10 + R() * 22, c: COLS[Math.floor(R() * COLS.length)],
       tw: R() * 6.28,
     });
   }
@@ -177,6 +177,29 @@ const BG = (() => {
     radial(1780 + Math.cos(t * .12) * 90, 1060 + Math.sin(t * .08) * 40, 820, '238,36,36', .24 * k);        // red   #ee2424
     radial(state.focusX, state.focusY, 520, '0,136,207', .07 * k);
 
+    // corporate layer: fine grid fading toward the edges + two slow light ribbons
+    g.save();
+    g.strokeStyle = 'rgba(150,170,255,.045)'; g.lineWidth = 1;
+    g.beginPath();
+    for (let x = ((-t * 6) % 64) - 64; x < W + 64; x += 64) { g.moveTo(x, 0); g.lineTo(x, H); }
+    for (let y = 0; y < H; y += 64) { g.moveTo(0, y); g.lineTo(W, y); }
+    g.stroke();
+    const gm = g.createRadialGradient(960, 540, 200, 960, 540, 1100);
+    gm.addColorStop(0, 'rgba(8,6,29,0)'); gm.addColorStop(1, 'rgba(8,6,29,.85)');
+    g.fillStyle = gm; g.fillRect(0, 0, W, H);
+    const ribbon = (rgb, y0, amp, ph, sp, a) => {
+      for (let k = 0; k < 7; k++) {
+        g.beginPath();
+        for (let x = -40; x <= W + 40; x += 24) {
+          const y = y0 + Math.sin(x * .0021 + t * sp + ph + k * .09) * amp + Math.sin(x * .0009 - t * sp * .6 + ph) * amp * .6 + k * 7;
+          x === -40 ? g.moveTo(x, y) : g.lineTo(x, y);
+        }
+        g.strokeStyle = `rgba(${rgb},${a * (1 - Math.abs(k - 3) / 4)})`; g.lineWidth = 1.1; g.stroke();
+      }
+    };
+    ribbon('0,136,207', 820, 70, 0, .16, .26 * state.glow);
+    ribbon('238,36,36', 880, 55, 2.2, .13, .19 * state.glow);
+    g.restore();
     // AI network
     const P = nodes.map(n => {
       let x = n.x + n.vx * t + Math.sin(t * .35 + n.ph) * n.amp, y = n.y + n.vy * t + Math.cos(t * .29 + n.ph) * n.amp;
@@ -185,30 +208,30 @@ const BG = (() => {
       x = 960 + (x - 960) * (1 + (n.z - .9) * .06 * Math.sin(t * .05));
       return { x, y, n };
     });
-    const net = state.net, MAXD = 215;
+    const net = state.net * .9, MAXD = 230;
     g.lineWidth = 1;
     for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) {
       const a = P[i], b = P[j], dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
       if (d2 > MAXD * MAXD) continue;
-      const d = Math.sqrt(d2), al = (1 - d / MAXD) * .26 * net * Math.min(a.n.z, b.n.z);
+      const d = Math.sqrt(d2), al = (1 - d / MAXD) * .2 * net * Math.min(a.n.z, b.n.z);
       if (al < .004) continue;
       const lg = g.createLinearGradient(a.x, a.y, b.x, b.y);
       lg.addColorStop(0, `rgba(${a.n.c},${al})`); lg.addColorStop(1, `rgba(${b.n.c},${al})`);
-      g.strokeStyle = lg; g.lineWidth = .6 + a.n.z * .5;
+      g.strokeStyle = lg; g.lineWidth = .5 + a.n.z * .35;
       g.beginPath(); g.moveTo(a.x, a.y); g.lineTo(b.x, b.y); g.stroke();
       // data pulses travelling along some links
       if ((i * 31 + j * 17) % 7 === 0) {
         const f = ((t * (.22 + ((i + j) % 5) * .05)) + i * .137) % 1;
         const px = a.x + (b.x - a.x) * f, py = a.y + (b.y - a.y) * f;
-        g.globalAlpha = Math.sin(f * Math.PI) * .55 * net * Math.min(1, al * 9);
+        g.globalAlpha = Math.sin(f * Math.PI) * .4 * net * Math.min(1, al * 9);
         g.drawImage(SP[a.n.c.join()], px - 9, py - 9, 18, 18);
         g.globalAlpha = 1;
       }
     }
     for (const p of P) {
       const tw = .55 + .45 * Math.sin(t * 1.3 + p.n.tw);
-      const s = 5 + p.n.z * 8;
-      g.globalAlpha = .55 * net * p.n.z * tw;
+      const s = 4 + p.n.z * 6;
+      g.globalAlpha = .4 * net * p.n.z * tw;
       g.drawImage(SP[p.n.c.join()], p.x - s, p.y - s, s * 2, s * 2);
       g.globalAlpha = .7 * net * p.n.z;
       g.fillStyle = `rgb(${p.n.c})`;

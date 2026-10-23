@@ -3,7 +3,7 @@
 import json, os, sys
 B = os.path.dirname(os.path.abspath(__file__))
 LINES = [
-    (0.3,  "Agentic AI is transforming how enterprises run and grow.", "Agentic AI is transforming how enterprises run and grow."),
+    (0.3,  "AI is transforming how enterprises run and grow.", "AI is transforming how enterprises run and grow."),
     (5.5,  "But your AI is only as ready as your enterprise data is.", "But your AI is only as ready as your enterprise data is."),
     (10.3, "Tables with cryptic names.", "Tables with cryptic names."),
     (12.2, "Systems that don't talk to each other.", "Systems that don't talk to each other."),
