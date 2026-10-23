@@ -1,0 +1,116 @@
+1
+00:00:00,730 --> 00:00:03,629
+Every hospital holds a wealth of clinical data,
+
+2
+00:00:06,620 --> 00:00:09,995
+unlocking insights that drive better patient outcomes.
+
+3
+00:00:10,580 --> 00:00:13,834
+Solix AI Warehouse unifies healthcare data,
+
+4
+00:00:13,930 --> 00:00:16,596
+powering intelligent, and personalized care,
+
+5
+00:00:16,780 --> 00:00:18,655
+transforming patient outcomes.
+
+6
+00:00:19,400 --> 00:00:21,850
+Six pillars of an AI-ready foundation,
+
+7
+00:00:22,050 --> 00:00:23,499
+for healthcare intelligence.
+
+8
+00:00:23,530 --> 00:00:24,674
+AI Warehouse.
+
+9
+00:00:24,900 --> 00:00:26,293
+Federated Governance.
+
+10
+00:00:26,330 --> 00:00:27,738
+Patient 360.
+
+11
+00:00:27,950 --> 00:00:30,019
+Clinical Intelligence, and Imaging.
+
+12
+00:00:30,100 --> 00:00:33,306
+Multi-agentic intelligence, for every specialty.
+
+13
+00:00:34,450 --> 00:00:36,676
+The outcome is a Patient 360,
+
+14
+00:00:37,080 --> 00:00:40,446
+where every specialty has its own multi-agent clusters,
+
+15
+00:00:40,480 --> 00:00:41,921
+with a consensus score.
+
+16
+00:00:43,180 --> 00:00:44,855
+Purpose-built Solix agents
+
+17
+00:00:44,900 --> 00:00:46,844
+bring every system into focus,
+
+18
+00:00:47,050 --> 00:00:50,615
+turning real-time insights into better patient outcomes.
+
+19
+00:00:51,300 --> 00:00:53,384
+Every finding comes with its evidence,
+
+20
+00:00:53,450 --> 00:00:54,404
+by design.
+
+21
+00:00:54,500 --> 00:00:55,847
+The readings are cited.
+
+22
+00:00:55,880 --> 00:00:57,180
+The rules are applied,
+
+23
+00:00:57,300 --> 00:00:59,124
+based on the published guidelines.
+
+24
+00:01:00,030 --> 00:01:01,913
+Clinicians lead every decision.
+
+25
+00:01:01,950 --> 00:01:03,158
+Review the evidence,
+
+26
+00:01:03,300 --> 00:01:07,126
+refine the findings, and approve with confidence, before sign-off.
+
+27
+00:01:07,900 --> 00:01:10,665
+A unified Patient 360 knowledge layer.
+
+28
+00:01:10,700 --> 00:01:11,978
+Connected globally.
+
+29
+00:01:12,100 --> 00:01:13,478
+Governed by design.
+

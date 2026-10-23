@@ -1,0 +1,12 @@
+1
+00:00:00,200 --> 00:00:02,965
+A unified Patient 360 knowledge layer.
+
+2
+00:00:03,000 --> 00:00:04,278
+Connected globally.
+
+3
+00:00:04,400 --> 00:00:05,778
+Governed by design.
+

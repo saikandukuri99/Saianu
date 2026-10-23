@@ -1,0 +1,20 @@
+1
+00:00:00,233 --> 00:00:02,317
+Every finding comes with its evidence,
+
+2
+00:00:02,383 --> 00:00:03,337
+by design.
+
+3
+00:00:03,433 --> 00:00:04,780
+The readings are cited.
+
+4
+00:00:04,813 --> 00:00:06,113
+The rules are applied,
+
+5
+00:00:06,233 --> 00:00:08,057
+based on the published guidelines.
+

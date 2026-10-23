@@ -1,0 +1,12 @@
+1
+00:00:00,330 --> 00:00:02,213
+Clinicians lead every decision.
+
+2
+00:00:02,250 --> 00:00:03,458
+Review the evidence,
+
+3
+00:00:03,600 --> 00:00:07,426
+refine the findings, and approve with confidence, before sign-off.
+

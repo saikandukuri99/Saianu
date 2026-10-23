@@ -1,0 +1,16 @@
+1
+00:00:00,013 --> 00:00:03,267
+Solix AI Warehouse unifies healthcare data,
+
+2
+00:00:03,363 --> 00:00:06,030
+powering intelligent, and personalized care,
+
+3
+00:00:06,213 --> 00:00:08,089
+transforming patient outcomes.
+
+4
+00:00:08,833 --> 00:00:09,000
+Six pillars of an AI-ready foundation,
+
