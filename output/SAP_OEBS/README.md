@@ -1,3 +1,6 @@
+# FINAL v10: `Solix_SAP_OEBS_FINAL_v10_*` (89.9 s)
+Manager changes only: first screen = "SAP + Oracle" over "ENTERPRISE APPLICATION ARCHIVING" (module names and spoken title removed, card 4.6 s, one SOLIXEMPOWER mention); right-side Solix logo removed, SOLIXEMPOWER logo enlarged; Oracle "Connect" box restyled as in the reference. Everything else as v9.
+
 # FINAL v9: `Solix_SAP_OEBS_FINAL_v9_*` (94.9 s)
 Same as v8 (CEO brief) with one change: the pause after the opening line (10-13 s portion) is 1 s shorter, so the next line starts at 12.8 s instead of 13.8 s and everything after moves 1 s earlier.
 
