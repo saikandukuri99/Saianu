@@ -656,28 +656,21 @@ scene(L[35] - .65, TOTAL + 1, root => {
 
 // ============================================================ master clock
 const logo = $('#logo'), cap = $('#cap'), capt = $('#capt'), flash = $('#flash'), corners = $$('.corner');
-const CUTS = SC.slice(1).map(s => s.tin);
 function seek(t) {
   BG.state.black = 0;
+  // hard cuts: each scene is shown in full until the next one starts (no transitions)
   SC.forEach((s, i) => {
-    const vis = t >= s.tin - .01 && t <= s.tout + .75;
+    const next = SC[i + 1] ? SC[i + 1].tin : 1e9;
+    const vis = t >= s.tin - .01 && t < next;
     s.root.style.display = vis ? 'block' : 'none';
     if (!vis) return;
     s.update(t);
-    const first = i === 0;
-    const pin = first ? 1 : prog(t, s.tin, .8, Ease.out3), pout = prog(t, s.tout, .7, Ease.in3);
-    const push = .022 * clamp((t - s.tin) / (s.tout - s.tin + .7));
-    const sc = lerp(.94, 1, pin) * lerp(1, 1.07, pout) * (1 + push);
-    s.root.style.opacity = (pin * (1 - pout)).toFixed(4);
-    s.root.style.transform = `scale(${sc.toFixed(5)})`;
-    const b = 12 * (1 - pin) + 14 * pout;
-    s.root.style.filter = b > .05 ? `blur(${b.toFixed(2)}px)` : '';
+    const push = .022 * clamp((t - s.tin) / (next - s.tin));
+    s.root.style.opacity = 1;
+    s.root.style.transform = `scale(${(1 + push).toFixed(5)})`;
+    s.root.style.filter = '';
   });
-  // light sweep at each cut
-  let fl = -1;
-  CUTS.forEach(c => { const p = (t - (c - .25)) / .9; if (p >= 0 && p <= 1) fl = p; });
-  flash.style.opacity = fl < 0 ? 0 : Math.sin(fl * Math.PI) * .9;
-  flash.style.transform = `translateX(${lerp(-1900, 1900, Math.max(0, fl))}px)`;
+  flash.style.opacity = 0;
   // chrome
   const lo = prog(t, 5.9, .8) * (1 - prog(t, L[35] - .8, .5));
   logo.style.opacity = lo; logo.style.visibility = lo > 0 ? 'visible' : 'hidden';

@@ -1,10 +1,12 @@
 # Solix Enterprise AI – Teaser (Storyline A, 4K)
 
-**v2 (current):** follows the final Flow script, which opens with "AI is transforming how enterprises run and grow." The background is more corporate: deep navy-to-indigo gradient, fine faint grid, slow blue and red light ribbons, and a sparser low-opacity AI network. The animation is otherwise the same as v1.
+**v3 (current):** same as v2, but with no scene transitions: each scene cuts straight to the next, with no crossfade, blur/zoom or light sweep.
+
+**v2:** follows the final Flow script, which opens with "AI is transforming how enterprises run and grow." The background is more corporate: deep navy-to-indigo gradient, fine faint grid, slow blue and red light ribbons, and a sparser low-opacity AI network. The animation is otherwise the same as v1.
 
 **Deliverables in `output/EAI_Teaser_4K/`:**
-- `Solix_Enterprise_AI_Teaser_v2_4K.mp4`: 3840×2160, 30 fps, H.264 High with AAC stereo, 2:04. Natively rendered at 4K, not upscaled.
-- `Solix_Enterprise_AI_Teaser_v2_1080p.mp4`: 1080p copy for laptops and email.
+- `Solix_Enterprise_AI_Teaser_v3_4K.mp4`: 3840×2160, 30 fps, H.264 High with AAC stereo, 2:04. Natively rendered at 4K, not upscaled.
+- `Solix_Enterprise_AI_Teaser_v3_1080p.mp4`: 1080p copy for laptops and email.
 - `Solix_EAI_Teaser_captions.srt`: subtitles matching the final timing.
 - `Solix_EAI_Teaser_VO.wav`: the voice-over alone.
 
