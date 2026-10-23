@@ -434,11 +434,13 @@ class Renderer:
                                       cap(45.0, 48.8, "Purpose-built Solix agents bring every system into focus,"),
                                       cap(48.9, 52.7, "turning real-time insights into better patient outcomes.")]),
             "findings": Slide("Specialty agent", "04", "Findings", "with Evidence.", x=120, y_label=200, size=72,
-                              t_in=53.1, bullets=["Published guideline", "Readings cited", "Rule applied",
-                                                  "Explainability by design"],
-                              bullets_t=[54.4, 56.35, 57.73, 59.15],
+                              # bullets in voice-over order, each lit while it is spoken
+                              t_in=53.1, bullets=["Explainability by design", "Readings cited", "Rule applied",
+                                                  "Published guideline"],
+                              bullets_t=[55.3, 56.35, 57.73, 59.15],
                               captions=[cap(53.15, 56.3, "Every finding comes with its evidence, by design."),
-                                        cap(56.35, 61.3, "The readings are cited. The rules are applied, based on the published guidelines.")]),
+                                        cap(56.35, 57.7, "The readings are cited."),
+                                        cap(57.73, 61.3, "The rules are applied, based on the published guidelines.")]),
             "clinic": Slide("Clinician in control", "05", "Decisions are validated", "& approved by clinicians.",
                             x=120, y_label=200, size=60, t_in=61.65,
                             bullets=["Review the evidence", "Refine the findings", "Approve with confidence"],
@@ -676,10 +678,16 @@ def main():
         for t in test:
             cv2.imwrite(f"{out}_{t}.png", R.frame(int(round(t * FPS)))[:, :, ::-1])
         return
+    # optional: HC_AUDIO = replacement soundtrack (wav), HC_SIZE = output size (e.g. 3840x2160)
+    audio = os.environ.get("HC_AUDIO")
+    size = os.environ.get("HC_SIZE", f"{W}x{H}")
+    vf = [] if size == f"{W}x{H}" else ["-vf", f"scale={size.replace('x', ':')}:flags=lanczos,unsharp=5:5:0.35"]
+    acodec = ["-c:a", "aac", "-b:a", "256k"] if audio else ["-c:a", "copy"]
     enc = subprocess.Popen([
         "ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS),
-        "-i", "-", "-i", video, "-map", "0:v", "-map", "1:a", "-c:v", "libx264", "-preset", "slow", "-crf", "16",
-        "-pix_fmt", "yuv420p", "-c:a", "copy", "-movflags", "+faststart", out], stdin=subprocess.PIPE)
+        "-i", "-", "-i", audio or video, "-map", "0:v", "-map", "1:a", *vf, "-c:v", "libx264", "-preset", "slow",
+        "-crf", os.environ.get("HC_CRF", "16"), "-pix_fmt", "yuv420p", *acodec, "-shortest", "-movflags", "+faststart",
+        out], stdin=subprocess.PIPE)
     with Pool(4, initializer=_init, initargs=(logo,)) as pool:
         for k, img in enumerate(pool.imap(_job, range(n), chunksize=4)):
             enc.stdin.write(img.tobytes())
