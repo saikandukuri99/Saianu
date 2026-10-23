@@ -1,3 +1,6 @@
+# FINAL v11: `Solix_SAP_OEBS_FINAL_v11_*` (92.1 s)
+Ending only: the call-to-action text is removed; the end card keeps just "solix.com". Everything else as v10 (voice and music unchanged; use the v10 WAV stems).
+
 # FINAL v10: `Solix_SAP_OEBS_FINAL_v10_*` (89.9 s)
 Manager changes only: first screen = "SAP + Oracle" over "ENTERPRISE APPLICATION ARCHIVING" (module names and spoken title removed, card 4.6 s, one SOLIXEMPOWER mention); right-side Solix logo removed, SOLIXEMPOWER logo enlarged; Oracle "Connect" box restyled as in the reference. Everything else as v9.
 
