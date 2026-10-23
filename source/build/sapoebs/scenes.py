@@ -654,9 +654,7 @@ def scene_J(c, t):
     ea = E(pr(t, end_card_t(), .8))
     if ea > .01:
         lg = LOGO(130); c.blit(lg, 960 - lg.width / 2, 680 - 14 * (1 - ea), ea)
-        cta = E(pr(t, end_card_t() + .5, .6))
-        ctext(c, "solix.com", 960 - tw("solix.com   ·   " + CTA, "d", "Bold", 36) / 2, 880, "d", "Bold", 36, SKY, cta)
-        ctext(c, "   ·   " + CTA, 960 - tw("solix.com   ·   " + CTA, "d", "Bold", 36) / 2 + tw("solix.com", "d", "Bold", 36), 880, "d", "Bold", 36, WHITE, cta)
+        ctext(c, "solix.com", 960, 880, "d", "Bold", 40, SKY, E(pr(t, end_card_t() + .5, .6)), anchor="c")
         fa = E(pr(t, end_card_t() + .8, .7)) * .8
         c.text("SAP and SAP S/4HANA are trademarks or registered trademarks of SAP SE.", 960, 985, "i", "Regular", 15, (98, 120, 176), fa, anchor="c")
         c.text("Oracle and E-Business Suite are trademarks or registered trademarks of Oracle and/or its affiliates.", 960, 1010, "i", "Regular", 15, (98, 120, 176), fa, anchor="c")
