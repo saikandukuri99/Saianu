@@ -1,6 +1,6 @@
 # EAI teaser – final script (Storyline A v3), RGB alpha + voice-over
 
-Runtime 1:42 (102.3 s), 1920x1080, 30 fps. Female voice (same voice and pace as the previous version), no gaps, no music.
+Runtime 1:42 (102.3 s), 1920x1080, 30 fps. Female voice, improved delivery (corrected "Agentic" stress, smoother mastering), no gaps, no music. Solix logo replaced with the official logo (mark + wordmark + tagline), top-right throughout and on the opening/closing cards.
 Only the two changed script lines were re-recorded/re-cut (35.6 s "Knowledge graphs for your applications and cloud platforms" and 40.4 s "And a steward's worklist keeps your experts in the loop, ranked by what matters most."); all other visuals are unchanged and follow the storyboard. Imagery is restrained: product-style cards, no AI icons/3D.
 
 ## Files

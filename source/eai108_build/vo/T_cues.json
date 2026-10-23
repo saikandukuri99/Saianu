@@ -1,262 +1,262 @@
 {
- "total": 102.34,
+ "total": 102.3,
  "cues": [
   {
    "script_start": 0.3,
    "start": 0.3,
-   "end": 4.038,
+   "end": 3.727,
    "speed": 1.0,
    "text": "Agentic AI is transforming how enterprises run and grow."
   },
   {
    "script_start": 5.5,
-   "start": 4.788,
-   "end": 8.124,
+   "start": 4.477,
+   "end": 7.742,
    "speed": 1.0,
    "text": "But your AI is only as ready as your enterprise data is."
   },
   {
    "script_start": 10.3,
-   "start": 8.874,
-   "end": 10.404,
+   "start": 8.492,
+   "end": 10.022,
    "speed": 1.0,
    "text": "Tables with cryptic names."
   },
   {
    "script_start": 12.2,
-   "start": 10.824,
-   "end": 12.706,
+   "start": 10.442,
+   "end": 12.272,
    "speed": 1.0,
    "text": "Systems that don't talk to each other."
   },
   {
    "script_start": 14.2,
-   "start": 13.126,
-   "end": 14.763,
+   "start": 12.692,
+   "end": 14.255,
    "speed": 1.0,
    "text": "Documents no one has indexed."
   },
   {
    "script_start": 17.0,
-   "start": 15.183,
-   "end": 16.571,
+   "start": 14.675,
+   "end": 16.047,
    "speed": 1.0,
    "text": "So your AI can't use it."
   },
   {
    "script_start": 19.8,
-   "start": 17.321,
-   "end": 20.55,
+   "start": 16.797,
+   "end": 19.926,
    "speed": 1.0,
    "text": "Solix Enterprise AI gets your data ready for AI."
   },
   {
    "script_start": 23.3,
-   "start": 20.97,
-   "end": 22.98,
+   "start": 20.346,
+   "end": 22.488,
    "speed": 1.0,
    "text": "So you can understand it, ask it anything,"
   },
   {
    "script_start": 25.7,
-   "start": 23.1,
-   "end": 24.786,
+   "start": 22.608,
+   "end": 24.275,
    "speed": 1.0,
    "text": "build on it, and put it to work."
   },
   {
    "script_start": 29.3,
-   "start": 25.536,
-   "end": 28.955,
+   "start": 25.025,
+   "end": 28.723,
    "speed": 1.0,
    "text": "Data Sense makes sense of all your data, structured and unstructured."
   },
   {
    "script_start": 32.6,
-   "start": 29.375,
-   "end": 32.168,
+   "start": 29.143,
+   "end": 32.15,
    "speed": 1.0,
    "text": "It drafts the business meaning, and your experts review it."
   },
   {
    "script_start": 35.6,
-   "start": 32.288,
-   "end": 35.494,
+   "start": 32.27,
+   "end": 35.278,
    "speed": 1.0,
    "text": "Knowledge graphs for your applications and cloud platforms"
   },
   {
    "script_start": 38.5,
-   "start": 35.614,
-   "end": 36.931,
+   "start": 35.398,
+   "end": 36.761,
    "speed": 1.0,
    "text": "get you started in minutes."
   },
   {
    "script_start": 40.4,
-   "start": 37.351,
-   "end": 41.43,
+   "start": 37.181,
+   "end": 41.716,
    "speed": 1.0,
    "text": "And a steward's worklist keeps your experts in the loop, ranked by what matters most."
   },
   {
    "script_start": 44.8,
-   "start": 42.18,
-   "end": 43.81,
+   "start": 42.466,
+   "end": 44.065,
    "speed": 1.0,
    "text": "Here's what sets Solix apart."
   },
   {
    "script_start": 46.7,
-   "start": 44.23,
-   "end": 47.755,
+   "start": 44.485,
+   "end": 48.124,
    "speed": 1.0,
    "text": "One knowledge graph that connects meaning across all your applications."
   },
   {
    "script_start": 50.9,
-   "start": 48.175,
-   "end": 51.872,
+   "start": 48.544,
+   "end": 52.578,
    "speed": 1.0,
    "text": "The same supplier in three systems becomes one record you can trust."
   },
   {
    "script_start": 54.3,
-   "start": 52.292,
-   "end": 53.993,
+   "start": 52.998,
+   "end": 54.629,
    "speed": 1.0,
    "text": "One shared meaning, everywhere."
   },
   {
    "script_start": 56.7,
-   "start": 54.413,
-   "end": 57.118,
+   "start": 55.049,
+   "end": 57.552,
    "speed": 1.0,
    "text": "No migration. Your records stay where they are."
   },
   {
    "script_start": 59.8,
-   "start": 57.868,
-   "end": 60.41,
+   "start": 58.302,
+   "end": 60.832,
    "speed": 1.0,
    "text": "Data Ask answers questions in plain language,"
   },
   {
    "script_start": 61.7,
-   "start": 60.53,
-   "end": 62.727,
+   "start": 60.952,
+   "end": 63.022,
    "speed": 1.0,
    "text": "across structured and unstructured data,"
   },
   {
    "script_start": 64.5,
-   "start": 62.847,
-   "end": 64.598,
+   "start": 63.142,
+   "end": 64.889,
    "speed": 1.0,
    "text": "grounded in your business context,"
   },
   {
    "script_start": 67.5,
-   "start": 64.718,
-   "end": 66.159,
+   "start": 65.009,
+   "end": 66.407,
    "speed": 1.0,
    "text": "with every answer cited."
   },
   {
    "script_start": 70.8,
-   "start": 66.909,
-   "end": 69.143,
+   "start": 67.157,
+   "end": 69.305,
    "speed": 1.0,
    "text": "Then the people who know your business take over."
   },
   {
    "script_start": 73.7,
-   "start": 69.563,
-   "end": 71.532,
+   "start": 69.725,
+   "end": 71.544,
    "speed": 1.0,
    "text": "They describe the application they need,"
   },
   {
    "script_start": 76.1,
-   "start": 71.652,
-   "end": 74.871,
+   "start": 71.664,
+   "end": 74.961,
    "speed": 1.0,
    "text": "and AI Warehouse builds it on governed, version-tracked data."
   },
   {
    "script_start": 79.1,
-   "start": 75.291,
-   "end": 76.746,
+   "start": 75.381,
+   "end": 76.793,
    "speed": 1.0,
    "text": "Your AI, on your data."
   },
   {
    "script_start": 81.3,
-   "start": 77.496,
-   "end": 80.774,
+   "start": 77.543,
+   "end": 80.658,
    "speed": 1.0,
    "text": "Agentic goes further. Just describe the work you need done."
   },
   {
    "script_start": 85.2,
-   "start": 81.194,
-   "end": 83.744,
+   "start": 81.078,
+   "end": 83.799,
    "speed": 1.0,
    "text": "Agentic AI builds it, tests it, and runs it."
   },
   {
    "script_start": 88.6,
-   "start": 84.164,
-   "end": 86.397,
+   "start": 84.219,
+   "end": 86.459,
    "speed": 1.0,
    "text": "Less manual work, more done every day."
   },
   {
    "script_start": 91.8,
-   "start": 87.147,
-   "end": 88.894,
+   "start": 87.209,
+   "end": 88.953,
    "speed": 1.0,
    "text": "And it works with what you already have."
   },
   {
    "script_start": 94.1,
-   "start": 89.314,
-   "end": 90.267,
+   "start": 89.373,
+   "end": 90.315,
    "speed": 1.0,
    "text": "Any LLM."
   },
   {
    "script_start": 95.9,
-   "start": 90.687,
-   "end": 91.735,
+   "start": 90.735,
+   "end": 91.781,
    "speed": 1.0,
    "text": "Any application."
   },
   {
    "script_start": 97.7,
-   "start": 92.155,
-   "end": 93.409,
+   "start": 92.201,
+   "end": 93.385,
    "speed": 1.0,
    "text": "Any data platform."
   },
   {
    "script_start": 99.9,
-   "start": 93.829,
-   "end": 95.82,
+   "start": 93.805,
+   "end": 95.847,
    "speed": 1.0,
    "text": "It fits right into your existing stack."
   },
   {
    "script_start": 103.4,
-   "start": 96.57,
-   "end": 98.185,
+   "start": 96.597,
+   "end": 98.079,
    "speed": 1.0,
    "text": "Solix Enterprise AI."
   },
   {
    "script_start": 104.9,
-   "start": 98.605,
-   "end": 100.537,
+   "start": 98.499,
+   "end": 100.5,
    "speed": 1.0,
    "text": "Put AI in the hands of your business."
   }

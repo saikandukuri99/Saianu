@@ -1,15 +1,14 @@
 # Tight version of the voice-over: one natural pace (speed 1.0), short even pauses instead of the long script gaps.
 # Also writes the time map (script time -> tight time) so the scenes follow the new voice.
-import sherpa_onnx, soundfile as sf, numpy as np, json, subprocess, sys
+import soundfile as sf, numpy as np, json, subprocess, sys
 sys.path.insert(0,'vo')
 from cues import A
-d="tts/kokoro-multi-lang-v1_0/"
-cfg=sherpa_onnx.OfflineTtsConfig(model=sherpa_onnx.OfflineTtsModelConfig(kokoro=sherpa_onnx.OfflineTtsKokoroModelConfig(model=d+"model.onnx",voices=d+"voices.bin",tokens=d+"tokens.txt",data_dir=d+"espeak-ng-data",dict_dir=d+"dict",lexicon=d+"lexicon-us-en.txt"),num_threads=4))
-tts=sherpa_onnx.OfflineTts(cfg);SID=9;SR=24000;SPEED=1.0
+from kdirect import synth
+SR=24000;SPEED=1.0;SID=9
 def gen(txt):
-    a=np.array(tts.generate(txt,sid=SID,speed=SPEED).samples);sf.write("vo/_a.wav",a,SR)
+    a,_=synth(txt,sid=SID,speed=SPEED);sf.write("vo/_a.wav",a,SR)
     subprocess.run(["ffmpeg","-y","-v","error","-i","vo/_a.wav","-af","silenceremove=start_periods=1:start_threshold=-48dB:start_silence=0.03,areverse,silenceremove=start_periods=1:start_threshold=-48dB:start_silence=0.03,areverse","vo/_b.wav"],check=True)
-    return sf.read("vo/_b.wav")[0]
+    y=sf.read("vo/_b.wav")[0];n=int(.012*SR);m=int(.05*SR);y[:n]*=np.linspace(0,1,n);y[-m:]*=np.linspace(1,0,m);return y
 SECTION={5.5,10.3,19.8,29.3,44.8,59.8,70.8,81.3,91.8,103.4}
 def gap_before(i):
     t,txt=A[i];prev=A[i-1][1]

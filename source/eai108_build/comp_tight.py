@@ -1,6 +1,6 @@
 # Composite the re-timed scene clips + logo + voice-over into ONE RGB-alpha file (QuickTime Animation video + PCM audio).
 import json,subprocess
-S='/tmp/claude-0/-home-user-Saianu/8dd9dd7e-6cc6-54e8-bd08-a2168bab399f/scratchpad/out2'
+S='/tmp/claude-0/-home-user-Saianu/8dd9dd7e-6cc6-54e8-bd08-a2168bab399f/scratchpad/out3'
 sc=json.load(open('vo/scenes_new.json'));T=json.load(open('vo/T_cues.json'))['total'];total=int(round(T*30))
 old,new=json.load(open('vo/tmap.json'))
 def ip(x):
