@@ -59,22 +59,14 @@ CUTS = []          # hard cuts: no transition effects
 # --------------------------------------------------------------------------- T  video title card (music only, before the voice-over starts)
 def scene_T(c, t):
     kicker(c, "SOLIXEMPOWER 2026", 960, 300, .15, t, anchor="c")
-    size = 100; items = [("SAP", WHITE, None), ("+", SKY, None), ("Oracle Applications", WHITE, None)]
-    while sum(tw(i[0], "d", "Bold", size) for i in items) + size * .27 * 2 > 1640: size -= 2
-    words(c, items, 960, 365, size, [TITLE['s1'] - .05, TITLE['s1'] + .85, TITLE['s1'] + 1.05], t, anchor="c")     # revealed with the spoken title
+    size = 120; items = [("SAP", WHITE, None), ("+", SKY, None), ("Oracle", WHITE, None)]
+    words(c, items, 960, 365, size, [TITLE['s1'] - .05, TITLE['s1'] + .25, TITLE['s1'] + .45], t, anchor="c")
     f = font("d", "Bold", size); wd = sum(f.getlength(i[0]) for i in items) + size * .27 * 2
-    u = E(pr(t, TITLE['s1'] + 1.6, .6)); uw = int(wd * u) // 6 * 6
+    u = E(pr(t, TITLE['s1'] + 1.0, .6)); uw = int(wd * u) // 6 * 6
     if uw > 6:
-        h = int(uw * .66) // 6 * 6; c.blit(BAR(max(6, h), 8, BLUE), 960 - wd / 2, 530, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 8, RED), 960 - wd / 2 + h - 6, 530, 1)
-    # smaller sub-heading: the Oracle applications, revealed as the narrator says each name
-    names = ["PEOPLESOFT", "JD EDWARDS", "SIEBEL", "OEBS"]; wts = [10, 13, 6, 8]; tot = float(sum(wts))
-    t0, t1 = TITLE['s2'] - .05, TITLE['end'] - .15; acc = 0.0; times = []
-    for w_ in wts: times.append(t0 + (t1 - t0) * acc / tot); acc += w_
-    size2 = 34; sep = 52; widths = [tw(n_, "i", "Bold", size2, 6) for n_ in names]; total = sum(widths) + sep * (len(names) - 1); x = 960 - total / 2
-    for i, (n_, w_) in enumerate(zip(names, widths)):
-        a_ = E(pr(t, times[i], .4)); ctext(c, n_, x, 612 + (1 - a_) * 10, "i", "Bold", size2, TXT, a_, track=6)
-        if i < len(names) - 1: c.blit(CIRCLE(10, (RED if i % 2 == 0 else BLUE) + (255,), glow=RED if i % 2 == 0 else BLUE), x + w_ + sep / 2, 626, E(pr(t, times[i + 1] - .1, .3)), 1, True)
-        x += w_ + sep
+        h = int(uw * .66) // 6 * 6; c.blit(BAR(max(6, h), 8, BLUE), 960 - wd / 2, 540, 1); c.blit(BAR(max(6, uw - h + 6) // 6 * 6, 8, RED), 960 - wd / 2 + h - 6, 540, 1)
+    a_ = E(pr(t, TITLE['s1'] + 1.7, .5))
+    ctext(c, "ENTERPRISE APPLICATION ARCHIVING", 960, 625 + (1 - a_) * 10, "i", "Bold", 34, TXT, a_, track=7, anchor="c")
 
 # --------------------------------------------------------------------------- A  (HEAD) opening headline
 def scene_A(c, t):
@@ -321,7 +313,7 @@ def scene_E(c, t):
     # other connected apps, bottom left, once "validated by Oracle" has been said
     ta = cue(3, "by Oracle", end=True) + .1; pa = E(pr(t, ta, .5))
     if pa > .01:
-        px, py, pw, ph = 120 - (1 - pa) * 30, 668, 740, 330
+        px, py, pw, ph = 120 - (1 - pa) * 30, 668, 740, 290
         c.card(px, py, pw, ph, pa, outline=RED + (190,), r=24)
         c.blit(BAR(28, 5, RED), px + 34, py + 36, pa); ctext(c, "CONNECT", px + 76, py + 38, "i", "Bold", 22, SKY, pa, track=8)
         x = px + 34
@@ -331,10 +323,14 @@ def scene_E(c, t):
             ctext(c, nm, x + w / 2, py + 113 + (1 - ca) * 10, "i", "Bold", 22, WHITE, ca * pa, track=3, anchor="c"); x += w + 16
         sa = E(pr(t, ta + 1.05, .4)) * pa
         f = font("i", "Bold", 46); w1 = f.getlength("& "); w2 = f.getlength("100+")
-        ctext(c, "& ", px + 34, py + 190, "i", "Bold", 46, WHITE, sa); ctext(c, "100+", px + 34 + w1, py + 190, "i", "Bold", 46, RED, sa)
-        ctext(c, " Sources", px + 34 + w1 + w2, py + 190, "i", "Bold", 46, WHITE, sa)
+        ctext(c, "& ", px + 34, py + 186, "i", "Bold", 46, WHITE, sa); ctext(c, "100+", px + 34 + w1, py + 186, "i", "Bold", 46, RED, sa)
+        ctext(c, " Sources", px + 34 + w1 + w2, py + 186, "i", "Bold", 46, WHITE, sa)
         fa = E(pr(t, ta + 1.4, .4)) * pa
-        c.icon("layers", px + 52, py + 266, 36, SKY, fa); ctext(c, "Through Solix Connect", px + 86, py + 266, "i", "Medium", 30, TXT, fa)
+        yb = py + 246
+        c.card(px + 34, yb - 24, 48, 48, fa, outline=RED + (230,), fill=(60, 20, 40, 235), r=12); c.blit(BOLT(30), px + 58, yb, fa, 1, True)
+        x2 = px + 100; ctext(c, "Through ", x2, yb, "i", "Medium", 28, TXT, fa); x2 += tw("Through ", "i", "Medium", 28)
+        ctext(c, "Solix Connect", x2, yb, "i", "Bold", 28, WHITE, fa)
+        ctext(c, "\u00bb\u00bb\u00bb", px + pw - 34, yb, "i", "Bold", 30, SKY, fa * .8, anchor="r")
     badge = E(pr(t, cue(3, "both") - .1, .5))
     c.text("BOTH  ·  ONE PLATFORM", 1085, 888, "i", "Bold", 17, SKY, badge * (1 - E(pr(t, line_t(3)[1] - .5, .4))), track=6, anchor="c")
 
