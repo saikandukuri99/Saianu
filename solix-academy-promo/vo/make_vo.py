@@ -19,7 +19,7 @@ LINES = [  # (id, section, text, speed)
     ("l10", 3, "Built by distinguished professors, leading AI practitioners, and industry experts,", 1.16),
     ("l11", 3, "we deliver hands-on labs and real-world projects, from AI fundamentals to production-grade engineering,", 1.18),
     ("l12", 3, "in flexible self-paced and instructor-led formats.", 1.14),
-    ("l13", 4, "Our mission is simple: to transform everyone into AI-ready innovators.", 1.08),
+    ("l13", 4, "Our mission is simple: to transform everyone into AI-Ready innovators.", 1.08),
     ("l14", 4, "The future belongs to organizations that learn, adapt, and innovate faster than ever.", 1.1),
     ("l15", 4, "Welcome to Solix Academy.", 1.0),
     ("l16", 4, "Learn.", 0.95),

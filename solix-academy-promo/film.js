@@ -543,7 +543,7 @@
     if (oA > 0) {
       text(ctx, 'SOLIX ACADEMY PRESENTS', W / 2, H * 0.4 - 6, { size: 34, weight: 700, color: C.blueHi, align: 'center', alpha: oA, spacing: lerp(26, 10, ease.outCubic(fade(t, 0.5, 2.0))) });
       ctx.save(); ctx.globalAlpha = oA; ctx.fillStyle = C.red; ctx.fillRect(W / 2 - 60, H * 0.4 + 14, 120, 4); ctx.restore();
-      rich(ctx, [{ s: 'The world is entering ', c: '#ffffff', weight: 300, t: V.l01.t - 0.1 }, { s: 'a new era', c: C.blueHi, glow: 18, t: wordT('l01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
+      rich(ctx, [{ s: 'The World Is Entering ', c: '#ffffff', weight: 300, t: V.l01.t - 0.1 }, { s: 'a New Era', c: C.blueHi, glow: 18, t: wordT('l01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
     }
     // --- title: "Reimagining Enterprise AI" (0:02), then it rises to a header
     const up = ease.inOutCubic(fade(t, V.l02.words[3].t - 0.5, 0.8)); // moves up as "every enterprise" begins
@@ -562,7 +562,7 @@
     // --- "every enterprise / every business function / every employee" chips
     const chipA = win(t, V.l02.words[3].t, ev.question - 0.1, 0.4, 0.5);
     if (chipA > 0) {
-      const items = [['building', 'Every enterprise', V.l02.words[3].t], ['gear', 'Every business function', V.l02.words[5].t], ['person', 'Every employee', V.l02.words[9].t]];
+      const items = [['building', 'Every Enterprise', V.l02.words[3].t], ['gear', 'Every Business Function', V.l02.words[5].t], ['person', 'Every Employee', V.l02.words[9].t]];
       const cw = 530, gap = 30, x0 = W / 2 - (cw * 3 + gap * 2) / 2, y = H * 0.36;
       items.forEach(([ic, label, t0], i) => {
         const k = ease.outBack(clamp((t - t0) / 0.5), 1.6);
@@ -587,8 +587,8 @@
     if (qA > 0) {
       kicker(ctx, 'THE QUESTION', W / 2, H * 0.68 - 104, qA, C.blueHi, 'center');
       const q0 = ev.question;
-      rich(ctx, [{ s: 'How do organizations make this', c: '#ffffff', weight: 700, t: q0 }], W / 2, H * 0.68, { size: 60, align: 'center', alpha: qA, t });
-      rich(ctx, [{ s: 'transformation ', c: C.blueHi, weight: 800, t: wordT('l03', 'transformation'), glow: 18 }, { s: 'a ', c: '#fff', t: wordT('l03', 'reality') - 0.2 }, { s: 'reality?', c: '#fff', pill: C.red, t: wordT('l03', 'reality') }], W / 2, H * 0.68 + 86, { size: 68, weight: 800, align: 'center', alpha: qA, t });
+      rich(ctx, [{ s: 'How Do Organizations Make This', c: '#ffffff', weight: 700, t: q0 }], W / 2, H * 0.68, { size: 60, align: 'center', alpha: qA, t });
+      rich(ctx, [{ s: 'Transformation ', c: C.blueHi, weight: 800, t: wordT('l03', 'transformation'), glow: 18 }, { s: 'a ', c: '#fff', t: wordT('l03', 'reality') - 0.2 }, { s: 'Reality?', c: '#fff', pill: C.red, t: wordT('l03', 'reality') }], W / 2, H * 0.68 + 86, { size: 68, weight: 800, align: 'center', alpha: qA, t });
     }
   }
   const wordT = S.wordT;
@@ -707,7 +707,7 @@
     kicker(ctx, 'THREE ESSENTIAL PILLARS', W / 2, 118, hk, C.blueHi, 'center');
     const tagA = ease.outCubic(fade(t, ev.pillarsTag + 0.3, 0.6));
     const big = 1 - fade(t, ev.pillar[0] - 0.3, 0.5);
-    if (big > 0) rich(ctx, [{ s: 'It starts with ', c: '#fff', weight: 300 }, { s: 'three essential pillars', c: C.blueHi, glow: 20 }], W / 2, H * 0.36, { size: 70, align: 'center', alpha: big * fade(t, V.l04.t, 0.5) });
+    if (big > 0) rich(ctx, [{ s: 'It Starts with ', c: '#fff', weight: 300 }, { s: 'Three Essential Pillars', c: C.blueHi, glow: 20 }], W / 2, H * 0.36, { size: 70, align: 'center', alpha: big * fade(t, V.l04.t, 0.5) });
     if (tagA > 0) {
       rich(ctx, [{ s: 'Data', c: C.blueHi }, { s: '  •  ', c: '#8090c0', weight: 400 }, { s: 'People', c: '#ff5a5a' }, { s: '  •  ', c: '#8090c0', weight: 400 }, { s: 'Governance', c: '#a99bff' }], W / 2, 196, { size: 54, weight: 800, align: 'center', alpha: tagA * win(t, 0, S.S.pillars[1] + 0.2, 0, 0.4) });
     }
@@ -789,7 +789,7 @@
       ctx.strokeStyle = C.blueHi; ctx.lineWidth = 3; ctx.beginPath();
       for (let i = 0; i <= 40 * clamp(u * 1.2); i++) { const x = 30 + (i / 40) * (w - 60), y = 300 - 100 * (1 - Math.exp(-i / 10)) - 6 * Math.sin(i); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }
       ctx.stroke();
-      text(ctx, 'model accuracy  ' + (80 + 14.6 * clamp(u * 1.2)).toFixed(1) + '%', 30, 360, { size: 20, weight: 700, color: '#c9d3f5' });
+      text(ctx, 'Model accuracy  ' + (80 + 14.6 * clamp(u * 1.2)).toFixed(1) + '%', 30, 360, { size: 20, weight: 700, color: '#c9d3f5' });
     } },
     { title: 'Agentic AI Lab', tag: 'HANDS-ON LAB', draw(ctx, w, h, u) {
       const rows = [['Goal', 'Reconcile Q3 vendor invoices', C.indigo], ['Plan', 'Split into 3 sub-tasks', C.blue], ['Tool call', 'query_erp(vendor, quarter=Q3)', C.red], ['Observe', '1,284 records - 6 mismatches', C.blue], ['Answer', 'Report drafted, approvals routed', '#2bb673']];
@@ -881,8 +881,8 @@
     const platA = win(t, ev.platform + 0.2, ev.experts + 0.1, 0.5, 0.45);
     if (platA > 0) {
       kicker(ctx, 'A PREMIER LEARNING PLATFORM', 140, 330, platA);
-      rich(ctx, [{ s: 'Embrace AI ', c: '#fff', t: ev.platform + 0.3 }, { s: 'faster', c: C.red, glow: 16, t: wordT('l09', 'faster') }], 140, 430, { size: 76, alpha: platA, t });
-      rich(ctx, [{ s: 'and with ', c: '#fff', weight: 300, t: wordT('l09', 'and') }, { s: 'confidence.', c: C.blueHi, glow: 16, t: wordT('l09', 'confidence') }], 140, 520, { size: 76, alpha: platA, t });
+      rich(ctx, [{ s: 'Embrace AI ', c: '#fff', t: ev.platform + 0.3 }, { s: 'Faster', c: C.red, glow: 16, t: wordT('l09', 'faster') }], 140, 430, { size: 76, alpha: platA, t });
+      rich(ctx, [{ s: 'and with ', c: '#fff', weight: 300, t: wordT('l09', 'and') }, { s: 'Confidence', c: C.blueHi, glow: 16, t: wordT('l09', 'confidence') }], 140, 520, { size: 76, alpha: platA, t });
       text(ctx, 'Built for enterprises adopting AI at scale', 142, 590, { size: 28, weight: 400, color: '#c9d3f5', alpha: platA * fade(t, ev.platform + 1.5, 0.6) });
     }
     const cardsA = win(t, ev.platform + 0.2, ev.labs[0] + 0.3, 0.5, 0.6);
@@ -919,8 +919,8 @@
     const labsA = win(t, ev.labs[0] - 0.4, ev.paths + 0.3, 0.4, 0.5);
     if (labsA > 0) {
       kicker(ctx, 'LEARN BY DOING', 140, 300, labsA);
-      rich(ctx, [{ s: 'Hands-on labs', c: C.blueHi, glow: 14 }], 140, 384, { size: 64, alpha: labsA });
-      rich(ctx, [{ s: '& real-world projects', c: '#ffffff', weight: 700 }], 140, 456, { size: 50, alpha: labsA * fade(t, wordT('l11', 'real-world') - 0.1, 0.4) });
+      rich(ctx, [{ s: 'Hands-On Labs', c: C.blueHi, glow: 14 }], 140, 384, { size: 64, alpha: labsA });
+      rich(ctx, [{ s: '& Real-World Projects', c: '#ffffff', weight: 700 }], 140, 456, { size: 50, alpha: labsA * fade(t, wordT('l11', 'real-world') - 0.1, 0.4) });
       // path: AI Fundamentals -> Production-grade Engineering
       const pk = clamp((t - wordT('l11', 'from')) / 2.0);
       if (pk > 0) {
@@ -932,7 +932,7 @@
         ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(lerp(x0, x1, ease.inOutQuad(pk)), y, 10, 0, TAU); ctx.fill();
         ctx.restore();
         text(ctx, 'AI Fundamentals', x0 - 8, y + 50, { size: 24, weight: 700, color: C.blueHi, alpha: labsA });
-        text(ctx, 'Production-grade Engineering', x1 + 8, y + 50, { size: 24, weight: 700, color: '#ff5a5a', align: 'right', alpha: labsA * clamp(pk * 1.6 - 0.4) });
+        text(ctx, 'Production-Grade Engineering', x1 + 8, y + 50, { size: 24, weight: 700, color: '#ff5a5a', align: 'right', alpha: labsA * clamp(pk * 1.6 - 0.4) });
       }
       LABS.forEach((L, i) => {
         const ti = ev.labs[i];
@@ -1032,9 +1032,9 @@
       const mA = win(t, ev.finale + 0.2, ev.future + 0.05, 0.5, 0.4);
       if (mA > 0) {
         kicker(ctx, 'OUR MISSION', 140, 360, mA);
-        rich(ctx, [{ s: 'Transform ', c: '#fff', t: wordT('l13', 'transform') - 0.1 }, { s: 'everyone', c: '#fff', t: wordT('l13', 'everyone') }], 140, 460, { size: 76, alpha: mA, t });
-        rich(ctx, [{ s: 'into ', c: '#fff', weight: 300, t: wordT('l13', 'into') }, { s: 'AI-ready', c: C.blueHi, glow: 18, t: wordT('l13', 'ai-ready') }], 140, 552, { size: 76, alpha: mA, t });
-        rich(ctx, [{ s: 'innovators.', c: '#ffffff', pill: C.red, t: wordT('l13', 'innovators') }], 152, 652, { size: 76, alpha: mA, t });
+        rich(ctx, [{ s: 'Transform ', c: '#fff', t: wordT('l13', 'transform') - 0.1 }, { s: 'Everyone', c: '#fff', t: wordT('l13', 'everyone') }], 140, 460, { size: 76, alpha: mA, t });
+        rich(ctx, [{ s: 'into ', c: '#fff', weight: 300, t: wordT('l13', 'into') }, { s: 'AI-Ready', c: C.blueHi, glow: 18, t: wordT('l13', 'ai-ready') }], 140, 552, { size: 76, alpha: mA, t });
+        rich(ctx, [{ s: 'Innovators.', c: '#ffffff', pill: C.red, t: wordT('l13', 'innovators') }], 152, 652, { size: 76, alpha: mA, t });
       }
       const fA = win(t, ev.future, ev.endcard + 0.4, 0.5, 0.5);
       if (fA > 0) {
@@ -1047,7 +1047,7 @@
         const fk = clamp((t - wordT('l14', 'faster') + 0.1) / 0.4);
         // speed lines on "faster than ever"
         if (fk > 0) {
-          rich(ctx, [{ s: 'faster than ever', c: C.blueHi }], 146, 790, { size: 40, weight: 700, alpha: fA * fk });
+          rich(ctx, [{ s: 'Faster Than Ever', c: C.blueHi }], 146, 790, { size: 40, weight: 700, alpha: fA * fk });
           ctx.save(); ctx.globalAlpha = fA * fk * 0.8; ctx.globalCompositeOperation = 'lighter';
           for (let i = 0; i < 5; i++) { const y = 776 - 30 + i * 14, x = 470 + ((t * 900 + i * 170) % 300); const g = ctx.createLinearGradient(x, 0, x + 140, 0); g.addColorStop(0, rgba(C.blue, 0)); g.addColorStop(1, rgba(C.blueHi, 0.8)); ctx.fillStyle = g; ctx.fillRect(x, y, 140, 2.5); }
           ctx.restore();
