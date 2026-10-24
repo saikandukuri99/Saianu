@@ -12,9 +12,7 @@ Plain gradient background. No bubbles, particles or glass orbs.
 ## Version 2 – `alpha/` (QuickTime Animation .mov, RGB + Alpha, silent)
 Transparent background, so you can put your own background underneath in Premiere.
 Import, then Modify ▸ Interpret Footage ▸ Alpha Channel: *Straight* (usually automatic).
-GitHub caps files at 100 MB, so two parts are split into back-to-back pieces (exact frames, lossless). Put them one after another on the timeline:
-* `02_Foundation_piece1…4.mov` (4 × 107 frames)
-* `03_Enterprise_AI_piece1…2.mov`
+Two clips are large: `02_Foundation` is delivered as `02_Foundation.zip` (unzip to get one .mov) and `03_Enterprise_AI.mov` is a single file. Screen highlights (red boxes, tags, cursor) are off on every clip.
 
 ## `audio/`
 * `<part>_VO.wav`: voice-over for each part (48 kHz / 24-bit), aligned to clip start.
