@@ -122,6 +122,43 @@
     g.addColorStop(0, rgba('#0a0826', 1)); g.addColorStop(1, rgba('#0a0826', 0));
     ctx.fillStyle = g; ctx.fillRect(0, horizon - 2, W, 162);
   }
+  // a slowly turning 3D network of light (nodes + links), depth-faded: the "data" backdrop
+  const PLEX = Array.from({ length: 90 }, (_, i) => [hash(i, 501) * 2 - 1, hash(i, 502) * 2 - 1, hash(i, 503) * 2 - 1]);
+  function plexus(ctx, t, { a = 1, cx = W / 2, cy = H * 0.45, scale = 1150, speed = 0.05, seed = 0 } = {}) {
+    if (a <= 0) return;
+    const ry = t * speed + seed, rx = 0.35 + Math.sin(t * 0.07 + seed) * 0.08;
+    const cyr = Math.cos(ry), syr = Math.sin(ry), cxr = Math.cos(rx), sxr = Math.sin(rx);
+    const P = PLEX.map(([x, y, z]) => {
+      const x1 = x * cyr + z * syr, z1 = -x * syr + z * cyr;
+      const y1 = y * cxr - z1 * sxr, z2 = y * sxr + z1 * cxr;
+      const d = 2.6 + z2, f = scale / d;
+      return [cx + x1 * f * 1.25, cy + y1 * f * 0.75, z2, x, y, z];
+    });
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    ctx.lineWidth = 1.1;
+    for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) {
+      const dx = PLEX[i][0] - PLEX[j][0], dy = PLEX[i][1] - PLEX[j][1], dz = PLEX[i][2] - PLEX[j][2];
+      const d2 = dx * dx + dy * dy + dz * dz;
+      if (d2 > 0.16) continue;
+      const depth = clamp(0.75 - (P[i][2] + P[j][2]) * 0.3);
+      ctx.strokeStyle = rgba((i + j) % 7 ? C.blueHi : '#8d7bff', a * 0.5 * (1 - d2 / 0.16) * depth);
+      ctx.beginPath(); ctx.moveTo(P[i][0], P[i][1]); ctx.lineTo(P[j][0], P[j][1]); ctx.stroke();
+    }
+    P.forEach(([x, y, z], i) => {
+      const depth = clamp(0.8 - z * 0.35);
+      const tw = 0.6 + 0.4 * Math.sin(t * 1.7 + i * 2.3);
+      glowDot(ctx, x, y, (7 + 9 * depth), i % 9 ? C.blueHi : C.red, a * 0.75 * depth * tw);
+    });
+    ctx.restore();
+  }
+  // soft light pooling on an unseen floor (no grid)
+  function floorLight(ctx, t, y, a = 1, color = C.blue) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    ctx.translate(W / 2, y); ctx.scale(1, 0.22);
+    glowDot(ctx, 0, 0, 1100, color, 0.28 * a);
+    ctx.restore();
+  }
+
   // a flash / light-leak at a cut
   function flash(ctx, t, t0, { color = '#ffffff', a = 0.8, d = 0.5 } = {}) {
     const k = t - t0;
@@ -490,6 +527,12 @@
     v.addColorStop(0, 'rgba(4,3,18,0.55)'); v.addColorStop(0.35, 'rgba(4,3,18,0)'); v.addColorStop(0.7, 'rgba(4,3,18,0)'); v.addColorStop(1, 'rgba(4,3,18,0.6)');
     ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
 
+    // --- opening heading: "Solix Academy presents / The world is entering a new era"
+    const oA = win(t, 0.15, ev.title + 0.15, 0.6, 0.45);
+    if (oA > 0) {
+      kicker(ctx, 'SOLIX ACADEMY PRESENTS', W / 2, H * 0.4, oA, C.blueHi, 'center');
+      rich(ctx, [{ s: 'The world is entering ', c: '#ffffff', weight: 300, t: 0.35 }, { s: 'a new era', c: C.blueHi, glow: 18, t: wordT('l01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
+    }
     // --- title: "Reimagining Enterprise AI" (0:02), then it rises to a header
     const up = ease.inOutCubic(fade(t, V.l02.words[3].t - 0.5, 0.8)); // moves up as "every enterprise" begins
     const tA = win(t, ev.title, ev.question - 0.1, 0.6, 0.5);
@@ -502,7 +545,7 @@
       ctx.restore();
       // the sweep line itself
       if (kr < 1) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; for (const s of [-1, 1]) { const x = W / 2 + s * hw; const lg = ctx.createLinearGradient(0, ty - 120, 0, ty + 60); lg.addColorStop(0, rgba(C.blueHi, 0)); lg.addColorStop(0.5, rgba(C.blueHi, 0.45)); lg.addColorStop(1, rgba(C.blueHi, 0)); ctx.fillStyle = lg; ctx.fillRect(x - 2, ty - 120, 4, 180); glowDot(ctx, x, ty - 30, 40, C.blueHi, 0.3); } ctx.restore(); }
-      kicker(ctx, 'A NEW ERA', W / 2, ty - sz - 26, tA * (1 - up) * fade(t, ev.title + 0.6, 0.5), C.blueHi, 'center');
+
     }
     // --- "every enterprise / every business function / every employee" chips
     const chipA = win(t, V.l02.words[3].t, ev.question - 0.1, 0.4, 0.5);
@@ -576,15 +619,18 @@
   function scene2(ctx, t) {
     const t0 = S.S.pillars[0];
     backdrop(ctx, t, { glowY: H * 0.62, blue: 0.3 });
-    floorGrid(ctx, t, H * 0.58, 0.35 * fade(t, t0, 0.8), 30);
+    plexus(ctx, t, { a: fade(t, t0, 0.8), cy: H * 0.4, seed: 1.3 });
+    floorLight(ctx, t, H * 0.68, fade(t, t0, 0.8));
     bokeh(ctx, t, 26, 0.35, 2);
     ctx.fillStyle = 'rgba(4,3,18,0.25)'; ctx.fillRect(0, 0, W, H);
     // which pillar is speaking
-    const cur = ev.pillar.filter((p) => t >= p - 0.05).length - 1;
-    const allOn = t >= ev.pillarsTag - 0.1;
-    // gentle camera drift toward the active pillar
-    const focus = cur < 0 ? 0 : allOn ? 0 : (cur - 1) * 70;
-    const camX = U.keys ? 0 : 0;
+    // gentle camera drift toward the speaking pillar, eased between targets (never a jump)
+    let focus = 0;
+    for (const [tk, v] of [[ev.pillar[0] - 0.2, -70], [ev.pillar[1] - 0.2, 0], [ev.pillar[2] - 0.2, 70], [ev.pillarsTag - 0.3, 0]]) focus = lerp(focus, v, ease.inOutCubic(clamp((t - tk) / 1.0)));
+    const camX = 0;
+    // how much each pillar is emphasised (0..1), cross-faded instead of switched
+    const allK = ease.inOutQuad(fade(t, ev.pillarsTag - 0.3, 0.8));
+    const emph = (i) => Math.max(allK, win(t, ev.pillar[i] - 0.05, i < 2 ? ev.pillar[i + 1] + 0.25 : 1e9, 0.5, 0.6));
     ctx.save();
     const zoom = 1 + 0.04 * Math.sin((t - t0) * 0.2);
     ctx.translate(W / 2, H * 0.6); ctx.scale(zoom, zoom); ctx.translate(-W / 2 - focus * 0.6 + camX, -H * 0.6);
@@ -616,10 +662,9 @@
       const k = clamp((t - p.t) / 0.9);
       if (k <= 0) return;
       const h = 330 * ease.outBack(k, 1.3);
-      const active = i === cur && !allOn;
-      const glow = active ? 1 : allOn ? 0.8 : 0.35;
-      ctx.save(); ctx.globalAlpha = (active || allOn) ? 1 : 0.8 + 0.2 * (1 - clamp((t - ev.pillar[Math.min(2, cur)]) / 0.6));
-      prism(ctx, xs[i], baseY, pw, h, p.col, p.hi, glow, active);
+      const e = emph(i);
+      ctx.save(); ctx.globalAlpha = 0.8 + 0.2 * e;
+      prism(ctx, xs[i], baseY, pw, h, p.col, p.hi, 0.35 + 0.6 * e, e > 0.5);
       ctx.restore();
       // impact ring at the base + a flare off the top edge
       shockRing(ctx, xs[i], baseY, t, p.t, { color: p.hi, r1: 260, d: 0.8, lw: 4 });
@@ -639,10 +684,9 @@
       const k = ease.outCubic(clamp((t - p.t - 0.25) / 0.5));
       if (k <= 0) return;
       const x = xs[i] - focus * 0.6, y = baseY + 160;
-      const active = i === cur && !allOn;
       text(ctx, '0' + (i + 1), x, y - 50 + (1 - k) * 18, { size: 26, weight: 800, color: p.hi === '#8d7bff' ? '#a99bff' : p.hi, align: 'center', alpha: k, spacing: 4 });
       rich(ctx, [{ s: 'AI-Ready ', c: '#ffffff', weight: 700 }, { s: p.name, c: '#ffffff', pill: p.col, weight: 800 }], x, y + (1 - k) * 18, { size: 44, align: 'center', alpha: k });
-      const sk = clamp((t - p.t - 1.2) / 0.5) * (allOn ? 1 : active ? 1 : 0.55);
+      const sk = clamp((t - p.t - 1.2) / 0.5) * (0.55 + 0.45 * emph(i));
       p.sub.forEach((ln, j) => text(ctx, ln, x, y + 52 + j * 34, { size: 27, weight: 600, color: '#e3e9ff', align: 'center', alpha: sk * k }));
     });
 
@@ -781,7 +825,7 @@
       ctx.setLineDash([]); ctx.restore();
     }
     bokeh(ctx, t, 30, 0.4, 3);
-    floorGrid(ctx, t, H * 0.74, 0.25, 50);
+    plexus(ctx, t, { a: 0.85, cy: H * 0.5, seed: 4.1, speed: 0.04 });
     ctx.fillStyle = 'rgba(4,3,18,0.3)'; ctx.fillRect(0, 0, W, H);
     { const sa = fade(t, ev.platform, 0.6); if (sa > 0) { const g = ctx.createLinearGradient(0, 0, W * 0.55, 0); g.addColorStop(0, `rgba(5,4,22,${0.75 * sa})`); g.addColorStop(1, 'rgba(5,4,22,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W * 0.55, H); } }
 
