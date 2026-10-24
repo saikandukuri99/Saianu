@@ -81,13 +81,14 @@
     g.addColorStop(0, top); g.addColorStop(1, bottom);
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
     ctx.save(); ctx.globalCompositeOperation = 'lighter';
-    glowDot(ctx, glowX + Math.sin(t * 0.21) * 80, glowY + Math.cos(t * 0.17) * 40, 900, C.blue, blue);
-    glowDot(ctx, W * 0.86 + Math.cos(t * 0.13) * 60, H * 0.12, 700, C.red, red);
-    glowDot(ctx, W * 0.1, H * 0.95, 800, '#5a46d6', 0.22);
+    glowDot(ctx, glowX + Math.sin(t * 0.21) * 80, glowY + Math.cos(t * 0.17) * 40, 900, C.blue, blue * 0.5);
+    glowDot(ctx, W * 0.86 + Math.cos(t * 0.13) * 60, H * 0.12, 700, C.red, red * 0.5);
+    glowDot(ctx, W * 0.1, H * 0.95, 800, '#5a46d6', 0.1);
     ctx.restore();
   }
   // soft out-of-focus particles drifting up
   function bokeh(ctx, t, n = 40, a = 0.5, seed = 1) {
+    a *= 0.45; // kept quiet so the foreground reads
     ctx.save(); ctx.globalCompositeOperation = 'lighter';
     for (let i = 0; i < n; i++) {
       const sp = 8 + hash(i, seed, 1) * 26;
@@ -101,6 +102,7 @@
   }
   // perspective floor grid
   function floorGrid(ctx, t, horizon, a = 0.4, speed = 40, color = C.blue) {
+    a *= 0.55;
     if (a <= 0) return;
     ctx.save();
     ctx.globalAlpha = a;
@@ -229,44 +231,90 @@
     ICON[name](ctx, s); ctx.restore();
   }
 
-  // ---------------------------------------------------------------- the Solix Academy lockup
-  // bolt mark + SOLIX wordmark + ACADEMY, built from the real logo artwork
-  function lockup(ctx, cx, cy, sc, t, { tBolt = -99, tWord = -99, tAcad = -99, alpha = 1 } = {}) {
-    if (alpha <= 0) return;
-    ctx.save(); ctx.globalAlpha = alpha;
-    const ih = 150 * sc, ww = 1297 / 275 * 116 * sc, wh = 116 * sc, gap = 34 * sc;
-    const total = ih + gap + ww;
-    const x0 = cx - total / 2;
-    // bolt
-    const kb = clamp((t - tBolt) / 0.45);
-    if (kb > 0) {
-      const s = ease.outBack(kb, 2.2), rot = (1 - ease.outCubic(kb)) * -1.2;
-      ctx.save(); ctx.translate(x0 + ih / 2, cy); ctx.rotate(rot); ctx.scale(s, s);
-      ctx.shadowColor = rgba(C.red, 0.8); ctx.shadowBlur = 40 * sc;
-      ctx.drawImage(IMG.icon, -ih / 2, -ih / 2, ih, ih);
-      ctx.restore();
+  // ---------------------------------------------------------------- the Solix Academy logo
+  // The official artwork, cut into its parts so each can animate: icon, SOLIX, then "Academy" beside it,
+  // then the tagline. Geometry is in the logo's own 2000 x 362 units; `width` is the on-screen width.
+  const ACAD = { icon: [0, 0, 366, 362], solix: [404, 26, 737, 204], academy: [1149, 26, 849, 204], tag: [408, 238, 1584, 104] };
+  function acadLogo(ctx, cx, cy, width, t, { tIcon = -99, tSolix = -99, tAcad = -99, tTag = -99, alpha = 1, tagline = true } = {}) {
+    if (alpha <= 0) return { iconX: cx, iconY: cy };
+    const u = width / 2000, x0 = cx - width / 2, y0 = cy - (tagline ? 181 : 128) * u;
+    const P = (k) => { const [x, y, w, h] = ACAD[k]; return [x0 + x * u, y0 + y * u, w * u, h * u]; };
+    ctx.save(); ctx.globalAlpha *= alpha;
+    // icon: pops in with a small turn
+    const ki = clamp((t - tIcon) / 0.5);
+    if (ki > 0) {
+      const [x, y, w, h] = P('icon'), s = ease.outBack(ki, 1.8), rot = (1 - ease.outCubic(ki)) * -0.8;
+      ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.rotate(rot); ctx.scale(s, s); ctx.globalAlpha *= clamp(ki * 2);
+      ctx.drawImage(IMG.acadIcon, -w / 2, -h / 2, w, h); ctx.restore();
     }
-    // wordmark wipes in left -> right
-    const kw = ease.outCubic(clamp((t - tWord) / 0.6));
-    if (kw > 0) {
-      const wx = x0 + ih + gap, wy = cy - wh * 0.62;
-      ctx.save(); ctx.beginPath(); ctx.rect(wx - 10, wy - 20, (ww + 20) * kw, wh + 40); ctx.clip();
-      ctx.globalAlpha *= kw;
-      ctx.drawImage(IMG.word, wx + (1 - kw) * -30, wy, ww, wh);
-      ctx.restore();
-      // ACADEMY, letters stamping in, tracked under the wordmark
-      const letters = 'ACADEMY'.split('');
-      // size ACADEMY so that, tracked at 0.22em, it spans the wordmark exactly
-      const asz = ww / (measure(ctx, 'ACADEMY', 100, 800, 0) / 100 + 6 * 0.22), track = asz * 0.22;
-      let lx = wx;
-      letters.forEach((L, i) => {
-        const kl = clamp((t - tAcad - i * 0.045) / 0.28);
-        const lw = measure(ctx, L, asz, 800);
-        if (kl > 0) text(ctx, L, lx + lw / 2, cy + wh * 0.38 + asz * 0.95 + (1 - ease.outBack(kl, 2)) * 22 * sc, { size: asz, weight: 800, color: C.blueHi, align: 'center', alpha: kl, glow: 18 * sc * kl, glowColor: C.blue });
-        lx += lw + track;
-      });
+    // SOLIX wipes in left -> right
+    const ks = ease.outCubic(clamp((t - tSolix) / 0.55));
+    if (ks > 0) {
+      const [x, y, w, h] = P('solix');
+      ctx.save(); ctx.beginPath(); ctx.rect(x - 4, y - 10, (w + 8) * ks, h + 20); ctx.clip();
+      ctx.drawImage(IMG.acadSolix, x - (1 - ks) * 40 * u * 10, y, w, h); ctx.restore();
+    }
+    // "Academy" arrives beside it, sliding in from the right
+    const ka = ease.outCubic(clamp((t - tAcad) / 0.55));
+    if (ka > 0) {
+      const [x, y, w, h] = P('academy');
+      ctx.save(); ctx.globalAlpha *= ka; ctx.drawImage(IMG.acadAcademy, x + (1 - ka) * 90 * u * 5, y, w, h); ctx.restore();
+    }
+    // tagline fades up
+    const kt = ease.outCubic(clamp((t - tTag) / 0.6));
+    if (tagline && kt > 0) {
+      const [x, y, w, h] = P('tag');
+      ctx.save(); ctx.globalAlpha *= kt; ctx.drawImage(IMG.acadTag, x, y + (1 - kt) * 20 * u * 5, w, h); ctx.restore();
     }
     ctx.restore();
+    const [ix, iy, iw, ih] = P('icon');
+    return { iconX: ix + iw / 2, iconY: iy + ih / 2 };
+  }
+
+  // the corporate Solix logo, top-right corner, for the whole film
+  function cornerLogo(ctx, t) {
+    const a = fade(t, 0.5, 0.8) * 0.95;
+    if (a <= 0) return;
+    const w = 300, h = w * 427 / 2000;
+    ctx.save(); ctx.globalAlpha = a;
+    ctx.drawImage(IMG.solixLogo, W - 56 - w, 42, w, h);
+    ctx.restore();
+  }
+
+  // running captions of the narration (lower third), brand words in brand colours
+  const CAPS = [];
+  for (const l of S.vo) {
+    let chunk = [];
+    const flush = () => { if (chunk.length) CAPS.push({ words: chunk, t: chunk[0].t - 0.12 }); chunk = []; };
+    l.words.forEach((w) => {
+      const len = chunk.reduce((a, x) => a + x.w.length + 1, 0);
+      if (len + w.w.length > 52) flush();
+      chunk.push(w);
+      if (/[.?:]$/.test(w.w) && len > 18) flush();
+    });
+    flush();
+    CAPS[CAPS.length - 1].lineEnd = l.end;
+  }
+  CAPS.forEach((c, i) => { c.end = c.lineEnd !== undefined ? c.lineEnd + 0.25 : CAPS[i + 1].t; if (CAPS[i + 1] && c.end > CAPS[i + 1].t) c.end = CAPS[i + 1].t; });
+  const KEY = /^(ai|ai-ready|artificial|intelligence|solix|academy|data|people|governance|enterprise|enterprises|transform|transformation|innovate|innovators|learn|hands-on|labs)$/i;
+  function captions(ctx, t) {
+    if (t >= ev.endcard - 0.3) return;
+    const c = CAPS.find((c) => t >= c.t && t < c.end);
+    if (!c) return;
+    const a = Math.min(clamp((t - c.t) / 0.18), clamp((c.end - t) / 0.18));
+    const size = 34, y = H - 66;
+    const parts = c.words.map((w) => ({ s: w.w, key: KEY.test(w.w.replace(/[^A-Za-z-]/g, '')) }));
+    const sp = measure(ctx, ' ', size, 600);
+    const ws = parts.map((p) => measure(ctx, p.s, size, p.key ? 800 : 600));
+    const total = ws.reduce((x, y2) => x + y2, 0) + sp * (parts.length - 1);
+    ctx.save(); ctx.globalAlpha = a * 0.62;
+    rrect(ctx, W / 2 - total / 2 - 28, y - 40, total + 56, 56, 28); ctx.fillStyle = '#05041a'; ctx.fill();
+    ctx.restore();
+    let x = W / 2 - total / 2;
+    parts.forEach((p, i) => {
+      text(ctx, p.s, x, y - 2, { size, weight: p.key ? 800 : 600, color: p.key ? (/^(innovate|innovators|transform|transformation)/i.test(p.s) ? '#ff5a5a' : C.blueHi) : '#ffffff', alpha: a });
+      x += ws[i] + sp;
+    });
   }
 
   // ================================================================ SCENE 1: city -> data streams -> boardroom
@@ -328,6 +376,7 @@
       const sp = 260 + hash(i, 33) * 420;
       const len = 120 + hash(i, 34) * 260;
       const col = hash(i, 35) < 0.78 ? C.blue : hash(i, 36) < 0.6 ? C.red : '#9d8cff';
+      if (i % 2) continue; // half as many streams
       for (let k = 0; k < 3; k++) {
         const y = H - (((t - start) * sp + k * 520) % (H + len + 300));
         const gr = ctx.createLinearGradient(0, y, 0, y + len);
@@ -435,7 +484,8 @@
     if (roomA > 0) boardroom(ctx, t, roomA);
     streams(ctx, t, cityA * fade(t, 1.2, 1.5), 1.2);
     dataFlow(ctx, t, roomA * 0.9);
-    // vignette top/bottom for type
+    // dim the whole background layer, then a vignette top/bottom for type
+    ctx.fillStyle = 'rgba(4,3,18,0.38)'; ctx.fillRect(0, 0, W, H);
     const v = ctx.createLinearGradient(0, 0, 0, H);
     v.addColorStop(0, 'rgba(4,3,18,0.55)'); v.addColorStop(0.35, 'rgba(4,3,18,0)'); v.addColorStop(0.7, 'rgba(4,3,18,0)'); v.addColorStop(1, 'rgba(4,3,18,0.6)');
     ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
@@ -451,8 +501,7 @@
       rich(ctx, [{ s: 'Reimagining ', c: '#ffffff', weight: 300 }, { s: 'Enterprise AI', c: C.blueHi, glow: 26 }], W / 2, ty, { size: sz, weight: 800, align: 'center', alpha: tA });
       ctx.restore();
       // the sweep line itself
-      if (kr < 1) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; for (const s of [-1, 1]) { const x = W / 2 + s * hw; const lg = ctx.createLinearGradient(0, ty - 120, 0, ty + 60); lg.addColorStop(0, rgba(C.blueHi, 0)); lg.addColorStop(0.5, rgba(C.blueHi, 0.9)); lg.addColorStop(1, rgba(C.blueHi, 0)); ctx.fillStyle = lg; ctx.fillRect(x - 2, ty - 120, 4, 180); glowDot(ctx, x, ty - 30, 60, C.blueHi, 0.7); } ctx.restore(); }
-      lensFlare(ctx, W / 2 + hw, ty - 30, t, ev.title + 0.9, { color: C.blueHi, dur: 1.1, size: 0.6 });
+      if (kr < 1) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; for (const s of [-1, 1]) { const x = W / 2 + s * hw; const lg = ctx.createLinearGradient(0, ty - 120, 0, ty + 60); lg.addColorStop(0, rgba(C.blueHi, 0)); lg.addColorStop(0.5, rgba(C.blueHi, 0.45)); lg.addColorStop(1, rgba(C.blueHi, 0)); ctx.fillStyle = lg; ctx.fillRect(x - 2, ty - 120, 4, 180); glowDot(ctx, x, ty - 30, 40, C.blueHi, 0.3); } ctx.restore(); }
       kicker(ctx, 'A NEW ERA', W / 2, ty - sz - 26, tA * (1 - up) * fade(t, ev.title + 0.6, 0.5), C.blueHi, 'center');
     }
     // --- "every enterprise / every business function / every employee" chips
@@ -491,9 +540,9 @@
 
   // ================================================================ SCENE 2: the three pillars
   const PILLARS = [
-    { name: 'Data', icon: 'database', col: C.blue, hi: C.blueHi, sub: 'Structured, governed information', t: ev.pillar[0] },
-    { name: 'People', icon: 'people', col: C.red, hi: '#ff5a5a', sub: 'A workforce that leads AI transformation', t: ev.pillar[1] },
-    { name: 'Governance', icon: 'shield', col: C.indigo, hi: '#8d7bff', sub: 'Secure, scalable business value', t: ev.pillar[2] },
+    { name: 'Data', icon: 'database', col: C.blue, hi: C.blueHi, sub: ['Structured, governed', 'information behind AI'], t: ev.pillar[0] },
+    { name: 'People', icon: 'people', col: C.red, hi: '#ff5a5a', sub: ['A workforce that leads', 'AI transformation'], t: ev.pillar[1] },
+    { name: 'Governance', icon: 'shield', col: C.indigo, hi: '#8d7bff', sub: ['A trusted foundation for', 'secure, scalable value'], t: ev.pillar[2] },
   ];
   // an isometric metallic prism (base centre bx, by), width w, height h
   function prism(ctx, bx, by, w, h, col, hi, glow, active) {
@@ -529,6 +578,7 @@
     backdrop(ctx, t, { glowY: H * 0.62, blue: 0.3 });
     floorGrid(ctx, t, H * 0.58, 0.35 * fade(t, t0, 0.8), 30);
     bokeh(ctx, t, 26, 0.35, 2);
+    ctx.fillStyle = 'rgba(4,3,18,0.25)'; ctx.fillRect(0, 0, W, H);
     // which pillar is speaking
     const cur = ev.pillar.filter((p) => t >= p - 0.05).length - 1;
     const allOn = t >= ev.pillarsTag - 0.1;
@@ -539,7 +589,7 @@
     const zoom = 1 + 0.04 * Math.sin((t - t0) * 0.2);
     ctx.translate(W / 2, H * 0.6); ctx.scale(zoom, zoom); ctx.translate(-W / 2 - focus * 0.6 + camX, -H * 0.6);
 
-    const baseY = H * 0.71, xs = [W / 2 - 470, W / 2, W / 2 + 470], pw = 230;
+    const baseY = H * 0.655, xs = [W / 2 - 470, W / 2, W / 2 + 470], pw = 230;
     // the foundation slab ("trusted foundation") under all three
     const fk = ease.outCubic(fade(t, ev.pillarsTag, 0.8));
     if (fk > 0) {
@@ -573,7 +623,7 @@
       ctx.restore();
       // impact ring at the base + a flare off the top edge
       shockRing(ctx, xs[i], baseY, t, p.t, { color: p.hi, r1: 260, d: 0.8, lw: 4 });
-      lensFlare(ctx, xs[i], baseY - h, t, p.t + 0.35, { color: p.hi, dur: 1.0, size: 0.55 });
+
       // the icon floats above
       const ik = ease.outBack(clamp((t - p.t - 0.35) / 0.5), 2);
       const iy = baseY - h - 125 + Math.sin(t * 1.6 + i) * 6;
@@ -588,12 +638,12 @@
     PILLARS.forEach((p, i) => {
       const k = ease.outCubic(clamp((t - p.t - 0.25) / 0.5));
       if (k <= 0) return;
-      const x = xs[i] - focus * 0.6, y = baseY + 175;
+      const x = xs[i] - focus * 0.6, y = baseY + 160;
       const active = i === cur && !allOn;
-      text(ctx, '0' + (i + 1), x, y - 66 + (1 - k) * 18, { size: 26, weight: 800, color: p.hi === '#8d7bff' ? '#a99bff' : p.hi, align: 'center', alpha: k, spacing: 4 });
+      text(ctx, '0' + (i + 1), x, y - 50 + (1 - k) * 18, { size: 26, weight: 800, color: p.hi === '#8d7bff' ? '#a99bff' : p.hi, align: 'center', alpha: k, spacing: 4 });
       rich(ctx, [{ s: 'AI-Ready ', c: '#ffffff', weight: 700 }, { s: p.name, c: '#ffffff', pill: p.col, weight: 800 }], x, y + (1 - k) * 18, { size: 44, align: 'center', alpha: k });
       const sk = clamp((t - p.t - 1.2) / 0.5) * (allOn ? 1 : active ? 1 : 0.55);
-      text(ctx, p.sub, x, y + 56, { size: 24, weight: 400, color: '#c9d3f5', align: 'center', alpha: sk * k });
+      p.sub.forEach((ln, j) => text(ctx, ln, x, y + 52 + j * 34, { size: 27, weight: 600, color: '#e3e9ff', align: 'center', alpha: sk * k }));
     });
 
     // header kicker
@@ -605,7 +655,7 @@
     if (tagA > 0) {
       rich(ctx, [{ s: 'Data', c: C.blueHi }, { s: '  •  ', c: '#8090c0', weight: 400 }, { s: 'People', c: '#ff5a5a' }, { s: '  •  ', c: '#8090c0', weight: 400 }, { s: 'Governance', c: '#a99bff' }], W / 2, 196, { size: 54, weight: 800, align: 'center', alpha: tagA * win(t, 0, S.S.pillars[1] + 0.2, 0, 0.4) });
     }
-    flash(ctx, t, t0, { a: 0.35, color: '#9fd8ff' });
+    flash(ctx, t, t0, { a: 0.1, color: '#9fd8ff' });
   }
 
   // ================================================================ SCENE 3: Solix Academy
@@ -732,23 +782,22 @@
     }
     bokeh(ctx, t, 30, 0.4, 3);
     floorGrid(ctx, t, H * 0.74, 0.25, 50);
+    ctx.fillStyle = 'rgba(4,3,18,0.3)'; ctx.fillRect(0, 0, W, H);
+    { const sa = fade(t, ev.platform, 0.6); if (sa > 0) { const g = ctx.createLinearGradient(0, 0, W * 0.55, 0); g.addColorStop(0, `rgba(5,4,22,${0.75 * sa})`); g.addColorStop(1, 'rgba(5,4,22,0)'); ctx.fillStyle = g; ctx.fillRect(0, 0, W * 0.55, H); } }
 
     // --- logo: full-screen reveal, then it docks top-left
     const dock = ease.inOutCubic(fade(t, ev.platform - 0.1, 0.8));
-    const lx = lerp(W / 2, 330, dock), ly = lerp(H * 0.46, 104, dock), ls = lerp(1.25, 0.5, dock);
+    const lw = lerp(1320, 420, dock), lx = lerp(W / 2, 64 + 210, dock), ly = lerp(H * 0.46, 82, dock);
     if (t < ev.logo + 0.2) {
       // gathering light before the hit
       const g = clamp((t - (ev.logo - 0.9)) / 0.9);
       ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, W / 2, H * 0.46, 500 * g, C.blueHi, 0.6 * g * g); ctx.restore();
     }
     kicker(ctx, 'INTRODUCING', W / 2, H * 0.46 - 160, win(t, V.l08.t - 0.1, ev.logo + 0.6, 0.35, 0.4), C.blueHi, 'center');
-    lockup(ctx, lx, ly, ls, t, { tBolt: ev.logo - 0.12, tWord: ev.logo + 0.05, tAcad: ev.academyWord });
-    shockRing(ctx, lx - 330 * ls, ly, t, ev.logo, { color: C.red, r1: 900, d: 1.0, lw: 8 });
-    shockRing(ctx, lx - 330 * ls, ly, t, ev.logo + 0.08, { color: C.blueHi, r1: 1200, d: 1.2, lw: 4 });
-    flash(ctx, t, ev.logo, { a: 0.55 });
-    lensFlare(ctx, lx - 330 * ls, ly, t, ev.logo, { color: C.red, dur: 1.6, size: 1 });
-    const solA = (1 - fade(t, ev.platform - 0.2, 0.4)) * fade(t, ev.academyWord + 0.5, 0.5);
-    text(ctx, 'Learn  •  Innovate  •  Transform', W / 2, H * 0.46 + 210, { size: 30, weight: 400, color: '#c9d3f5', align: 'center', alpha: solA, spacing: 4 });
+    const L = acadLogo(ctx, lx, ly, lw, t, { tIcon: ev.logo - 0.12, tSolix: ev.logo + 0.02, tAcad: ev.academyWord, tTag: ev.academyWord + 0.45 });
+    shockRing(ctx, L.iconX, L.iconY, t, ev.logo, { color: C.red, r1: 700, d: 0.9, lw: 4 });
+    flash(ctx, t, ev.logo, { a: 0.18 });
+    lensFlare(ctx, L.iconX, L.iconY, t, ev.logo, { color: C.red, dur: 0.9, size: 0.45 });
 
     // --- the platform: headline + floating course cards
     const platA = win(t, ev.platform + 0.2, ev.experts + 0.1, 0.5, 0.45);
@@ -838,7 +887,7 @@
         ctx.save(); ctx.translate(x + dx, py); ctx.scale(k, k); text(ctx, label, 0, 13, { size: 36, weight: 800, color: '#fff', align: 'center', alpha: pA * clamp(k) }); ctx.restore();
       }
     }
-    flash(ctx, t, t0, { a: 0.3, color: '#ffd7d7' });
+    flash(ctx, t, t0, { a: 0.1, color: '#ffd7d7' });
   }
 
   // ================================================================ SCENE 4: mission, teams, end card
@@ -926,22 +975,23 @@
           ctx.restore();
         }
       }
-      flash(ctx, t, S.S.finale[0], { a: 0.3, color: '#cfe8ff' });
+      flash(ctx, t, S.S.finale[0], { a: 0.1, color: '#cfe8ff' });
       ctx.restore();
     }
     // --- end card
     if (endA > 0) {
       ctx.save(); ctx.globalAlpha = endA;
-      backdrop(ctx, t, { glowX: W / 2, glowY: H * 0.42, blue: 0.5 + 0.3 * Math.exp(-Math.max(0, t - ev.transform) * 2) * (t > ev.transform ? 1 : 0), red: 0.2, bottom: '#241b6e' });
+      backdrop(ctx, t, { glowX: W / 2, glowY: H * 0.42, blue: 0.45, red: 0.18, bottom: '#241b6e' });
       // light rays
       ctx.save(); ctx.translate(W / 2, H * 0.36); ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 14; i++) { ctx.rotate(TAU / 14); const a0 = t * 0.05; ctx.fillStyle = rgba(i % 3 ? C.blue : C.indigo, 0.07); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a0) * 1800, Math.sin(a0) * 1800); ctx.lineTo(Math.cos(a0 + 0.09) * 1800, Math.sin(a0 + 0.09) * 1800); ctx.fill(); }
+      for (let i = 0; i < 14; i++) { ctx.rotate(TAU / 14); const a0 = t * 0.05; ctx.fillStyle = rgba(i % 3 ? C.blue : C.indigo, 0.03); ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(Math.cos(a0) * 1800, Math.sin(a0) * 1800); ctx.lineTo(Math.cos(a0 + 0.09) * 1800, Math.sin(a0 + 0.09) * 1800); ctx.fill(); }
       ctx.restore();
       bokeh(ctx, t, 34, 0.45, 5);
+      ctx.fillStyle = 'rgba(4,3,18,0.25)'; ctx.fillRect(0, 0, W, H);
       ctx.restore();
       const z = 1 + 0.025 * clamp((t - ev.endcard) / 8);
       ctx.save(); ctx.translate(W / 2, H / 2); ctx.scale(z, z); ctx.translate(-W / 2, -H / 2);
-      lockup(ctx, W / 2, H * 0.3, 1.0, t, { tBolt: ev.endcard + 0.1, tWord: ev.endcard + 0.3, tAcad: ev.endcard + 0.65, alpha: endA });
+      acadLogo(ctx, W / 2, H * 0.3, 1240, t, { tIcon: ev.endcard + 0.1, tSolix: ev.endcard + 0.3, tAcad: ev.endcard + 0.75, alpha: endA, tagline: false });
       // Learn. Innovate. Transform.
       const words = [['Learn.', C.blueHi, ev.learn], ['Innovate.', '#ff4a4a', ev.innovate], ['Transform.', '#ffffff', ev.transform]];
       const sz = 92, gap = 46;
@@ -960,11 +1010,8 @@
         x += widths[i] + gap;
       });
       ctx.restore();
-      shockRing(ctx, W / 2, y - sz * 0.35, t, ev.transform, { color: C.blueHi, r1: 1300, d: 1.1, lw: 10 });
-      shockRing(ctx, W / 2, y - sz * 0.35, t, ev.transform + 0.06, { color: C.red, r1: 1000, d: 1.0, lw: 5 });
-      flash(ctx, t, ev.transform, { a: 0.6, d: 0.6 });
-      lensFlare(ctx, W / 2, y - sz * 0.35, t, ev.transform + 0.12, { color: C.blueHi, dur: 1.5, size: 0.8 });
-      lensFlare(ctx, W / 2 + 260, H * 0.76 + 42, t, ev.url + 0.1, { color: '#ffffff', dur: 1.0, size: 0.4 });
+      shockRing(ctx, W / 2, y - sz * 0.35, t, ev.transform, { color: C.blueHi, r1: 900, d: 0.9, lw: 4 });
+      flash(ctx, t, ev.transform, { a: 0.22, d: 0.5 });
       // web address with a glass shimmer
       const uk = ease.outCubic(clamp((t - ev.url) / 0.6));
       if (uk > 0) {
@@ -973,7 +1020,7 @@
         rrect(ctx, ux, uy + (1 - uk) * 20, uw, uh, 42); ctx.fillStyle = 'rgba(255,255,255,0.1)'; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 2; ctx.stroke();
         ctx.clip();
         const sx = ux - 200 + (uw + 400) * clamp((t - ev.url) / 1.0);
-        const sg = ctx.createLinearGradient(sx - 120, 0, sx + 120, 0); sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(0.5, 'rgba(255,255,255,0.55)'); sg.addColorStop(1, 'rgba(255,255,255,0)');
+        const sg = ctx.createLinearGradient(sx - 120, 0, sx + 120, 0); sg.addColorStop(0, 'rgba(255,255,255,0)'); sg.addColorStop(0.5, 'rgba(255,255,255,0.25)'); sg.addColorStop(1, 'rgba(255,255,255,0)');
         ctx.fillStyle = sg; ctx.fillRect(sx - 120, uy - 10, 240, uh + 40);
         ctx.restore();
         rich(ctx, [{ s: 'solix', c: '#ffffff' }, { s: 'academy', c: C.blueHi }, { s: '.com', c: '#ffffff' }], W / 2, uy + 56 + (1 - uk) * 20, { size: 46, weight: 800, align: 'center', alpha: uk });
@@ -985,12 +1032,15 @@
   // ---------------------------------------------------------------- draw
   Studio.film({
     async init() {
-      IMG.icon = await Studio.loadImage('assets/icon.png');
-      IMG.word = await Studio.loadImage('assets/solix_word.png');
+      IMG.acadIcon = await Studio.loadImage('assets/acad_icon.png');
+      IMG.acadSolix = await Studio.loadImage('assets/acad_solix.png');
+      IMG.acadAcademy = await Studio.loadImage('assets/acad_academy.png');
+      IMG.acadTag = await Studio.loadImage('assets/acad_tagline.png');
+      IMG.solixLogo = await Studio.loadImage('assets/solix_logo_white.png');
       buildCity();
     },
     post: { paper: 0, vignette: 0.35, grain: 0.03 },
-    fadeOut: 0.9,
+    fadeOut: 0.6,
     draw(ctx, t) {
       const a0 = S.S.academy[0], f0 = S.S.finale[0], p0 = S.S.pillars[0];
       const sh = shake(t);
@@ -1006,7 +1056,9 @@
         layer(ctx, fn, t, o);
       }
       ctx.restore();
-      bloom(ctx, 0.3);
+      bloom(ctx, 0.1);
+      captions(ctx, t);
+      cornerLogo(ctx, t);
     },
   });
 })();
