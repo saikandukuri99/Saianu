@@ -732,7 +732,8 @@
     ctx.fillStyle = g; ctx.fillRect(x, y, w, 64);
     ctx.restore();
     text(ctx, c[1].toUpperCase(), x + 22, y + 40, { size: 17, weight: 700, color: '#ffffff', spacing: 3 });
-    text(ctx, c[0], x + 22, y + 108, { size: 27, weight: 800, color: C.indigo });
+    const fs = Math.min(27, 27 * (w - 44) / measure(ctx, c[0], 27, 800)); // shrink long titles to fit the card
+    text(ctx, c[0], x + 22, y + 108, { size: fs, weight: 800, color: C.indigo });
     // progress bar
     ctx.fillStyle = '#e6e9f5'; rrect(ctx, x + 22, y + h - 40, w - 44, 10, 5); ctx.fill();
     ctx.fillStyle = c[2]; rrect(ctx, x + 22, y + h - 40, (w - 44) * (0.25 + 0.6 * hash(i, 81)) * clamp((t - 0.3) / 1.2), 10, 5); ctx.fill();
