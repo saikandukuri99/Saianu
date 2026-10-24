@@ -48,7 +48,10 @@
           rrect(ctx, cx - size * 0.18, yy - size * 0.86, pw + size * 0.36, size * 1.12, size * 0.2);
           ctx.fillStyle = g.pill; ctx.fill(); ctx.restore();
         }
-        text(ctx, g.s, cx, yy, { size, weight: g.weight || weight, color: g.c || '#fff', alpha: a, spacing, glow: g.glow || 0, glowColor: g.c });
+        // After-Effects style "blur in" animator: each segment arrives defocused and slightly over-tracked
+        if (k < 1) ctx.filter = `blur(${((1 - k) * 12 * (G.scale || 1)).toFixed(2)}px)`;
+        text(ctx, g.s, cx, yy, { size, weight: g.weight || weight, color: g.c || '#fff', alpha: a, spacing: spacing + (1 - k) * size * 0.12, glow: g.glow || 0, glowColor: g.c });
+        ctx.filter = 'none';
       }
       cx += ws[i];
     });
@@ -134,6 +137,76 @@
     ctx.strokeStyle = rgba(color, (1 - k) * 0.9); ctx.lineWidth = lw * (1 - k) + 1;
     ctx.shadowColor = color; ctx.shadowBlur = 30;
     ctx.beginPath(); ctx.arc(x, y, 40 + r1 * ease.outCubic(k), 0, TAU); ctx.stroke();
+    ctx.restore();
+  }
+
+  // anamorphic lens flare: a horizontal streak, a hot core and ghosts mirrored through the frame centre
+  function lensFlare(ctx, x, y, t, t0, { color = C.blueHi, dur = 1.3, size = 1 } = {}) {
+    const k = (t - t0) / dur;
+    if (k < -0.05 || k > 1) return;
+    const v = k < 0 ? (k + 0.05) / 0.05 : Math.pow(1 - k, 1.6);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    const sw = W * 1.1 * size * (0.6 + 0.4 * v);
+    const g = ctx.createLinearGradient(x - sw / 2, 0, x + sw / 2, 0);
+    g.addColorStop(0, rgba(color, 0)); g.addColorStop(0.5, rgba('#ffffff', 0.9 * v)); g.addColorStop(1, rgba(color, 0));
+    ctx.fillStyle = g; ctx.fillRect(x - sw / 2, y - 3 * size, sw, 6 * size);
+    ctx.globalAlpha = 0.6; ctx.fillRect(x - sw / 2, y - 12 * size, sw, 24 * size);
+    ctx.globalAlpha = 1;
+    glowDot(ctx, x, y, 220 * size * v, '#ffffff', 0.7 * v);
+    glowDot(ctx, x, y, 520 * size, color, 0.35 * v);
+    const dx = W / 2 - x, dy = H / 2 - y;
+    [[0.6, 40, C.blue], [1.15, 70, '#8d7bff'], [1.5, 26, C.red], [1.85, 110, C.blue]].forEach(([p, r, c]) => {
+      const gx = x + dx * p * 2 * (0.9 + 0.1 * v), gy = y + dy * p * 2 * (0.9 + 0.1 * v);
+      ctx.fillStyle = rgba(c, 0.12 * v); ctx.beginPath(); ctx.arc(gx, gy, r * size, 0, TAU); ctx.fill();
+      ctx.strokeStyle = rgba(c, 0.18 * v); ctx.lineWidth = 2; ctx.stroke();
+    });
+    ctx.restore();
+  }
+  // camera shake on the impacts (decaying, smooth noise)
+  const IMPACTS = [[ev.beatIn, 6], ...ev.pillar.map((p) => [p, 7]), [ev.logo, 12], [ev.learn, 5], [ev.innovate, 6], [ev.transform, 16]];
+  function shake(t) {
+    let x = 0, y = 0, r = 0;
+    for (const [t0, amp] of IMPACTS) {
+      const k = t - t0;
+      if (k < 0 || k > 0.7) continue;
+      const e = amp * Math.exp(-k * 7);
+      x += U.noise1(k * 30, t0) * e; y += U.noise1(k * 30, t0 + 9) * e; r += U.noise1(k * 24, t0 + 3) * e * 0.0009;
+    }
+    return { x, y, r };
+  }
+  // offscreen buffers for the comp passes (sized to the real canvas, so 4K stays 4K)
+  const BUF = {};
+  function buffer(name, w, h) {
+    let c = BUF[name];
+    if (!c || c.width !== w || c.height !== h) { c = BUF[name] = G.makeCanvas(w, h); }
+    return c;
+  }
+  // draw a scene through a layer: opacity + scale about the centre + gaussian blur (zoom-blur transitions)
+  function layer(ctx, fn, t, { alpha = 1, scale = 1, blur = 0 }) {
+    if (alpha <= 0.003) return;
+    if (blur < 0.2 && Math.abs(scale - 1) < 1e-4) { ctx.save(); ctx.globalAlpha = alpha; fn(ctx, t); ctx.restore(); return; }
+    const cv = ctx.canvas, s = G.scale || 1;
+    const c = buffer('layer', cv.width, cv.height), x = c.getContext('2d');
+    x.setTransform(1, 0, 0, 1, 0, 0); x.clearRect(0, 0, c.width, c.height);
+    x.setTransform(s, 0, 0, s, 0, 0);
+    x.translate(W / 2, H / 2); x.scale(scale, scale); x.translate(-W / 2, -H / 2);
+    fn(x, t);
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = alpha;
+    ctx.filter = `blur(${(blur * s).toFixed(2)}px)`;
+    ctx.drawImage(c, 0, 0);
+    ctx.restore();
+  }
+  // "Deep Glow": threshold the bright parts, blur them small, add them back
+  function bloom(ctx, amount = 0.32) {
+    const cv = ctx.canvas, sw = Math.round(cv.width / 4), sh = Math.round(cv.height / 4);
+    const c = buffer('bloom', sw, sh), x = c.getContext('2d');
+    x.setTransform(1, 0, 0, 1, 0, 0); x.globalCompositeOperation = 'copy';
+    x.filter = `brightness(0.85) contrast(2.4) blur(${Math.max(3, sw / 160).toFixed(1)}px)`;
+    x.drawImage(cv, 0, 0, sw, sh);
+    x.filter = 'none'; x.globalCompositeOperation = 'source-over';
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalCompositeOperation = 'lighter'; ctx.globalAlpha = amount;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(c, 0, 0, cv.width, cv.height);
     ctx.restore();
   }
 
@@ -379,6 +452,7 @@
       ctx.restore();
       // the sweep line itself
       if (kr < 1) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; for (const s of [-1, 1]) { const x = W / 2 + s * hw; const lg = ctx.createLinearGradient(0, ty - 120, 0, ty + 60); lg.addColorStop(0, rgba(C.blueHi, 0)); lg.addColorStop(0.5, rgba(C.blueHi, 0.9)); lg.addColorStop(1, rgba(C.blueHi, 0)); ctx.fillStyle = lg; ctx.fillRect(x - 2, ty - 120, 4, 180); glowDot(ctx, x, ty - 30, 60, C.blueHi, 0.7); } ctx.restore(); }
+      lensFlare(ctx, W / 2 + hw, ty - 30, t, ev.title + 0.9, { color: C.blueHi, dur: 1.1, size: 0.6 });
       kicker(ctx, 'A NEW ERA', W / 2, ty - sz - 26, tA * (1 - up) * fade(t, ev.title + 0.6, 0.5), C.blueHi, 'center');
     }
     // --- "every enterprise / every business function / every employee" chips
@@ -497,8 +571,9 @@
       ctx.save(); ctx.globalAlpha = (active || allOn) ? 1 : 0.8 + 0.2 * (1 - clamp((t - ev.pillar[Math.min(2, cur)]) / 0.6));
       prism(ctx, xs[i], baseY, pw, h, p.col, p.hi, glow, active);
       ctx.restore();
-      // impact ring at the base
+      // impact ring at the base + a flare off the top edge
       shockRing(ctx, xs[i], baseY, t, p.t, { color: p.hi, r1: 260, d: 0.8, lw: 4 });
+      lensFlare(ctx, xs[i], baseY - h, t, p.t + 0.35, { color: p.hi, dur: 1.0, size: 0.55 });
       // the icon floats above
       const ik = ease.outBack(clamp((t - p.t - 0.35) / 0.5), 2);
       const iy = baseY - h - 125 + Math.sin(t * 1.6 + i) * 6;
@@ -671,6 +746,7 @@
     shockRing(ctx, lx - 330 * ls, ly, t, ev.logo, { color: C.red, r1: 900, d: 1.0, lw: 8 });
     shockRing(ctx, lx - 330 * ls, ly, t, ev.logo + 0.08, { color: C.blueHi, r1: 1200, d: 1.2, lw: 4 });
     flash(ctx, t, ev.logo, { a: 0.55 });
+    lensFlare(ctx, lx - 330 * ls, ly, t, ev.logo, { color: C.red, dur: 1.6, size: 1 });
     const solA = (1 - fade(t, ev.platform - 0.2, 0.4)) * fade(t, ev.academyWord + 0.5, 0.5);
     text(ctx, 'Learn  •  Innovate  •  Transform', W / 2, H * 0.46 + 210, { size: 30, weight: 400, color: '#c9d3f5', align: 'center', alpha: solA, spacing: 4 });
 
@@ -887,6 +963,8 @@
       shockRing(ctx, W / 2, y - sz * 0.35, t, ev.transform, { color: C.blueHi, r1: 1300, d: 1.1, lw: 10 });
       shockRing(ctx, W / 2, y - sz * 0.35, t, ev.transform + 0.06, { color: C.red, r1: 1000, d: 1.0, lw: 5 });
       flash(ctx, t, ev.transform, { a: 0.6, d: 0.6 });
+      lensFlare(ctx, W / 2, y - sz * 0.35, t, ev.transform + 0.12, { color: C.blueHi, dur: 1.5, size: 0.8 });
+      lensFlare(ctx, W / 2 + 260, H * 0.76 + 42, t, ev.url + 0.1, { color: '#ffffff', dur: 1.0, size: 0.4 });
       // web address with a glass shimmer
       const uk = ease.outCubic(clamp((t - ev.url) / 0.6));
       if (uk > 0) {
@@ -914,11 +992,21 @@
     post: { paper: 0, vignette: 0.35, grain: 0.03 },
     fadeOut: 0.9,
     draw(ctx, t) {
-      const [a0, a1] = S.S.academy, f0 = S.S.finale[0], p0 = S.S.pillars[0];
-      if (t < p0 + 0.6) scene1(ctx, t);
-      if (t >= p0 - 0.01 && t < a0 + 0.5) { ctx.save(); ctx.globalAlpha = fade(t, p0, 0.6); scene2(ctx, t); ctx.restore(); }
-      if (t >= a0 - 0.01 && t < f0 + 0.6) { ctx.save(); ctx.globalAlpha = fade(t, a0, 0.5); scene3(ctx, t); ctx.restore(); }
-      if (t >= f0 - 0.01) { ctx.save(); ctx.globalAlpha = fade(t, f0, 0.6); scene4(ctx, t); ctx.restore(); }
+      const a0 = S.S.academy[0], f0 = S.S.finale[0], p0 = S.S.pillars[0];
+      const sh = shake(t);
+      ctx.save(); ctx.translate(W / 2 + sh.x, H / 2 + sh.y); ctx.rotate(sh.r); ctx.translate(-W / 2, -H / 2);
+      // zoom-blur cuts: the outgoing scene pushes past camera and defocuses, the incoming one settles in from a soft focus
+      const TR = 0.6;
+      const out = (t0) => { const k = ease.inCubic(clamp((t - t0) / TR)); return { alpha: 1, scale: 1 + 0.12 * k, blur: 16 * k }; };
+      const inn = (t0) => { const k = ease.outCubic(clamp((t - t0) / TR)); return { alpha: k, scale: 1.08 - 0.08 * k, blur: 14 * (1 - k) }; };
+      const scenes = [[scene1, 0, p0], [scene2, p0, a0], [scene3, a0, f0], [scene4, f0, 1e9]];
+      for (const [fn, s0, s1] of scenes) {
+        if (t < s0 - 0.01 || t >= s1 + TR) continue;
+        const o = t >= s1 ? out(s1) : s0 > 0 && t < s0 + TR ? inn(s0) : { alpha: 1, scale: 1, blur: 0 };
+        layer(ctx, fn, t, o);
+      }
+      ctx.restore();
+      bloom(ctx, 0.3);
     },
   });
 })();
