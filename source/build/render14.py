@@ -1405,7 +1405,7 @@ def lockup_phase(c, t, l, a):
 WHEEL = [  # (title lines, product, icon, start_deg, end_deg)  math angles, counter-clockwise
     (("AI-Ready", "Data"), "Solix CDP", "db", 94, 206),
     (("AI-Ready", "People"), "Solix Academy", "people", 334, 446),
-    (("AI-Ready", "Enterprise"), "Solix EAI", "building", 214, 326),
+    (("AI-Ready", "Governance"), "Solix EAI", "building", 214, 326),
 ]
 SEG_TOP = (252, 230, 230)
 SEG_SIDE = (205, 120, 128)
@@ -1560,9 +1560,9 @@ def scene1(c, t, lt, G):
     t1 = lc(k, 1, "Common Data")
     t2 = lc(k, 1, "Content Services")
     t3 = lc(k, 2, "Enterprise Data Governance")
-    pills = [("Common Data Platform", "Structured and unstructured data, together", t1, "db"),
-             ("Enterprise Content Services", "Governs documents and email", t2, "doc"),
-             ("Enterprise Data Governance", "Enforces policy everywhere, including AI", t3, "shield")]
+    pills = [("Solix Common Data Platform", "Structured and unstructured data, together", t1, "db"),
+             ("Solix Enterprise Content Services", "Governs documents and email", t2, "doc"),
+             ("Solix Enterprise Data Governance", "Enforces policy everywhere, including AI", t3, "shield")]
     act = -1
     for j, p in enumerate(pills):
         if lt >= p[2]:
@@ -1573,7 +1573,7 @@ def scene1(c, t, lt, G):
         if j == 2 and a > 0:
             bdg = new_badge()
             ba = vis(lt, t3 + 0.2, None, 0.4) * G
-            put_scaled(c, bdg, 92 + 540 - bdg.width / 2 - 6, 262 + 2 * 116 - 4, 0.8 + 0.2 * back((lt - t3 - 0.2) / 0.5), ba)
+            put_scaled(c, bdg, 92 + 20 + bdg.width / 2, 262 + 2 * 116 - 22, 0.8 + 0.2 * back((lt - t3 - 0.2) / 0.5), ba)
     chips = [("STRUCTURED + UNSTRUCTURED", lc(k, 1, "structured")), ("DOCUMENTS + EMAIL", lc(k, 1, "documents")),
              ("POLICY EVERYWHERE, INCLUDING AI", lc(k, 2, "including AI"))]
     for j, (lab, tk) in enumerate(chips):
@@ -1773,9 +1773,9 @@ def scene7(c, t, lt, G):
 def academy_phase(c, t, l, a):
     """Solix Academy: 3D AI-journey wheel straight away (no title, no learning path)."""
     tA = SC_LOCAL[4]["tA"]
-    segt = [0.35, max(0.9, lc(4, 10, "organizations", lead=0.35) - tA), lc(4, 10, "AI-ready", lead=0.35) - tA]
+    segt = [lc(4, 10, "AI-ready data", lead=0.35) - tA, lc(4, 10, "people", lead=0.35) - tA, lc(4, 10, "governance", lead=0.35) - tA]
     wheel3d(c, 900, 540, l, t, a * ease(l / 0.4), segt)
-    items = [("AI-READY DATA", "Solix CDP"), ("AI-READY PEOPLE", "Solix Academy"), ("AI-READY ENTERPRISE", "Solix EAI")]
+    items = [("AI-READY DATA", "Solix CDP"), ("AI-READY PEOPLE", "Solix Academy"), ("AI-READY GOVERNANCE", "Solix EAI")]
     for j, (t1_, t2_) in enumerate(items):
         ia = a * ease((l - segt[j] - 0.2) / 0.5)
         if ia <= 0:

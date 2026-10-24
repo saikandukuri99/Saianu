@@ -7,14 +7,14 @@
  },
  {
   "scene": 1,
-  "tts": "The Common Data Platform unifies structured and unstructured data. Enterprise Content Services governs documents and email.",
-  "cap": "The Common Data Platform unifies structured and unstructured data. Enterprise Content Services governs documents and email.",
+  "tts": "The Solix Common Data Platform unifies structured and unstructured data. Solix Enterprise Content Services governs documents and email.",
+  "cap": "The Solix Common Data Platform unifies structured and unstructured data. Solix Enterprise Content Services governs documents and email.",
   "gap": 0.25
  },
  {
   "scene": 1,
-  "tts": "And Enterprise Data Governance enforces policy everywhere, including AI.",
-  "cap": "And Enterprise Data Governance enforces policy everywhere, including AI.",
+  "tts": "And Solix Enterprise Data Governance enforces policy everywhere, including AI.",
+  "cap": "And Solix Enterprise Data Governance enforces policy everywhere, including AI.",
   "gap": 0.6
  },
  {
@@ -43,13 +43,13 @@
  },
  {
   "scene": 4,
-  "tts": "EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
-  "cap": "EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
+  "tts": "Solix EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
+  "cap": "Solix EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights.",
   "gap": 0.45
  },
  {
   "scene": 4,
-  "tts": "EAI Healthcare brings a trusted data foundation and collaborative intelligence together, for actionable outcomes.",
+  "tts": "Solix EAI Healthcare brings a trusted data foundation and collaborative intelligence together, for actionable outcomes.",
   "cap": "EAI Healthcare brings a trusted data foundation and collaborative intelligence together for actionable outcomes.",
   "gap": 0.45
  },
@@ -61,8 +61,8 @@
  },
  {
   "scene": 4,
-  "tts": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
-  "cap": "And Solix Academy helps organizations build the skills needed for an AI-ready enterprise.",
+  "tts": "And Solix Academy helps organizations build the skills for AI-ready data, people, and governance.",
+  "cap": "And Solix Academy helps organizations build the skills for AI-ready data, people, and governance.",
   "gap": 1.0
  },
  {

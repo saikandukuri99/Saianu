@@ -1,7 +1,7 @@
 1
-00:00:00,600 --> 00:00:04,170
-EAI Pharma accelerates drug discovery with data and AI,
+00:00:00,600 --> 00:00:04,639
+Solix EAI Pharma accelerates drug discovery with data and AI,
 
 2
-00:00:04,170 --> 00:00:07,436
+00:00:04,639 --> 00:00:07,967
 transforming research into intelligent insights.

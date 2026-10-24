@@ -1,7 +1,7 @@
 1
-00:00:00,450 --> 00:00:04,644
-EAI Healthcare brings a trusted data foundation and collaborative
+00:00:00,450 --> 00:00:05,133
+Solix EAI Healthcare brings a trusted data foundation and collaborative
 
 2
-00:00:04,644 --> 00:00:08,062
+00:00:05,133 --> 00:00:08,617
 intelligence together for actionable outcomes.

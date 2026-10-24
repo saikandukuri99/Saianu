@@ -1,16 +1,16 @@
 # Solix Empower 2026 – short version: cue sheet
 
-Parts total **94.5s**, plus your own Scene 1 (7.1 s VO) in front.
+Parts total **97.7s**, plus your own Scene 1 (8.0 s with its VO) in front = 1:45.7.
 EAI Healthcare (05b, 05c, 05c2) uses the full original voice-over and visuals. All section headings are removed. Times are relative to the start of each clip.
 
-### 02 Foundation  (14.97s)
+### 02 Foundation  (16.47s)
 `02_Foundation.mp4` / `02_Foundation.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
 | 00:00.50 | It starts with AI-ready data. | CDP screen recording starts scrolling (top→bottom); left list: Common Data Platform / Content Services / Data Governance |
-| 00:02.49 | The Common Data Platform unifies structured and unstructured data. Enterprise Content Services governs documents and email. | CDP page → Enterprise Content Services page (solix.com/products/enterprise-content-services/); chips STRUCTURED + UNSTRUCTURED, DOCUMENTS + EMAIL |
-| 00:10.30 | And Enterprise Data Governance enforces policy everywhere, including AI. | EDG screen recording scrolls down + NEW AT EMPOWER tag; chip POLICY EVERYWHERE, INCLUDING AI |
+| 00:02.49 | The Solix Common Data Platform unifies structured and unstructured data. Solix Enterprise Content Services governs documents and email. | CDP page → Enterprise Content Services page (solix.com/products/enterprise-content-services/); chips STRUCTURED + UNSTRUCTURED, DOCUMENTS + EMAIL |
+| 00:11.28 | And Solix Enterprise Data Governance enforces policy everywhere, including AI. | EDG screen recording scrolls down + NEW AT EMPOWER tag; chip POLICY EVERYWHERE, INCLUDING AI |
 
 ### 03 Enterprise AI  (10.63s)
 `03_Enterprise_AI.mp4` / `03_Enterprise_AI.mov`
@@ -28,19 +28,19 @@ EAI Healthcare (05b, 05c, 05c2) uses the full original voice-over and visuals. A
 | 00:00.60 | Solix also retires legacy applications and archives SAP, Oracle, mainframe, email, file and database data, | Pill row; Application Retirement + Data Preservation pages → SAP / Oracle / Mainframe → Email / File / Database / Active Archiving |
 | 00:08.03 | so that history becomes AI-ready, not dead weight. | Statement: THAT HISTORY BECOMES AI-READY, NOT DEAD WEIGHT. |
 
-### 05a EAI Pharma  (7.44s)
+### 05a EAI Pharma  (7.97s)
 `05a_EAI_Pharma.mp4` / `05a_EAI_Pharma.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
-| 00:00.60 | EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights. | DATA + AI → ACCELERATE DRUG DISCOVERY; molecule; RESEARCH → INTELLIGENT INSIGHTS |
+| 00:00.60 | Solix EAI Pharma accelerates drug discovery with data and AI, transforming research into intelligent insights. | DATA + AI → ACCELERATE DRUG DISCOVERY; molecule; RESEARCH → INTELLIGENT INSIGHTS |
 
-### 05b EAI Healthcare Foundation  (8.06s)
+### 05b EAI Healthcare Foundation  (8.62s)
 `05b_EAI_Healthcare_Foundation.mp4` / `05b_EAI_Healthcare_Foundation.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
-| 00:00.45 | EAI Healthcare brings a trusted data foundation and collaborative intelligence together for actionable outcomes. | Subtitle + Care Creates Data | Data Accelerates Cure; TRUSTED DATA FOUNDATION → COLLABORATIVE INTELLIGENCE → ACTIONABLE OUTCOMES |
+| 00:00.45 | Solix EAI Healthcare brings a trusted data foundation and collaborative intelligence together for actionable outcomes. | Subtitle + Care Creates Data | Data Accelerates Cure; TRUSTED DATA FOUNDATION → COLLABORATIVE INTELLIGENCE → ACTIONABLE OUTCOMES |
 
 ### 05c EAI Healthcare Platform  (9.98s)
 `05c_EAI_Healthcare_Platform.mp4` / `05c_EAI_Healthcare_Platform.mov`
@@ -56,12 +56,12 @@ EAI Healthcare (05b, 05c, 05c2) uses the full original voice-over and visuals. A
 |---|---|---|
 | 00:00.25 | From AI-Powered Documentation and AI Clinical Assistants to Preventive Care and Revenue Cycle Intelligence. | Capabilities appear in order: AI-Powered Documentation, AI Clinical Assistant, Preventive Care, Revenue Cycle Intelligence |
 
-### 05d Solix Academy  (6.11s)
+### 05d Solix Academy  (6.69s)
 `05d_Solix_Academy.mp4` / `05d_Solix_Academy.mov`
 
 | Clip time | Narration | On screen |
 |---|---|---|
-| 00:00.15 | And Solix Academy helps organizations build the skills needed for an AI-ready enterprise. | 3D wheel: AI-Ready Data / People / Enterprise + right-side list |
+| 00:00.15 | And Solix Academy helps organizations build the skills for AI-ready data, people, and governance. | 3D wheel: AI-Ready Data / People / Enterprise + right-side list |
 
 ### 06 Customers Recognition  (7.67s)
 `06_Customers_Recognition.mp4` / `06_Customers_Recognition.mov`

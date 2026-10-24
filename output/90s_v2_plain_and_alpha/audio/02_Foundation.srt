@@ -3,13 +3,17 @@
 It starts with AI-ready data.
 
 2
-00:00:02,486 --> 00:00:06,578
-The Common Data Platform unifies structured and unstructured data.
+00:00:02,486 --> 00:00:07,076
+The Solix Common Data Platform unifies structured and unstructured data.
 
 3
-00:00:06,578 --> 00:00:10,300
-Enterprise Content Services governs documents and email.
+00:00:07,076 --> 00:00:11,279
+Solix Enterprise Content Services governs documents and email.
 
 4
-00:00:10,300 --> 00:00:14,974
-And Enterprise Data Governance enforces policy everywhere, including AI.
+00:00:11,279 --> 00:00:15,300
+And Solix Enterprise Data Governance enforces policy everywhere,
+
+5
+00:00:15,300 --> 00:00:16,466
+including AI.
