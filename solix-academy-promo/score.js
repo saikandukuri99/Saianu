@@ -18,8 +18,8 @@
   const C = { blue: '#0088cf', red: '#ee2424', indigo: '#30267b', ink: '#07061a', night: '#0c0a2a', white: '#ffffff', blueHi: '#2fb0f0', mist: '#b9c6e6' };
 
   // ---------- voiceover placement (gap = silence BEFORE the line) ----------
-  const LEAD = 0.45;
-  const GAP = { l02: 0.3, l03: 0.35, l04: 0.5, l05: 0.3, l06: 0.4, l07: 0.4, l08: 0.5, l09: 0.25, l10: 0.25, l11: 0.2, l12: 0.18,
+  const LEAD = 2.4; // a calm opening before the first line
+  const GAP = { l02: 1.5, l03: 0.35, l04: 0.5, l05: 0.3, l06: 0.4, l07: 0.4, l08: 1.3, l09: 0.25, l10: 0.25, l11: 0.2, l12: 0.18,
     l13: 0.5, l14: 0.3, l15: 0.35, l16: 0.45, l17: 0.3, l18: 0.32, l19: 0.45 };
   const vo = [];
   let cur = LEAD;
@@ -45,8 +45,8 @@
   // ---------- sections ----------
   const S = {
     intro: [0, V.l04.t - 0.3],
-    pillars: [V.l04.t - 0.3, V.l08.t - 0.35],
-    academy: [V.l08.t - 0.35, V.l13.t - 0.35],
+    pillars: [V.l04.t - 0.3, V.l08.t - 1.1],
+    academy: [V.l08.t - 1.1, V.l13.t - 0.35],
     finale: [V.l13.t - 0.35, DURATION],
   };
 
@@ -61,8 +61,8 @@
 
   // ---------- key events ----------
   const ev = {
-    sweep: 2.0, // soft digital frequency sweep + title
-    title: 2.0,
+    sweep: V.l01.end + 0.15, // soft digital frequency sweep + title, once the first line has landed
+    title: V.l01.end + 0.15,
     streams: V.l02.t - 0.4, // city dissolves into data streams over a boardroom
     boardroom: V.l02.t + 2.2,
     question: V.l03.t,

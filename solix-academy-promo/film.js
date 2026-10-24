@@ -272,10 +272,13 @@
   // The official artwork, cut into its parts so each can animate: icon, SOLIX, then "Academy" beside it,
   // then the tagline. Geometry is in the logo's own 2000 x 362 units; `width` is the on-screen width.
   const ACAD = { icon: [0, 0, 366, 362], solix: [404, 26, 737, 204], academy: [1149, 26, 849, 204], tag: [408, 238, 1584, 104] };
+  const SOLIX_LETTERS = [[0, 135], [170, 330], [370, 478], [519, 549], [583, 737]]; // S O L I X in the SOLIX crop
   function acadLogo(ctx, cx, cy, width, t, { tIcon = -99, tSolix = -99, tAcad = -99, tTag = -99, alpha = 1, tagline = true } = {}) {
     if (alpha <= 0) return { iconX: cx, iconY: cy };
-    const u = width / 2000, x0 = cx - width / 2, y0 = cy - (tagline ? 181 : 128) * u;
-    const P = (k) => { const [x, y, w, h] = ACAD[k]; return [x0 + x * u, y0 + y * u, w * u, h * u]; };
+    const u = width / 2000, x0 = cx - width / 2, y0 = cy - 181 * u;
+    // without the tagline, SOLIX + Academy sit on the icon's centre line (the official art top-aligns them over the tagline)
+    const dy = tagline ? 0 : 181 - 102 - 26;
+    const P = (k) => { const [x, y, w, h] = ACAD[k]; return [x0 + x * u, y0 + (y + (k === 'solix' || k === 'academy' ? dy : 0)) * u, w * u, h * u]; };
     ctx.save(); ctx.globalAlpha *= alpha;
     // icon: pops in with a small turn
     const ki = clamp((t - tIcon) / 0.5);
@@ -284,18 +287,26 @@
       ctx.save(); ctx.translate(x + w / 2, y + h / 2); ctx.rotate(rot); ctx.scale(s, s); ctx.globalAlpha *= clamp(ki * 2);
       ctx.drawImage(IMG.acadIcon, -w / 2, -h / 2, w, h); ctx.restore();
     }
-    // SOLIX wipes in left -> right
-    const ks = ease.outCubic(clamp((t - tSolix) / 0.55));
-    if (ks > 0) {
+    // SOLIX: each letter flips up on its baseline, one after another
+    {
       const [x, y, w, h] = P('solix');
-      ctx.save(); ctx.beginPath(); ctx.rect(x - 4, y - 10, (w + 8) * ks, h + 20); ctx.clip();
-      ctx.drawImage(IMG.acadSolix, x - (1 - ks) * 40 * u * 10, y, w, h); ctx.restore();
+      SOLIX_LETTERS.forEach(([a0, a1], i) => {
+        const k = clamp((t - tSolix - i * 0.07) / 0.45);
+        if (k <= 0) return;
+        const sy = ease.outBack(k, 1.6), lw = (a1 - a0) * u;
+        ctx.save(); ctx.globalAlpha *= clamp(k * 2.5);
+        ctx.translate(x + a0 * u + lw / 2, y + h); ctx.scale(1, sy); ctx.translate(-lw / 2, -h);
+        ctx.drawImage(IMG.acadSolix, a0, 0, a1 - a0, 204, 0, 0, lw, h);
+        ctx.restore();
+      });
     }
-    // "Academy" arrives beside it, sliding in from the right
-    const ka = ease.outCubic(clamp((t - tAcad) / 0.55));
+    // "Academy" arrives beside it: slides in from the right and comes into focus
+    const ka = ease.outCubic(clamp((t - tAcad) / 0.6));
     if (ka > 0) {
       const [x, y, w, h] = P('academy');
-      ctx.save(); ctx.globalAlpha *= ka; ctx.drawImage(IMG.acadAcademy, x + (1 - ka) * 90 * u * 5, y, w, h); ctx.restore();
+      ctx.save(); ctx.globalAlpha *= ka;
+      if (ka < 1) ctx.filter = `blur(${((1 - ka) * 14 * (G.scale || 1)).toFixed(2)}px)`;
+      ctx.drawImage(IMG.acadAcademy, x + (1 - ka) * 220 * u * 2, y, w, h); ctx.restore();
     }
     // tagline fades up
     const kt = ease.outCubic(clamp((t - tTag) / 0.6));
@@ -392,7 +403,7 @@
     // stars
     for (let i = 0; i < 90; i++) { ctx.fillStyle = `rgba(255,255,255,${0.15 + 0.4 * hash(i, 9) * (0.6 + 0.4 * Math.sin(t * 2 + i))})`; ctx.fillRect(hash(i, 7) * W, hash(i, 8) * H * 0.5, 2, 2); }
     // parallax push-in
-    const z = 1 + 0.12 * ease.inOutQuad(clamp(t / 7));
+    const z = 1 + 0.12 * ease.inOutQuad(clamp(t / 11));
     for (const [L, par] of [['city3', 0.3], ['city2', 0.6], ['city1', 1]]) {
       const zz = 1 + (z - 1) * par * 1.6;
       ctx.save(); ctx.translate(W / 2, H * 0.9); ctx.scale(zz, zz); ctx.translate(-W / 2 - 200 - t * 6 * par, -H * 0.9);
@@ -528,10 +539,11 @@
     ctx.fillStyle = v; ctx.fillRect(0, 0, W, H);
 
     // --- opening heading: "Solix Academy presents / The world is entering a new era"
-    const oA = win(t, 0.15, ev.title + 0.15, 0.6, 0.45);
+    const oA = win(t, 0.5, ev.title + 0.1, 1.2, 0.6);
     if (oA > 0) {
-      kicker(ctx, 'SOLIX ACADEMY PRESENTS', W / 2, H * 0.4, oA, C.blueHi, 'center');
-      rich(ctx, [{ s: 'The world is entering ', c: '#ffffff', weight: 300, t: 0.35 }, { s: 'a new era', c: C.blueHi, glow: 18, t: wordT('l01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
+      text(ctx, 'SOLIX ACADEMY PRESENTS', W / 2, H * 0.4 - 6, { size: 34, weight: 700, color: C.blueHi, align: 'center', alpha: oA, spacing: lerp(26, 10, ease.outCubic(fade(t, 0.5, 2.0))) });
+      ctx.save(); ctx.globalAlpha = oA; ctx.fillStyle = C.red; ctx.fillRect(W / 2 - 60, H * 0.4 + 14, 120, 4); ctx.restore();
+      rich(ctx, [{ s: 'The world is entering ', c: '#ffffff', weight: 300, t: V.l01.t - 0.1 }, { s: 'a new era', c: C.blueHi, glow: 18, t: wordT('l01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
     }
     // --- title: "Reimagining Enterprise AI" (0:02), then it rises to a header
     const up = ease.inOutCubic(fade(t, V.l02.words[3].t - 0.5, 0.8)); // moves up as "every enterprise" begins
@@ -814,16 +826,37 @@
     } },
   ];
 
+  // particles fly in on curved paths, trailing light, and settle onto a circle; the circle is drawn as they arrive
+  function convergence(ctx, t, cx, cy, r, t0, t1) {
+    if (t < t0 || t > t1 + 0.6) return;
+    const n = 120, out = clamp((t - t1) / 0.6);
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < n; i++) {
+      const st = t0 + hash(i, 701) * (t1 - t0) * 0.45, dur = (t1 - st) * (0.75 + 0.25 * hash(i, 702));
+      const a = (i / n) * TAU - Math.PI / 2;
+      const tx = cx + Math.cos(a) * r, ty = cy + Math.sin(a) * r;
+      const sx = hash(i, 703) * W, sy = hash(i, 704) * H;
+      const mx = (sx + tx) / 2 + (hash(i, 705) - 0.5) * 700, my = (sy + ty) / 2 + (hash(i, 706) - 0.5) * 500;
+      const col = i % 5 === 0 ? C.blueHi : C.red;
+      for (let q = 0; q < 4; q++) {
+        const k = ease.inOutCubic(clamp((t - q * 0.035 - st) / dur));
+        if (k <= 0) continue;
+        const x = (1 - k) * (1 - k) * sx + 2 * k * (1 - k) * mx + k * k * tx, y = (1 - k) * (1 - k) * sy + 2 * k * (1 - k) * my + k * k * ty;
+        glowDot(ctx, x, y, q ? 6 : 12, col, (q ? 0.35 : 0.9) * (1 - out) * clamp((t - st) / 0.2));
+      }
+    }
+    // the circle, traced as the light arrives
+    const kc = ease.inOutCubic(clamp((t - (t0 + (t1 - t0) * 0.35)) / ((t1 - t0) * 0.65)));
+    if (kc > 0) {
+      ctx.strokeStyle = rgba(C.red, 0.9 * (1 - out)); ctx.lineWidth = 4; ctx.shadowColor = C.red; ctx.shadowBlur = 18;
+      ctx.beginPath(); ctx.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + TAU * kc); ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   function scene3(ctx, t) {
     const t0 = S.S.academy[0];
     backdrop(ctx, t, { glowX: W * 0.5, glowY: H * 0.48, blue: 0.4, red: 0.16, bottom: '#1d1658' });
-    // rotating rings behind the logo
-    const ringA = 1 - fade(t, ev.platform, 0.8);
-    if (ringA > 0) {
-      ctx.save(); ctx.translate(W / 2, H / 2); ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 4; i++) { ctx.rotate(t * 0.12 * (i % 2 ? -1 : 1)); ctx.strokeStyle = rgba(i % 2 ? C.red : C.blue, 0.22 * ringA); ctx.lineWidth = 2; ctx.setLineDash([40 + i * 20, 18]); ctx.beginPath(); ctx.arc(0, 0, 300 + i * 90, 0, TAU); ctx.stroke(); }
-      ctx.setLineDash([]); ctx.restore();
-    }
     bokeh(ctx, t, 30, 0.4, 3);
     plexus(ctx, t, { a: 0.85, cy: H * 0.5, seed: 4.1, speed: 0.04 });
     ctx.fillStyle = 'rgba(4,3,18,0.3)'; ctx.fillRect(0, 0, W, H);
@@ -832,16 +865,16 @@
     // --- logo: full-screen reveal, then it docks top-left
     const dock = ease.inOutCubic(fade(t, ev.platform - 0.1, 0.8));
     const lw = lerp(1320, 420, dock), lx = lerp(W / 2, 64 + 210, dock), ly = lerp(H * 0.46, 82, dock);
-    if (t < ev.logo + 0.2) {
-      // gathering light before the hit
-      const g = clamp((t - (ev.logo - 0.9)) / 0.9);
-      ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, W / 2, H * 0.46, 500 * g, C.blueHi, 0.6 * g * g); ctx.restore();
+    // INTRODUCING: big, tracked, the letters closing in as it lands
+    const iA = win(t, t0 + 0.15, ev.logo + 0.5, 0.5, 0.45);
+    if (iA > 0) {
+      const k = ease.outCubic(fade(t, t0 + 0.15, 1.4));
+      text(ctx, 'INTRODUCING', W / 2, H * 0.46 - 190, { size: 58, weight: 300, color: '#ffffff', align: 'center', alpha: iA, spacing: lerp(60, 22, k) });
+      ctx.save(); ctx.globalAlpha = iA; ctx.fillStyle = C.red; const lw2 = 140 * k; ctx.fillRect(W / 2 - lw2 / 2, H * 0.46 - 160, lw2, 4); ctx.restore();
     }
-    kicker(ctx, 'INTRODUCING', W / 2, H * 0.46 - 160, win(t, V.l08.t - 0.1, ev.logo + 0.6, 0.35, 0.4), C.blueHi, 'center');
-    const L = acadLogo(ctx, lx, ly, lw, t, { tIcon: ev.logo - 0.12, tSolix: ev.logo + 0.02, tAcad: ev.academyWord, tTag: ev.academyWord + 0.45 });
-    shockRing(ctx, L.iconX, L.iconY, t, ev.logo, { color: C.red, r1: 700, d: 0.9, lw: 4 });
-    flash(ctx, t, ev.logo, { a: 0.18 });
-    lensFlare(ctx, L.iconX, L.iconY, t, ev.logo, { color: C.red, dur: 0.9, size: 0.45 });
+    // light gathers: data points stream in from the network and draw the logo's circle
+    convergence(ctx, t, lx - lw / 2 + 183 * lw / 2000, ly, 183 * lw / 2000, t0 + 0.2, ev.logo);
+    acadLogo(ctx, lx, ly, lw, t, { tIcon: ev.logo - 0.05, tSolix: ev.logo + 0.05, tAcad: ev.academyWord, tTag: ev.academyWord + 0.45 });
 
     // --- the platform: headline + floating course cards
     const platA = win(t, ev.platform + 0.2, ev.experts + 0.1, 0.5, 0.45);
