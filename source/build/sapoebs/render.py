@@ -34,8 +34,8 @@ def frame(i):
     # fixed brand furniture: one of each per frame. Corner logo hidden while the Solix CDP lockup / end card carry the mark;
     # corner event tag hidden while the centred kicker (title card, hook line) is on, and gone once the end card starts.
     endt = end_card_t(); ca_, cb_ = SC["C"]
-    la = 0.0                                                                   # right-hand corner logo removed (manager)
-    ta_ = E(pr(t, SC["B"][0], .4)) * (1 - E(pr(t, endt - .5, .4)))
+    la = E(pr(t, .1, .5)) * (1 - (E(pr(t, ca_ - .1, .25)) - E(pr(t, cb_ - .1, .25)))) * (1 - E(pr(t, endt - .5, .4)))   # top-right logo; off while the Solix CDP lockup / end card carry the mark
+    ta_ = 0.0                                                                  # left SOLIXEMPOWER tag removed (manager)
     lg = _G["logo"]; h, w = lg.shape[:2]; x, y = W - 64 - w, 40
     if la > .002:
         reg = f[y:y + h, x:x + w].astype(np.float32); a2 = lg[..., 3:4] * la
