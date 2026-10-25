@@ -1,4 +1,4 @@
-// THE SCORE: Solix Academy executive promo (75 s).
+// THE SCORE: Solix Academy promo.
 // The voiceover is the spine: every line is placed here from its measured length (vo/lines.json),
 // and the sections, music bars, SFX and on-screen text all hang off those times.
 (function () {
@@ -17,20 +17,31 @@
   // brand
   const C = { blue: '#0088cf', red: '#ee2424', indigo: '#30267b', ink: '#07061a', night: '#0c0a2a', white: '#ffffff', blueHi: '#2fb0f0', mist: '#b9c6e6' };
 
-  // ---------- voiceover placement (gap = silence BEFORE the line) ----------
+  // ---------- the three pillar presenters (HeyGen avatar clips, their own voices) ----------
+  const AVATARS = [
+    { id: 'av1', name: 'data', dur: 7.56, frames: 189, fps: 25, color: C.blue, hi: C.blueHi, icon: 'database' },
+    { id: 'av2', name: 'people', dur: 7.6, frames: 190, fps: 25, color: C.red, hi: '#ff5a5a', icon: 'people' },
+    { id: 'av3', name: 'governance', dur: 5.5, frames: 144, fps: 25, color: C.indigo, hi: '#8d7bff', icon: 'shield' }, // the clip's last 0.26 s is black
+  ];
+
+  // ---------- timeline: narration lines + avatar clips (gap = silence BEFORE the item) ----------
   const LEAD = 2.4; // a calm opening before the first line
-  const GAP = { l02: 1.5, l03: 0.35, l04: 0.5, l05: 0.3, l06: 0.4, l07: 0.4, l08: 1.3, l09: 0.25, l10: 0.25, l11: 0.2, l12: 0.18,
-    l13: 0.5, l14: 0.3, l15: 0.35, l16: 0.45, l17: 0.3, l18: 0.32, l19: 0.45 };
+  const GAP = { a02: 1.5, a03: 0.25, a04: 0.25, a05: 0.3, a06: 0.45, a07: 0.5, av1: 0.7, av2: 0.6, av3: 0.6, a08: 0.6,
+    a09: 1.3, a10: 0.3, a11: 0.7, a12: 0.7, a13: 0.7, a14: 0.6, a15: 0.6, a16: 0.9, a17: 0.2, a18: 0.35, a19: 0.35,
+    a20: 0.6, a21: 0.5, a22: 0.45, a23: 0.3, a24: 0.32, a25: 0.45 };
+  const ORDER = [...VO_LINES.filter((l) => l.id <= 'a07'), ...AVATARS.map((a) => ({ id: a.id, avatar: a, dur: a.dur, text: '' })), ...VO_LINES.filter((l) => l.id > 'a07')];
   const vo = [];
   let cur = LEAD;
-  for (const L of VO_LINES) {
+  for (const L of ORDER) {
     cur += GAP[L.id] || 0;
     vo.push({ ...L, t: +cur.toFixed(3), end: +(cur + L.dur).toFixed(3), words: [] });
     cur += L.dur;
   }
   const V = Object.fromEntries(vo.map((l) => [l.id, l]));
+  AVATARS.forEach((a) => { a.t = V[a.id].t; a.end = V[a.id].end; });
   // estimated word times (proportional to letters, with room for punctuation pauses)
   for (const l of vo) {
+    if (!l.text) continue;
     const ws = l.text.split(/\s+/);
     const wt = ws.map((w) => w.replace(/[^A-Za-z0-9]/g, '').length + 2 + (/[,:]$/.test(w) ? 3 : /[.?]$/.test(w) ? 5 : 0));
     const sum = wt.reduce((a, b) => a + b, 0);
@@ -40,14 +51,28 @@
   }
   const wordT = (id, word, n = 0) => { const hits = V[id].words.filter((x) => x.w.toLowerCase().replace(/[^a-z0-9-]/g, '').startsWith(word.toLowerCase())); return (hits[n] || hits[0]).t; };
 
-  const DURATION = +(V.l19.end + 1.2).toFixed(2);
+  const DURATION = +(V.a25.end + 1.6).toFixed(2);
 
-  // ---------- sections ----------
+  // ---------- scenes (what is on screen) ----------
+  const SC = {
+    intro: [0, V.a07.t - 0.3],
+    pillars: [V.a07.t - 0.3, V.a08.t - 0.4],
+    bridge: [V.a08.t - 0.4, V.a09.t - 1.1],
+    reveal: [V.a09.t - 1.1, V.a11.t - 0.4],
+    s01: [V.a11.t - 0.4, V.a12.t - 0.4],
+    s02: [V.a12.t - 0.4, V.a13.t - 0.35],
+    s03: [V.a13.t - 0.35, V.a14.t - 0.35],
+    s04: [V.a14.t - 0.35, V.a15.t - 0.35],
+    s05: [V.a15.t - 0.35, V.a16.t - 0.5],
+    mission: [V.a16.t - 0.5, V.a21.t - 0.15],
+    end: [V.a21.t - 0.15, DURATION],
+  };
+  // music sections (also used by engine/tools/levels.js)
   const S = {
-    intro: [0, V.l04.t - 0.3],
-    pillars: [V.l04.t - 0.3, V.l08.t - 1.1],
-    academy: [V.l08.t - 1.1, V.l13.t - 0.35],
-    finale: [V.l13.t - 0.35, DURATION],
+    intro: [0, SC.pillars[0]],
+    pillars: [SC.pillars[0], SC.reveal[0]],
+    academy: [SC.reveal[0], SC.mission[0]],
+    finale: [SC.mission[0], DURATION],
   };
 
   // ---------- music clock: the beat kicks in on a downbeat at the pillars section ----------
@@ -61,30 +86,35 @@
 
   // ---------- key events ----------
   const ev = {
-    sweep: V.l01.end + 0.15, // soft digital frequency sweep + title, once the first line has landed
-    title: V.l01.end + 0.15,
-    streams: V.l02.t - 0.4, // city dissolves into data streams over a boardroom
-    boardroom: V.l02.t + 2.2,
-    question: V.l03.t,
+    sweep: V.a01.end + 0.15, // soft digital frequency sweep + title, once the first line has landed
+    title: V.a01.end + 0.15,
+    chips: [V.a02.t + 0.35, V.a03.t, V.a04.t],
+    boardroom: V.a04.t + 1.2, // the city dissolves into the boardroom
+    question: V.a06.t,
     beatIn,
-    pillar: [wordT('l05', 'first'), wordT('l06', 'second'), wordT('l07', 'and')],
-    pillarsTag: 0, // set below: the foundation appears on "Building the trusted foundation"
-    logo: V.l08.t + wordT('l08', 'solix') - V.l08.t - 0.05, // the bolt lands on "Solix"
-    academyWord: wordT('l08', 'academy'),
-    platform: V.l09.t,
-    experts: V.l10.t,
-    labs: [V.l11.t + 0.1, V.l11.t + 2.05, V.l11.t + 4.0],
-    paths: V.l12.t,
+    pillar: AVATARS.map((a) => a.t),
+    pillarsTag: V.av3.end + 0.15,
+    difference: V.a08.t,
+    logo: 0,
+    academyWord: 0,
+    platform: V.a10.t,
+    experts: V.a11.t,
+    immersive: V.a12.t,
+    journey: V.a13.t,
+    tracks: V.a14.t,
+    formats: V.a15.t,
     finale: S.finale[0],
-    future: V.l14.t,
-    endcard: V.l15.t - 0.15,
-    learn: V.l16.t,
-    innovate: V.l17.t,
-    transform: V.l18.t,
-    url: V.l19.t - 0.05,
+    future: V.a20.t,
+    endcard: V.a21.t - 0.15,
+    learn: V.a22.t,
+    innovate: V.a23.t,
+    transform: V.a24.t,
+    url: V.a25.t - 0.05,
   };
-  ev.logo = wordT('l08', 'solix');
-  ev.pillarsTag = wordT('l07', 'trusted');
+  ev.logo = wordT('a09', 'solix');
+  ev.academyWord = wordT('a09', 'academy');
+  // a soft whoosh wherever a card or panel glides in
+  ev.whooshes = [ev.platform + 0.2, SC.s01[0] + 0.3, SC.s02[0] + 0.3, SC.s03[0] + 0.25, SC.s04[0] + 0.25, SC.s05[0] + 0.25];
 
   // ---------- harmony (F major / D minor), one chord per bar ----------
   const CH = {
@@ -119,8 +149,8 @@
     pillar2: { t: ev.pillar[1], sync: 'av' },
     pillar3: { t: ev.pillar[2], sync: 'av' },
     logo: { t: ev.logo, sync: 'av' },
-    labs: { t: ev.labs[0] },
-    paths: { t: ev.paths },
+    difference: { t: ev.difference },
+    s01: { t: SC.s01[0] + 1 }, s02: { t: SC.s02[0] + 2 }, s03: { t: SC.s03[0] + 1.5 }, s04: { t: SC.s04[0] + 2.5 }, s05: { t: SC.s05[0] + 3 },
     finale: { t: ev.finale },
     endcard: { t: ev.endcard },
     transform: { t: ev.transform, sync: 'av' },
@@ -128,8 +158,8 @@
   };
 
   // subtitles straight from the voiceover lines (srt / soft subtitle track)
-  const subtitles = vo.map((l) => ({ t: l.t, end: l.end, text: l.text }));
+  const subtitles = vo.filter((l) => l.text).map((l) => ({ t: l.t, end: l.end, text: l.text }));
 
-  const SCORE = { FPS, FORMAT, W, H, SAFE, STYLE, DURATION, C, vo, V, wordT, S, clock, T, BEAT, BAR, B, barOf, ev, chords, chordAt, markers, subtitles, m };
+  const SCORE = { FPS, FORMAT, W, H, SAFE, STYLE, DURATION, C, vo, V, wordT, S, SC, AVATARS, clock, T, BEAT, BAR, B, barOf, ev, chords, chordAt, markers, subtitles, m };
   if (node) module.exports = SCORE; else globalThis.SCORE = SCORE;
 })();

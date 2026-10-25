@@ -16,10 +16,15 @@ const verb = bus(), dly = bus(), hall = bus();
 const inSec = (t, name) => t >= S[name][0] && t < S[name][1];
 
 // ---------- voiceover ----------
+// narration lines, and the three pillar presenters in their own voices (loudness-matched by media/prep.sh)
 for (const l of vo) {
-  const b = MIX.loadAudio(path.join(__dirname, 'vo', l.id + '.wav'), { at: l.t, length: DURATION });
-  b.mixInto(voice, 1);
+  const file = l.avatar ? path.join(__dirname, 'media', `avatar_${l.avatar.name}.wav`) : path.join(__dirname, 'vo', l.id + '.wav');
+  const b = MIX.loadAudio(file, { at: l.t, length: DURATION });
+  if (l.avatar) b.applyGain((t) => (t < l.end + 0.05 ? 1 : 0)); // the governance clip ends on black: stop with it
+  b.mixInto(voice, l.avatar ? 0.68 : 1);
 }
+// "That's where we can make a difference" lands in a held breath: no drums from here to the logo
+const HOLD = [ev.difference - 0.15, ev.logo];
 
 // ---------- pads: every chord, opening up section by section ----------
 for (const c of chords) {
@@ -59,13 +64,11 @@ clock16(B.beat, B.finale, (t, b, s) => {
   if (s % 4 === 2) drums.addMono(acad ? HO : HC[0], t, acad ? 0.1 : 0.16, 0.3);
   else if (s % 2 === 1) drums.addMono(SH[s % 4 === 1 ? 0 : 1], t, 0.09, -0.35);
 });
-// a short lift into the academy reveal, then a held breath so the logo hit is clean
-for (let i = 0; i < 8; i++) drums.addMono(SN, T(B.academy - 1, 2) + i * BEAT / 4, 0.08 + i * 0.025, 0.05);
-function clock16(b0, b1, fn) { sc.clock.eachStep(b0, b1, 16, (t, b, s) => { if (t >= ev.logo - 1.0 && t < ev.logo) return; fn(t, b, s); }); }
+function clock16(b0, b1, fn) { sc.clock.eachStep(b0, b1, 16, (t, b, s) => { if (t >= HOLD[0] && t < HOLD[1]) return; fn(t, b, s); }); }
 
 // ---------- bassline: rhythmic 8ths on the pillars, driving 8ths with octave hops for the academy ----------
 sc.clock.eachStep(B.beat, B.finale, 8, (t, b, s) => {
-  if (t >= ev.logo - 1.0 && t < ev.logo) return;
+  if (t >= HOLD[0] && t < HOLD[1]) return;
   const c = sc.chordAt(t); if (!c) return;
   const R = c.bass + 12;
   if (b >= B.academy) bass.addMono(I.bass(s % 2 ? R + 12 : R, BEAT / 2 * 0.8, { sub: 0.8, bright: 0.7 }), t, 0.42);
@@ -74,7 +77,7 @@ sc.clock.eachStep(B.beat, B.finale, 8, (t, b, s) => {
 
 // ---------- pillars: a pulsing pluck arp ----------
 sc.clock.eachStep(B.beat, B.academy, 16, (t, b, s) => {
-  if (s % 2 || t >= ev.logo - 1.0) return;
+  if (s % 2 || t >= HOLD[0]) return;
   const c = sc.chordAt(t); if (!c) return;
   const n = c.notes[[0, 2, 1, 3, 2, 1, 3, 2][(s / 2) % 8]] + 12;
   const x = I.pluck(n, { decay: 0.12, cutoff: 2200 + 1400 * ((b - B.beat) / (B.academy - B.beat)) });
@@ -88,7 +91,7 @@ const HOOK = [ // one 4-bar phrase on F C Dm Bb: [bar, beat, midi, beats]
   [2, 0, 'D5', 1.5], [2, 1.5, 'E5', 0.5], [2, 2, 'F5', 1], [2, 3, 'A5', 1],
   [3, 0, 'G5', 2.5], [3, 2.5, 'F5', 0.5], [3, 3, 'D5', 1],
 ];
-for (let rep = 0; rep < 3; rep++) {
+for (let rep = 0; rep < Math.ceil((B.finale - B.academy) / 4); rep++) {
   for (const [bb, beat, note, beats] of HOOK) {
     const t = T(B.academy + rep * 4 + bb, beat);
     if (t >= S.academy[1] - 0.2) continue;
@@ -164,7 +167,8 @@ for (const n of ['F3', 'C4', 'A4', 'F4', 'C5']) {
 fx.addMono(I.noiseSweep(2.4, 200, 6000, { q: 0.9, shape: (x) => x * x, pink: true }), ev.beatIn - 2.4, 0.22);
 fx.addMono(I.subBoom(1.6, 60, 30), ev.beatIn, 0.45);
 // three metallic chime impacts, one per pillar, rising
-ev.pillar.forEach((t, i) => {
+ev.pillar.forEach((t0, i) => {
+  const t = t0 - 0.3; // just ahead of the presenter's first word
   const f = [587.33, 698.46, 880][i];
   const a = I.bell(f, 0.9, 3.2, 3.5), b = I.bell(f * 2.01, 0.5, 2.0, 1.41), c = I.bell(f * 0.5, 1.1, 1.2, 2.76);
   fx.addMono(a, t, 0.22, -0.3 + 0.3 * i); fx.addMono(b, t, 0.09); fx.addMono(c, t, 0.12);
@@ -178,11 +182,14 @@ fx.addMono(I.subBoom(2.0, 64, 28), ev.logo, 0.7);
 drums.addMono(I.crash(6), ev.logo, 0.3, 0.1);
 { const sh = I.bell(1318.5, 0.8, 1.6, 2.0); fx.addMono(sh, ev.logo, 0.12); hall.addMono(sh, ev.logo, 0.2); }
 // UI whooshes as the course cards and lab windows glide in
-const whooshes = [ev.platform + 0.2, ev.experts, ev.experts + 0.5, ev.experts + 1.0, ...ev.labs, ev.paths];
+const whooshes = ev.whooshes;
 whooshes.forEach((t, i) => {
   fx.addMono(I.noiseSweep(0.5, 900, 5200, { q: 1.4, shape: (x) => Math.sin(Math.PI * x) ** 2, seed: 30 + i, pink: true }), t - 0.22, 0.13, i % 2 ? 0.45 : -0.45);
   fx.addMono(I.pop(1.6 + 0.1 * i), t + 0.05, 0.05);
 });
+// the statement: a soft low impact and a high bell under "make a difference"
+fx.addMono(I.subBoom(1.8, 58, 30), ev.difference, 0.4);
+{ const b = I.bell(1046.5, 1.2, 1.4, 2.0); fx.addMono(b, ev.difference + 0.05, 0.08); hall.addMono(b, ev.difference + 0.05, 0.16); }
 // glass shimmer tone on the web address
 [m('F6'), m('A6'), m('C7'), m('G7'), m('A7')].forEach((n, i) => {
   const t = ev.url + i * 0.055;
@@ -199,6 +206,8 @@ const stems = {
   hall: reverb(hall, { room: 0.93, damp: 0.25, predelay: 0.03 }),
   dly: pingpong(dly, BEAT * 0.75, 0.35, 3800),
 };
+// sit the music further back while the presenters speak
+for (const b of [...music, stems.verb, stems.hall, stems.dly]) b.applyGain((t) => (sc.AVATARS.some((a) => t > a.t - 0.4 && t < a.end + 0.4) ? 0.6 : 1));
 MIX.duck([...music, stems.verb, stems.hall, stems.dly], voice, { depth: 0.42, attack: 0.03, release: 0.45, threshold: 0.05 });
 const GAIN = { voice: 2.2, drums: 0.3, bass: 0.5, pad: 1.6, keys: 1.1, lead: 3.2, orch: 0.9, fx: 0.6, verb: 1, hall: 0.9, dly: 0.9 };
 const out = path.join(__dirname, 'out');

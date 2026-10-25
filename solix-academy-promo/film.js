@@ -1,7 +1,7 @@
 // THE FILM: Solix Academy executive promo. Every frame is a pure function of t, timed from score.js.
 (function () {
   const U = globalThis.U, G = globalThis.G, S = globalThis.SCORE, Studio = globalThis.Studio;
-  const { ev, V, C, BEAT } = S;
+  const { ev, V, C, BEAT, SC, AVATARS } = S;
   const { clamp, lerp, ease } = U;
   const W = G.W, H = G.H;
   const TAU = Math.PI * 2;
@@ -202,7 +202,7 @@
     ctx.restore();
   }
   // camera shake on the impacts (decaying, smooth noise)
-  const IMPACTS = [[ev.beatIn, 6], ...ev.pillar.map((p) => [p, 7]), [ev.logo, 12], [ev.learn, 5], [ev.innovate, 6], [ev.transform, 16]];
+  const IMPACTS = [[ev.beatIn, 6], [ev.logo, 12], [ev.learn, 5], [ev.innovate, 6], [ev.transform, 16]];
   function shake(t) {
     let x = 0, y = 0, r = 0;
     for (const [t0, amp] of IMPACTS) {
@@ -543,10 +543,10 @@
     if (oA > 0) {
       text(ctx, 'SOLIX ACADEMY PRESENTS', W / 2, H * 0.4 - 6, { size: 34, weight: 700, color: C.blueHi, align: 'center', alpha: oA, spacing: lerp(26, 10, ease.outCubic(fade(t, 0.5, 2.0))) });
       ctx.save(); ctx.globalAlpha = oA; ctx.fillStyle = C.red; ctx.fillRect(W / 2 - 60, H * 0.4 + 14, 120, 4); ctx.restore();
-      rich(ctx, [{ s: 'The World Is Entering ', c: '#ffffff', weight: 300, t: V.l01.t - 0.1 }, { s: 'a New Era', c: C.blueHi, glow: 18, t: wordT('l01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
+      rich(ctx, [{ s: 'The World Is Entering ', c: '#ffffff', weight: 300, t: V.a01.t - 0.1 }, { s: 'a New Era', c: C.blueHi, glow: 18, t: wordT('a01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
     }
     // --- title: "Reimagining Enterprise AI" (0:02), then it rises to a header
-    const up = ease.inOutCubic(fade(t, V.l02.words[3].t - 0.5, 0.8)); // moves up as "every enterprise" begins
+    const up = ease.inOutCubic(fade(t, ev.chips[0] - 0.5, 0.8)); // moves up as "every enterprise" begins
     const tA = win(t, ev.title, ev.question - 0.1, 0.6, 0.5);
     if (tA > 0) {
       const ty = lerp(H * 0.47, H * 0.2, up), sz = lerp(104, 64, up);
@@ -560,9 +560,9 @@
 
     }
     // --- "every enterprise / every business function / every employee" chips
-    const chipA = win(t, V.l02.words[3].t, ev.question - 0.1, 0.4, 0.5);
+    const chipA = win(t, ev.chips[0], ev.question - 0.1, 0.4, 0.5);
     if (chipA > 0) {
-      const items = [['building', 'Every Enterprise', V.l02.words[3].t], ['gear', 'Every Business Function', V.l02.words[5].t], ['person', 'Every Employee', V.l02.words[9].t]];
+      const items = [['building', 'Every Enterprise', ev.chips[0]], ['gear', 'Every Business Function', ev.chips[1]], ['person', 'Every Employee', ev.chips[2]]];
       const cw = 530, gap = 30, x0 = W / 2 - (cw * 3 + gap * 2) / 2, y = H * 0.36;
       items.forEach(([ic, label, t0], i) => {
         const k = ease.outBack(clamp((t - t0) / 0.5), 1.6);
@@ -578,8 +578,8 @@
         text(ctx, label, x + 108, yy + 67, { size: 33, weight: 700, color: '#fff', alpha: a });
       });
       // "reimagined through Artificial Intelligence"
-      const r0 = wordT('l02', 'reimagined');
-      rich(ctx, [{ s: 'can be ', c: '#dfe6ff', weight: 400, t: r0 - 0.35 }, { s: 'reimagined', c: C.red, glow: 18, t: r0 }, { s: ' through ', c: '#dfe6ff', weight: 400, t: r0 + 0.4 }, { s: 'Artificial Intelligence', c: C.blueHi, t: wordT('l02', 'artificial'), glow: 16 }],
+      const r0 = wordT('a05', 'reimagined');
+      rich(ctx, [{ s: 'can be ', c: '#dfe6ff', weight: 400, t: r0 - 0.35 }, { s: 'reimagined', c: C.red, glow: 18, t: r0 }, { s: ' through the power of ', c: '#dfe6ff', weight: 400, t: r0 + 0.4 }, { s: 'Artificial Intelligence', c: C.blueHi, t: wordT('a05', 'artificial'), glow: 16 }],
         W / 2, H * 0.36 + 230, { size: 52, weight: 800, align: 'center', alpha: chipA, t });
     }
     // --- the question
@@ -588,130 +588,84 @@
       kicker(ctx, 'THE QUESTION', W / 2, H * 0.68 - 104, qA, C.blueHi, 'center');
       const q0 = ev.question;
       rich(ctx, [{ s: 'How Do Organizations Make This', c: '#ffffff', weight: 700, t: q0 }], W / 2, H * 0.68, { size: 60, align: 'center', alpha: qA, t });
-      rich(ctx, [{ s: 'Transformation ', c: C.blueHi, weight: 800, t: wordT('l03', 'transformation'), glow: 18 }, { s: 'a ', c: '#fff', t: wordT('l03', 'reality') - 0.2 }, { s: 'Reality?', c: '#fff', pill: C.red, t: wordT('l03', 'reality') }], W / 2, H * 0.68 + 86, { size: 68, weight: 800, align: 'center', alpha: qA, t });
+      rich(ctx, [{ s: 'Transformation ', c: C.blueHi, weight: 800, t: wordT('a06', 'transformation'), glow: 18 }, { s: 'a ', c: '#fff', t: wordT('a06', 'reality') - 0.2 }, { s: 'Reality?', c: '#fff', pill: C.red, t: wordT('a06', 'reality') }], W / 2, H * 0.68 + 86, { size: 68, weight: 800, align: 'center', alpha: qA, t });
     }
   }
   const wordT = S.wordT;
 
-  // ================================================================ SCENE 2: the three pillars
-  const PILLARS = [
-    { name: 'Data', icon: 'database', col: C.blue, hi: C.blueHi, sub: ['Structured, governed', 'information behind AI'], t: ev.pillar[0] },
-    { name: 'People', icon: 'people', col: C.red, hi: '#ff5a5a', sub: ['A workforce that leads', 'AI transformation'], t: ev.pillar[1] },
-    { name: 'Governance', icon: 'shield', col: C.indigo, hi: '#8d7bff', sub: ['A trusted foundation for', 'secure, scalable value'], t: ev.pillar[2] },
-  ];
-  // an isometric metallic prism (base centre bx, by), width w, height h
-  function prism(ctx, bx, by, w, h, col, hi, glow, active) {
-    const dx = w / 2, dy = w / 4;
-    const top = by - h;
-    // left face
-    let g = ctx.createLinearGradient(bx - dx, 0, bx, 0);
-    g.addColorStop(0, G.tint(col, -0.35)); g.addColorStop(1, G.tint(col, 0.05));
-    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(bx - dx, top); ctx.lineTo(bx, top + dy); ctx.lineTo(bx, by + dy); ctx.lineTo(bx - dx, by); ctx.closePath(); ctx.fill();
-    // right face
-    g = ctx.createLinearGradient(bx, 0, bx + dx, 0);
-    g.addColorStop(0, G.tint(col, -0.45)); g.addColorStop(1, G.tint(col, -0.7));
-    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(bx, top + dy); ctx.lineTo(bx + dx, top); ctx.lineTo(bx + dx, by); ctx.lineTo(bx, by + dy); ctx.closePath(); ctx.fill();
-    // metallic sheen bands
-    ctx.save(); ctx.globalCompositeOperation = 'lighter';
-    const sh = ctx.createLinearGradient(0, top, 0, by);
-    sh.addColorStop(0, 'rgba(255,255,255,0.22)'); sh.addColorStop(0.4, 'rgba(255,255,255,0.02)'); sh.addColorStop(0.75, 'rgba(255,255,255,0.08)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
-    ctx.fillStyle = sh; ctx.beginPath(); ctx.moveTo(bx - dx, top); ctx.lineTo(bx, top + dy); ctx.lineTo(bx, by + dy); ctx.lineTo(bx - dx, by); ctx.closePath(); ctx.fill();
+  // ================================================================ SCENE 2: the three pillars, presented by three people
+  // Three video panels side by side. Each presenter speaks in turn (their own voice): their panel grows, comes into
+  // full colour and plays; the others rest, dimmed, on a still frame.
+  function avatarPanel(ctx, a, i, t, pk) {
+    const act = win(t, a.t - 0.45, a.end + 0.2, 0.45, 0.5);
+    const all = fade(t, ev.pillarsTag, 0.6);
+    const w = 480 * (1 + 0.3 * act), h = w * 9 / 16;
+    const cx = W / 2 + (i - 1) * 570, cy = H * 0.54 - 12 * act + (1 - pk) * 70;
+    const x = cx - w / 2, y = cy - h / 2;
+    ctx.save(); ctx.globalAlpha = pk;
+    // glow + shadow
+    ctx.save(); ctx.shadowColor = act > 0.05 ? rgba(a.hi, 0.6 * act) : 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 30 + 30 * act;
+    rrect(ctx, x, y, w, h, 18); ctx.fillStyle = '#0b0a24'; ctx.fill(); ctx.restore();
+    // the video
+    ctx.save(); rrect(ctx, x, y, w, h, 18); ctx.clip();
+    const lit = Math.max(act, all * 0.85);
+    ctx.filter = `grayscale(${(0.75 * (1 - lit)).toFixed(3)}) brightness(${(0.5 + 0.5 * lit).toFixed(3)})`;
+    drawFrame(ctx, avatarFrame(a, t), x, y, w, h);
+    ctx.filter = 'none';
+    // playback progress along the bottom edge
+    const p = clamp((t - a.t) / a.dur);
+    if (p > 0 && p < 1) { ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(x, y + h - 6, w, 6); ctx.fillStyle = a.hi; ctx.fillRect(x, y + h - 6, w * p, 6); }
     ctx.restore();
-    // top face
-    g = ctx.createLinearGradient(bx - dx, top - dy, bx + dx, top + dy);
-    g.addColorStop(0, G.tint(hi, 0.35)); g.addColorStop(1, G.tint(col, 0.1));
-    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(bx, top - dy); ctx.lineTo(bx + dx, top); ctx.lineTo(bx, top + dy); ctx.lineTo(bx - dx, top); ctx.closePath(); ctx.fill();
-    // glowing edges
-    ctx.save(); ctx.strokeStyle = rgba(hi, 0.5 + 0.5 * glow); ctx.lineWidth = active ? 2.5 : 1.5; ctx.shadowColor = hi; ctx.shadowBlur = 16 * glow;
-    ctx.beginPath(); ctx.moveTo(bx, top - dy); ctx.lineTo(bx + dx, top); ctx.lineTo(bx, top + dy); ctx.lineTo(bx - dx, top); ctx.closePath();
-    ctx.moveTo(bx, top + dy); ctx.lineTo(bx, by + dy); ctx.moveTo(bx - dx, top); ctx.lineTo(bx - dx, by); ctx.moveTo(bx + dx, top); ctx.lineTo(bx + dx, by);
-    ctx.stroke(); ctx.restore();
+    // frame
+    ctx.strokeStyle = rgba(a.hi, 0.35 + 0.65 * Math.max(act, all * 0.6)); ctx.lineWidth = 2 + 2 * act;
+    rrect(ctx, x, y, w, h, 18); ctx.stroke();
+    // pillar badge (icon only)
+    const bx = x + 34, by = y + 34, br = 24 + 4 * act;
+    ctx.beginPath(); ctx.arc(bx, by, br, 0, TAU); ctx.fillStyle = a.color; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.lineWidth = 2; ctx.stroke();
+    ctx.restore();
+    icon(ctx, a.icon, bx, by, br * 1.15, '#ffffff', pk, 2.5);
   }
 
   function scene2(ctx, t) {
-    const t0 = S.S.pillars[0];
-    backdrop(ctx, t, { glowY: H * 0.62, blue: 0.3 });
-    plexus(ctx, t, { a: fade(t, t0, 0.8), cy: H * 0.4, seed: 1.3 });
-    floorLight(ctx, t, H * 0.68, fade(t, t0, 0.8));
-    bokeh(ctx, t, 26, 0.35, 2);
-    ctx.fillStyle = 'rgba(4,3,18,0.25)'; ctx.fillRect(0, 0, W, H);
-    // which pillar is speaking
-    // gentle camera drift toward the speaking pillar, eased between targets (never a jump)
-    let focus = 0;
-    for (const [tk, v] of [[ev.pillar[0] - 0.2, -70], [ev.pillar[1] - 0.2, 0], [ev.pillar[2] - 0.2, 70], [ev.pillarsTag - 0.3, 0]]) focus = lerp(focus, v, ease.inOutCubic(clamp((t - tk) / 1.0)));
-    const camX = 0;
-    // how much each pillar is emphasised (0..1), cross-faded instead of switched
-    const allK = ease.inOutQuad(fade(t, ev.pillarsTag - 0.3, 0.8));
-    const emph = (i) => Math.max(allK, win(t, ev.pillar[i] - 0.05, i < 2 ? ev.pillar[i + 1] + 0.25 : 1e9, 0.5, 0.6));
-    ctx.save();
-    const zoom = 1 + 0.04 * Math.sin((t - t0) * 0.2);
-    ctx.translate(W / 2, H * 0.6); ctx.scale(zoom, zoom); ctx.translate(-W / 2 - focus * 0.6 + camX, -H * 0.6);
+    const t0 = SC.pillars[0];
+    backdrop(ctx, t, { glowY: H * 0.6, blue: 0.3 });
+    plexus(ctx, t, { a: fade(t, t0, 0.8), cy: H * 0.42, seed: 1.3 });
+    floorLight(ctx, t, H * 0.8, fade(t, t0, 0.8));
+    ctx.fillStyle = 'rgba(4,3,18,0.3)'; ctx.fillRect(0, 0, W, H);
 
-    const baseY = H * 0.655, xs = [W / 2 - 470, W / 2, W / 2 + 470], pw = 230;
-    // the foundation slab ("trusted foundation") under all three
-    const fk = ease.outCubic(fade(t, ev.pillarsTag, 0.8));
-    if (fk > 0) {
-      ctx.save(); ctx.globalAlpha = fk;
-      const sw = 1260, sd = sw / 4 * 0.32;
-      ctx.fillStyle = 'rgba(30,26,90,0.9)';
-      ctx.beginPath(); ctx.moveTo(W / 2 - sw / 2, baseY + 40); ctx.lineTo(W / 2, baseY + 40 + sd); ctx.lineTo(W / 2 + sw / 2, baseY + 40); ctx.lineTo(W / 2, baseY + 40 - sd); ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = rgba(C.blueHi, 0.9); ctx.lineWidth = 2; ctx.shadowColor = C.blue; ctx.shadowBlur = 24; ctx.stroke();
-      ctx.restore();
-    }
-    // platforms
-    PILLARS.forEach((p, i) => {
-      const k = clamp((t - p.t) / 0.9);
-      const x = xs[i], dx = pw / 2 + 30, dy = dx / 2;
-      ctx.save(); ctx.globalAlpha = 0.35 + 0.65 * clamp((t - t0 - i * 0.2) / 0.6);
-      ctx.strokeStyle = rgba(p.hi, 0.5 + 0.5 * k); ctx.lineWidth = 2; ctx.shadowColor = p.hi; ctx.shadowBlur = 20 * k;
-      ctx.beginPath(); ctx.moveTo(x, baseY - dy); ctx.lineTo(x + dx, baseY); ctx.lineTo(x, baseY + dy); ctx.lineTo(x - dx, baseY); ctx.closePath(); ctx.stroke();
-      ctx.fillStyle = rgba(p.col, 0.12 + 0.12 * k); ctx.fill();
-      ctx.restore();
-      if (k > 0) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, x, baseY, 260, p.hi, 0.35 * k); ctx.restore(); }
-    });
-    // the pillars rise
-    PILLARS.forEach((p, i) => {
-      const k = clamp((t - p.t) / 0.9);
-      if (k <= 0) return;
-      const h = 330 * ease.outBack(k, 1.3);
-      const e = emph(i);
-      ctx.save(); ctx.globalAlpha = 0.8 + 0.2 * e;
-      prism(ctx, xs[i], baseY, pw, h, p.col, p.hi, 0.35 + 0.6 * e, e > 0.5);
-      ctx.restore();
-      // impact ring at the base + a flare off the top edge
-      shockRing(ctx, xs[i], baseY, t, p.t, { color: p.hi, r1: 260, d: 0.8, lw: 4 });
+    kicker(ctx, 'THREE ESSENTIAL PILLARS', W / 2, 118, win(t, V.a07.t - 0.1, SC.pillars[1] + 0.2, 0.5, 0.4), C.blueHi, 'center');
+    const big = 1 - fade(t, ev.pillar[0] - 1.75, 0.45);
+    if (big > 0) rich(ctx, [{ s: 'It Starts with ', c: '#fff', weight: 300 }, { s: 'Three Essential Pillars', c: C.blueHi, glow: 20 }], W / 2, H * 0.5, { size: 70, align: 'center', alpha: big * fade(t, V.a07.t, 0.5) });
 
-      // the icon floats above
-      const ik = ease.outBack(clamp((t - p.t - 0.35) / 0.5), 2);
-      const iy = baseY - h - 125 + Math.sin(t * 1.6 + i) * 6;
-      if (ik > 0) {
-        ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, xs[i], iy, 120, p.hi, 0.5 * ik); ctx.restore();
-        ctx.save(); ctx.translate(xs[i], iy); ctx.scale(ik, ik); icon(ctx, p.icon, 0, 0, 74, '#ffffff', 1, 4); ctx.restore();
-      }
-    });
-    ctx.restore();
-
-    // labels under each pillar (screen space so they stay crisp)
-    PILLARS.forEach((p, i) => {
-      const k = ease.outCubic(clamp((t - p.t - 0.25) / 0.5));
-      if (k <= 0) return;
-      const x = xs[i] - focus * 0.6, y = baseY + 160;
-      text(ctx, '0' + (i + 1), x, y - 50 + (1 - k) * 18, { size: 26, weight: 800, color: p.hi === '#8d7bff' ? '#a99bff' : p.hi, align: 'center', alpha: k, spacing: 4 });
-      rich(ctx, [{ s: 'AI-Ready ', c: '#ffffff', weight: 700 }, { s: p.name, c: '#ffffff', pill: p.col, weight: 800 }], x, y + (1 - k) * 18, { size: 44, align: 'center', alpha: k });
-      const sk = clamp((t - p.t - 1.2) / 0.5) * (0.55 + 0.45 * emph(i));
-      p.sub.forEach((ln, j) => text(ctx, ln, x, y + 52 + j * 34, { size: 27, weight: 600, color: '#e3e9ff', align: 'center', alpha: sk * k }));
-    });
-
-    // header kicker
-    const hk = win(t, V.l04.t - 0.1, S.S.pillars[1] + 0.2, 0.5, 0.4);
-    kicker(ctx, 'THREE ESSENTIAL PILLARS', W / 2, 118, hk, C.blueHi, 'center');
-    const tagA = ease.outCubic(fade(t, ev.pillarsTag + 0.3, 0.6));
-    const big = 1 - fade(t, ev.pillar[0] - 0.3, 0.5);
-    if (big > 0) rich(ctx, [{ s: 'It Starts with ', c: '#fff', weight: 300 }, { s: 'Three Essential Pillars', c: C.blueHi, glow: 20 }], W / 2, H * 0.36, { size: 70, align: 'center', alpha: big * fade(t, V.l04.t, 0.5) });
-    if (tagA > 0) {
-      rich(ctx, [{ s: 'Data', c: C.blueHi }, { s: '  •  ', c: '#8090c0', weight: 400 }, { s: 'People', c: '#ff5a5a' }, { s: '  •  ', c: '#8090c0', weight: 400 }, { s: 'Governance', c: '#a99bff' }], W / 2, 196, { size: 54, weight: 800, align: 'center', alpha: tagA * win(t, 0, S.S.pillars[1] + 0.2, 0, 0.4) });
+    // panels: the active one is drawn last so it sits in front
+    const order = [0, 1, 2].sort((i, j) => win(t, AVATARS[i].t - 0.45, AVATARS[i].end + 0.2, 0.45, 0.5) - win(t, AVATARS[j].t - 0.45, AVATARS[j].end + 0.2, 0.45, 0.5));
+    for (const i of order) {
+      const pk = ease.outCubic(fade(t, ev.pillar[0] - 1.2 + i * 0.12, 0.7));
+      if (pk > 0) avatarPanel(ctx, AVATARS[i], i, t, pk);
     }
     flash(ctx, t, t0, { a: 0.1, color: '#9fd8ff' });
+  }
+
+  // ================================================================ BRIDGE: "That's where we can make a difference"
+  function bridge(ctx, t) {
+    backdrop(ctx, t, { glowY: H * 0.5, blue: 0.35, red: 0.2 });
+    plexus(ctx, t, { a: 0.7, cy: H * 0.48, seed: 2.2, speed: 0.06 });
+    ctx.fillStyle = 'rgba(4,3,18,0.35)'; ctx.fillRect(0, 0, W, H);
+    const t0 = ev.difference;
+    rich(ctx, [{ s: "That's Where We Can", c: '#ffffff', weight: 300, t: t0 - 0.2 }], W / 2, H * 0.42, { size: 78, align: 'center', t });
+    // "Make a Difference" with a brand highlight drawn across it
+    const str = 'Make a Difference', size = 112;
+    const w = measure(ctx, str, size, 800, -1);
+    const x0 = W / 2 - w / 2, y = H * 0.42 + 150;
+    const hk = ease.inOutCubic(fade(t, wordT('a08', 'make') - 0.05, 0.55));
+    if (hk > 0) {
+      ctx.save(); ctx.globalAlpha = 0.95;
+      const g = ctx.createLinearGradient(x0, 0, x0 + w, 0); g.addColorStop(0, C.red); g.addColorStop(1, '#ff4d4d');
+      ctx.fillStyle = g; ctx.shadowColor = rgba(C.red, 0.6); ctx.shadowBlur = 40;
+      ctx.beginPath(); ctx.moveTo(x0 - 30, y - size * 0.82); ctx.lineTo(x0 - 30 + (w + 60) * hk + 18, y - size * 0.82); ctx.lineTo(x0 - 30 + (w + 60) * hk, y + size * 0.26); ctx.lineTo(x0 - 48, y + size * 0.26); ctx.closePath(); ctx.fill();
+      ctx.restore();
+    }
+    rich(ctx, [{ s: str, c: '#ffffff', t: wordT('a08', 'make') - 0.1 }], W / 2, y, { size, align: 'center', t });
   }
 
   // ================================================================ SCENE 3: Solix Academy
@@ -856,7 +810,7 @@
   }
 
   function scene3(ctx, t) {
-    const t0 = S.S.academy[0];
+    const t0 = SC.reveal[0];
     backdrop(ctx, t, { glowX: W * 0.5, glowY: H * 0.48, blue: 0.4, red: 0.16, bottom: '#1d1658' });
     bokeh(ctx, t, 30, 0.4, 3);
     plexus(ctx, t, { a: 0.85, cy: H * 0.5, seed: 4.1, speed: 0.04 });
@@ -875,97 +829,273 @@
     }
     // light gathers: data points stream in from the network and draw the logo's circle
     convergence(ctx, t, lx - lw / 2 + 183 * lw / 2000, ly, 183 * lw / 2000, t0 + 0.2, ev.logo);
-    acadLogo(ctx, lx, ly, lw, t, { tIcon: ev.logo - 0.05, tSolix: ev.logo + 0.05, tAcad: ev.academyWord, tTag: ev.academyWord + 0.45 });
+    if (t < ev.platform + 0.9) acadLogo(ctx, lx, ly, lw, t, { tIcon: ev.logo - 0.05, tSolix: ev.logo + 0.05, tAcad: ev.academyWord, tTag: ev.academyWord + 0.45 });
 
-    // --- the platform: headline + floating course cards
-    const platA = win(t, ev.platform + 0.2, ev.experts + 0.1, 0.5, 0.45);
+    // --- the platform: headline + who it is for
+    const platA = win(t, ev.platform + 0.2, SC.reveal[1] + 0.2, 0.5, 0.45);
     if (platA > 0) {
-      kicker(ctx, 'A PREMIER LEARNING PLATFORM', 140, 330, platA);
-      rich(ctx, [{ s: 'Embrace AI ', c: '#fff', t: ev.platform + 0.3 }, { s: 'Faster', c: C.red, glow: 16, t: wordT('l09', 'faster') }], 140, 430, { size: 76, alpha: platA, t });
-      rich(ctx, [{ s: 'and with ', c: '#fff', weight: 300, t: wordT('l09', 'and') }, { s: 'Confidence', c: C.blueHi, glow: 16, t: wordT('l09', 'confidence') }], 140, 520, { size: 76, alpha: platA, t });
-      text(ctx, 'Built for enterprises adopting AI at scale', 142, 590, { size: 28, weight: 400, color: '#c9d3f5', alpha: platA * fade(t, ev.platform + 1.5, 0.6) });
-    }
-    const cardsA = win(t, ev.platform + 0.2, ev.labs[0] + 0.3, 0.5, 0.6);
-    if (cardsA > 0) {
-      COURSES.forEach((c, i) => {
-        const ti = ev.platform + 0.25 + i * 0.22;
-        const k = ease.outCubic(clamp((t - ti) / 0.7));
-        const col = i % 2, row = Math.floor(i / 2);
-        const bx = 1080 + col * 380 + (row % 2) * 40, by = 250 + row * 230;
-        const fl = Math.sin(t * 0.9 + i) * 8;
-        courseCard(ctx, bx + (1 - k) * 500, by + fl, 350, 200, c, cardsA * k, t - ti, i);
-      });
-    }
-    // --- the experts
-    const exA = win(t, ev.experts - 0.1, ev.labs[0] + 0.1, 0.4, 0.4);
-    if (exA > 0) {
-      kicker(ctx, 'BUILT BY', 140, 330, exA);
-      const ex = [['cap', 'Distinguished', 'Professors', C.blue, wordT('l10', 'distinguished')], ['chip', 'Leading AI', 'Practitioners', C.red, wordT('l10', 'leading')], ['briefcase', 'Industry', 'Experts', '#8d7bff', wordT('l10', 'industry')]];
-      ex.forEach(([ic, a1, a2, col, ti], i) => {
-        const k = ease.outBack(clamp((t - ti + 0.15) / 0.5), 1.5);
-        const a = exA * clamp((t - ti + 0.15) / 0.3);
+      rich(ctx, [{ s: 'A Premier ', c: '#fff', weight: 300, t: ev.platform + 0.3 }, { s: 'Learning Platform', c: C.blueHi, glow: 16, t: ev.platform + 0.5 }], 140, 400, { size: 60, alpha: platA, t });
+      kicker(ctx, 'HELPING YOU EMBRACE AI', 142, 500, platA * fade(t, wordT('a10', 'embrace') - 0.4, 0.4));
+      rich(ctx, [{ s: 'Faster', c: '#ff5a5a', glow: 14, t: wordT('a10', 'faster') }, { s: '.  ', c: '#fff', t: wordT('a10', 'faster') }, { s: 'Smarter', c: C.blueHi, glow: 14, t: wordT('a10', 'smarter') }, { s: '.', c: '#fff', t: wordT('a10', 'smarter') }], 140, 600, { size: 64, alpha: platA, t });
+      rich(ctx, [{ s: 'With ', c: '#fff', weight: 300, t: wordT('a10', 'with') }, { s: 'Confidence.', c: '#ffffff', pill: C.indigo, t: wordT('a10', 'confidence') }], 140, 690, { size: 64, alpha: platA, t });
+      kicker(ctx, 'DESIGNED FOR', 1090, 300, platA * fade(t, wordT('a10', 'aspiring') - 0.4, 0.4));
+      const who = [['person', 'Aspiring Individuals', C.blue, 'aspiring'], ['briefcase', 'Professionals', C.red, 'professionals'], ['people', 'Teams', '#8d7bff', 'teams'], ['building', 'Enterprises', C.blue, 'enterprises']];
+      who.forEach(([ic, label, col, wd], i) => {
+        const ti = wordT('a10', wd) - 0.1;
+        const k = ease.outBack(clamp((t - ti) / 0.5), 1.5), a = platA * clamp((t - ti) / 0.3);
         if (a <= 0) return;
-        const y = 380 + i * 150 + (1 - k) * 30;
+        const c = i % 2, r = Math.floor(i / 2);
+        const x = 1090 + c * 370, y = 340 + r * 220 + (1 - k) * 30 + Math.sin(t * 0.9 + i) * 5;
         ctx.save(); ctx.globalAlpha = a;
-        rrect(ctx, 140, y, 760, 124, 20); ctx.fillStyle = 'rgba(16,14,52,0.78)'; ctx.fill(); ctx.strokeStyle = rgba(col, 0.9); ctx.lineWidth = 2; ctx.stroke();
+        rrect(ctx, x, y, 340, 190, 22); ctx.fillStyle = 'rgba(16,14,52,0.82)'; ctx.fill(); ctx.strokeStyle = rgba(col === C.blue ? C.blueHi : col, 0.9); ctx.lineWidth = 2; ctx.stroke();
+        ctx.beginPath(); ctx.arc(x + 62, y + 66, 36, 0, TAU); ctx.fillStyle = col; ctx.fill();
         ctx.restore();
-        ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, 214, y + 62, 70, col, 0.5 * a); ctx.restore();
-        icon(ctx, ic, 214, y + 62, 56, '#ffffff', a, 3.5);
-        text(ctx, a1, 290, y + 56, { size: 28, weight: 400, color: '#c9d3f5', alpha: a });
-        text(ctx, a2, 290, y + 96, { size: 38, weight: 800, color: col === '#8d7bff' ? '#b4a8ff' : col === C.blue ? C.blueHi : '#ff5a5a', alpha: a });
+        icon(ctx, ic, x + 62, y + 66, 38, '#ffffff', a, 3);
+        text(ctx, label, x + 28, y + 152, { size: label.length > 14 ? 28 : 32, weight: 800, color: '#ffffff', alpha: a });
       });
     }
-    // --- hands-on labs: three lab windows glide in, one after another
-    const labsA = win(t, ev.labs[0] - 0.4, ev.paths + 0.3, 0.4, 0.5);
-    if (labsA > 0) {
-      kicker(ctx, 'LEARN BY DOING', 140, 300, labsA);
-      rich(ctx, [{ s: 'Hands-On Labs', c: C.blueHi, glow: 14 }], 140, 384, { size: 64, alpha: labsA });
-      rich(ctx, [{ s: '& Real-World Projects', c: '#ffffff', weight: 700 }], 140, 456, { size: 50, alpha: labsA * fade(t, wordT('l11', 'real-world') - 0.1, 0.4) });
-      // path: AI Fundamentals -> Production-grade Engineering
-      const pk = clamp((t - wordT('l11', 'from')) / 2.0);
-      if (pk > 0) {
-        const x0 = 150, x1 = 760, y = 600;
-        ctx.save(); ctx.globalAlpha = labsA;
-        ctx.strokeStyle = 'rgba(255,255,255,0.18)'; ctx.lineWidth = 6; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(x1, y); ctx.stroke();
-        const g = ctx.createLinearGradient(x0, 0, x1, 0); g.addColorStop(0, C.blue); g.addColorStop(1, C.red);
-        ctx.strokeStyle = g; ctx.beginPath(); ctx.moveTo(x0, y); ctx.lineTo(lerp(x0, x1, ease.inOutQuad(pk)), y); ctx.stroke();
-        ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(lerp(x0, x1, ease.inOutQuad(pk)), y, 10, 0, TAU); ctx.fill();
-        ctx.restore();
-        text(ctx, 'AI Fundamentals', x0 - 8, y + 50, { size: 24, weight: 700, color: C.blueHi, alpha: labsA });
-        text(ctx, 'Production-Grade Engineering', x1 + 8, y + 50, { size: 24, weight: 700, color: '#ff5a5a', align: 'right', alpha: labsA * clamp(pk * 1.6 - 0.4) });
-      }
-      LABS.forEach((L, i) => {
-        const ti = ev.labs[i];
-        const kin = ease.outCubic(clamp((t - ti + 0.25) / 0.7));
-        if (kin <= 0) return;
-        const nxt = i < 2 ? ease.inOutCubic(clamp((t - ev.labs[i + 1] + 0.25) / 0.7)) : 0;
-        // the current window sits front-right; the previous one steps back and up
-        const x = 990 + (1 - kin) * 900 - nxt * 60, y = 300 - nxt * 150, s = 1 - nxt * 0.16;
-        const a = labsA * kin * (1 - nxt * 0.55);
-        ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
-        labWindow(ctx, 0, 0, 800, 470, L.title, L.tag, a, (c, w, h) => L.draw(c, w, h, clamp((t - ti) / 1.8)));
-        ctx.restore();
+  }
+
+  // shared backdrop for the academy scenes (dark, a slow network, a dim layer so the foreground reads)
+  function academyBg(ctx, t, seed, { glowX = W * 0.5, glowY = H * 0.5 } = {}) {
+    backdrop(ctx, t, { glowX, glowY, blue: 0.4, red: 0.16, bottom: '#1d1658' });
+    plexus(ctx, t, { a: 0.7, cy: H * 0.5, seed, speed: 0.04 });
+    ctx.fillStyle = 'rgba(4,3,18,0.32)'; ctx.fillRect(0, 0, W, H);
+  }
+
+  // ================================================================ SCENE 01: who teaches (the experts wall recording)
+  function scene01(ctx, t) {
+    const t0 = SC.s01[0];
+    academyBg(ctx, t, 5.2, { glowX: W * 0.3 });
+    // the recording, framed on the left
+    const pk = ease.outCubic(fade(t, t0 + 0.05, 0.8));
+    const fw = 900, fh = fw * 606 / 1024, fx = 110 - (1 - pk) * 120, fy = 290;
+    ctx.save(); ctx.globalAlpha = pk;
+    ctx.save(); ctx.shadowColor = rgba(C.blue, 0.5); ctx.shadowBlur = 50; rrect(ctx, fx, fy, fw, fh, 22); ctx.fillStyle = '#0b0a24'; ctx.fill(); ctx.restore();
+    ctx.save(); rrect(ctx, fx, fy, fw, fh, 22); ctx.clip(); drawFrame(ctx, recFrame(t), fx, fy, fw, fh); ctx.restore();
+    ctx.strokeStyle = rgba(C.blueHi, 0.85); ctx.lineWidth = 2.5; rrect(ctx, fx, fy, fw, fh, 22); ctx.stroke();
+    ctx.restore();
+    kicker(ctx, 'AT SOLIX ACADEMY, LEARN FROM', 1090, 300, fade(t, t0 + 0.3, 0.5));
+    const ex = [['cap', 'Distinguished Professors', C.blue, 'distinguished'], ['chip', 'Leading AI Practitioners', C.red, 'leading'], ['gear', 'Enterprise Technology Experts', '#8d7bff', 'enterprise'], ['briefcase', 'Business Innovators', C.blue, 'business']];
+    ex.forEach(([ic, label, col, wd], i) => {
+      const ti = wordT('a11', wd) - 0.15;
+      const k = ease.outBack(clamp((t - ti) / 0.5), 1.5), a = clamp((t - ti) / 0.3);
+      if (a <= 0) return;
+      const x = 1090 + (1 - k) * 60, y = 340 + i * 125;
+      ctx.save(); ctx.globalAlpha = a;
+      rrect(ctx, x, y, 710, 104, 20); ctx.fillStyle = 'rgba(16,14,52,0.82)'; ctx.fill(); ctx.strokeStyle = rgba(col === C.blue ? C.blueHi : col, 0.9); ctx.lineWidth = 2; ctx.stroke();
+      ctx.beginPath(); ctx.arc(x + 58, y + 52, 32, 0, TAU); ctx.fillStyle = col; ctx.fill();
+      ctx.restore();
+      icon(ctx, ic, x + 58, y + 52, 34, '#ffffff', a, 3);
+      text(ctx, label, x + 112, y + 64, { size: 34, weight: 800, color: '#ffffff', alpha: a });
+    });
+  }
+
+  // ================================================================ SCENE 02: immersive learning (a turning carousel of four experiences)
+  function warp(ctx, t, a) {
+    ctx.save(); ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 140; i++) {
+      const ang = hash(i, 801) * TAU, sp = 0.25 + hash(i, 802) * 0.6;
+      const z = ((t * sp + hash(i, 803)) % 1);
+      const r0 = 40 + z * z * 1200, r1 = r0 + 20 + z * 120;
+      const x0 = W / 2 + Math.cos(ang) * r0, y0 = H * 0.56 + Math.sin(ang) * r0 * 0.62, x1 = W / 2 + Math.cos(ang) * r1, y1 = H * 0.56 + Math.sin(ang) * r1 * 0.62;
+      ctx.strokeStyle = rgba(i % 6 ? C.blueHi : C.red, a * 0.5 * z); ctx.lineWidth = 1 + 2 * z;
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
+    }
+    ctx.restore();
+  }
+  const MONO = 'DejaVu Sans Mono, Menlo, monospace';
+  const EXPERIENCES = [
+    { title: 'Real-World Use Cases', col: C.blue, word: 'real-world', draw(ctx, w, h, u) {
+      ['Retail', 'Finance', 'Healthcare', 'Manufacturing'].forEach((s2, i) => { const k = clamp(u * 3 - i * 0.3); if (k <= 0) return; const pw = measure(ctx, s2, 20, 700) + 32; ctx.save(); ctx.globalAlpha = k; rrect(ctx, 28 + [0, 120, 250, 410][i], 26, pw, 38, 19); ctx.fillStyle = 'rgba(47,176,240,0.18)'; ctx.fill(); ctx.restore(); text(ctx, s2, 44 + [0, 120, 250, 410][i], 52, { size: 20, weight: 700, color: '#dfe6ff', alpha: k }); });
+      for (let i = 0; i < 9; i++) { const bh = (50 + 160 * hash(i, 811)) * clamp(u * 1.6 - i * 0.06); ctx.fillStyle = i === 6 ? C.red : rgba(C.blueHi, 0.85); ctx.fillRect(40 + i * 66, h - 40 - bh, 40, bh); }
+      ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3; ctx.beginPath(); for (let i = 0; i <= 30 * clamp(u * 1.3); i++) { const x = 40 + i * 20, y = h - 120 - i * 4 - 20 * Math.sin(i * 0.5); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); } ctx.stroke();
+    } },
+    { title: 'Hands-On Labs', col: C.red, word: 'hands-on', draw(ctx, w, h, u) {
+      const lines = ['data = load_dataset("support_tickets")', 'model = fine_tune(base_model, data)', 'score = evaluate(model, test_set)', 'deploy(model, env="production")'];
+      lines.forEach((ln, i) => { const k = clamp(u * 2.4 - i * 0.45); if (k <= 0) return; text(ctx, String(i + 1), 30, 56 + i * 44, { size: 20, weight: 400, color: '#5d6a99' }); ctx.save(); ctx.font = `600 22px ${MONO}`; ctx.fillStyle = i === 3 ? '#ff8a8a' : '#cfe6ff'; ctx.fillText(ln.slice(0, Math.round(ln.length * clamp(k * 1.5))), 64, 56 + i * 44); ctx.restore(); });
+      const dk = clamp(u * 2.4 - 2.1);
+      if (dk > 0) { ctx.save(); ctx.globalAlpha = dk; rrect(ctx, 28, h - 92, w - 56, 62, 12); ctx.fillStyle = 'rgba(43,182,115,0.18)'; ctx.fill(); ctx.restore(); check(ctx, 60, h - 61, dk); text(ctx, 'Model deployed to production', 86, h - 53, { size: 24, weight: 700, color: '#7ee2a8', alpha: dk }); }
+    } },
+    { title: 'Practical Exercises', col: '#8d7bff', word: 'practical', draw(ctx, w, h, u) {
+      ['Prepare and clean the dataset', 'Build a retrieval pipeline', 'Evaluate model accuracy', 'Present the business impact'].forEach((s2, i) => { const k = clamp(u * 2.4 - i * 0.4); ctx.save(); ctx.globalAlpha = 0.35 + 0.65 * Math.min(1, k * 2); rrect(ctx, 28, 24 + i * 72, w - 220, 58, 12); ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.fill(); ctx.restore(); check(ctx, 60, 53 + i * 72, k); text(ctx, s2, 88, 61 + i * 72, { size: 22, weight: 700, color: '#ffffff', alpha: 0.5 + 0.5 * Math.min(1, k * 2) }); });
+      UI.ring(ctx, w - 100, h / 2 - 10, 62, clamp(u * 1.2), { color: '#8d7bff', track: 'rgba(255,255,255,0.12)', lw: 12 });
+      text(ctx, Math.round(100 * clamp(u * 1.2)) + '%', w - 100, h / 2, { size: 30, weight: 800, color: '#ffffff', align: 'center' });
+    } },
+    { title: 'Enterprise-Focused Projects', col: C.blue, word: 'enterprise-focused', draw(ctx, w, h, u) {
+      const cols = ['To Do', 'In Progress', 'Done'], cw = (w - 80) / 3;
+      cols.forEach((c, i) => { text(ctx, c.toUpperCase(), 30 + i * (cw + 10), 46, { size: 17, weight: 800, color: '#9aa6cc', spacing: 2 }); ctx.fillStyle = 'rgba(255,255,255,0.05)'; rrect(ctx, 28 + i * (cw + 10), 60, cw, h - 84, 12); ctx.fill(); });
+      const cards = ['Data audit', 'AI use-case scoping', 'Pilot rollout'];
+      cards.forEach((c, i) => {
+        const stage = clamp(u * 3 - i * 0.5, 0, 2);
+        const sx = 38 + stage * (cw + 10), sy = 76 + i * 66;
+        rrect(ctx, sx, sy, cw - 20, 54, 10); ctx.fillStyle = stage >= 2 ? 'rgba(43,182,115,0.35)' : 'rgba(47,176,240,0.25)'; ctx.fill();
+        text(ctx, c, sx + 14, sy + 34, { size: 19, weight: 700, color: '#ffffff' });
       });
+    } },
+  ];
+  function scene02(ctx, t) {
+    const t0 = SC.s02[0];
+    academyBg(ctx, t, 6.1);
+    warp(ctx, t, 0.8);
+    kicker(ctx, 'IMMERSIVE LEARNING', W / 2, 190, fade(t, t0 + 0.2, 0.5), C.blueHi, 'center');
+    // carousel position: each experience turns to the front as it is named
+    let f = 0;
+    EXPERIENCES.forEach((e, i) => { if (i) f += ease.inOutCubic(clamp((t - (wordT('a12', e.word) - 0.45)) / 0.75)); });
+    const pk = ease.outCubic(fade(t, t0 + 0.1, 0.8));
+    const items = EXPERIENCES.map((e, i) => { const ph = (i - f) * (TAU / 4); return { e, i, ph, depth: Math.cos(ph) }; }).sort((a, b) => a.depth - b.depth);
+    for (const { e, i, ph, depth } of items) {
+      const s = (0.5 + 0.5 * (depth + 1) / 2) * (0.8 + 0.2 * pk);
+      const cx = W / 2 + Math.sin(ph) * 640, cy = H * 0.58 - (1 - depth) * 30 + (1 - pk) * 80;
+      const w = 820, h = 480;
+      const a = pk * (0.25 + 0.75 * ((depth + 1) / 2) ** 2);
+      ctx.save(); ctx.translate(cx, cy); ctx.scale(s, s); ctx.globalAlpha = a;
+      ctx.save(); ctx.shadowColor = depth > 0.7 ? rgba(e.col === C.blue ? C.blueHi : e.col, 0.55) : 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 50; rrect(ctx, -w / 2, -h / 2, w, h, 24); ctx.fillStyle = '#0e0c2e'; ctx.fill(); ctx.restore();
+      ctx.strokeStyle = rgba(e.col === C.blue ? C.blueHi : e.col, 0.9); ctx.lineWidth = 2.5; rrect(ctx, -w / 2, -h / 2, w, h, 24); ctx.stroke();
+      ctx.save(); rrect(ctx, -w / 2, -h / 2, w, h, 24); ctx.clip();
+      const g = ctx.createLinearGradient(-w / 2, 0, w / 2, 0); g.addColorStop(0, e.col); g.addColorStop(1, G.tint(e.col, 0.25));
+      ctx.fillStyle = g; ctx.fillRect(-w / 2, -h / 2, w, 76);
+      ctx.restore();
+      text(ctx, e.title, -w / 2 + 32, -h / 2 + 50, { size: 32, weight: 800, color: '#ffffff' });
+      ctx.save(); ctx.translate(-w / 2, -h / 2 + 76);
+      e.draw(ctx, w, h - 76, clamp((t - (wordT('a12', e.word) - 0.3)) / 2.2));
+      ctx.restore();
+      ctx.restore();
     }
-    // --- 150+ learning paths, self-paced & instructor-led
-    const pA = win(t, ev.paths - 0.2, S.S.academy[1] + 0.3, 0.4, 0.5);
-    if (pA > 0) {
-      const n = Math.round(150 * ease.outCubic(clamp((t - ev.paths) / 1.2)));
-      const x = W / 2;
-      ctx.save(); ctx.globalAlpha = pA; ctx.fillStyle = 'rgba(8,7,30,0.55)'; ctx.fillRect(0, 0, W, H); ctx.restore();
-      text(ctx, n + '+', x, H * 0.47, { size: 220, weight: 800, color: C.blueHi, align: 'center', alpha: pA, glow: 40, glowColor: C.blue });
-      text(ctx, 'LEARNING PATHS', x, H * 0.47 + 76, { size: 44, weight: 800, color: '#ffffff', align: 'center', alpha: pA, spacing: 10 });
-      const pk = ease.outBack(clamp((t - wordT('l12', 'self-paced')) / 0.45), 1.6), ik = ease.outBack(clamp((t - wordT('l12', 'instructor-led')) / 0.45), 1.6);
-      const py = H * 0.47 + 150;
-      for (const [label, col, k, dx] of [['Self-Paced', C.blue, pk, -190], ['Instructor-Led', C.red, ik, 190]]) {
-        if (k <= 0) continue;
-        const w = measure(ctx, label, 36, 800) + 70;
-        ctx.save(); ctx.globalAlpha = pA * clamp(k); ctx.translate(x + dx, py); ctx.scale(k, k);
-        rrect(ctx, -w / 2, -34, w, 68, 34); ctx.fillStyle = col; ctx.shadowColor = col; ctx.shadowBlur = 30; ctx.fill(); ctx.restore();
-        ctx.save(); ctx.translate(x + dx, py); ctx.scale(k, k); text(ctx, label, 0, 13, { size: 36, weight: 800, color: '#fff', align: 'center', alpha: pA * clamp(k) }); ctx.restore();
+  }
+
+  // ================================================================ SCENE 03: from absolute beginner to enterprise expert
+  function scene03(ctx, t) {
+    const t0 = SC.s03[0];
+    academyBg(ctx, t, 7.3, { glowX: W * 0.75, glowY: H * 0.3 });
+    rich(ctx, [{ s: 'From Absolute ', c: '#ffffff', weight: 300, t: t0 + 0.2 }, { s: 'Beginner', c: C.blueHi, glow: 14, t: wordT('a13', 'beginner') }], 140, 300, { size: 68, t });
+    rich(ctx, [{ s: 'to ', c: '#ffffff', weight: 300, t: wordT('a13', 'to') }, { s: 'Enterprise Expert', c: '#ff5a5a', glow: 14, t: wordT('a13', 'enterprise') }], 140, 390, { size: 68, t });
+    const steps = ['Beginner', 'Explorer', 'Practitioner', 'Specialist', 'Enterprise Expert'];
+    const cols = [C.blueHi, C.blueHi, '#8d7bff', '#8d7bff', '#ff5a5a'];
+    const sx = (i) => 560 + i * 280, sy = (i) => 930 - i * 112;
+    steps.forEach((s2, i) => {
+      const k = ease.outCubic(clamp((t - (t0 + 0.15 + i * 0.1)) / 0.5));
+      if (k <= 0) return;
+      const x = sx(i), y = sy(i) + (1 - k) * 60;
+      ctx.save(); ctx.globalAlpha = k;
+      const g = ctx.createLinearGradient(0, y, 0, H); g.addColorStop(0, rgba(cols[i], 0.55)); g.addColorStop(1, rgba(cols[i], 0.05));
+      ctx.fillStyle = g; ctx.fillRect(x - 120, y, 240, H - y);
+      ctx.fillStyle = cols[i]; ctx.fillRect(x - 120, y - 6, 240, 6);
+      ctx.restore();
+      text(ctx, s2, x, y - 26, { size: i === 4 ? 30 : 26, weight: 800, color: '#ffffff', align: 'center', alpha: k });
+    });
+    // the learner climbs
+    const p = ease.inOutCubic(clamp((t - (t0 + 0.5)) / 2.3)) * 4;
+    const i0 = Math.min(3, Math.floor(p)), fr = p - i0;
+    const x = lerp(sx(i0), sx(i0 + 1), fr), y = lerp(sy(i0), sy(i0 + 1), fr) - 70 - Math.sin(fr * Math.PI) * 60;
+    if (t > t0 + 0.4) {
+      ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, x, y, 90, C.blueHi, 0.6); ctx.restore();
+      ctx.beginPath(); ctx.arc(x, y, 18, 0, TAU); ctx.fillStyle = '#ffffff'; ctx.fill();
+    }
+    const top = clamp((t - (t0 + 2.8)) / 0.5);
+    if (top > 0) { ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, sx(4), sy(4) - 70, 220 * top, C.red, 0.5 * top); ctx.restore(); }
+  }
+
+  // ================================================================ SCENE 04: structured tracks (a transit map to production)
+  const TRACKS = [
+    { col: C.blueHi, y: 500, stops: ['Data Foundations', 'Data Engineering for AI', 'Data Governance'] },
+    { col: '#ff5a5a', y: 650, stops: ['AI Fundamentals', 'Generative AI', 'MLOps in Production'] },
+    { col: '#a99bff', y: 800, stops: ['Prompt Engineering', 'RAG & Knowledge Graphs', 'Agentic AI Systems'] },
+  ];
+  function scene04(ctx, t) {
+    const t0 = SC.s04[0];
+    academyBg(ctx, t, 8.4);
+    kicker(ctx, 'STRUCTURED TRACKS', 140, 230, fade(t, t0 + 0.2, 0.5));
+    rich(ctx, [{ s: 'From ', c: '#ffffff', weight: 300, t: wordT('a14', 'from') }, { s: 'Fundamentals', c: C.blueHi, glow: 12, t: wordT('a14', 'fundamentals') }, { s: ' to ', c: '#ffffff', weight: 300, t: wordT('a14', 'to', 1) }, { s: 'Production-Grade Enterprise AI', c: '#ff5a5a', glow: 12, t: wordT('a14', 'production-grade') }], 140, 320, { size: 54, t });
+    const xs = 250, xe = 1680, stopX = [620, 1000, 1380];
+    TRACKS.forEach((tr, j) => {
+      const p = ease.inOutCubic(clamp((t - (t0 + 0.5 + j * 0.25)) / 3.0));
+      if (p <= 0) return;
+      const xEnd = lerp(xs, xe, p);
+      ctx.save(); ctx.strokeStyle = tr.col; ctx.lineWidth = 10; ctx.lineCap = 'round'; ctx.shadowColor = tr.col; ctx.shadowBlur = 18;
+      ctx.beginPath(); ctx.moveTo(xs, tr.y); ctx.lineTo(xEnd, tr.y); ctx.stroke(); ctx.restore();
+      // light pulses running along the line
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (let q = 0; q < 3; q++) { const px = xs + ((t * 380 + q * 480 + j * 150) % (xe - xs)); if (px < xEnd) glowDot(ctx, px, tr.y, 26, '#ffffff', 0.7); }
+      ctx.restore();
+      tr.stops.forEach((s2, i) => {
+        const k = ease.outBack(clamp((xEnd - stopX[i]) / 120), 2);
+        if (k <= 0) return;
+        ctx.beginPath(); ctx.arc(stopX[i], tr.y, 16 * k, 0, TAU); ctx.fillStyle = '#0b0a24'; ctx.fill(); ctx.strokeStyle = tr.col; ctx.lineWidth = 6; ctx.stroke();
+        text(ctx, s2, stopX[i], tr.y - 34, { size: 24, weight: 700, color: '#ffffff', align: 'center', alpha: clamp(k) });
+      });
+    });
+    // the start and the terminal
+    const sk = ease.outCubic(fade(t, t0 + 0.35, 0.5));
+    if (sk > 0) {
+      ctx.save(); ctx.globalAlpha = sk; rrect(ctx, xs - 34, 460, 68, 380, 34); ctx.fillStyle = 'rgba(47,176,240,0.2)'; ctx.fill(); ctx.strokeStyle = C.blueHi; ctx.lineWidth = 3; ctx.stroke(); ctx.restore();
+      text(ctx, 'Fundamentals', xs, 890, { size: 28, weight: 800, color: C.blueHi, align: 'center', alpha: sk });
+    }
+    const ek = ease.outBack(clamp((t - (t0 + 3.4)) / 0.6), 1.6);
+    if (ek > 0) {
+      ctx.save(); ctx.globalAlpha = clamp(ek); ctx.translate(xe, 650); ctx.scale(ek, ek);
+      rrect(ctx, -40, -190, 80, 380, 40); ctx.fillStyle = 'rgba(238,36,36,0.25)'; ctx.fill(); ctx.strokeStyle = '#ff5a5a'; ctx.lineWidth = 3; ctx.shadowColor = C.red; ctx.shadowBlur = 30; ctx.stroke();
+      ctx.restore();
+      text(ctx, 'Production-Grade', xe, 890, { size: 28, weight: 800, color: '#ff5a5a', align: 'center', alpha: clamp(ek) });
+      text(ctx, 'Enterprise AI', xe, 926, { size: 28, weight: 800, color: '#ff5a5a', align: 'center', alpha: clamp(ek) });
+    }
+  }
+
+  // ================================================================ SCENE 05: every format, and free courses to start today
+  function scene05(ctx, t) {
+    const t0 = SC.s05[0];
+    academyBg(ctx, t, 9.6);
+    kicker(ctx, 'EVERY FORMAT', W / 2, 200, fade(t, t0 + 0.2, 0.5), C.blueHi, 'center');
+    const panels = [
+      { title: 'Self-Paced', col: C.blue, x: W / 2 - 700, word: 'self-paced' },
+      { title: 'Instructor-Led', col: C.red, x: W / 2 + 40, word: 'instructor-led' },
+    ];
+    panels.forEach((p, i) => {
+      const ti = wordT('a15', p.word) - 0.25;
+      const k = ease.outBack(clamp((t - ti) / 0.55), 1.4), a = clamp((t - ti) / 0.3);
+      if (a <= 0) return;
+      const y = 250 + (1 - k) * 50, w = 660, h = 420, lt = t - ti;
+      ctx.save(); ctx.globalAlpha = a;
+      ctx.save(); ctx.shadowColor = rgba(p.col, 0.5); ctx.shadowBlur = 40; rrect(ctx, p.x, y, w, h, 26); ctx.fillStyle = 'rgba(16,14,52,0.9)'; ctx.fill(); ctx.restore();
+      ctx.strokeStyle = p.col === C.blue ? C.blueHi : '#ff5a5a'; ctx.lineWidth = 2.5; rrect(ctx, p.x, y, w, h, 26); ctx.stroke();
+      ctx.restore();
+      text(ctx, p.title, p.x + w / 2, y + 380, { size: 46, weight: 800, color: '#ffffff', align: 'center', alpha: a });
+      const cx = p.x + w / 2, cy = y + 170;
+      if (i === 0) {
+        // play button inside a filling progress ring
+        UI.ring(ctx, cx, cy, 110, clamp(lt / 3), { color: C.blueHi, track: 'rgba(255,255,255,0.12)', lw: 12 });
+        ctx.save(); ctx.globalAlpha = a; ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.moveTo(cx - 28, cy - 42); ctx.lineTo(cx + 46, cy); ctx.lineTo(cx - 28, cy + 42); ctx.closePath(); ctx.fill(); ctx.restore();
+      } else {
+        // a live session: presenter + pulsing LIVE badge + chat
+        ctx.save(); ctx.globalAlpha = a; ctx.translate(cx - 110, cy + 20); ctx.fillStyle = '#ffffff';
+        ctx.beginPath(); ctx.arc(0, -70, 40, 0, TAU); ctx.fill(); ctx.beginPath(); ctx.arc(0, 40, 72, Math.PI, TAU); ctx.fill(); ctx.restore();
+        const pl = 0.6 + 0.4 * Math.sin(lt * 6);
+        ctx.save(); ctx.globalAlpha = a; rrect(ctx, cx + 10, cy - 120, 110, 44, 22); ctx.fillStyle = C.red; ctx.fill(); ctx.beginPath(); ctx.arc(cx + 34, cy - 98, 8, 0, TAU); ctx.fillStyle = `rgba(255,255,255,${pl})`; ctx.fill(); ctx.restore();
+        text(ctx, 'LIVE', cx + 50, cy - 89, { size: 22, weight: 800, color: '#ffffff', alpha: a, spacing: 2 });
+        [[0.4, 150], [1.0, 110]].forEach(([d, bw], q) => { const bk = clamp((lt - d) / 0.3); if (bk <= 0) return; ctx.save(); ctx.globalAlpha = a * bk; rrect(ctx, cx + 10, cy - 50 + q * 60, bw, 44, 14); ctx.fillStyle = 'rgba(255,255,255,0.14)'; ctx.fill(); ctx.restore(); });
       }
+    });
+    // free courses: a stamp and a banner
+    const ft = wordT('a15', 'free') - 0.2;
+    const fk = ease.outBack(clamp((t - ft) / 0.5), 2.2), fa = clamp((t - ft) / 0.25);
+    if (fa > 0) {
+      const y = 790;
+      ctx.save(); ctx.globalAlpha = fa;
+      const bw = 1100, bx = W / 2 - bw / 2;
+      rrect(ctx, bx, y, bw, 110, 55); ctx.fillStyle = 'rgba(16,14,52,0.92)'; ctx.fill(); ctx.strokeStyle = rgba(C.blueHi, 0.8); ctx.lineWidth = 2; ctx.stroke();
+      ctx.restore();
+      ctx.save(); ctx.translate(W / 2 - 400, y + 55); ctx.rotate(-0.08); ctx.scale(fk, fk); ctx.globalAlpha = fa;
+      rrect(ctx, -110, -44, 220, 88, 16); ctx.fillStyle = C.red; ctx.shadowColor = rgba(C.red, 0.7); ctx.shadowBlur = 30; ctx.fill();
+      ctx.restore();
+      ctx.save(); ctx.translate(W / 2 - 400, y + 55); ctx.rotate(-0.08); ctx.scale(fk, fk);
+      text(ctx, 'FREE', 0, 18, { size: 52, weight: 800, color: '#ffffff', align: 'center', alpha: fa, spacing: 4 });
+      ctx.restore();
+      rich(ctx, [{ s: 'Many Free Courses to ', c: '#ffffff', weight: 600 }, { s: 'Start Today', c: C.blueHi, weight: 800, glow: 12 }], W / 2 + 130, y + 70, { size: 44, align: 'center', alpha: fa });
+      // sparkles
+      ctx.save(); ctx.globalCompositeOperation = 'lighter';
+      for (let i = 0; i < 24; i++) { const k = clamp((t - ft) / 1.2); if (k >= 1) break; const ang = hash(i, 901) * TAU, r = 60 + k * (160 + 200 * hash(i, 902)); glowDot(ctx, W / 2 - 400 + Math.cos(ang) * r, y + 55 + Math.sin(ang) * r * 0.6, 10, i % 3 ? C.blueHi : '#ffffff', 0.9 * (1 - k)); }
+      ctx.restore();
     }
-    flash(ctx, t, t0, { a: 0.1, color: '#ffd7d7' });
   }
 
   // ================================================================ SCENE 4: mission, teams, end card
@@ -975,8 +1105,8 @@
     const k = clamp((t - ev.finale) / (ev.endcard - ev.finale));
     ctx.save(); ctx.globalAlpha = a;
     const z = 1 + 0.08 * ease.inOutQuad(k);
-    ctx.translate(W * 0.68, H * 0.62); ctx.scale(z, z); ctx.translate(-W * 0.68, -H * 0.62);
-    const cx = W * 0.68, cy = H * 0.66;
+    ctx.translate(W * 0.72, H * 0.62); ctx.scale(z * 0.9, z * 0.9); ctx.translate(-W * 0.72, -H * 0.62);
+    const cx = W * 0.72, cy = H * 0.66;
     // table glow
     ctx.save(); ctx.globalCompositeOperation = 'lighter'; glowDot(ctx, cx, cy, 520, C.blue, 0.45); glowDot(ctx, cx, cy - 120, 260, C.blueHi, 0.25); ctx.restore();
     ctx.beginPath(); ctx.ellipse(cx, cy, 380, 110, 0, 0, TAU);
@@ -1023,7 +1153,7 @@
     // --- mission + teams
     if (endA < 1) {
       ctx.save(); ctx.globalAlpha = 1 - endA;
-      backdrop(ctx, t, { glowX: W * 0.68, glowY: H * 0.6, blue: 0.45, red: 0.18 });
+      backdrop(ctx, t, { glowX: W * 0.74, glowY: H * 0.6, blue: 0.45, red: 0.18 });
       bokeh(ctx, t, 30, 0.45, 4);
       team(ctx, t, 1);
       const lv = ctx.createLinearGradient(0, 0, W * 0.6, 0);
@@ -1031,29 +1161,36 @@
       ctx.fillStyle = lv; ctx.fillRect(0, 0, W * 0.6, H);
       const mA = win(t, ev.finale + 0.2, ev.future + 0.05, 0.5, 0.4);
       if (mA > 0) {
-        kicker(ctx, 'OUR MISSION', 140, 360, mA);
-        rich(ctx, [{ s: 'Transform ', c: '#fff', t: wordT('l13', 'transform') - 0.1 }, { s: 'Everyone', c: '#fff', t: wordT('l13', 'everyone') }], 140, 460, { size: 76, alpha: mA, t });
-        rich(ctx, [{ s: 'into ', c: '#fff', weight: 300, t: wordT('l13', 'into') }, { s: 'AI-Ready', c: C.blueHi, glow: 18, t: wordT('l13', 'ai-ready') }], 140, 552, { size: 76, alpha: mA, t });
-        rich(ctx, [{ s: 'Innovators.', c: '#ffffff', pill: C.red, t: wordT('l13', 'innovators') }], 152, 652, { size: 76, alpha: mA, t });
+        kicker(ctx, 'OUR MISSION IS SIMPLE', 140, 300, mA);
+        const items = [['person', 'Transform Everyone into', 'AI-Ready Innovators', C.blueHi, V.a17.t], ['people', 'Help Teams Discover', 'New Possibilities', '#ff5a5a', V.a18.t], ['building', 'Empower Enterprises to Unlock', 'the Full Potential of AI', '#a99bff', V.a19.t]];
+        items.forEach(([ic, l1, l2, col, ti], i) => {
+          const k = ease.outCubic(clamp((t - ti + 0.15) / 0.5));
+          if (k <= 0) return;
+          const y = 380 + i * 170, a2 = mA * k;
+          ctx.save(); ctx.globalAlpha = a2; ctx.beginPath(); ctx.arc(190, y + 40, 44, 0, TAU); ctx.fillStyle = 'rgba(16,14,52,0.85)'; ctx.fill(); ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.stroke(); ctx.restore();
+          icon(ctx, ic, 190, y + 40, 44, '#ffffff', a2, 3);
+          rich(ctx, [{ s: l1, c: '#ffffff', weight: 600 }], 262 + (1 - k) * 30, y + 30, { size: 36, alpha: a2 });
+          rich(ctx, [{ s: l2, c: col, weight: 800, glow: 12 }], 262 + (1 - k) * 30, y + 80, { size: 40, alpha: a2 });
+        });
       }
       const fA = win(t, ev.future, ev.endcard + 0.4, 0.5, 0.5);
       if (fA > 0) {
         kicker(ctx, 'THE FUTURE BELONGS TO ORGANIZATIONS THAT', 140, 330, fA);
-        const ws = [['Learn', C.blueHi, wordT('l14', 'learn')], ['Adapt', '#ffffff', wordT('l14', 'adapt')], ['Innovate', '#ff5a5a', wordT('l14', 'innovate')]];
+        const ws = [['Learn', C.blueHi, wordT('a20', 'learn')], ['Adapt', '#ffffff', wordT('a20', 'adapt')], ['Innovate', '#ff5a5a', wordT('a20', 'innovate')]];
         ws.forEach(([w, col, ti], i) => {
           const k = ease.outBack(clamp((t - ti + 0.1) / 0.4), 2);
           text(ctx, w + '.', 140, 450 + i * 100 + (1 - k) * 20, { size: 90, weight: 800, color: col, alpha: fA * clamp((t - ti + 0.1) / 0.25), glow: col === '#ffffff' ? 0 : 20 });
         });
-        const fk = clamp((t - wordT('l14', 'faster') + 0.1) / 0.4);
+        const fk = clamp((t - wordT('a20', 'faster') + 0.1) / 0.4);
         // speed lines on "faster than ever"
         if (fk > 0) {
-          rich(ctx, [{ s: 'Faster Than Ever', c: C.blueHi }], 146, 790, { size: 40, weight: 700, alpha: fA * fk });
+          rich(ctx, [{ s: 'Faster Than Ever Before', c: C.blueHi }], 146, 790, { size: 40, weight: 700, alpha: fA * fk });
           ctx.save(); ctx.globalAlpha = fA * fk * 0.8; ctx.globalCompositeOperation = 'lighter';
-          for (let i = 0; i < 5; i++) { const y = 776 - 30 + i * 14, x = 470 + ((t * 900 + i * 170) % 300); const g = ctx.createLinearGradient(x, 0, x + 140, 0); g.addColorStop(0, rgba(C.blue, 0)); g.addColorStop(1, rgba(C.blueHi, 0.8)); ctx.fillStyle = g; ctx.fillRect(x, y, 140, 2.5); }
+          for (let i = 0; i < 5; i++) { const y = 776 - 30 + i * 14, x = 600 + ((t * 900 + i * 170) % 300); const g = ctx.createLinearGradient(x, 0, x + 140, 0); g.addColorStop(0, rgba(C.blue, 0)); g.addColorStop(1, rgba(C.blueHi, 0.8)); ctx.fillStyle = g; ctx.fillRect(x, y, 140, 2.5); }
           ctx.restore();
         }
       }
-      flash(ctx, t, S.S.finale[0], { a: 0.1, color: '#cfe8ff' });
+      flash(ctx, t, SC.mission[0], { a: 0.1, color: '#cfe8ff' });
       ctx.restore();
     }
     // --- end card
@@ -1102,9 +1239,57 @@
         ctx.fillStyle = sg; ctx.fillRect(sx - 120, uy - 10, 240, uh + 40);
         ctx.restore();
         rich(ctx, [{ s: 'solix', c: '#ffffff' }, { s: 'academy', c: C.blueHi }, { s: '.com', c: '#ffffff' }], W / 2, uy + 56 + (1 - uk) * 20, { size: 46, weight: 800, align: 'center', alpha: uk });
-        text(ctx, 'Your AI journey starts today.', W / 2, uy + 150, { size: 32, weight: 400, color: '#dfe6ff', align: 'center', alpha: fade(t, ev.url + 0.35, 0.5), spacing: 1 });
+        text(ctx, 'Your AI journey starts here.', W / 2, uy + 150, { size: 32, weight: 400, color: '#dfe6ff', align: 'center', alpha: fade(t, ev.url + 0.35, 0.5), spacing: 1 });
       }
     }
+  }
+
+  // ---------------------------------------------------------------- video frames (avatars, experts wall)
+  // Frames come from media/prep.sh as JPGs. Before each frame is drawn, the ones it needs are loaded
+  // (the renderer awaits window.renderAt), so drawing stays synchronous and every worker sees the same frame.
+  const FR = new Map();
+  const fpath = (dir, i) => `media/${dir}/${String(i).padStart(4, '0')}.jpg`;
+  function avatarFrame(a, t) {
+    let i;
+    if (t < a.t) i = 8; // resting frame before they speak
+    else if (t <= a.end) i = 1 + Math.floor((t - a.t) * a.fps);
+    else i = Math.floor(a.dur * a.fps) - 4; // and after
+    return fpath('av_' + a.name, clamp(i, 1, a.frames));
+  }
+  const REC_SPEED = 1.5; // the experts wall scrolls a little faster than recorded
+  const recFrame = (t) => fpath('rec', clamp(1 + Math.floor(Math.max(0, t - SC.s01[0]) * REC_SPEED * 30), 1, 764));
+  function framesFor(t) {
+    const out = [];
+    if (t > SC.pillars[0] - 0.7 && t < SC.pillars[1] + 0.7) for (const a of AVATARS) out.push(avatarFrame(a, t));
+    if (t > SC.s01[0] - 0.7 && t < SC.s01[1] + 0.7) out.push(recFrame(t));
+    return out;
+  }
+  async function ensureFrames(t) {
+    const need = framesFor(t);
+    await Promise.all(need.filter((u) => !FR.has(u)).map((u) => new Promise((res) => {
+      const im = new Image();
+      im.onload = () => { FR.set(u, im); res(); };
+      im.onerror = () => { console.error('frame failed', u); res(); };
+      im.src = u;
+    })));
+    if (FR.size > 30) for (const k of [...FR.keys()]) if (!need.includes(k)) FR.delete(k);
+  }
+  function drawFrame(ctx, url, x, y, w, h) {
+    const im = FR.get(url);
+    if (im) ctx.drawImage(im, x, y, w, h);
+    else { ctx.fillStyle = '#10102a'; ctx.fillRect(x, y, w, h); }
+  }
+  {
+    let inner = null;
+    const wrapped = async (t, ...rest) => { await ensureFrames(t); return inner(t, ...rest); };
+    Object.defineProperty(window, 'renderAt', { configurable: true, get: () => inner && wrapped, set: (fn) => { inner = fn; } });
+  }
+
+  // the docked Solix Academy logo (top-left) from the platform line through the mission
+  function dockLogo(ctx, t) {
+    const a = Math.min(fade(t, ev.platform + 0.9, 0.01), 1 - fade(t, SC.mission[1] - 0.5, 0.5));
+    if (a <= 0) return;
+    acadLogo(ctx, 64 + 210, 82, 420, t, { alpha: a });
   }
 
   // ---------------------------------------------------------------- draw
@@ -1117,17 +1302,17 @@
       IMG.solixLogo = await Studio.loadImage('assets/solix_logo_white.png');
       buildCity();
     },
-    post: { paper: 0, vignette: 0.35, grain: 0.03 },
+    post: { paper: 0, vignette: 0.35, grain: 0.02 },
     fadeOut: 0.6,
     draw(ctx, t) {
-      const a0 = S.S.academy[0], f0 = S.S.finale[0], p0 = S.S.pillars[0];
       const sh = shake(t);
       ctx.save(); ctx.translate(W / 2 + sh.x, H / 2 + sh.y); ctx.rotate(sh.r); ctx.translate(-W / 2, -H / 2);
       // zoom-blur cuts: the outgoing scene pushes past camera and defocuses, the incoming one settles in from a soft focus
       const TR = 0.6;
       const out = (t0) => { const k = ease.inCubic(clamp((t - t0) / TR)); return { alpha: 1, scale: 1 + 0.12 * k, blur: 16 * k }; };
       const inn = (t0) => { const k = ease.outCubic(clamp((t - t0) / TR)); return { alpha: k, scale: 1.08 - 0.08 * k, blur: 14 * (1 - k) }; };
-      const scenes = [[scene1, 0, p0], [scene2, p0, a0], [scene3, a0, f0], [scene4, f0, 1e9]];
+      const scenes = [[scene1, 0, SC.intro[1]], [scene2, ...SC.pillars], [bridge, ...SC.bridge], [scene3, ...SC.reveal],
+        [scene01, ...SC.s01], [scene02, ...SC.s02], [scene03, ...SC.s03], [scene04, ...SC.s04], [scene05, ...SC.s05], [scene4, SC.mission[0], 1e9]];
       for (const [fn, s0, s1] of scenes) {
         if (t < s0 - 0.01 || t >= s1 + TR) continue;
         const o = t >= s1 ? out(s1) : s0 > 0 && t < s0 + TR ? inn(s0) : { alpha: 1, scale: 1, blur: 0 };
@@ -1135,7 +1320,8 @@
       }
       ctx.restore();
       bloom(ctx, 0.1);
-      captions(ctx, t);
+      // the Solix Academy logo stays docked top-left from the platform line through the mission
+      dockLogo(ctx, t);
       cornerLogo(ctx, t);
     },
   });

@@ -1,116 +1,152 @@
 [
  {
-  "id": "l01",
+  "id": "a01",
   "section": 1,
   "text": "The world is entering a new era.",
-  "dur": 1.905
+  "dur": 1.971
  },
  {
-  "id": "l02",
+  "id": "a02",
   "section": 1,
-  "text": "An era where every enterprise, every business function, and every employee, can be reimagined through Artificial Intelligence.",
-  "dur": 6.98
+  "text": "An era where every enterprise...",
+  "dur": 1.856
  },
  {
-  "id": "l03",
+  "id": "a03",
+  "section": 1,
+  "text": "Every business function...",
+  "dur": 1.372
+ },
+ {
+  "id": "a04",
+  "section": 1,
+  "text": "And every employee...",
+  "dur": 1.388
+ },
+ {
+  "id": "a05",
+  "section": 1,
+  "text": "Can be reimagined through the power of Artificial Intelligence.",
+  "dur": 3.63
+ },
+ {
+  "id": "a06",
   "section": 1,
   "text": "But how do organizations make this transformation a reality?",
-  "dur": 3.787
+  "dur": 3.937
  },
  {
-  "id": "l04",
+  "id": "a07",
   "section": 2,
   "text": "It starts with three essential pillars.",
-  "dur": 1.936
+  "dur": 2.042
  },
  {
-  "id": "l05",
+  "id": "a08",
   "section": 2,
-  "text": "First: AI-Ready Data. Because AI is only as powerful as the structured, governed information behind it.",
-  "dur": 6.074
+  "text": "That's where we can make a difference.",
+  "dur": 1.661
  },
  {
-  "id": "l06",
-  "section": 2,
-  "text": "Second: AI-Ready People. Equipping your workforce to lead AI transformation across the organization.",
-  "dur": 5.8
- },
- {
-  "id": "l07",
-  "section": 2,
-  "text": "And third: AI-Ready Governance. Building the trusted foundation needed to deliver secure, scalable business value.",
-  "dur": 6.423
- },
- {
-  "id": "l08",
+  "id": "a09",
   "section": 3,
   "text": "Introducing Solix Academy.",
-  "dur": 1.783
+  "dur": 1.808
  },
  {
-  "id": "l09",
+  "id": "a10",
   "section": 3,
-  "text": "A premier learning platform, designed to help enterprises embrace AI faster, and with confidence.",
-  "dur": 5.398
+  "text": "A premier learning platform designed to help aspiring individuals, professionals, teams, and enterprises embrace AI: faster, smarter, and with confidence.",
+  "dur": 9.668
  },
  {
-  "id": "l10",
+  "id": "a11",
   "section": 3,
-  "text": "Built by distinguished professors, leading AI practitioners, and industry experts,",
-  "dur": 4.379
+  "text": "At Solix Academy, we combine the learning from distinguished professors, leading AI practitioners, enterprise technology experts, and business innovators.",
+  "dur": 9.238
  },
  {
-  "id": "l11",
+  "id": "a12",
   "section": 3,
-  "text": "we deliver hands-on labs and real-world projects, from AI fundamentals to production-grade engineering,",
-  "dur": 5.663
+  "text": "Experience immersive learning through real-world use cases, hands-on labs, practical exercises, and enterprise-focused projects.",
+  "dur": 8.347
  },
  {
-  "id": "l12",
+  "id": "a13",
   "section": 3,
-  "text": "in flexible self-paced and instructor-led formats.",
-  "dur": 2.745
+  "text": "From absolute beginner to enterprise expert.",
+  "dur": 2.656
  },
  {
-  "id": "l13",
+  "id": "a14",
+  "section": 3,
+  "text": "Structured tracks take you from fundamentals to production-grade Enterprise AI.",
+  "dur": 5.083
+ },
+ {
+  "id": "a15",
+  "section": 3,
+  "text": "Every format: self-paced and instructor-led, with many free courses to start today.",
+  "dur": 5.085
+ },
+ {
+  "id": "a16",
   "section": 4,
-  "text": "Our mission is simple: to transform everyone into AI-Ready innovators.",
-  "dur": 4.007
+  "text": "Our mission is simple:",
+  "dur": 1.275
  },
  {
-  "id": "l14",
+  "id": "a17",
   "section": 4,
-  "text": "The future belongs to organizations that learn, adapt, and innovate faster than ever.",
-  "dur": 4.539
+  "text": "To transform everyone into AI-Ready innovators.",
+  "dur": 3.152
  },
  {
-  "id": "l15",
+  "id": "a18",
+  "section": 4,
+  "text": "To help teams discover new possibilities.",
+  "dur": 2.512
+ },
+ {
+  "id": "a19",
+  "section": 4,
+  "text": "To empower enterprises to unlock the full potential of AI.",
+  "dur": 4.069
+ },
+ {
+  "id": "a20",
+  "section": 4,
+  "text": "The future belongs to organizations that learn, adapt, and innovate faster than ever before.",
+  "dur": 5.514
+ },
+ {
+  "id": "a21",
   "section": 4,
   "text": "Welcome to Solix Academy.",
-  "dur": 1.781
+  "dur": 1.798
  },
  {
-  "id": "l16",
+  "id": "a22",
   "section": 4,
   "text": "Learn.",
   "dur": 0.675
  },
  {
-  "id": "l17",
+  "id": "a23",
   "section": 4,
   "text": "Innovate.",
   "dur": 0.799
  },
  {
-  "id": "l18",
+  "id": "a24",
   "section": 4,
   "text": "Transform.",
   "dur": 0.927
  },
  {
-  "id": "l19",
+  "id": "a25",
   "section": 4,
-  "text": "Your AI journey starts today.",
-  "dur": 1.745
+  "text": "Your AI journey starts here.",
+  "dur": 1.656
  }
 ]

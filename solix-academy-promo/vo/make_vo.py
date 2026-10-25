@@ -6,28 +6,34 @@ import numpy as np, soundfile as sf
 from kokoro_onnx import Kokoro
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-LINES = [  # (id, section, text, speed)
-    ("l01", 1, "The world is entering a new era.", 1.0),
-    ("l02", 1, "An era where every enterprise, every business function, and every employee, can be reimagined through Artificial Intelligence.", 1.06),
-    ("l03", 1, "But how do organizations make this transformation a reality?", 1.04),
-    ("l04", 2, "It starts with three essential pillars.", 1.05),
-    ("l05", 2, "First: AI-Ready Data. Because AI is only as powerful as the structured, governed information behind it.", 1.1),
-    ("l06", 2, "Second: AI-Ready People. Equipping your workforce to lead AI transformation across the organization.", 1.1),
-    ("l07", 2, "And third: AI-Ready Governance. Building the trusted foundation needed to deliver secure, scalable business value.", 1.1),
-    ("l08", 3, "Introducing Solix Academy.", 1.02),
-    ("l09", 3, "A premier learning platform, designed to help enterprises embrace AI faster, and with confidence.", 1.16),
-    ("l10", 3, "Built by distinguished professors, leading AI practitioners, and industry experts,", 1.16),
-    ("l11", 3, "we deliver hands-on labs and real-world projects, from AI fundamentals to production-grade engineering,", 1.18),
-    ("l12", 3, "in flexible self-paced and instructor-led formats.", 1.14),
-    ("l13", 4, "Our mission is simple: to transform everyone into AI-Ready innovators.", 1.08),
-    ("l14", 4, "The future belongs to organizations that learn, adapt, and innovate faster than ever.", 1.1),
-    ("l15", 4, "Welcome to Solix Academy.", 1.0),
-    ("l16", 4, "Learn.", 0.95),
-    ("l17", 4, "Innovate.", 0.95),
-    ("l18", 4, "Transform.", 0.92),
-    ("l19", 4, "Your AI journey starts today.", 1.0),
+LINES = [  # (id, section, text, speed); the three pillar lines are spoken by the HeyGen avatars (avatars/)
+    ("a01", 1, "The world is entering a new era.", 0.92),
+    ("a02", 1, "An era where every enterprise...", 0.95),
+    ("a03", 1, "Every business function...", 0.95),
+    ("a04", 1, "And every employee...", 0.95),
+    ("a05", 1, "Can be reimagined through the power of Artificial Intelligence.", 0.97),
+    ("a06", 1, "But how do organizations make this transformation a reality?", 0.97),
+    ("a07", 2, "It starts with three essential pillars.", 0.97),
+    ("a08", 2, "That's where we can make a difference.", 0.95),
+    ("a09", 3, "Introducing Solix Academy.", 0.98),
+    ("a10", 3, "A premier learning platform designed to help aspiring individuals, professionals, teams, and enterprises embrace AI: faster, smarter, and with confidence.", 1.02),
+    ("a11", 3, "At Solix Academy, we combine the learning from distinguished professors, leading AI practitioners, enterprise technology experts, and business innovators.", 1.02),
+    ("a12", 3, "Experience immersive learning through real-world use cases, hands-on labs, practical exercises, and enterprise-focused projects.", 1.0),
+    ("a13", 3, "From absolute beginner to enterprise expert.", 0.97),
+    ("a14", 3, "Structured tracks take you from fundamentals to production-grade Enterprise AI.", 1.0),
+    ("a15", 3, "Every format: self-paced and instructor-led, with many free courses to start today.", 1.0),
+    ("a16", 4, "Our mission is simple:", 0.95),
+    ("a17", 4, "To transform everyone into AI-Ready innovators.", 0.97),
+    ("a18", 4, "To help teams discover new possibilities.", 0.97),
+    ("a19", 4, "To empower enterprises to unlock the full potential of AI.", 0.97),
+    ("a20", 4, "The future belongs to organizations that learn, adapt, and innovate faster than ever before.", 1.0),
+    ("a21", 4, "Welcome to Solix Academy.", 0.95),
+    ("a22", 4, "Learn.", 0.95),
+    ("a23", 4, "Innovate.", 0.95),
+    ("a24", 4, "Transform.", 0.92),
+    ("a25", 4, "Your AI journey starts here.", 0.97),
 ]
-TEMPO = {"l02": 1.05, "l05": 1.06, "l06": 1.06, "l07": 1.06, "l09": 1.06, "l10": 1.06, "l11": 1.07, "l12": 1.05, "l13": 1.04, "l14": 1.05}
+TEMPO = {}
 CHAIN = ("highpass=f=80,equalizer=f=220:t=q:w=1.0:g=-2.0,equalizer=f=3200:t=q:w=1.2:g=2.0,"
          "equalizer=f=9500:t=h:w=1:g=1.5,deesser=i=0.35,"
          "acompressor=threshold=-21dB:ratio=2.4:attack=6:release=140:makeup=2.0,"

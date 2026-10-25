@@ -1,1 +1,4 @@
 out/
+media/av_*/
+media/rec/
+media/*.wav
