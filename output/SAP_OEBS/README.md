@@ -1,3 +1,6 @@
+# FINAL v12: `Solix_SAP_OEBS_FINAL_v12_*` (92.1 s)
+Left SOLIXEMPOWER logo and "2026" removed for the whole film; Solix logo at top right (hidden on the Solix CDP shot and from the end card, where the closing logo is the only one). Voice and music as v10.
+
 # FINAL v11: `Solix_SAP_OEBS_FINAL_v11_*` (92.1 s)
 Ending only: the call-to-action text is removed; the end card keeps just "solix.com". Everything else as v10 (voice and music unchanged; use the v10 WAV stems).
 
