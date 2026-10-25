@@ -541,7 +541,7 @@
     // --- opening heading: "Solix Academy presents / The world is entering a new era"
     const oA = win(t, 0.5, ev.title + 0.1, 1.2, 0.6);
     if (oA > 0) {
-      text(ctx, 'SOLIX ACADEMY PRESENTS', W / 2, H * 0.4 - 6, { size: 34, weight: 700, color: C.blueHi, align: 'center', alpha: oA, spacing: lerp(26, 10, ease.outCubic(fade(t, 0.5, 2.0))) });
+      text(ctx, 'SOLIX ACADEMY', W / 2, H * 0.4 - 6, { size: 34, weight: 700, color: C.blueHi, align: 'center', alpha: oA, spacing: lerp(26, 10, ease.outCubic(fade(t, 0.5, 2.0))) });
       ctx.save(); ctx.globalAlpha = oA; ctx.fillStyle = C.red; ctx.fillRect(W / 2 - 60, H * 0.4 + 14, 120, 4); ctx.restore();
       rich(ctx, [{ s: 'The World Is Entering ', c: '#ffffff', weight: 300, t: V.a01.t - 0.1 }, { s: 'a New Era', c: C.blueHi, glow: 18, t: wordT('a01', 'new') - 0.1 }], W / 2, H * 0.4 + 96, { size: 72, weight: 800, align: 'center', alpha: oA, t });
     }
@@ -624,6 +624,17 @@
     ctx.beginPath(); ctx.arc(bx, by, br, 0, TAU); ctx.fillStyle = a.color; ctx.fill(); ctx.strokeStyle = 'rgba(255,255,255,0.8)'; ctx.lineWidth = 2; ctx.stroke();
     ctx.restore();
     icon(ctx, a.icon, bx, by, br * 1.15, '#ffffff', pk, 2.5);
+    // the pillar's name above its frame; it lights up in the pillar's colour while that presenter speaks
+    const label = 'AI-Ready ' + a.name[0].toUpperCase() + a.name.slice(1);
+    const lsz = 26 + 8 * act, lw = measure(ctx, label, lsz, 800);
+    const ly = y - 26 - 8 * act;
+    if (act > 0.01) {
+      ctx.save(); ctx.globalAlpha = pk * act; ctx.shadowColor = rgba(a.hi, 0.7); ctx.shadowBlur = 24;
+      rrect(ctx, cx - lw / 2 - 22, ly - lsz * 0.95, lw + 44, lsz * 1.45, lsz * 0.72); ctx.fillStyle = a.color; ctx.fill();
+      ctx.restore();
+    }
+    const lit2 = Math.max(act, fade(t, ev.pillarsTag, 0.6) * 0.7);
+    text(ctx, label, cx, ly, { size: lsz, weight: 800, color: act > 0.5 ? '#ffffff' : (lit2 > 0.3 ? a.hi : '#9aa6cc'), align: 'center', alpha: pk * (0.75 + 0.25 * lit2) });
   }
 
   function scene2(ctx, t) {
