@@ -106,3 +106,15 @@
 - **Voice-over:** local neural TTS (Kokoro `am_michael`), one file per script line in `source/audio/vo_*.wav`.
   To use a different voice (for example Higgsfield "Fraser"), replace the `vo_*.wav` files and re-run `timeline.py` → `music.py` → `render.py video` → `mix.py` → mux. Scene timing follows the voice-over automatically.
 - **Music:** an original, procedurally generated 124 BPM electronic event track (`source/audio/music.wav`), so it is royalty-free. It ducks under the voice.
+
+---
+
+## EAI Booth Loop: white edition (silent, seamless)
+
+`output/EAI_Booth_Loop_White/Solix_EAI_Booth_Loop_White_1080p.mp4`: 1920×1080, 30 fps, 1:30, H.264, **no audio**. The last frame flows straight into the first, so it can play on repeat at the booth.
+
+- **Look:** a white background with a slowly drifting tech network (nodes and links in #0088cf and #ee2424, with data pulses moving along the links). Headlines are #30267b, the key phrase in each is #0088cf with a #ee2424 underline that sweeps in, and the kickers are #0088cf letter-spaced caps after a red dash.
+- **Flow (follows the storyboard):** Solix logo build → "Enterprise AI for real business impact." + product chips → Data Sense → Curation → Data Ask → XKG (PREVIEW) → AI Warehouse → Agentic (ANNOUNCED) → Open by design (5 cards) → clean network, which loops back to the start.
+- **Motion:** the logo icon spins and pops in and the wordmark wipes in, then the logo flies to the corner. Headline words rise from behind a mask, one after another, and body lines fade up. Product screens play in a floating browser card (with the solix.com URL) that slides in, pushes in slowly and floats gently. Between scenes there's an angled blue and red wipe with a light sweep. The bottom nav shows the active product, with a blue→red progress bar. The "Live demo at this stand" pill pulses.
+- The product screens are re-used from the v4 booth loop (cropped so the clideo watermark is gone).
+- The build is `source/build/booth_loop.py` (skia-python + ffmpeg): `python3 booth_loop.py <v4_loop.mp4> out.mp4 [--frames a:b]`.
