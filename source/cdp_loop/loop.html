@@ -214,8 +214,9 @@ function tabLevel(sc, i) { // 0 dim, 1 soft-lit (covered), 2 active
 function drawHeader(t) {
   const lg = IMG.logo, lh = 54, lw = lg.width * lh / lg.height;
   ctx.drawImage(lg, 80, 44, lw, lh);
-  ctx.fillStyle = C.faint; ctx.fillRect(80 + lw + 26, 50, 2, 42);
-  txt('Common Data Platform', 80 + lw + 52, 72, 30, C.navy, { w: 700 });
+  // title centred at the top: "Solix" in blue, the rest in navy
+  const t1 = 'Solix ', t2 = 'Common Data Platform', w1 = tw(t1, 34, 800), w2 = tw(t2, 34, 800), tx = W / 2 - (w1 + w2) / 2;
+  txt(t1, tx, 72, 34, C.blue, { w: 800 }); txt(t2, tx + w1, 72, 34, C.navy, { w: 800 });
   // right: live loop progress ring + label
   const p = t / LOOP;
   txt('EMPOWER 2026', 1840, 72, 18, C.mute, { w: 700, align: 'right', ls: 3 });
