@@ -119,7 +119,7 @@ scene(5.55, L[2] - .75, root => {
   const orow = el(`<div class="a center" style="top:478px;display:flex;justify-content:center;gap:14px">${outs.map(o => `<span class="chip" style="font-size:15px;color:#c9d0ff;background:rgba(30,28,80,.6)">${o}</span>`).join('')}</div>`);
   root.appendChild(orow); const ochips = $$('.chip', orow);
   const h1 = el(`<div class="a center disp" style="top:568px;font-size:62px;font-weight:700;line-height:1.14">AI is transforming<br>how enterprises run and grow.</div>`);
-  const h2 = el(`<div class="a center disp" style="top:568px;font-size:62px;font-weight:700;line-height:1.14">But your AI is only as ready<br>as <span style="color:#43b4ff">your enterprise data</span> is.</div>`);
+  const h2 = el(`<div class="a center disp" style="top:596px;font-size:68px;font-weight:700;line-height:1.14">But is <span style="color:#43b4ff">your data</span> AI-ready?</div>`);
   root.appendChild(h1); root.appendChild(h2);
   const w1 = splitWords(h1), w2 = splitWords(h2);
   const dlab = el(`<div class="a center lbl" style="top:800px;letter-spacing:.4em;color:#7f8ac4">Your enterprise data</div>`); root.appendChild(dlab);
@@ -152,8 +152,7 @@ scene(5.55, L[2] - .75, root => {
 // ============================================================ S2 THE PROBLEM
 scene(L[2] - .6, L[6] - .8, root => {
   const svg = svgLayer(root);
-  const ai = el(`<div class="a" style="left:${960 - 46}px;top:104px;width:92px;height:92px">${sparkle(92)}</div>`); root.appendChild(ai);
-  const ail = el(`<div class="a center lbl" style="top:206px">AI</div>`); root.appendChild(ail);
+  const ai = el(`<div class="a" style="left:${960 - 56}px;top:96px;width:112px;height:112px">${aiChip(112)}</div>`); root.appendChild(ai);
   const colX = [150, 720, 1290], heads = ['Cryptic tables', 'Disconnected systems', 'Unindexed documents'];
   const hd = heads.map((h, i) => { const e = el(`<div class="a" style="left:${colX[i]}px;top:292px;font-size:21px;font-weight:700;display:flex;align-items:center;gap:12px"><span style="width:22px;height:2px;background:#ee2424"></span>${h}</div>`); root.appendChild(e); return e; });
   const tables = [['GL_JE_LINES', ['SEG2_ATTR14', 'CCID_X07', 'PRD_FLG', 'AMT_ENT_DR']], ['MTL_ENTITIES', ['ORG_CLS_CD', 'UOM_X', 'ATTR_9', 'REV_FL']], ['PO_LINES_ALL', ['VNDR_SITE_ID', 'LN_TP_C', 'BLK_FLG_3', 'ITM_REV']]];
@@ -181,7 +180,6 @@ scene(L[2] - .6, L[6] - .8, root => {
     const a0 = L[2] - .45;
     fx(ai, t, { at: a0, dur: .8, ease: Ease.outBack, from: { o: 0, s: .4 } });
     ai.style.filter = `grayscale(${prog(t, L[5], .6)}) brightness(${1 - .4 * prog(t, L[5], .6)})`;
-    fx(ail, t, { at: a0 + .2, dur: .6 });
     const dim = 1 - .45 * prog(t, L[5] + .2, .7);
     // tables
     fx(hd[0], t, { at: L[2] - .2, dur: .6, from: { o: 0, x: -20 }, max: dim });
@@ -409,7 +407,7 @@ scene(L[14] - .6, L[19] - .8, root => {
   const svgB = svgLayer(B);
   const st1 = el(`<div class="a center disp" style="top:290px;font-size:72px;font-weight:800">One shared <span style="color:#43b4ff">meaning</span>, everywhere.</div>`); B.appendChild(st1);
   const s1w = splitWords(st1);
-  const nm = el(`<div class="a center" style="top:262px"><div class="mono" style="font-size:18px;letter-spacing:.2em;color:#ff6b6b;position:relative;display:inline-block">DATA MIGRATION<span class="strike" style="position:absolute;left:-6px;right:-6px;top:50%;height:2px;background:#ff6b6b;transform-origin:0 50%"></span></div><div class="disp" style="font-size:80px;font-weight:800;color:#2fd18a;display:flex;align-items:center;justify-content:center;gap:20px;margin-top:8px"><span class="nck">${check(64)}</span>No migration</div><div class="nsub" style="font-size:28px;color:#d3d9ff;margin-top:6px">Your records stay where they are.</div></div>`); B.appendChild(nm);
+  const nm = el(`<div class="a center" style="top:262px"><div class="mono" style="font-size:18px;letter-spacing:.2em;color:#ff6b6b;position:relative;display:inline-block">DATA MIGRATION<span class="strike" style="position:absolute;left:-6px;right:-6px;top:50%;height:2px;background:#ff6b6b;transform-origin:0 50%"></span></div><div class="disp" style="font-size:80px;font-weight:800;color:#2fd18a;display:flex;align-items:center;justify-content:center;gap:20px;margin-top:8px"><span class="nck">${check(64)}</span>No migration required.</div><div class="nsub" style="font-size:28px;color:#d3d9ff;margin-top:6px">Your records stay where they are.</div></div>`); B.appendChild(nm);
   const bar = el(`<div class="a" style="left:560px;top:480px;width:800px;height:62px;border-radius:14px;border:1.5px solid rgba(51,169,255,.7);background:rgba(0,136,207,.12);box-shadow:0 0 40px rgba(0,136,207,.3);display:flex;align-items:center;justify-content:center;gap:12px;font-size:19px;font-weight:600">${ico('link', 30, '#43b4ff', 'transparent')}Each application answers in its own schema · no joins, no copies</div>`); B.appendChild(bar);
   const ax = [610, 960, 1310];
   const an = [['Finance application', 'coin'], ['Manufacturing application', 'factory'], ['Supply chain application', 'truck']].map(([n, i], k) => card(B, ax[k] - 160, 630, 320, 96, `<div style="display:flex;align-items:center;gap:14px;padding:14px 18px">${ico(i, 44)}<div><div style="font-weight:700;font-size:17px">${n}</div><div class="stay" style="font-size:14px;color:#5fe3a6;display:flex;align-items:center;gap:6px;margin-top:4px">${check(14)} Records stay in place</div></div></div>`));
@@ -445,7 +443,7 @@ scene(L[14] - .6, L[19] - .8, root => {
 
 // ============================================================ S6 DATA ASK
 scene(L[19] - .65, L[23] - .8, root => {
-  const head = headline(root, 'Data Ask', 'Plain-language answers', 'across all your data.');
+  const head = headline(root, 'Data Ask', 'Ask questions.', 'Get answers.');
   const Q = 'What did we spend with Zentra Components last quarter?';
   const win = el(`<div class="win"><div class="tb"><span class="dots"><i></i><i></i><i></i></span>${ico('chat', 22, '#43b4ff', 'transparent')}Solix Data Ask</div>
     <div class="side"><div class="lbl" style="padding:6px 12px 12px">Recent questions</div>${['Top suppliers by spend', 'Late orders this week', 'Contracts expiring in Q4', 'Revenue by region', 'Open invoices over 90 days', 'Plant downtime last month'].map(s => `<div class="it" style="font-size:14px">${s}</div>`).join('')}</div>
@@ -484,7 +482,7 @@ scene(L[19] - .65, L[23] - .8, root => {
 
 // ============================================================ S7 AI WAREHOUSE
 scene(L[23] - .65, L[27] - .8, root => {
-  const head = headline(root, 'AI Warehouse', 'Your people build', 'their own AI applications.');
+  const head = headline(root, 'AI Warehouse', 'Build your own', 'AI applications.');
   const svg = svgLayer(root);
   const ex = card(root, 150, 300, 470, 92, `<div style="display:flex;align-items:center;gap:16px;padding:16px 20px">${ico('user', 54, '#fff', 'linear-gradient(135deg,#0088cf,#30267b)', 'border-radius:50%')}<div><div style="font-weight:700;font-size:20px">Domain expert</div><div style="font-size:15px;color:#8f99cc">Describes it, in plain language</div></div></div>`);
   const roles = el(`<div class="a" style="left:150px;top:404px;display:flex;gap:10px">${['Finance', 'Supply chain', 'Operations', 'Compliance'].map(r => `<span class="chip" style="font-size:14px">${r}</span>`).join('')}</div>`); root.appendChild(roles);
@@ -526,7 +524,7 @@ scene(L[23] - .65, L[27] - .8, root => {
 
 // ============================================================ S8 AGENTIC
 scene(L[27] - .65, L[30] - .8, root => {
-  const head = headline(root, 'Agentic', 'Describe it. Build it.', 'Run it.');
+  const head = headline(root, 'Agentic', 'Describe. Build. Run.', '', { wordAt: [L[27] + 1.2, L[28] + .05, L[28] + 1.95] });
   const svg = svgLayer(root);
   const ex = card(root, 130, 300, 470, 92, `<div style="display:flex;align-items:center;gap:16px;padding:16px 20px">${ico('user', 54, '#fff', 'linear-gradient(135deg,#0088cf,#30267b)', 'border-radius:50%')}<div><div style="font-weight:700;font-size:20px">Domain expert</div><div style="font-size:15px;color:#8f99cc">Describes the work, in plain language</div></div></div>`);
   const PR = 'Follow up on late supplier orders and draft replies.';

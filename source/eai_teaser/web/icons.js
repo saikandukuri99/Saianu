@@ -48,3 +48,19 @@ function sparkle(size = 120, glow = true) {
   <path d="M30-38C31.5-31 33-29.5 40-28 33-26.5 31.5-25 30-18 28.5-25 27-26.5 20-28 27-29.5 28.5-31 30-38z" fill="#c9f2ff"/>
   </svg>`;
 }
+
+// AI processor chip: glowing rounded die with pins and an "AI" label
+let _chip = 0;
+function aiChip(size = 112) {
+  const id = 'chip' + (_chip++);
+  const pins = [-24, -8, 8, 24].map(p => `<rect x="${p - 3}" y="-50" width="6" height="12" rx="2"/><rect x="${p - 3}" y="38" width="6" height="12" rx="2"/><rect x="-50" y="${p - 3}" width="12" height="6" rx="2"/><rect x="38" y="${p - 3}" width="12" height="6" rx="2"/>`).join('');
+  return `<svg width="${size}" height="${size}" viewBox="-60 -60 120 120" style="overflow:visible">
+  <defs><linearGradient id="${id}" x1="0" y1="-1" x2="0" y2="1"><stop offset="0" stop-color="#33a9ff"/><stop offset="1" stop-color="#0060b0"/></linearGradient>
+  <radialGradient id="${id}g"><stop offset="0" stop-color="#33a9ff" stop-opacity=".5"/><stop offset="1" stop-color="#33a9ff" stop-opacity="0"/></radialGradient></defs>
+  <circle r="60" fill="url(#${id}g)"/>
+  <g fill="#7fd0ff">${pins}</g>
+  <rect x="-38" y="-38" width="76" height="76" rx="14" fill="url(#${id})" stroke="#9fe8ff" stroke-width="2"/>
+  <rect x="-28" y="-28" width="56" height="56" rx="9" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1.5"/>
+  <text x="0" y="11" text-anchor="middle" font-family="Inter Display,Inter" font-weight="800" font-size="30" fill="#fff">AI</text>
+  </svg>`;
+}
