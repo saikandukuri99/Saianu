@@ -1,15 +1,15 @@
-SOLIX EMPOWER 2026 - SAP + ORACLE APPLICATIONS - NARRATION FOR A HUMAN VOICE RECORDING
+SOLIX EMPOWER 2026 - ENTERPRISE APPLICATION ARCHIVING - NARRATION FOR A HUMAN VOICE RECORDING
 (final narration, same wording as the video; record one line per file, 48 kHz WAV, quiet room, steady distance from the mic)
 
-TITLE (spoken over the opening title card)
- T. "SAP and Oracle Applications. PeopleSoft, JD Edwards, Siebel and OEBS."
+TITLE CARD
+ Music only (no voice-over).
 
 NARRATION
- 01. SAP and Oracle Applications run the business.
+ 01. Enterprise applications run the business: Oracle applications, SAP and mainframes.
  02. But years of inactive data keep bloating databases, slowing performance and driving up costs, right when you're planning a move to the cloud.
- 03. Solix Common Data Platform brings more than twenty years of ERP archiving expertise to both.
+ 03. Solix CDP brings more than twenty years of ERP archiving expertise to all of them.
  04. For Oracle E-Business Suite, Solix is validated by Oracle and covers both archiving and full application retirement.
- 05. For SAP, Solix works natively through SAP's Archiving Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales and more.
+ 05. For SAP, Solix CDP works natively through SAP's Archive Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales and more.
  06. Inactive data moves out on policy, and stays searchable, accessible and reportable for as long as you need it.
  07. Solix includes pre-built Application Knowledge Graphs, or AKGs, for these applications.
  08. Ask your archive in plain language with Data Ask.
@@ -17,13 +17,13 @@ NARRATION
  10. The result?
  11. Leaner production systems, cleaner migrations, and legacy databases up to thirty to sixty percent smaller.
  12. Your ERP history becomes AI-activated data, not dead weight.
- 13. Solix. Built for SAP. Built for Oracle.
+ 13. Solix CDP. Built for enterprise applications.
 
 PRONUNCIATION
- SAP = "S-A-P" (letters)   ERP = "E-R-P"   AI = "A-I"   AKG / AKGs = "A-K-G(s)"   OEBS = "O-E-B-S"   JD Edwards = "J-D Edwards"
+ SAP = "S-A-P" (letters)   CDP = "C-D-P"   ERP = "E-R-P"   AI = "A-I"   AKG / AKGs = "A-K-G(s)"   OEBS = "O-E-B-S"   JD Edwards = "J-D Edwards"
  Solix = "SOL-icks"   Data Ask = two words   "audit logged" = two words
 
 TONE / PACING
- Warm, confident, conversational corporate tone (female voice, medium pitch, about 150 words per minute).
+ Warm, confident, conversational corporate tone (this version uses a male voice, medium-low pitch, about 150 words per minute, so it sounds different from the other films in the series).
  Leave about 0.4 s of silence between sentences. After line 10 ("The result?") leave 2 seconds of silence before line 11.
  If you record this, send the files (or one file with clear pauses) and the video will be rebuilt around the recording so every on-screen highlight stays on the spoken word.
