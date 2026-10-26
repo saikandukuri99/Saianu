@@ -1,6 +1,6 @@
 window.TIMELINE = {
  "intro": 6.0,
- "total": 125.51,
+ "total": 125.53,
  "lines": [
   {
    "i": 0,
@@ -167,61 +167,61 @@ window.TIMELINE = {
   {
    "i": 27,
    "start": 95.634,
-   "end": 99.191,
+   "end": 99.234,
    "cap": "Agentic goes further. Just describe the work you need done."
   },
   {
    "i": 28,
-   "start": 99.691,
-   "end": 102.629,
+   "start": 99.734,
+   "end": 102.651,
    "cap": "Agentic AI builds it, tests it, and runs it."
   },
   {
    "i": 29,
-   "start": 103.129,
-   "end": 105.555,
+   "start": 103.151,
+   "end": 105.577,
    "cap": "Less manual work, more done every day."
   },
   {
    "i": 30,
-   "start": 106.555,
-   "end": 108.405,
+   "start": 106.577,
+   "end": 108.427,
    "cap": "And it works with what you already have."
   },
   {
    "i": 31,
-   "start": 108.905,
-   "end": 109.945,
+   "start": 108.927,
+   "end": 109.967,
    "cap": "Any LLM."
   },
   {
    "i": 32,
-   "start": 110.445,
-   "end": 111.506,
+   "start": 110.467,
+   "end": 111.528,
    "cap": "Any application."
   },
   {
    "i": 33,
-   "start": 112.006,
-   "end": 113.216,
+   "start": 112.028,
+   "end": 113.238,
    "cap": "Any data platform."
   },
   {
    "i": 34,
-   "start": 113.716,
-   "end": 115.849,
+   "start": 113.738,
+   "end": 115.871,
    "cap": "It fits right into your existing stack."
   },
   {
    "i": 35,
-   "start": 116.849,
-   "end": 118.443,
+   "start": 116.871,
+   "end": 118.465,
    "cap": "Solix Enterprise AI."
   },
   {
    "i": 36,
-   "start": 118.943,
-   "end": 121.007,
+   "start": 118.965,
+   "end": 121.029,
    "cap": "Put AI in the hands of your business."
   }
  ]

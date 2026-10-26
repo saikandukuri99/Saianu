@@ -150,7 +150,7 @@ scene(5.55, L[2] - .75, root => {
 // ============================================================ S2 THE PROBLEM
 scene(L[2] - .6, L[6] - .8, root => {
   const svg = svgLayer(root);
-  const ai = el(`<div class="a" style="left:${960 - 56}px;top:96px;width:112px;height:112px">${aiChip(112)}</div>`); root.appendChild(ai);
+  const ai = el(`<img class="a" src="assets/${LIGHT ? 'ai_chip2_disc' : 'ai_chip2'}.png" style="left:${960 - 60}px;top:92px;width:120px;height:123px">`); root.appendChild(ai);
   const colX = [150, 720, 1290], heads = ['Cryptic tables', 'Disconnected systems', 'Unindexed documents'];
   const hd = heads.map((h, i) => { const e = el(`<div class="a" style="left:${colX[i]}px;top:292px;font-size:21px;font-weight:700;display:flex;align-items:center;gap:12px"><span style="width:22px;height:2px;background:#ee2424"></span>${h}</div>`); root.appendChild(e); return e; });
   const tables = [['GL_JE_LINES', ['SEG2_ATTR14', 'CCID_X07', 'PRD_FLG', 'AMT_ENT_DR']], ['MTL_ENTITIES', ['ORG_CLS_CD', 'UOM_X', 'ATTR_9', 'REV_FL']], ['PO_LINES_ALL', ['VNDR_SITE_ID', 'LN_TP_C', 'BLK_FLG_3', 'ITM_REV']]];
@@ -528,7 +528,8 @@ scene(L[27] - .65, L[30] - .8, root => {
   const pchip = el(`<div class="a chip" style="left:130px;top:556px;font-size:14px;color:#c9c0ff;border-color:rgba(169,155,255,.5)">Describe it in plain language</div>`); root.appendChild(pchip);
   const C = [930, 560], R = 160;
   const orb = el(`<div class="a" style="left:${C[0] - 220}px;top:${C[1] - 220}px;width:440px;height:440px"><svg width="440" height="440" viewBox="-220 -220 440 440"><circle r="${R}" fill="rgba(20,18,60,.35)" stroke="rgba(169,155,255,.35)" stroke-width="1.5" stroke-dasharray="4 8"/><g class="cm"><path d="M${R} 0 A ${R} ${R} 0 0 0 ${R * Math.cos(-.9)} ${R * Math.sin(-.9)}" stroke="url(#cmg)" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="${R}" cy="0" r="6" fill="#d9f4ff" style="filter:drop-shadow(0 0 8px #43b4ff)"/></g><defs><linearGradient id="cmg" x1="0" y1="0" x2="0" y2="-1"><stop offset="0" stop-color="#43b4ff"/><stop offset="1" stop-color="#43b4ff" stop-opacity="0"/></linearGradient></defs></svg></div>`); root.appendChild(orb);
-  const spk = el(`<div class="a" style="left:${C[0] - 75}px;top:${C[1] - 75}px;width:150px;height:150px">${sparkle(150)}</div>`); root.appendChild(spk);
+  // client AI artwork in the centre of the agentic loop
+  const spk = el(`<img class="a" src="assets/${LIGHT ? 'ai_hub2_disc' : 'ai_hub2'}.png" style="left:${C[0] - 112}px;top:${C[1] - 96}px;width:224px;height:192px">`); root.appendChild(spk);
   const NN = [['Build', 'gear', -90], ['Test', 'flask', 30], ['Run', 'play', 150]].map(([n, i, a]) => {
     const x = C[0] + R * Math.cos(a * Math.PI / 180), y = C[1] + R * Math.sin(a * Math.PI / 180);
     const e = el(`<div class="a" style="left:${x - 34}px;top:${y - 34}px;width:68px;text-align:center"><div class="nb" style="width:68px;height:68px;border-radius:50%;background:#15134a;border:1.5px solid rgba(169,155,255,.55);display:flex;align-items:center;justify-content:center;color:#c9c0ff"><svg viewBox="0 0 24 24" width="30" height="30" style="fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round">${IC[i]}</svg></div><div style="font-weight:700;font-size:16px;margin-top:8px">${n}</div></div>`);
@@ -552,8 +553,8 @@ scene(L[27] - .65, L[30] - .8, root => {
     fx(orb, t, { at: L[28] - .5, dur: .8, ease: Ease.out4, from: { o: 0, s: .7, blur: 10 } });
     $('.cm', orb).setAttribute('transform', `rotate(${(t - L[28]) * 150 - 90})`);
     $('.cm', orb).style.opacity = prog(t, L[28], .4);
-    fx(spk, t, { at: L[28] - .3, dur: .9, ease: Ease.outBack, from: { o: 0, s: 0, r: -120 } });
-    spk.style.transform += ` rotate(${Math.sin(t) * 5}deg) scale(${1 + Math.sin(t * 2.4) * .04})`;
+    fx(spk, t, { at: L[28] - .3, dur: .9, ease: Ease.outBack, from: { o: 0, s: .4, blur: 10 } });
+    spk.style.transform += ` scale(${(1 + Math.sin(t * 2.4) * .015).toFixed(4)})`;
     const on = [L[28] + .05, L[28] + 1.0, L[28] + 1.95];
     NN.forEach((n, i) => {
       pop(n, t, L[28] - .2 + i * .12);

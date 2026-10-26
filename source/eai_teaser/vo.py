@@ -52,7 +52,9 @@ if __name__ == "__main__":
     for i, (cue, t, cap) in enumerate(LINES):
         if only is not None and i not in only:
             continue
-        a, sr = k.create(t, voice=voice, speed=speed, lang="en-us")
+        # "Agentic" = ay-JEN-tik: force a clear first syllable with explicit phonemes
+        ph = k.tokenizer.phonemize(t, "en-us").replace("eɪdʒˈɛntɪk", "ˌeɪ dʒˈɛntɪk")
+        a, sr = k.create(ph, voice=voice, speed=speed, lang="en-us", is_phonemes=True)
         sf.write(f"{out}/{i:02d}.wav", a, sr)
         print(i, round(len(a) / sr, 2), flush=True)
     json.dump([dict(cue=c, tts=t, cap=p) for c, t, p in LINES], open(f"{B}/lines.json", "w"), indent=1)
