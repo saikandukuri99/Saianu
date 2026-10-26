@@ -10,7 +10,7 @@ Original heading style, top-left (x 92, y 96 on 1920×1080):
 | Clip | Time | Narration (VO) | Heading to add |
 |---|---|---|---|
 | 01 Scene 1 (yours) | 0:00 | For more than two decades, Solix Technologies has helped enterprises transform their data into a strategic advantage. | Your own intro |
-| 02_Foundation | 0:00.50 | It starts with AI-ready data. | Label: **SOLIX ENTERPRISE FOUNDATION** · Title: **Step One: AI-Ready** |
+| 02_Foundation | 0:00.00 | It starts with Solix Enterprise AI Fabric. | Your heading: **SOLIX ENTERPRISE AI FABRIC - AI-Ready** |
 | | 0:02.49 | The Solix Common Data Platform unifies structured and unstructured data. Solix Enterprise Content Services governs documents and email. | (already on screen: Solix Common Data Platform / Solix Enterprise Content Services) |
 | | 0:11.28 | And Solix Enterprise Data Governance enforces policy everywhere, including AI. | (already on screen: Solix Enterprise Data Governance + NEW AT EMPOWER) |
 | 03_Enterprise_AI | 0:00.60 | Then, Solix Enterprise AI activates it. | Label: **STEP TWO: AI-ACTIVATED** · Title: **Solix Enterprise AI** |

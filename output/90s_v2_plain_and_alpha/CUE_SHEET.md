@@ -8,7 +8,7 @@ EAI Healthcare (05b, 05c, 05c2) uses the full original voice-over and visuals. A
 
 | Clip time | Narration | On screen |
 |---|---|---|
-| 00:00.50 | It starts with AI-ready data. | CDP screen recording starts scrolling (top→bottom); left list: Common Data Platform / Content Services / Data Governance |
+| 00:00.50 | It starts with Solix Enterprise AI Fabric. | CDP screen recording starts scrolling (top→bottom); left list: Common Data Platform / Content Services / Data Governance |
 | 00:02.49 | The Solix Common Data Platform unifies structured and unstructured data. Solix Enterprise Content Services governs documents and email. | CDP page → Enterprise Content Services page (solix.com/products/enterprise-content-services/); chips STRUCTURED + UNSTRUCTURED, DOCUMENTS + EMAIL |
 | 00:11.28 | And Solix Enterprise Data Governance enforces policy everywhere, including AI. | EDG screen recording scrolls down + NEW AT EMPOWER tag; chip POLICY EVERYWHERE, INCLUDING AI |
 
