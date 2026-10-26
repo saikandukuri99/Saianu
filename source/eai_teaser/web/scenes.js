@@ -71,14 +71,12 @@ scene(0, 5.15, root => {
   const letters = $$('.w', title), sw = splitWords(sub);
   return t => {
     BG.state.black = 1 - prog(t, 0, 1.2, Ease.out2);
-    // icon pops, then logo slides open to reveal the wordmark
-    const slide = prog(t, 1.05, 1.0, Ease.inOut5);
-    const iconFrac = 376 / 1797;
-    logo.style.clipPath = `inset(0 ${((1 - iconFrac) * (1 - slide) * 100).toFixed(2)}% 0 0)`;
-    const sIn = prog(t, .3, .7, Ease.outBack);
-    logo.style.opacity = prog(t, .3, .25);
-    const dx = (260 - 56) * (1 - slide);
-    logo.style.transform = `translateX(${dx}px) scale(${.2 + .8 * sIn})`;
+    // full logo (bolt + SOLIX wordmark) appears together; the bolt is never shown alone
+    const sIn = prog(t, .3, 1.0, Ease.outBack), dx = 0;
+    logo.style.transformOrigin = '50% 50%';
+    logo.style.opacity = prog(t, .3, .45);
+    logo.style.transform = `scale(${.7 + .3 * sIn})`;
+    logo.style.filter = `blur(${(8 * (1 - prog(t, .3, .6))).toFixed(2)}px)`;
     rings.forEach((c, i) => {
       const p = prog(t, .42 + i * .14, 1.6, Ease.out3);
       c.setAttribute('cx', 960 - 0 * dx); c.setAttribute('r', 50 + p * (380 + i * 90));
@@ -584,7 +582,7 @@ scene(L[27] - .65, L[30] - .8, root => {
 scene(L[30] - .65, L[35] - .8, root => {
   const head = headline(root, 'Open by design', 'Any LLM. Any application.', 'Any data platform.', { wordAt: [L[31] - .1, L[31] + .05, L[32] - .1, L[32] + .05] });
   const svg = svgLayer(root);
-  const core = card(root, 750, 470, 420, 176, `<div style="padding:20px 22px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><img src="assets/icon.png" style="width:40px;height:40px"><div><div class="disp" style="font-weight:800;font-size:22px">Solix Enterprise AI</div><div class="lbl" style="font-size:11px;margin-top:4px">EAI platform</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${['Data Sense', 'Data Ask', 'AI Warehouse', 'Agentic'].map(s => `<span class="chip" style="justify-content:center;font-size:14px;padding:7px">${s}</span>`).join('')}</div></div>`);
+  const core = card(root, 750, 470, 420, 176, `<div style="padding:20px 22px"><div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><div style="display:flex;flex-direction:column;align-items:center;gap:3px"><img src="assets/icon.png" style="width:38px;height:38px"><span class="disp" style="font-size:10px;font-weight:700;letter-spacing:.18em;padding-left:.18em">SOLIX</span></div><div><div class="disp" style="font-weight:800;font-size:22px">Solix Enterprise AI</div><div class="lbl" style="font-size:11px;margin-top:4px">EAI platform</div></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${['Data Sense', 'Data Ask', 'AI Warehouse', 'Agentic'].map(s => `<span class="chip" style="justify-content:center;font-size:14px;padding:7px">${s}</span>`).join('')}</div></div>`);
   const tl = el(`<div class="a center lbl" style="top:318px">Any LLM</div>`); root.appendChild(tl);
   const llm = [['cloud', 'Hosted LLM', 700], ['cpu', 'Open-source LLM', 960], ['shield', 'Your own model', 1220]].map(([i, n, x]) => { const e = el(`<div class="a chip" style="left:${x - 110}px;width:220px;top:350px;height:50px;justify-content:center">${ico(i, 26, '#43b4ff', 'transparent')}${n}</div>`); root.appendChild(e); return e; });
   const lp = [700, 960, 1220].map((x, i) => path(svg, `M${x} 400 C ${x} 440, ${860 + i * 100} 430, ${860 + i * 100} 470`, 'rgba(51,169,255,.6)', 2));
@@ -628,11 +626,11 @@ scene(L[35] - .65, TOTAL + 1, root => {
   return t => {
     BG.state.net = lerp(.85, 1.2, prog(t, L[35] - .5, 2));
     const a0 = L[35] - .45;
-    const iconFrac = 376 / 1797, slide = prog(t, a0 + .55, 1.0, Ease.inOut5);
-    logo.style.clipPath = `inset(0 ${((1 - iconFrac) * (1 - slide) * 100).toFixed(2)}% 0 0)`;
-    const sIn = prog(t, a0, .7, Ease.outBack); logo.style.opacity = prog(t, a0, .25);
-    const dx = (300 - 65) * (1 - slide);
-    logo.style.transform = `translateX(${dx}px) scale(${.2 + .8 * sIn})`;
+    // full logo appears together; the bolt is never shown without the SOLIX wordmark
+    const sIn = prog(t, a0, 1.0, Ease.outBack);
+    logo.style.transformOrigin = '50% 50%'; logo.style.opacity = prog(t, a0, .45);
+    logo.style.transform = `scale(${.7 + .3 * sIn})`;
+    logo.style.filter = `blur(${(8 * (1 - prog(t, a0, .6))).toFixed(2)}px)`;
     rings.forEach((c, i) => { const p = prog(t, a0 + .1 + i * .15, 1.6); c.setAttribute('cx', 960); c.setAttribute('r', 60 + p * 460); c.setAttribute('stroke-width', 2.5 * (1 - p) + .3); c.style.opacity = (p > 0 ? 1 - p : 0) * .7; });
     fx(eai, t, { at: L[35] + .1, dur: 1, from: { o: 0, y: 14, blur: 10 } });
     eai.style.letterSpacing = (1.1 - .5 * prog(t, L[35] + .1, 1.6, Ease.out3)) + 'em';
