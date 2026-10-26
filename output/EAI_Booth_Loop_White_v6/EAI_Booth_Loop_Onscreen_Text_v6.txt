@@ -1,0 +1,61 @@
+Solix Enterprise AI · Booth Loop v6 · Corrected on-screen text
+Silent booth loop · 1:29.0 · 1920 × 1080 · 30 fps
+Based on: EAI_Booth_Loop_v6_XKG_Corrected.mp4 and its corrected 4-page storyboard
+
+READING KEY
+- "Headline" is large on-screen section text.
+- "Line" is supporting text within the scene (not spoken narration).
+- "Label" identifies the service or subsection.
+- Times identify storyboard beats / approximate text entrances; animations may complete a little later.
+- The XKG line below reflects the APPROVED corrected export, not the older source storyboard.
+
+1. OPENING / SOLIX ENTERPRISE AI  (0:00.0–0:06.4)
+   0:01.7  Tagline: Enterprise AI for real business impact.
+   0:02.2  Products: Data Sense · Data Ask · AI Warehouse · Agentic
+
+2. DATA SENSE — AI READINESS  (0:06.4–0:19.9)
+   0:06.4  Label: DATA SENSE
+   0:06.6  Headline: Make your data ready for AI.
+   0:07.2  Line: AKGs for your applications. AI drafts the meaning; your experts certify it.
+
+3. DATA SENSE — CURATION  (0:19.9–0:31.4)
+   0:19.9  Label: DATA SENSE · CURATION
+   0:20.1  Headline: Experts stay in the loop.
+   0:20.7  Line: AI proposes the meaning. Your experts decide, in the order that matters.
+
+4. DATA ASK  (0:31.4–0:45.4)
+   0:31.4  Label: DATA ASK
+   0:31.6  Headline: Ask in plain words. Get cited answers.
+   0:32.2  Line: Every answer carries the certified definition, the tables it used and the SQL it ran.
+
+5. XKG — CROSS-APPLICATION MEANING  (0:45.4–0:57.9)
+   0:45.4  Label: XKG [PREVIEW]
+   0:45.6  Headline: One meaning across every application.
+   ~0:45.7  Line [CORRECTED]: Each application answers through its own AKG. XKG combines results using certified business meaning.
+   Editing note: This replaces the previous "Each application answers in its own schema. No joins, no copies, no migration." The approved corrected MP4 preserves the original entrance and exit timing.
+
+6. AI WAREHOUSE  (0:57.9–1:09.4)
+   0:57.9  Label: AI WAREHOUSE
+   0:58.1  Headline: Build AI apps on governed data.
+   0:58.7  Line: Notebooks start from data products that already carry their meaning and rules.
+
+7. AGENTIC  (1:09.4–1:21.4)
+   1:09.4  Label: AGENTIC [ANNOUNCED]
+   1:09.6  Headline: Agents that build, test and run.
+   1:10.2  Line: Every step is logged. A person approves each gate.
+
+8. OPEN BY DESIGN  (1:21.4–1:29.0)
+   1:21.4  Label: OPEN BY DESIGN
+   1:21.6  Headline: Fits the stack you already run.
+   1:22.2  Line: Any LLM. Any application. Any data platform.
+
+PERSISTENT VISUAL ELEMENTS (as shown in the loop)
+   Solix branding / logo
+   Section navigation: Data Sense · Data Ask · XKG · AI Warehouse · Agentic
+   Booth call to action: Live demo at this stand
+
+PRODUCTION / CAPTION NOTES
+   Format: silent video — no voice-over, spoken captions, or audio-transcript changes.
+   The only migration-claim correction in the approved v6 export is the XKG supporting line in section 5.
+   Keep all other wording, scenes, product UI and timings unchanged.
+   The original storyboard is an earlier snapshot; the corrected PDF storyboard and the corrected MP4 are the references for the final XKG line.

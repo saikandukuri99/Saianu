@@ -118,3 +118,8 @@
 - **Motion:** the logo icon spins and pops in and the wordmark wipes in, then the logo flies to the corner. Headline words rise from behind a mask, one after another, and body lines fade up. Product screens play in a floating browser card (with the solix.com URL) that slides in, pushes in slowly and floats gently. Between scenes there's an angled blue and red wipe with a light sweep. The bottom nav shows the active product, with a blue→red progress bar. The "Live demo at this stand" pill pulses.
 - The product screens are re-used from the v4 booth loop (cropped so the clideo watermark is gone).
 - The build is `source/build/booth_loop.py` (skia-python + ffmpeg): `python3 booth_loop.py <v4_loop.mp4> out.mp4 [--frames a:b]`.
+
+### v6 (corrected on-screen text)
+`output/EAI_Booth_Loop_White_v6/Solix_EAI_Booth_Loop_White_v6_1080p.mp4` uses the same format as above, updated to `EAI_Booth_Loop_Onscreen_Text_v6.txt` (copied into the same folder):
+- XKG headline: "One meaning across every application." The XKG line is unchanged: "Each application answers through its own AKG. XKG combines results using certified business meaning."
+- Opening products: Data Sense · Data Ask · AI Warehouse · Agentic. The bottom navigation still lists all five sections.

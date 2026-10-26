@@ -84,7 +84,7 @@ SCENES = [
          kick="DATA ASK", head="Ask in plain words. Get |cited answers.|",
          body="Every answer carries the certified definition, the tables it used and the SQL it ran."),
     dict(key="xkg", t0=45.5, t1=58.0, src=(45.50, 57.00), nav=2, url="solix.com/xkg", tag="PREVIEW",
-         kick="XKG", head="|One shared meaning| across every application.",
+         kick="XKG", head="|One meaning| across every application.",
          body="Each application answers through its own AKG. XKG combines results using certified business meaning."),
     dict(key="aiw", t0=58.0, t1=69.5, src=(58.00, 68.55), nav=3, url="solix.com/ai-warehouse",
          kick="AI WAREHOUSE", head="Build AI apps on |governed data.|",
@@ -668,7 +668,7 @@ def draw_intro(c, t):
                     skia.Paint(AntiAlias=True, Color=col(RED, oa)))
     # product chips pop in
     fc = font("semi", 22)
-    chips = NAV
+    chips = ["Data Sense", "Data Ask", "AI Warehouse", "Agentic"]   # opening products per storyboard
     cw = [fc.measureText(s) + 64 for s in chips]
     tot = sum(cw) + 18 * (len(chips) - 1)
     cx = W / 2 - tot / 2
