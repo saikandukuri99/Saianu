@@ -100,18 +100,12 @@ scene(0, 5.15, root => {
 // ============================================================ S1 AGENTIC AI / ENTERPRISE DATA
 scene(5.55, L[2] - .75, root => {
   const svg = svgLayer(root);
-  const hub = el(`<div class="a" style="left:${960 - 140}px;top:${300 - 140}px;width:280px;height:280px"></div>`);
-  hub.innerHTML = `<svg width="280" height="280" viewBox="-140 -140 280 280">
-    <circle r="88" fill="rgba(20,18,60,.6)" stroke="rgba(51,169,255,.55)" stroke-width="2" pathLength="1" class="ring" style="stroke-dasharray:1;stroke-dashoffset:1"/>
-    <g class="orb"><circle r="122" fill="none" stroke="rgba(160,175,255,.28)" stroke-width="1.5" stroke-dasharray="3 9"/></g></svg>`;
-  root.appendChild(hub);
-  const spk = el(`<div class="a" style="left:${960 - 70}px;top:${300 - 70}px;width:140px;height:140px">${sparkle(140)}</div>`); root.appendChild(spk);
-  const orbitIcons = [['db', -90], ['chat', 30], ['bolt', 150]].map(([n, a]) => {
-    const r = 88, x = 960 + r * Math.cos(a * Math.PI / 180), y = 300 + r * Math.sin(a * Math.PI / 180);
-    const e = el(`<div class="a" style="left:${x - 19}px;top:${y - 19}px">${ico(n, 38, '#9fe8ff', '#16144a', 'border:1.5px solid rgba(51,169,255,.7);border-radius:50%')}</div>`);
-    root.appendChild(e); return e;
-  });
-  const lab = el(`<div class="a center lbl" style="top:448px;letter-spacing:.45em">Enterprise AI</div>`); root.appendChild(lab);
+  // AI hub graphic (client-supplied artwork, cut out to transparent PNG)
+  const hubGlow = el(`<div class="a" style="left:${960 - 230}px;top:${300 - 230}px;width:460px;height:460px;border-radius:50%;background:radial-gradient(circle,rgba(0,136,207,.30),rgba(0,136,207,0) 65%)"></div>`);
+  root.appendChild(hubGlow);
+  const hubImg = el(`<img class="a" src="assets/ai_hub.png" style="left:800px;top:144px;width:320px;height:295px">`);
+  root.appendChild(hubImg);
+  const lab = el(`<div class="a center lbl" style="top:452px;letter-spacing:.45em">Enterprise AI</div>`); root.appendChild(lab);
   // workflows
   const LW = [['Purchase order', 'Awaiting approval', 'doc'], ['Customer request', 'New ticket', 'chat'], ['Shipment delay', 'Carrier update', 'truck']];
   const RW = [['Order approved', 'Done by agent', 'check'], ['Reply sent', 'Done by agent', 'send'], ['Supplier notified', 'Done by agent', 'mail']];
@@ -135,12 +129,9 @@ scene(5.55, L[2] - .75, root => {
   return t => {
     BG.state.net = lerp(1.2, .9, prog(t, 5.5, 2));
     const a0 = 5.75;
-    $('.ring', hub).style.strokeDashoffset = 1 - prog(t, a0, 1.1, Ease.inOut3);
-    fx(spk, t, { at: a0 + .2, dur: .9, ease: Ease.outBack, from: { o: 0, s: 0, r: -90 } });
-    spk.style.transform += ` rotate(${Math.sin(t * .8) * 4}deg) scale(${1 + Math.sin(t * 2.1) * .03})`;
-    $('.orb', hub).setAttribute('transform', `rotate(${t * 12})`);
-    fx($('.orb', hub), t, { at: a0 + .4, dur: 1 });
-    orbitIcons.forEach((e, i) => pop(e, t, a0 + .6 + i * .12));
+    fx(hubImg, t, { at: a0 + .1, dur: 1.0, ease: Ease.outBack, from: { o: 0, s: .55, blur: 14 } });
+    hubImg.style.transform += ` translateY(${(Math.sin(t * 1.1) * 3).toFixed(2)}px) scale(${(1 + Math.sin(t * 1.7) * .012).toFixed(4)})`;
+    fx(hubGlow, t, { at: a0 + .3, dur: 1.2, max: .75 + .25 * Math.sin(t * 2.2) });
     fx(lab, t, { at: a0 + .8, dur: .7, from: { o: 0, y: 10 } });
     wordsIn(w1, t, L[0] - .05, { out: L[1] - .55, stagger: .06 });
     const dim = 1 - .62 * prog(t, L[1] - .2, .8);
@@ -655,6 +646,7 @@ scene(L[35] - .65, TOTAL + 1, root => {
 });
 
 // ============================================================ master clock
+const NOCAP = location.search.includes('nocap');
 const logo = $('#logo'), cap = $('#cap'), capt = $('#capt'), flash = $('#flash'), corners = $$('.corner');
 function seek(t) {
   BG.state.black = 0;
@@ -677,7 +669,7 @@ function seek(t) {
   corners.forEach(c => c.style.opacity = prog(t, .6, 1.2) * (1 - BG.state.black));
   let line = null;
   TLD.lines.forEach((l, i) => { const nx = TLD.lines[i + 1]; const end = Math.min(l.end + .45, nx ? nx.start - .1 : 1e9); if (t >= l.start - .15 && t < end) line = { l, end }; });
-  if (line) {
+  if (line && !NOCAP) {
     capt.textContent = line.l.cap;
     cap.style.opacity = Math.min(prog(t, line.l.start - .15, .25), 1 - prog(t, line.end - .2, .2)) * (1 - BG.state.black);
   } else cap.style.opacity = 0;

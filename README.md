@@ -1,12 +1,14 @@
 # Solix Enterprise AI – Teaser (Storyline A, 4K)
 
-**v3 (current):** same as v2, but with no scene transitions: each scene cuts straight to the next, with no crossfade, blur/zoom or light sweep.
+**v4 (current):** the opening AI hub now uses the client-supplied artwork (robot, network and database around an AI chip; cut out to transparent by `cutout.py` into `web/assets/ai_hub.png`). It comes in two versions, with and without captions (`NOCAP=1 node render.mjs ...`).
+
+**v3:** same as v2, but with no scene transitions: each scene cuts straight to the next, with no crossfade, blur/zoom or light sweep.
 
 **v2:** follows the final Flow script, which opens with "AI is transforming how enterprises run and grow." The background is more corporate: deep navy-to-indigo gradient, fine faint grid, slow blue and red light ribbons, and a sparser low-opacity AI network. The animation is otherwise the same as v1.
 
 **Deliverables in `output/EAI_Teaser_4K/`:**
-- `Solix_Enterprise_AI_Teaser_v3_4K.mp4`: 3840×2160, 30 fps, H.264 High with AAC stereo, 2:04. Natively rendered at 4K, not upscaled.
-- `Solix_Enterprise_AI_Teaser_v3_1080p.mp4`: 1080p copy for laptops and email.
+- `Solix_Enterprise_AI_Teaser_v4_4K_with_captions.mp4`: 3840×2160, 30 fps, H.264 High with AAC stereo, 2:04, with burned-in captions.
+- `Solix_Enterprise_AI_Teaser_v4_4K_no_captions.mp4`: the same video without captions.
 - `Solix_EAI_Teaser_captions.srt`: subtitles matching the final timing.
 - `Solix_EAI_Teaser_VO.wav`: the voice-over alone.
 
