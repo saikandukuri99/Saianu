@@ -1,6 +1,11 @@
 # Solix Enterprise AI – Teaser (Storyline A, 4K)
 
-**v5 (current):** four 4K files, dark and white backgrounds, each with and without captions. Changes:
+**v6 (current):** same as v5, plus:
+- "Agentic" is pronounced ay-JEN-tik in the two Agentic lines (forced phonemes in `vo.py`).
+- The client's AI artwork replaces the sparkle at the centre of the Agentic loop. On the white background it sits in a dark medallion.
+- The "AI" chip cropped from that artwork replaces the icon above the problem screen.
+
+**v5:** four 4K files, dark and white backgrounds, each with and without captions. Changes:
 - XKG scene rewritten per the change-request guide: "CROSS-APPLICATION INTELLIGENCE / One governed answer / Across your enterprise applications". The strip reads "Each application answers through its own governed knowledge graph", the cards read "Governed application answer", and the VO says "One governed answer across all your enterprise applications." No migration or no-copy wording remains.
 - Editor's on-screen text: "But is your data AI-ready?", "Ask questions. Get answers.", "Build your own AI applications.", "Describe. Build. Run." (no separate "Run it.").
 - An AI chip icon replaces the sparkle on the problem screen.
@@ -15,8 +20,8 @@
 **v2:** follows the final Flow script, which opens with "AI is transforming how enterprises run and grow." The background is more corporate: deep navy-to-indigo gradient, fine faint grid, slow blue and red light ribbons, and a sparser low-opacity AI network. The animation is otherwise the same as v1.
 
 **Deliverables in `output/EAI_Teaser_4K/`** (3840×2160, 30 fps, H.264 High with AAC stereo):
-- `Solix_Enterprise_AI_Teaser_v5_4K_dark_with_captions.mp4` / `..._dark_no_captions.mp4`
-- `Solix_Enterprise_AI_Teaser_v5_4K_white_with_captions.mp4` / `..._white_no_captions.mp4`
+- `Solix_Enterprise_AI_Teaser_v6_4K_dark_with_captions.mp4` / `..._dark_no_captions.mp4`
+- `Solix_Enterprise_AI_Teaser_v6_4K_white_with_captions.mp4` / `..._white_no_captions.mp4`
 - `Solix_EAI_Teaser_captions.srt` and `Solix_EAI_Teaser_VO.wav`
 
 **How it is built** (`source/eai_teaser/`):
