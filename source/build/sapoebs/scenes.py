@@ -118,12 +118,12 @@ def db_rows(c, x, y, w, n, t, t_from, t_to, hot_color, row_h=25, pitch=33, label
         if a <= 0: continue
         yy = y + i * pitch + (1 - a) * -16
         act = (i == 0 and active_first)
-        fill = (14, 96, 168, 255) if act else (232, 238, 249, 255)
-        out = BLUE + (230,) if act else (190, 204, 232, 255)
+        fill = (14, 96, 168, 255) if act else ROWF3 + (255,)
+        out = BLUE + (230,) if act else ROWO3 + (255,)
         c.card(x, yy, w, row_h, a, fill=fill, outline=out, r=8)
         yr = 2026 - i
         mono(c, f"FY{yr}", x + 14, yy + 4, label_size, WF if act else DIM, a, "Bold")
-        mono(c, "ACTIVE" if act else "INACTIVE", x + w - 14, yy + 4, label_size, WF if act else (176, 110, 130), a, "Regular", "r")
+        mono(c, "ACTIVE" if act else "INACTIVE", x + w - 14, yy + 4, label_size, WF if act else INACT, a, "Regular", "r")
 
 def scene_B(c, t):
     kicker(c, "THE CHALLENGE", 120, 205, line_t(1)[0] - .1, t)
@@ -250,7 +250,7 @@ def scene_D(c, t):
     c.card(930 + (1 - pa) * 50, y, 250, 150, pa, outline=BLUE + (210,))
     c.text("SAP", 1055 + (1 - pa) * 50, y + 34, "d", "Bold", 52, WHITE, pa, anchor="c"); c.text("SYSTEM", 1055 + (1 - pa) * 50, y + 98, "i", "Bold", 18, SKY, pa, track=6, anchor="c")
     ak = E(pr(t, cue(4, "Archive Development") - .5, .6))
-    c.blit(CIRCLE(140, BLUE + (255,), IND + (255,), 3, glow=BLUE if ak > .4 else None), 1395, y + 75, ak, 1, True)
+    c.blit(CIRCLE(140, BLUE + (255,), OUTL + (255,), 3, glow=BLUE if ak > .4 else None), 1395, y + 75, ak, 1, True)
     c.text("ADK", 1395, y + 46, "d", "Bold", 44, WF, ak, anchor="c"); c.text("NATIVE", 1395, y + 100, "i", "Bold", 15, WF, ak, track=5, anchor="c")
     sa = E(pr(t, cue(4, "Archive Development") - .1, .6))
     c.card(1570 + (1 - sa) * 50, y, 250, 150, sa, outline=RED + (210,))
@@ -289,7 +289,7 @@ def retire_grid(c, x, y, t, t0, A=1.0):
     for r in range(2):
         for q in range(3):
             i = r * 3 + q; off = clamp((k * 7 - i) * .8)
-            col = mix(BLUE, (196, 206, 228), off)
+            col = mix(BLUE, OFFC, off)
             c.blit(RR(46, 46, 10, col + (255,), None, 0, False), x + q * 58 + 23, y + r * 58 + 23, A, 1, True)
     ek = E(pr(t, t0 + 1.8, .45)) * A
     c.text("RETIRED", x + 200, y + 28, "i", "Bold", 22, RED, ek, track=6)
@@ -341,7 +341,7 @@ def scene_E(c, t):
         ctext(c, " Sources", px + 34 + w1 + w2, py + 180, "i", "Bold", 46, WHITE, sa)
         fa = E(pr(t, ta + 1.4, .4)) * pa
         yb = py + 250
-        c.card(px + 28, yb - 36, 58, 72, fa, outline=RED + (230,), fill=(255, 238, 240, 255), r=12); bolt_solix(c, px + 40, yb - 31, 34, fa, 11)
+        c.card(px + 28, yb - 36, 58, 72, fa, outline=RED + (230,), fill=BOLTF + (255,), r=12); bolt_solix(c, px + 40, yb - 31, 34, fa, 11)
         x2 = px + 106; ctext(c, "Through ", x2, yb, "i", "Medium", 28, TXT, fa); x2 += tw("Through ", "i", "Medium", 28)
         ctext(c, "Solix Connect", x2, yb, "i", "Bold", 28, WHITE, fa)
         ctext(c, "\u00bb\u00bb\u00bb", px + pw - 34, yb, "i", "Bold", 30, SKY, fa * .8, anchor="r")
@@ -366,8 +366,8 @@ def scene_F(c, t):
     # records: each glides in ONE continuous eased move from its production slot to its archive slot (no pops, no resizing)
     NROW, GAP, FLY = 5, 1.0, 2.7; t_dep = cue(5, "moves") + .15
     def row(x, y, i, a, lit):
-        c.card(x, y, RW, RH, a, fill=(14, 96, 168, 255) if i == 0 else mix((232, 238, 249), (14, 84, 156), lit) + (255,),
-               outline=(BLUE + (230,)) if i == 0 else mix((190, 204, 232), SKY, lit) + (230,), r=7)
+        c.card(x, y, RW, RH, a, fill=(14, 96, 168, 255) if i == 0 else mix(ROWF3, (14, 84, 156), lit) + (255,),
+               outline=(BLUE + (230,)) if i == 0 else mix(ROWO3, SKY, lit) + (230,), r=7)
         mono(c, "FY2026" if i == 0 else f"FY{2025 - i}", x + 14, y + 4, 14, WF if (i == 0 or lit > .5) else DIM, a, "Bold")
     row(PX, SY, 0, fa, 0)
     for i in range(1, NROW):
@@ -385,12 +385,12 @@ def scene_F(c, t):
     for i, (lab, ic, ti) in enumerate(bl):
         a = E(pr(t, ta + .6 + i * .12, .5)); on = E(pr(t, ti - .05, .45)); col = RED if i == 1 else BLUE
         x = 150 + i * 560
-        c.card(x, 808, 500, 104, a, outline=mix((176, 190, 222), col, on) + (int(lerp(200, 255, on)),), fill=CARD + (255,))
+        c.card(x, 808, 500, 104, a, outline=mix(CHIPB, col, on) + (int(lerp(CHIPA[0], CHIPA[1], on)),), fill=CARD + (int(lerp(CFA[0], CFA[1], on)),))
         c.blit(CIRCLE(68, col + (int(lerp(70, 255, on)),)), x + 62, 860, a, 1, True); c.icon(ic, x + 62, 860, 38, WF, a)
         ctext(c, lab, x + 118, 860, "d", "Bold", 40, mix(TXT, WHITE, on), a)
         if on > .5: c.icon("check", x + 462, 860, 30, SKY, a * on)
     tl = cue(5, "for as long") - .1; a = E(pr(t, tl, .5)); k = E(pr(t, tl, 2.4))
-    c.blit(BAR(1620, 4, (208, 218, 238)), 150, 970, a); c.blit(BAR(max(6, int(1620 * k)) // 6 * 6, 4, BLUE), 150, 970, a)
+    c.blit(BAR(1620, 4, TRK), 150, 970, a); c.blit(BAR(max(6, int(1620 * k)) // 6 * 6, 4, BLUE), 150, 970, a)
     c.blit(CIRCLE(22, WHITE + (255,), glow=BLUE), 150 + 1620 * k, 972, a, 1, True)
     c.text("FOR AS LONG AS YOU NEED IT", 150, 996, "i", "Bold", 18, SKY, a, track=6)
 
@@ -414,7 +414,7 @@ def scene_K(c, t):
     # the knowledge graph panel
     pa = E(pr(t, tk - .1, .6)); px, py, pw, ph = 930, 205, 870, 700
     c.card(px, py, pw, ph, pa, outline=SKY + (200,), glow=BLUE)
-    mono(c, "APPLICATION KNOWLEDGE GRAPH", px + pw / 2, py + 24, 17, SKY, pa, "Bold", "c"); c.blit(BAR(pw - 60, 2, (200, 212, 236)), px + 30, py + 56, pa * .8)
+    mono(c, "APPLICATION KNOWLEDGE GRAPH", px + pw / 2, py + 24, 17, SKY, pa, "Bold", "c"); c.blit(BAR(pw - 60, 2, SOFT), px + 30, py + 56, pa * .8)
     cx, cy = px + pw / 2, py + 390; pts = []
     for i in range(len(AKG_NODES)):
         ang = -math.pi / 2 + i * 2 * math.pi / len(AKG_NODES); pts.append((cx + 300 * math.cos(ang), cy + 232 * math.sin(ang)))
@@ -428,7 +428,7 @@ def scene_K(c, t):
             if e2 > .01: c.line(p, q, SKY, .35 * e2, 1)
     c.top = False
     ha = EB(pr(t, tk + .15, .5), 1.8)
-    c.blit(CIRCLE(104, BLUE + (255,), IND + (255,), 3, glow=BLUE), cx, cy, clamp(ha), clamp(ha), True); c.text("AKG", cx, cy - 24, "d", "Bold", 34, WF, clamp(ha), anchor="c")
+    c.blit(CIRCLE(104, BLUE + (255,), OUTL + (255,), 3, glow=BLUE), cx, cy, clamp(ha), clamp(ha), True); c.text("AKG", cx, cy - 24, "d", "Bold", 34, WF, clamp(ha), anchor="c")
     for i, (p, nm) in enumerate(zip(pts, AKG_NODES)):
         e = EB(pr(t, tk + .3 + i * .16, .5), 2.0)
         if e > .01:
@@ -440,7 +440,7 @@ def scene_K(c, t):
 QUESTION = "How much did Tarrow Freight bill us in FY2012?"
 INV = [("1900004417", "2012-03-14", "18,420.50"), ("1900004602", "2012-04-02", "7,935.00"), ("1900005288", "2012-06-19", "22,610.75"),
        ("1900006031", "2012-09-07", "16,044.20"), ("1900006977", "2012-11-28", "19,302.40")]
-DINK, GREY, LINE_ = (22, 40, 84), (98, 112, 144), (208, 218, 238)
+DINK, GREY, LINE_ = (22, 40, 84), (98, 112, 144), TRK
 
 def scene_DA(c, t):
     ta = cue(7, "Ask") - .1; t2 = cue(8, "Every") - .12
@@ -552,10 +552,10 @@ def scene_H(c, t):
     mono(c, "DATABASE", dx + dw / 2, dy + 22, 16, SKY, ma, "Bold", "c")
     for i in range(n):
         yy = dy + 66 + i * 33
-        if i < keep: c.card(dx, yy, dw, 25, ma, fill=((14, 96, 168, 255) if i == 0 else (232, 238, 249, 255)), outline=(BLUE + (230,)) if i == 0 else (190, 204, 232, 255), r=8)
+        if i < keep: c.card(dx, yy, dw, 25, ma, fill=((14, 96, 168, 255) if i == 0 else ROWF3 + (255,)), outline=(BLUE + (230,)) if i == 0 else ROWO3 + (255,), r=8)
         else:
             fa = 1 - E(pr(t, cue(10, "Leaner") + .2 + (n - i) * .09, .5))
-            if fa > .02: c.card(dx, yy - 14 * (1 - fa), dw, 25, ma * fa, fill=(232, 238, 249, 255), outline=(190, 204, 232, 255), r=8)
+            if fa > .02: c.card(dx, yy - 14 * (1 - fa), dw, 25, ma * fa, fill=ROWF3 + (255,), outline=ROWO3 + (255,), r=8)
             # ghost outline of removed slabs
             c.dashed((dx, yy + 12), (dx + dw, yy + 12), (90, 110, 170), ma * .30 * sh, 1, 8, 8)
         if i < keep:
@@ -596,7 +596,7 @@ def scene_I(c, t):
     na = E(pr(t, tb - .2, .7)); nx, ny, nw, nh = NCARD
     c.card(nx, ny, nw, nh, na, outline=SKY + (200,), glow=BLUE)
     mono(c, "AI-ACTIVATED DATA", nx + nw / 2, ny + 22, 17, SKY, na, "Bold", "c")
-    c.blit(BAR(nw - 60, 2, (200, 212, 236)), nx + 30, ny + 52, na * .8)
+    c.blit(BAR(nw - 60, 2, SOFT), nx + 30, ny + 52, na * .8)
     recs = [("FI documents", "FY2012"), ("Purchase orders", "FY2013"), ("Sales orders", "FY2014"), ("Material docs", "FY2015"),
             ("Payables invoices", "FY2016"), ("Journal entries", "FY2017"), ("Cost allocations", "FY2018")]
     c.top = True                                                  # streams + network lines sit on top of the screens
@@ -617,7 +617,7 @@ def scene_I(c, t):
     c.top = False
     for i, (nm, fy) in enumerate(recs):                           # table rows (drawn after the streams' origin)
         ai = E(pr(t, ta + .1 + i * .08, .4)); lit = E(pr(t, tb + i * .12, .4)); yy = y0 + 62 + i * 45
-        c.card(x0 + 22, yy, w0 - 44, 36, ai * fa, fill=mix((232, 238, 249), (14, 96, 168), lit) + (255,), outline=mix((190, 204, 232), BLUE, lit) + (230,), r=9)
+        c.card(x0 + 22, yy, w0 - 44, 36, ai * fa, fill=mix(ROWF3, (14, 96, 168), lit) + (255,), outline=mix(ROWO3, BLUE, lit) + (230,), r=9)
         mono(c, fy, x0 + 38, yy + 9, 15, WF if lit > .5 else DIM, ai * fa, "Bold"); mono(c, nm, x0 + 130, yy + 9, 15, WF if lit > .5 else TXT, ai * fa, "Regular")
     for i, (x, y) in enumerate(NODES):
         e = EB(pr(t, tb + .3 + i * .06, .5), 2.2)
