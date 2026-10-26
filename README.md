@@ -1,20 +1,27 @@
 # Solix Enterprise AI – Teaser (Storyline A, 4K)
 
-**v4 (current):** the opening AI hub now uses the client-supplied artwork (robot, network and database around an AI chip; cut out to transparent by `cutout.py` into `web/assets/ai_hub.png`). It comes in two versions, with and without captions (`NOCAP=1 node render.mjs ...`).
+**v5 (current):** four 4K files, dark and white backgrounds, each with and without captions. Changes:
+- XKG scene rewritten per the change-request guide: "CROSS-APPLICATION INTELLIGENCE / One governed answer / Across your enterprise applications". The strip reads "Each application answers through its own governed knowledge graph", the cards read "Governed application answer", and the VO says "One governed answer across all your enterprise applications." No migration or no-copy wording remains.
+- Editor's on-screen text: "But is your data AI-ready?", "Ask questions. Get answers.", "Build your own AI applications.", "Describe. Build. Run." (no separate "Run it.").
+- An AI chip icon replaces the sparkle on the problem screen.
+- The Solix bolt never appears without the SOLIX name: logos reveal as one piece, and the platform card shows SOLIX under the bolt.
+- A different female voice (Kokoro `af_bella`), so this video sounds distinct from the other Solix videos.
+- White-background variant (`LIGHT=1 node render.mjs ...`, `web/theme.js`).
+
+**v4:** the opening AI hub now uses the client-supplied artwork (robot, network and database around an AI chip; cut out to transparent by `cutout.py` into `web/assets/ai_hub.png`). It comes in two versions, with and without captions (`NOCAP=1 node render.mjs ...`).
 
 **v3:** same as v2, but with no scene transitions: each scene cuts straight to the next, with no crossfade, blur/zoom or light sweep.
 
 **v2:** follows the final Flow script, which opens with "AI is transforming how enterprises run and grow." The background is more corporate: deep navy-to-indigo gradient, fine faint grid, slow blue and red light ribbons, and a sparser low-opacity AI network. The animation is otherwise the same as v1.
 
-**Deliverables in `output/EAI_Teaser_4K/`:**
-- `Solix_Enterprise_AI_Teaser_v4_4K_with_captions.mp4`: 3840×2160, 30 fps, H.264 High with AAC stereo, 2:04, with burned-in captions.
-- `Solix_Enterprise_AI_Teaser_v4_4K_no_captions.mp4`: the same video without captions.
-- `Solix_EAI_Teaser_captions.srt`: subtitles matching the final timing.
-- `Solix_EAI_Teaser_VO.wav`: the voice-over alone.
+**Deliverables in `output/EAI_Teaser_4K/`** (3840×2160, 30 fps, H.264 High with AAC stereo):
+- `Solix_Enterprise_AI_Teaser_v5_4K_dark_with_captions.mp4` / `..._dark_no_captions.mp4`
+- `Solix_Enterprise_AI_Teaser_v5_4K_white_with_captions.mp4` / `..._white_no_captions.mp4`
+- `Solix_EAI_Teaser_captions.srt` and `Solix_EAI_Teaser_VO.wav`
 
 **How it is built** (`source/eai_teaser/`):
 - **Structure:** a 6-second title opening ("Solix Enterprise AI"), then the 37-line narration following the Variant A storyboard (Hub → Problem → AI-Activated Data → Data Sense → Cross-application knowledge graph → Data Ask → AI Warehouse → Agentic → Open by design → end card).
-- **Voice:** female neural TTS (Kokoro `af_heart`), one line at a time, with the studio polish chain (`polish.py`). `vo_track.py` places each line at its storyboard cue, adding a natural pause where a line runs long.
+- **Voice:** female neural TTS (Kokoro `af_bella` from v5; earlier versions used `af_heart`), one line at a time, with the studio polish chain (`polish.py`). `vo_track.py` places each line at its storyboard cue, adding a natural pause where a line runs long.
 - **Visuals:** a keyframed motion-graphics composition in HTML/JS (`web/`). The background is the Solix palette (#30267b indigo, #0088cf blue and #ee2424 red glows) with a low-opacity animated AI network of red and blue nodes and pulses.
 - **Rendering:** `render.mjs` renders every frame in headless Chromium at device scale 2 (3840×2160).
 - **Music:** `music.py` is an original procedural score, so it is royalty-free. `mix.sh` ducks the music under the voice and masters to -16 LUFS.
