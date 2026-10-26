@@ -918,10 +918,11 @@ def draw_end(c, t):
     out = e_io(prog(t, END[1] - 0.6, 0.6))
     oa = 1 - out
     cx = W / 2
-    # mark: Solix icon + XKG
+    # mark: Solix icon + "Solix XKG" (Solix in indigo, XKG in brand blue)
     k = prog(t, END[0] + 0.1, 0.8)
-    fx = font("black", 132)
-    xw = fx.measureText("XKG")
+    fx = font("black", 124)
+    sw = fx.measureText("Solix ")
+    xw = sw + fx.measureText("XKG")
     ih = 130
     tot = ih + 26 + xw
     x0 = cx - tot / 2
@@ -937,7 +938,9 @@ def draw_end(c, t):
         wk = e_outx(prog(t, END[0] + 0.4, 0.8))
         c.save()
         c.clipRect(skia.Rect(x0 + ih + 10, y0 - 20, x0 + ih + 26 + xw * wk + 10, y0 + ih + 20))
-        c.drawString("XKG", x0 + ih + 26 - (1 - wk) * 60, y0 + ih * 0.86, fx, P(INDIGO, oa))
+        bx = x0 + ih + 26 - (1 - wk) * 60
+        c.drawString("Solix", bx, y0 + ih * 0.86, fx, P(INDIGO, oa))
+        c.drawString("XKG", bx + sw, y0 + ih * 0.86, fx, P(BLUE, oa))
         c.restore()
     sk = prog(t, END[0] + 0.8, 0.7)
     if sk > 0:
