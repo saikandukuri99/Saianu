@@ -68,6 +68,29 @@ table.t td{padding:15px 14px;border-bottom:1px solid rgba(130,150,255,.10);color
 .st.ok{background:rgba(47,209,138,.16);color:#5fe3a6}
 .st.rev{background:rgba(245,165,36,.16);color:#ffc35c}
 .av{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:linear-gradient(135deg,#0088cf,#30267b);color:#fff}
+
+/* ---- white-background variant ---- */
+body.light{color:#15133d;background:#f6f7fc}
+body.light .card{background:linear-gradient(180deg,#ffffff,#f7f8fd);border:1px solid rgba(48,38,123,.14);box-shadow:0 18px 50px rgba(48,38,123,.12),inset 0 1px 0 #fff}
+body.light .chip{background:#ffffff;border-color:rgba(48,38,123,.18);color:#25225a;box-shadow:0 4px 14px rgba(48,38,123,.08)}
+body.light .kick{color:#4a4f86}
+body.light .lbl{color:#5d6396}
+body.light .corner{border-color:rgba(48,38,123,.3)}
+body.light #cap{color:#1d1a4a;text-shadow:none}
+body.light .win{background:#ffffff;border-color:rgba(48,38,123,.16);box-shadow:0 30px 90px rgba(48,38,123,.18)}
+body.light .win .tb{background:#f6f7fc;border-bottom-color:rgba(48,38,123,.12);color:#25225a}
+body.light .win .tb .dots i{background:#d5d8ea}
+body.light .win .side{background:#f8f9fd;border-right-color:rgba(48,38,123,.10)}
+body.light .win .side .it{color:#5d6396}
+body.light .win .side .it.on{color:#15133d}
+body.light .vs{color:#5d6396}
+body.light table.t th{color:#5d6396;border-bottom-color:rgba(48,38,123,.15)}
+body.light table.t td{color:#1d1a4a;border-bottom-color:rgba(48,38,123,.09)}
+body.light .st.draft{background:rgba(125,107,255,.14);color:#5b47d6}
+body.light .st.ok{background:rgba(47,209,138,.16);color:#138a55}
+body.light .st.rev{color:#a86a00}
+body.light .pill .tx,body.light .qb{color:#fff}
+body.light .tag{filter:saturate(1.2) brightness(.8)}
 </style></head>
 <body>
 <canvas id="bg"></canvas>
@@ -80,4 +103,5 @@ table.t td{padding:15px 14px;border-bottom:1px solid rgba(130,150,255,.10);color
 <script src="engine.js"></script>
 <script src="icons.js"></script>
 <script src="scenes.js"></script>
+<script src="theme.js"></script>
 </body></html>

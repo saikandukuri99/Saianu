@@ -130,6 +130,7 @@ function pulse(dot, path, t, at, period, phase = 0, alpha = 1) {
 function rng(seed) { let s = seed >>> 0; return () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
 
 // ---------------------------------------------------------------- background
+const LIGHT = location.search.includes('light');
 const BG = (() => {
   const cv = document.getElementById('bg');
   const DPR = window.devicePixelRatio || 1;
@@ -169,9 +170,10 @@ const BG = (() => {
   function render(t) {
     g.setTransform(DPR, 0, 0, DPR, 0, 0);
     const base = g.createLinearGradient(0, 0, W * .3, H);
-    base.addColorStop(0, '#0a0826'); base.addColorStop(.55, '#08061d'); base.addColorStop(1, '#050414');
+    if (LIGHT) { base.addColorStop(0, '#ffffff'); base.addColorStop(.55, '#f6f7fc'); base.addColorStop(1, '#eceff8'); }
+    else { base.addColorStop(0, '#0a0826'); base.addColorStop(.55, '#08061d'); base.addColorStop(1, '#050414'); }
     g.fillStyle = base; g.fillRect(0, 0, W, H);
-    const k = state.glow;
+    const k = state.glow * (LIGHT ? .035 : 1);
     radial(960 + Math.sin(t * .11) * 120, 520 + Math.cos(t * .09) * 60, 980, '48,38,123', .78 * k);           // indigo #30267b
     radial(180 + Math.sin(t * .13) * 90, 60 + Math.cos(t * .1) * 50, 880, '0,136,207', .30 * k);            // blue  #0088cf
     radial(1780 + Math.cos(t * .12) * 90, 1060 + Math.sin(t * .08) * 40, 820, '238,36,36', .24 * k);        // red   #ee2424
@@ -179,14 +181,16 @@ const BG = (() => {
 
     // corporate layer: fine grid fading toward the edges + two slow light ribbons
     g.save();
-    g.strokeStyle = 'rgba(150,170,255,.045)'; g.lineWidth = 1;
+    g.strokeStyle = LIGHT ? 'rgba(48,38,123,.055)' : 'rgba(150,170,255,.045)'; g.lineWidth = 1;
     g.beginPath();
     for (let x = ((-t * 6) % 64) - 64; x < W + 64; x += 64) { g.moveTo(x, 0); g.lineTo(x, H); }
     for (let y = 0; y < H; y += 64) { g.moveTo(0, y); g.lineTo(W, y); }
     g.stroke();
     const gm = g.createRadialGradient(960, 540, 200, 960, 540, 1100);
-    gm.addColorStop(0, 'rgba(8,6,29,0)'); gm.addColorStop(1, 'rgba(8,6,29,.85)');
+    if (LIGHT) { gm.addColorStop(0, 'rgba(246,247,252,0)'); gm.addColorStop(1, 'rgba(255,255,255,.7)'); }
+    else { gm.addColorStop(0, 'rgba(8,6,29,0)'); gm.addColorStop(1, 'rgba(8,6,29,.85)'); }
     g.fillStyle = gm; g.fillRect(0, 0, W, H);
+    if (LIGHT) { g.fillStyle = 'rgba(255,255,255,.6)'; g.fillRect(0, 0, W, H); }
     const ribbon = (rgb, y0, amp, ph, sp, a) => {
       for (let k = 0; k < 7; k++) {
         g.beginPath();
@@ -240,10 +244,10 @@ const BG = (() => {
     g.globalAlpha = 1;
     // vignette
     const v = g.createRadialGradient(960, 540, 420, 960, 540, 1250);
-    v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(2,1,10,.72)');
+    v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, LIGHT ? 'rgba(222,226,240,.12)' : 'rgba(2,1,10,.72)');
     g.fillStyle = v; g.fillRect(0, 0, W, H);
-    g.fillStyle = np; g.fillRect(0, 0, W, H);
-    if (state.black > 0) { g.fillStyle = `rgba(0,0,0,${state.black})`; g.fillRect(0, 0, W, H); }
+    if (!LIGHT) { g.fillStyle = np; g.fillRect(0, 0, W, H); }
+    if (state.black > 0) { g.fillStyle = LIGHT ? `rgba(255,255,255,${state.black})` : `rgba(0,0,0,${state.black})`; g.fillRect(0, 0, W, H); }
   }
   return { render, state };
 })();

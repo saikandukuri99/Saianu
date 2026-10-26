@@ -21,7 +21,7 @@ LINES = [
     (46.7, "One knowledge graph that connects meaning across all your applications.", "One knowledge graph that connects meaning across all your applications."),
     (50.9, "The same supplier in three systems becomes one record you can trust.", "The same supplier in three systems becomes one record you can trust."),
     (54.3, "One shared meaning, everywhere.", "One shared meaning, everywhere."),
-    (56.7, "No migration. Your records stay where they are.", "No migration. Your records stay where they are."),
+    (56.7, "One governed answer across all your enterprise applications.", "One governed answer across all your enterprise applications."),
     (59.8, "Data Ask answers questions in plain language,", "Data Ask answers questions in plain language,"),
     (61.7, "across structured and unstructured data,", "across structured and unstructured data,"),
     (64.5, "grounded in your business context,", "grounded in your business context,"),

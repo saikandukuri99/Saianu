@@ -400,15 +400,15 @@ scene(L[14] - .6, L[19] - .8, root => {
   const conv = px.map(x => path(svg, `M${x + 225} 504 C ${x + 225} 640, 960 600, 960 690`, 'rgba(245,165,36,.85)', 2.5));
   const cd = conv.map(() => dot(svg, '#ffc35c', 5));
   const gold = card(A, 600, 690, 720, 150, `<div style="padding:20px 26px"><div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">${check(30)}<span class="disp" style="font-size:30px;font-weight:800">Supplier · Zentra Components</span><span class="tag" style="margin-left:auto;background:rgba(47,209,138,.14);color:#5fe3a6;border:1px solid rgba(47,209,138,.45)">One trusted record</span></div><div style="display:flex;gap:10px">${['Finance · 10482', 'Manufacturing · S-7731', 'Supply chain · ZC-0091'].map(s => `<span class="chip mono" style="font-size:13.5px;font-weight:500">${s}</span>`).join('')}</div></div>`);
-  // B: one shared meaning / no migration
+  // B: one shared meaning / one governed answer
   const B = el('<div class="a" style="inset:0"></div>'); root.appendChild(B);
   const svgB = svgLayer(B);
   const st1 = el(`<div class="a center disp" style="top:290px;font-size:72px;font-weight:800">One shared <span style="color:#43b4ff">meaning</span>, everywhere.</div>`); B.appendChild(st1);
   const s1w = splitWords(st1);
-  const nm = el(`<div class="a center" style="top:262px"><div class="mono" style="font-size:18px;letter-spacing:.2em;color:#ff6b6b;position:relative;display:inline-block">DATA MIGRATION<span class="strike" style="position:absolute;left:-6px;right:-6px;top:50%;height:2px;background:#ff6b6b;transform-origin:0 50%"></span></div><div class="disp" style="font-size:80px;font-weight:800;color:#2fd18a;display:flex;align-items:center;justify-content:center;gap:20px;margin-top:8px"><span class="nck">${check(64)}</span>No migration required.</div><div class="nsub" style="font-size:28px;color:#d3d9ff;margin-top:6px">Your records stay where they are.</div></div>`); B.appendChild(nm);
-  const bar = el(`<div class="a" style="left:560px;top:480px;width:800px;height:62px;border-radius:14px;border:1.5px solid rgba(51,169,255,.7);background:rgba(0,136,207,.12);box-shadow:0 0 40px rgba(0,136,207,.3);display:flex;align-items:center;justify-content:center;gap:12px;font-size:19px;font-weight:600">${ico('link', 30, '#43b4ff', 'transparent')}Each application answers in its own schema · no joins, no copies</div>`); B.appendChild(bar);
+  const nm = el(`<div class="a center" style="top:262px"><div class="mono ney" style="font-size:18px;letter-spacing:.22em;color:#5fe3d0;display:inline-block">CROSS-APPLICATION INTELLIGENCE</div><div class="disp" style="font-size:80px;font-weight:800;color:#2fd18a;margin-top:8px">One governed answer</div><div class="nsub" style="font-size:28px;color:#d3d9ff;margin-top:6px">Across your enterprise applications</div></div>`); B.appendChild(nm);
+  const bar = el(`<div class="a" style="left:510px;top:480px;width:900px;height:62px;border-radius:14px;border:1.5px solid rgba(51,169,255,.7);background:rgba(0,136,207,.12);box-shadow:0 0 40px rgba(0,136,207,.3);display:flex;align-items:center;justify-content:center;gap:12px;font-size:19px;font-weight:600">${ico('link', 30, '#43b4ff', 'transparent')}Each application answers through its own governed knowledge graph</div>`); B.appendChild(bar);
   const ax = [610, 960, 1310];
-  const an = [['Finance application', 'coin'], ['Manufacturing application', 'factory'], ['Supply chain application', 'truck']].map(([n, i], k) => card(B, ax[k] - 160, 630, 320, 96, `<div style="display:flex;align-items:center;gap:14px;padding:14px 18px">${ico(i, 44)}<div><div style="font-weight:700;font-size:17px">${n}</div><div class="stay" style="font-size:14px;color:#5fe3a6;display:flex;align-items:center;gap:6px;margin-top:4px">${check(14)} Records stay in place</div></div></div>`));
+  const an = [['Finance application', 'coin'], ['Manufacturing application', 'factory'], ['Supply chain application', 'truck']].map(([n, i], k) => card(B, ax[k] - 160, 630, 320, 96, `<div style="display:flex;align-items:center;gap:14px;padding:14px 18px">${ico(i, 44)}<div><div style="font-weight:700;font-size:17px">${n}</div><div class="stay" style="font-size:14px;color:#5fe3a6;display:flex;align-items:center;gap:6px;margin-top:4px">${check(14)} Governed application answer</div></div></div>`));
   const bl = ax.map(x => path(svgB, `M${x} 542 V630`, 'rgba(51,169,255,.6)', 2)), bd = bl.map(() => dot(svgB, '#43b4ff'));
   return t => {
     BG.state.net = .8;
@@ -432,8 +432,6 @@ scene(L[14] - .6, L[19] - .8, root => {
     an.forEach((c, i) => fx(c, t, { at: L[17] + .8 + i * .15, dur: .7, from: { o: 0, y: 30, blur: 8 } }));
     bl.forEach((p, i) => { draw(p, t, L[17] + 1.0 + i * .1, .5); pulse(bd[i], p, t, L[17] + 1.5, 1.1, i * .3); });
     fx(nm, t, { at: L[18] - .2, dur: .6, from: { o: 0, y: 16 } });
-    $('.strike', nm).style.transform = `scaleX(${prog(t, L[18] + .05, .4, Ease.out3)})`;
-    pop($('.nck', nm), t, L[18] + .2, .5);
     fx($('.nsub', nm), t, { at: L[18] + .7, dur: .6, from: { o: 0, y: 12 } });
     an.forEach((c, i) => { pop($('.stay', c), t, L[18] + 1.1 + i * .15, .45); glowAt(c, t, L[18] + 1.1 + i * .15, '47,209,138'); });
   };
@@ -560,8 +558,8 @@ scene(L[27] - .65, L[30] - .8, root => {
     NN.forEach((n, i) => {
       pop(n, t, L[28] - .2 + i * .12);
       const q = prog(t, on[i], .4), nb = $('.nb', n);
-      nb.style.background = `rgba(${Math.round(lerp(21, 125, q))},${Math.round(lerp(19, 107, q))},${Math.round(lerp(74, 255, q))},${lerp(1, .9, q)})`;
-      nb.style.boxShadow = q > 0 ? `0 0 ${40 * q}px rgba(125,107,255,${.8 * q})` : ''; nb.style.color = q > .5 ? '#fff' : '#c9c0ff';
+      nb.style.background = LIGHT ? `rgba(${Math.round(lerp(240, 125, q))},${Math.round(lerp(238, 107, q))},${Math.round(lerp(252, 255, q))},1)` : `rgba(${Math.round(lerp(21, 125, q))},${Math.round(lerp(19, 107, q))},${Math.round(lerp(74, 255, q))},${lerp(1, .9, q)})`;
+      nb.style.boxShadow = q > 0 ? `0 0 ${40 * q}px rgba(125,107,255,${.8 * q})` : ''; nb.style.color = q > .5 ? '#fff' : (LIGHT ? '#5b47d6' : '#c9c0ff');
     });
     fx(cap, t, { at: L[28] + .3, dur: .6 });
     draw(l1, t, L[28] - .4, .7); pulse(d1, l1, t, L[28], 1.3);

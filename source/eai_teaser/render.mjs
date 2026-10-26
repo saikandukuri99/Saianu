@@ -11,7 +11,7 @@ const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromi
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: +scale });
 page.on('pageerror', e => console.error('PAGEERR', e.message));
 page.on('console', m => { if (m.type() === 'error') console.error('CONSOLE', m.text()); });
-await page.goto('file://' + path.resolve('web/index.html') + (process.env.NOCAP ? '?nocap' : ''));
+await page.goto('file://' + path.resolve('web/index.html') + ('?' + (process.env.NOCAP ? 'nocap' : '') + (process.env.LIGHT ? '&light' : '')));
 await page.evaluate(() => window.ready);
 async function shot(t, file) {
   await page.evaluate(t => window.seek(t), t);
