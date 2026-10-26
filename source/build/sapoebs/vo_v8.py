@@ -8,11 +8,11 @@ os.makedirs(WORK, exist_ok=True)
 SR = 48000
 # (sentences) per line; spelled letters / numbers written the way they are spoken
 LINES = [
- ["S A P and Oracle Applications run the business."],
+ ["Enterprise applications run the business: Oracle applications, S A P, and mainframes."],
  ["But years of inactive data keep bloating databases, slowing performance, and driving up costs, right when you're planning a move to the cloud."],
- ["Solix Common Data Platform brings more than twenty years of E R P archiving expertise, to both."],
+ ["Solix C D P brings more than twenty years of E R P archiving expertise, to all of them."],
  ["For Oracle E Business Suite, Solix is validated by Oracle, and covers both archiving and full application retirement."],
- ["For S A P, Solix works natively through S A P's Archiving Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."],
+ ["For S A P, Solix C D P works natively through S A P's Archive Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."],
  ["Inactive data moves out on policy, and stays searchable, accessible, and reportable, for as long as you need it."],
  ["Solix includes pre-built Application Knowledge Graphs, or A K Gs, for these applications."],
  ["Ask your archive in plain language, with Data Ask."],
@@ -20,10 +20,10 @@ LINES = [
  ["The result?"],
  ["Leaner production systems, cleaner migrations, and legacy databases, up to thirty to sixty percent smaller."],
  ["Your E R P history becomes A I activated data, not dead weight."],
- ["Solix. Built for S A P. Built for Oracle."],
+ ["Solix C D P. Built for enterprise applications."],
 ]
 # silence after each line before the next one (s). Line 0 -> 1 leaves room for chips + underline; 8 -> 9 is set by the 2 s hold.
-GAP = {0: 2.00, 1: .38, 2: .36, 3: .36, 4: .40, 5: .46, 6: .42, 7: .32, 8: .55, 10: .40, 11: .46}   # tighter, continuous flow like the reference
+GAP = {0: .90, 1: .38, 2: .36, 3: .36, 4: .40, 5: .46, 6: .42, 7: .32, 8: .55, 10: .40, 11: .46}   # tighter, continuous flow like the reference
 HOLD_NEXT = 2.14                        # "The result?" stays on screen 2.0 s; next line starts this long after it begins
 SENT_GAP = .28
 TARGET_RMS = 10 ** (-20 / 20)
@@ -31,11 +31,12 @@ TARGET_RMS = 10 ** (-20 / 20)
 CHAIN = ("aresample=48000:resampler=soxr,highpass=f=70,equalizer=f=240:t=q:w=1.0:g=-3,lowshelf=f=130:g=1.6,"
          "equalizer=f=1500:t=q:w=1.0:g=-1.4,equalizer=f=3100:t=q:w=1.1:g=1.2,equalizer=f=6000:t=q:w=0.9:g=-2.0,highshelf=f=8500:g=1.8,"
          "deesser=i=0.4,acompressor=threshold=-22dB:ratio=2.4:attack=8:release=170:makeup=2,aecho=0.9:0.9:23|47:0.05|0.035")
+VOICE = os.environ.get("VOICE", "am_michael"); SPD = float(os.environ.get("SPD", "1.12"))
 k = Kokoro(K + "/kokoro-v1.0.onnx", K + "/voices-v1.0.bin")
 rs = np.random.RandomState(21)
 # "S A P" / "A I" must be spoken as letters: the engine would read "S A P" as "S-uh-P" and "A I" as "uh-eye".
 # So those tokens are given as exact sounds (ess-ay-pee, ay-eye); everything else is phonemized normally.
-PAT = re.compile(r"S A P(?:'s)?|A I|A K Gs?")
+PAT = re.compile(r"S A P(?:'s)?|A I|A K Gs?|C D P")
 def ph(text):
     out = ""; pos = 0
     def add(p):
@@ -45,15 +46,15 @@ def ph(text):
         seg = text[pos:m.start()].strip()
         if seg: add(k.tokenizer.phonemize(seg, "en-us"))
         tok = m.group(0)
-        add("ˌɛsˌeɪpˈiːz" if tok.endswith("'s") else "ˌɛsˌeɪpˈiː" if tok.startswith("S A P") else "ˌeɪˈaɪ" if tok == "A I" else "ˌeɪkˌeɪdʒˈiːz" if tok.endswith("s") else "ˌeɪkˌeɪdʒˈiː"); pos = m.end()
+        add("ˌɛsˌeɪpˈiːz" if tok.endswith("'s") else "ˌɛsˌeɪpˈiː" if tok.startswith("S A P") else "ˌsiːdˌiːpˈiː" if tok == "C D P" else "ˌeɪˈaɪ" if tok == "A I" else "ˌeɪkˌeɪdʒˈiːz" if tok.endswith("s") else "ˌeɪkˌeɪdʒˈiː"); pos = m.end()
     seg = text[pos:].strip()
     if seg: add(k.tokenizer.phonemize(seg, "en-us"))
     return out
 
 def take(text, n):
-    sp = float(np.clip(1.01 + rs.uniform(-.025, .025), .98, 1.04))            # calm, slightly varied pace
-    if PAT.search(text): a, sr = k.create(ph(text), voice="af_heart", speed=sp, lang="en-us", is_phonemes=True)
-    else: a, sr = k.create(text, voice="af_heart", speed=sp, lang="en-us")
+    sp = float(np.clip(SPD + rs.uniform(-.025, .025), SPD - .03, SPD + .03))            # calm, slightly varied pace
+    if PAT.search(text): a, sr = k.create(ph(text), voice=VOICE, speed=sp, lang="en-us", is_phonemes=True)
+    else: a, sr = k.create(text, voice=VOICE, speed=sp, lang="en-us")
     env = np.abs(a) > .012; ix = np.where(env)[0]
     a = a[max(0, ix[0] - int(.05 * sr)): min(len(a), ix[-1] + int(.16 * sr))].astype(np.float64)
     f = int(.012 * sr); a[:f] *= np.linspace(0, 1, f); a[-f:] *= np.linspace(1, 0, f)

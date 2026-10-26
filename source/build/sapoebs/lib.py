@@ -6,11 +6,16 @@ from functools import lru_cache
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 W, H, FPS = 1920, 1080, 30
-BLUE, RED, IND, WHITE = (0, 136, 207), (238, 36, 36), (48, 38, 123), (255, 255, 255)
-SKY = (92, 190, 240)           # lighter tint of the brand blue for text on dark
-TXT = (214, 226, 246)          # body text
-DIM = (122, 146, 196)          # secondary text
-CARD = (9, 24, 72)             # card fill
+# LIGHT THEME (v13 "new look"): white background, Solix indigo ink, brand blue / red accents.
+BLUE, RED, IND = (0, 136, 207), (238, 36, 36), (48, 38, 123)
+TEAL = (0, 160, 150)           # third family colour (Mainframe)
+WHITE = (34, 28, 98)           # "primary ink": headings / body text on the white background (name kept from the dark version)
+WF = (255, 255, 254)           # true white: text and icons sitting on coloured fills
+SKY = (0, 112, 184)            # accent text (kickers, captions) on white
+TXT = (74, 86, 138)            # body text
+DIM = (128, 140, 180)          # secondary text
+CARD = (255, 255, 255)         # card fill
+LIGHT = True
 HERE = os.path.dirname(os.path.abspath(__file__))
 ASSETS = os.path.join(HERE, "..", "..", "assets")
 PAD = 26
@@ -71,7 +76,7 @@ def RR(w, h, r, fill, outline=None, ow=2, shadow=True, glow=None):
         ImageDraw.Draw(m).rounded_rectangle((PAD, PAD + (8 if not glow else 0), PAD + w, PAD + h + (8 if not glow else 0)), r, fill=255)
         m = m.filter(ImageFilter.GaussianBlur(14 if not glow else 16))
         col = glow if glow else (0, 0, 0)
-        sh = Image.new("RGBA", base.size, tuple(col) + (255,)); sh.putalpha(m.point(lambda v: int(v * (0.55 if not glow else 0.65))))
+        sh = Image.new("RGBA", base.size, tuple(col) + (255,)); sh.putalpha(m.point(lambda v: int(v * (0.16 if not glow else 0.30))))
         base = Image.alpha_composite(base, sh)
     def fn(d, S):
         d.rounded_rectangle((PAD * S, PAD * S, (PAD + w) * S, (PAD + h) * S), r * S, fill=fill, outline=outline, width=ow * S if outline else 0)
@@ -83,7 +88,7 @@ def CIRCLE(d, fill, outline=None, ow=2, glow=None):
     if glow:
         m = Image.new("L", base.size, 0); ImageDraw.Draw(m).ellipse((PAD, PAD, PAD + d, PAD + d), fill=255)
         m = m.filter(ImageFilter.GaussianBlur(14))
-        g = Image.new("RGBA", base.size, tuple(glow) + (255,)); g.putalpha(m.point(lambda v: int(v * .8))); base = Image.alpha_composite(base, g)
+        g = Image.new("RGBA", base.size, tuple(glow) + (255,)); g.putalpha(m.point(lambda v: int(v * .30))); base = Image.alpha_composite(base, g)
     def fn(dr, S):
         dr.ellipse((PAD * S, PAD * S, (PAD + d) * S, (PAD + d) * S), fill=fill, outline=outline, width=ow * S if outline else 0)
     return Image.alpha_composite(base, _ss(d + 2 * PAD, d + 2 * PAD, fn))
@@ -166,7 +171,7 @@ def ICON(kind, size, color, lw=0.075):
 
 @lru_cache(None)
 def LOGO(h):
-    im = Image.open(os.path.join(ASSETS, "original", "solix_logo_white_tagline.png")).convert("RGBA")
+    im = Image.open(os.path.join(ASSETS, "original", "solix_logo_black_tagline.png")).convert("RGBA")
     return im.resize((int(im.width * h / im.height), h), Image.LANCZOS)
 
 @lru_cache(None)
@@ -208,7 +213,7 @@ class Ctx:
         s.blit(sp, x - 6 * sc, y - 6 * sc, a, sc)
     def icon(s, kind, x, y, size, color, a=1.0, sc=1.0, c=True): s.blit(ICON(kind, int(size), tuple(color)), x, y, a, sc, c)
     # ---- additive light primitives (glow canvas, uint8 BGR)
-    def _col(s, color, a): k = a * s.ga; return (int(color[2] * k), int(color[1] * k), int(color[0] * k))
+    def _col(s, color, a): k = min(1.0, a * s.ga); return (int(color[2] * k), int(color[1] * k), int(color[0] * k), int(255 * k))
     def line(s, p0, p1, color, a=1.0, th=2):
         cv2.line(s.G, (int(p0[0] + s.ox), int(p0[1] + s.oy)), (int(p1[0] + s.ox), int(p1[1] + s.oy)), s._col(color, a), th, cv2.LINE_AA)
     def poly(s, pts, color, a=1.0, th=2):
@@ -237,15 +242,14 @@ def bezier(p0, p1, p2, k):
 # ---------------------------------------------------------------- background (dark blue + AI network)
 def make_bg():
     yy, xx = np.mgrid[0:H, 0:W].astype(np.float32)
-    base = np.array([3, 8, 28], np.float32); mid = np.array([7, 22, 68], np.float32)
+    base = np.array([255, 255, 255], np.float32); mid = np.array([240, 246, 255], np.float32)
     r = np.sqrt(((xx - .60 * W) / W) ** 2 + ((yy - .42 * H) / H) ** 2 * 1.4)
-    bg = base + (mid - base) * np.clip(1 - r / .85, 0, 1)[..., None] ** 1.6
-    g1 = np.exp(-(((xx - .05 * W) / (.35 * W)) ** 2 + ((yy - 1.0 * H) / (.45 * H)) ** 2))[..., None] * np.array([34, 26, 96], np.float32) * .32   # indigo, bottom-left
-    g2 = np.exp(-(((xx - .98 * W) / (.30 * W)) ** 2 + ((yy - 0.0 * H) / (.40 * H)) ** 2))[..., None] * np.array([0, 90, 150], np.float32) * .16  # blue, top-right
-    v = 1 - .35 * np.clip(((xx - W / 2) / (W / 2)) ** 2 * .6 + ((yy - H / 2) / (H / 2)) ** 2 * .6, 0, 1)[..., None]
-    return np.clip((bg + g1 + g2) * v, 0, 255).astype(np.uint8)
+    bg = mid + (base - mid) * np.clip(1 - r / .85, 0, 1)[..., None] ** 1.2          # faint blue wash toward the corners
+    g1 = np.exp(-(((xx - .02 * W) / (.35 * W)) ** 2 + ((yy - 1.0 * H) / (.45 * H)) ** 2))[..., None] * np.array([-10, -12, -34], np.float32) * .55   # indigo tint, bottom-left
+    g2 = np.exp(-(((xx - .98 * W) / (.30 * W)) ** 2 + ((yy - 0.0 * H) / (.40 * H)) ** 2))[..., None] * np.array([-30, -12, 0], np.float32) * .55      # sky tint, top-right
+    return np.clip(bg + g1 + g2, 0, 255).astype(np.uint8)
 
-NET_OPACITY = 0.30          # AI-network lines/nodes at 30 % opacity
+NET_OPACITY = 0.26          # AI-network lines/nodes (ink on white)
 
 class Net:
     N = 70
@@ -255,23 +259,29 @@ class Net:
         s.fr = rs.rand(s.N, 2) * .16 + .05; s.ph = rs.rand(s.N, 2) * 6.28; s.d = rs.rand(s.N) * .6 + .4; s.c = rs.rand(s.N)
         s.pp = rs.rand(400)
     def draw(s, t, energy=0.0, shift=(0, 0)):
-        cv = np.zeros((H, W, 3), np.uint8)
+        cv = np.zeros((H, W, 4), np.uint8)
         P = s.b + s.amp * np.sin(s.fr * t * 6.283 + s.ph) + np.array(shift)[None] * s.d[:, None]
         dx = P[:, None, 0] - P[None, :, 0]; dy = P[:, None, 1] - P[None, :, 1]; D = np.sqrt(dx * dx + dy * dy)
         I, J = np.where(np.triu(D < 260, 1)); en = 1.05 + 1.2 * energy
+        def ink(col, a): a = min(1.0, a * NET_OPACITY * 1.8); return (int(col[2] * a), int(col[1] * a), int(col[0] * a), int(255 * a))
         for k, (i, j) in enumerate(zip(I, J)):
             a = (1 - D[i, j] / 260) * .62 * en * (s.d[i] + s.d[j]) / 2
-            col = (int(BLUE[2] * a), int(BLUE[1] * a), int(BLUE[0] * a)) if (i + j) % 7 else (int(RED[2] * a * .75), int(RED[1] * a * .75), int(RED[0] * a * .75))
+            col = ink(BLUE, a) if (i + j) % 7 else ink(RED, a * .8)
             cv2.line(cv, (int(P[i, 0]), int(P[i, 1])), (int(P[j, 0]), int(P[j, 1])), col, 1, cv2.LINE_AA)
             if k % 4 == 0:
                 u = (t * (.28 + .1 * s.pp[k % 400]) + s.pp[k % 400]) % 1
                 q = (int(lerp(P[i, 0], P[j, 0], u)), int(lerp(P[i, 1], P[j, 1], u)))
-                c2 = tuple(int(v * min(1, a * 3.2 * en)) for v in (255, 220, 120)); cv2.circle(cv, q, 2, c2, -1, cv2.LINE_AA)
+                cv2.circle(cv, q, 2, ink(IND, min(1, a * 3.2 * en)), -1, cv2.LINE_AA)
         for i in range(s.N):
             r = 2 + int(2 * s.d[i]); b = (.55 + .45 * math.sin(t * 1.4 + s.ph[i, 0])) * (.6 + .6 * energy) * s.d[i]
-            col = (RED if s.c[i] > .93 else (110, 170, 255) if s.c[i] < .15 else (60, 190, 255))
-            cv2.circle(cv, (int(P[i, 0]), int(P[i, 1])), r, (int(col[2] * b), int(col[1] * b), int(col[0] * b)), -1, cv2.LINE_AA)
-        return (cv.astype(np.float32) * NET_OPACITY).astype(np.uint8)
+            col = (RED if s.c[i] > .93 else TEAL if s.c[i] < .15 else BLUE)
+            cv2.circle(cv, (int(P[i, 0]), int(P[i, 1])), r, ink(col, b), -1, cv2.LINE_AA)
+        return cv
+
+def ink_over(frame, G):
+    """composite a premultiplied BGRA ink canvas over a BGR uint8 frame (light theme: no bloom, no additive light)."""
+    al = G[..., 3:4].astype(np.float32) * (1 / 255)
+    return np.clip(frame.astype(np.float32) * (1 - al) + G[..., :3].astype(np.float32), 0, 255).astype(np.uint8)
 
 def glow_add(frame, G, k=1.0):
     """frame uint8 + light canvas + its blur (bloom)."""
@@ -279,3 +289,11 @@ def glow_add(frame, G, k=1.0):
     bl = cv2.GaussianBlur(sm, (0, 0), 5); bl = cv2.resize(bl, (W, H), interpolation=cv2.INTER_LINEAR)
     out = frame.astype(np.float32) + G.astype(np.float32) * k + bl.astype(np.float32) * 1.6 * k
     return np.clip(out, 0, 255).astype(np.uint8)
+
+
+def bolt_solix(c, x, y, d, a=1.0, name_size=None):
+    """the red bolt mark is never shown alone: SOLIX sits beneath it (manager). (x, y) = top-left of the mark."""
+    ns = name_size or max(10, int(d * .2)); bw = tw("SOLIX", "d", "Bold", ns, 2)
+    c.blit(BOLT(d), x, y, a, 1, False)
+    c.text("SOLIX", x + d / 2, y + d + 1, "d", "Bold", ns, WHITE, a, track=2, anchor="c")
+    return d + ns + 6

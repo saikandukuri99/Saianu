@@ -18,19 +18,19 @@ def init():
 def frame(i):
     t = i / FPS; bg, net = _G["bg"], _G["net"]
     shift = (30 * math.sin(t * .33), 18 * math.cos(t * .27))
-    f = np.clip(bg.astype(np.int16) + net.draw(t, energy(t), shift), 0, 255).astype(np.uint8)
-    L = np.zeros((H, W, 4), np.float32); G = np.zeros((H, W, 3), np.uint8); O = np.zeros((H, W, 3), np.uint8)
+    f = ink_over(bg, net.draw(t, energy(t), shift))
+    L = np.zeros((H, W, 4), np.float32); G = np.zeros((H, W, 4), np.uint8); O = np.zeros((H, W, 4), np.uint8)
     zoom = 1.0
     for n, (k, (a, b)) in enumerate(SC.items()):
         if not (a <= t < b or (k == "J" and t >= a)): continue            # plain hard cuts: no fades, slides or wipes
         c = Ctx(L, G, O); SCENES[k](c, t)
         u = clamp((t - a) / (b - a)); zoom = 1.0 + .03 * (u if n % 2 == 0 else 1 - u)
-    f = glow_add(f, G, 1.0)
+    f = ink_over(f, G)
     al = L[..., 3:4]; f = (f.astype(np.float32) * (1 - al) + L[..., [2, 1, 0]] * 255).astype(np.uint8)
-    f = glow_add(f, O, 1.0)
+    f = ink_over(f, O)
     if zoom != 1.0:
         M = np.float32([[zoom, 0, -(zoom - 1) * W / 2], [0, zoom, -(zoom - 1) * H / 2]]); f = cv2.warpAffine(f, M, (W, H), flags=cv2.INTER_LINEAR)
-    f = np.clip(f.astype(np.int16) + _G["noise"][i % 6], 0, 255).astype(np.uint8)
+    f = np.clip(f.astype(np.int16) + (_G["noise"][i % 6] // 2), 0, 255).astype(np.uint8)
     # fixed brand furniture: one of each per frame. Corner logo hidden while the Solix CDP lockup / end card carry the mark;
     # corner event tag hidden while the centred kicker (title card, hook line) is on, and gone once the end card starts.
     endt = end_card_t(); ca_, cb_ = SC["C"]
