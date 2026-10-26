@@ -2,6 +2,8 @@
 
 `Solix_CDP_Booth_Loop_v6_1080p60.mp4`: 1920 × 1080, 60 fps, 90 s, H.264, **no audio track**. The last frame flows straight into the first, so set the player to loop it.
 
+`Solix_CDP_Booth_Loop_v6_4K_UHD60.mp4`: the same loop rendered natively at 3840 × 2160 (4K UHD), 60 fps, 90 s, no audio.
+
 Built from Storyboard v5 (same 11 frames, same timings, same copy). What changed from the v5 video:
 - White background with a slowly drifting tech network (nodes, links and travelling data pulses in Solix blue #0088cf and red #ee2424). The network moves on a 90-second cycle, so the loop point is invisible.
 - Headline highlights use #0088cf, #ee2424 and #30267b; headlines are larger for reading from across the hall.
