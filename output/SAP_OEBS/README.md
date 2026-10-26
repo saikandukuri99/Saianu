@@ -1,3 +1,6 @@
+# FINAL v14 DARK THEME: `Solix_SAP_OEBS_FINAL_v14_DarkTheme_*` (96.3 s)
+Same film as v13b (storyboard v3, new voice, bolt always with SOLIX, "Visit our booth", chips fixed) on the Solix dark-blue AI-network background. Voice and music identical to v13b.
+
 # FINAL v13b LIGHT THEME: `Solix_SAP_OEBS_FINAL_v13b_LightTheme_*` (96.3 s)
 Only change vs v13: the ORACLE APPLICATIONS / SAP / MAINFRAME chips under "Built for Enterprise Applications" are sized to their text (text no longer overflows the boxes). Voice and music as v13.
 
