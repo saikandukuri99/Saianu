@@ -658,7 +658,7 @@ def scene_J(c, t):
         c.blit(gim, px_, yy - ph_ / 2, ae)
         ctext(c, "Enterprise Applications", px_ + pw_ / 2, yy, "d", "Bold", 64, WF, ae, anchor="c")
     fams = [("Oracle Applications", RED), ("SAP", BLUE), ("Mainframe", TEAL)]
-    cw = [int(tw(n_, "i", "Bold", 24, 3) + 52) for n_, _ in fams]; x = 960 - (sum(cw) + 18 * 2) / 2
+    cw = [int(tw(n_.upper(), "i", "Bold", 24, 3) + 70) for n_, _ in fams]; x = 960 - (sum(cw) + 18 * 2) / 2
     for i, ((n_, col), w) in enumerate(zip(fams, cw)):
         ca = E(pr(t, te + .7 + i * .22, .35)); yy = 560 + (1 - ca) * 12
         c.card(x, yy - 28, w, 56, ca, outline=col + (220,), fill=CARD + (255,), r=28)
