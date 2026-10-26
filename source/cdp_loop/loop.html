@@ -7,7 +7,10 @@
 // CDP Booth Loop v6: white, motion-graphics rebuild of storyboard v5.
 // renderFrame(t) draws the frame at time t (seconds, 0..90). Loops seamlessly.
 const W = 1920, H = 1080, LOOP = 90;
+// ?scale=2 renders natively at 3840 x 2160 (4K UHD); layout stays in 1920 x 1080 units
+const SC = Number(new URLSearchParams(location.search).get('scale') || 1);
 const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+cv.width = W * SC; cv.height = H * SC;
 const C = {
   blue: '#0088cf', red: '#ee2424', navy: '#30267b',
   ink: '#1b2140', body: '#4a5470', mute: '#8b94aa', faint: '#c9d1de',
@@ -32,7 +35,7 @@ function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let
 
 // ---------- drawing helpers ----------
 function rr(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x, y, w, h, r); }
-function shadow(blur = 30, oy = 10, a = 0.10) { ctx.shadowColor = `rgba(24,40,90,${a})`; ctx.shadowBlur = blur; ctx.shadowOffsetY = oy; }
+function shadow(blur = 30, oy = 10, a = 0.10) { ctx.shadowColor = `rgba(24,40,90,${a})`; ctx.shadowBlur = blur * SC; ctx.shadowOffsetY = oy * SC; }
 function noShadow() { ctx.shadowColor = 'transparent'; ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; }
 function card(x, y, w, h, r = 18, o = {}) {
   ctx.save(); shadow(o.blur ?? 34, o.oy ?? 12, o.sa ?? 0.10);
@@ -826,7 +829,7 @@ function drawTransition(t) {
 // ---------- frame ----------
 function renderFrame(t) {
   t = ((t % LOOP) + LOOP) % LOOP;
-  ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
+  ctx.setTransform(SC, 0, 0, SC, 0, 0); ctx.globalAlpha = 1; ctx.filter = 'none';
   drawBackground(t);
   const sc = sceneAt(t), s = S[sc], lt = t - s.t0;
   visWrap(s, lt, s.vis);

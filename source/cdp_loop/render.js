@@ -6,11 +6,12 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
-const PAGE = 'file://' + path.join(__dirname, 'loop.html');
+const PAGE = 'file://' + path.join(__dirname, 'loop.html') + '?scale=' + (process.env.SCALE || 1);
 const LOOP = 90;
+const SCALE = Number(process.env.SCALE || 1); // SCALE=2 -> 3840 x 2160
 
 async function openPage(browser) {
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: 1920 * SCALE, height: 1080 * SCALE }, deviceScaleFactor: 1 });
   await page.goto(PAGE);
   await page.evaluate(() => window.ready);
   const cdp = await page.context().newCDPSession(page);
@@ -33,7 +34,7 @@ async function stills(outdir, times) {
 async function segment(browser, f0, f1, fps, file) {
   const p = await openPage(browser);
   const ff = spawn('ffmpeg', ['-v', 'error', '-y', '-f', 'image2pipe', '-framerate', String(fps), '-c:v', 'png', '-i', '-',
-    '-c:v', 'libx264', '-preset', 'slow', '-crf', '14', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-tune', 'animation',
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', SCALE > 1 ? '16' : '14', '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-tune', 'animation',
     '-g', String(fps), '-bf', '2', '-colorspace', 'bt709', '-color_primaries', 'bt709', '-color_trc', 'bt709', file], { stdio: ['pipe', 'inherit', 'inherit'] });
   for (let f = f0; f < f1; f++) {
     const buf = await grab(p, f / fps);

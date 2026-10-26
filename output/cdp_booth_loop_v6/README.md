@@ -10,4 +10,4 @@ Built from Storyboard v5 (same 11 frames, same timings, same copy). What changed
 - Each frame's visual is animated as described in the storyboard (tiles dropping onto the foundation, blocks archiving, records leaving the legacy app before it switches off, the document scan, search typing, the shield drawing on, scan-and-mask, the Data Lake+ fill, governance check-ins, the AI answer with citations, and the QR end card).
 - The QR code points to the UTM-tagged CDP page from v5 (`utm_campaign=cdp_booth_loop`). The scan line over it runs only briefly so phones can read it.
 
-Source: `source/cdp_loop/loop.html` (scenes) and `source/cdp_loop/render.js` (renderer). To re-render: `NODE_PATH=$(npm root -g) node source/cdp_loop/render.js video out.mp4 4 60`.
+Source: `source/cdp_loop/loop.html` (scenes) and `source/cdp_loop/render.js` (renderer). To re-render: `NODE_PATH=$(npm root -g) node source/cdp_loop/render.js video out.mp4 4 60`; add `SCALE=2` in front for native 4K (3840 × 2160).
