@@ -1,0 +1,263 @@
+1
+00:00:02,120 --> 00:00:05,870
+80% of enterprise data is unstructured.
+
+2
+00:00:06,150 --> 00:00:09,270
+Documents, emails, scans and images:
+
+3
+00:00:09,340 --> 00:00:12,380
+no rows, no columns, no rules.
+
+4
+00:00:12,740 --> 00:00:13,980
+And with no rules,
+
+5
+00:00:14,020 --> 00:00:16,160
+it goes wherever people put it.
+
+6
+00:00:16,200 --> 00:00:19,050
+So yours is everywhere: inboxes,
+
+7
+00:00:19,090 --> 00:00:22,290
+drives, old servers, someone's laptop.
+
+8
+00:00:23,740 --> 00:00:25,830
+Four moves change that.
+
+9
+00:00:26,240 --> 00:00:28,520
+Unify content: every source,
+
+10
+00:00:28,560 --> 00:00:30,810
+one place, one set of rules.
+
+11
+00:00:30,850 --> 00:00:33,050
+Find and collaborate: search,
+
+12
+00:00:33,090 --> 00:00:35,200
+share, and sign, safely.
+
+13
+00:00:35,240 --> 00:00:38,190
+Automate and govern: work that routes itself,
+
+14
+00:00:38,230 --> 00:00:40,290
+and rules that keep themselves.
+
+15
+00:00:40,340 --> 00:00:43,100
+Make content intelligent: Document AI,
+
+16
+00:00:43,140 --> 00:00:45,220
+and the Solix AI Assistant.
+
+17
+00:00:48,180 --> 00:00:52,320
+The problem: data sprawl. One project's files,
+
+18
+00:00:52,360 --> 00:00:54,160
+in every version and format,
+
+19
+00:00:54,200 --> 00:00:57,340
+scattered across multiple places and locations.
+
+20
+00:00:57,750 --> 00:01:00,030
+Move one: bring it all in.
+
+21
+00:01:00,070 --> 00:01:02,360
+Drop in files, and whole folders.
+
+22
+00:01:02,400 --> 00:01:03,240
+Send a link,
+
+23
+00:01:03,280 --> 00:01:05,490
+and clients upload without an account.
+
+24
+00:01:05,530 --> 00:01:07,330
+Capture email from Gmail,
+
+25
+00:01:07,370 --> 00:01:09,590
+and unpack old PST archives.
+
+26
+00:01:09,630 --> 00:01:12,310
+Move Exchange, Google Drive and SFTP in,
+
+27
+00:01:12,350 --> 00:01:14,220
+mapped to their owners.
+
+28
+00:01:14,260 --> 00:01:17,450
+Now there's one place, and one set of rules.
+
+29
+00:01:18,200 --> 00:01:21,050
+The problem: finding the right version,
+
+30
+00:01:21,090 --> 00:01:22,810
+and sharing it safely.
+
+31
+00:01:23,270 --> 00:01:26,560
+Move two: find it, share it, finish it.
+
+32
+00:01:26,600 --> 00:01:28,080
+Search across files,
+
+33
+00:01:28,120 --> 00:01:30,610
+scans and email, in seconds.
+
+34
+00:01:30,650 --> 00:01:32,290
+Preview without downloading,
+
+35
+00:01:32,330 --> 00:01:34,670
+mark it up, and redact what's private.
+
+36
+00:01:34,710 --> 00:01:37,950
+Share inside and out, with links that expire,
+
+37
+00:01:37,990 --> 00:01:39,870
+and downloads switched off.
+
+38
+00:01:39,940 --> 00:01:42,380
+Comment, tag, and send for signature,
+
+39
+00:01:42,420 --> 00:01:44,060
+without leaving the page.
+
+40
+00:01:44,100 --> 00:01:46,410
+No more “can you resend it?”
+
+41
+00:01:47,210 --> 00:01:48,320
+The problem:
+
+42
+00:01:48,460 --> 00:01:51,430
+rules that live in spreadsheets, and memory.
+
+43
+00:01:52,070 --> 00:01:55,050
+Move three: let it run by the rules.
+
+44
+00:01:55,090 --> 00:01:56,650
+Workflows route review,
+
+45
+00:01:56,690 --> 00:01:59,410
+approval and signature, on their own.
+
+46
+00:01:59,450 --> 00:02:02,130
+Retention keeps every record on schedule,
+
+47
+00:02:02,170 --> 00:02:04,230
+and deletes only with approval.
+
+48
+00:02:04,270 --> 00:02:07,020
+Legal hold freezes what a case needs.
+
+49
+00:02:07,060 --> 00:02:10,860
+Labels, roles and single sign-on decide who can see,
+
+50
+00:02:10,900 --> 00:02:12,480
+share, or delete.
+
+51
+00:02:12,640 --> 00:02:14,920
+And every action is on the record,
+
+52
+00:02:14,960 --> 00:02:16,330
+ready to export.
+
+53
+00:02:17,180 --> 00:02:20,660
+The problem: content that just sits there.
+
+54
+00:02:20,950 --> 00:02:23,130
+Move four: put it to work.
+
+55
+00:02:23,170 --> 00:02:26,410
+Document AI reads scans and fills in the fields,
+
+56
+00:02:26,450 --> 00:02:27,640
+tables included.
+
+57
+00:02:27,680 --> 00:02:29,490
+Search by what's inside.
+
+58
+00:02:29,730 --> 00:02:31,610
+Then ask the Solix AI Assistant.
+
+59
+00:02:31,650 --> 00:02:35,620
+Summarize a file, ask about a whole folder,
+
+60
+00:02:35,660 --> 00:02:38,350
+and every answer comes with its sources.
+
+61
+00:02:40,010 --> 00:02:41,180
+Bring it in.
+
+62
+00:02:41,300 --> 00:02:42,370
+Find it.
+
+63
+00:02:42,430 --> 00:02:43,490
+Govern it.
+
+64
+00:02:43,550 --> 00:02:44,810
+Put it to work.
+
+65
+00:02:45,360 --> 00:02:47,170
+Solix ECS.
+
+66
+00:02:47,210 --> 00:02:51,000
+Keep the proof.
