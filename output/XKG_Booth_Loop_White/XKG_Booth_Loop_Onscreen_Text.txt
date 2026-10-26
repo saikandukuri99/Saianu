@@ -1,0 +1,63 @@
+Solix XKG · Booth Loop v4 (migration-claim correction) · On-screen text
+Silent booth loop · 1:29.7 · XKG as the hero, more product screens
+
+Big headlines sit in the picture; the line in the lower-left bar is the text block. Times are when each one appears; it stays until the next.
+
+1. The question  (0:00.0–0:13.2)
+   0:00.4  One question. Three applications.
+   0:00.8  Chat: What did we spend with Zentara Components last year, across all our applications?
+   0:05.8  The same supplier, stored three different ways.
+   0:10.4  So the AI can't give an answer you can trust.
+   Sources shown: Oracle E-Business Suite (Retired · archived) · SAP ERP (Live) · Oracle Fusion Cloud ERP (Live)
+
+2. Why it fails  (0:13.2–0:22.2)
+   0:13.4  Headline: Every application speaks its own language.
+   0:13.6  Its own schema. Its own names. Its own definitions.
+   0:18.6  Chips: Same supplier counted twice · The wrong amount column added up · A system that quietly returns nothing
+   0:19.0  An LLM can read each system. It can't know what they mean together.
+
+3. Introducing Solix XKG  (0:22.2–0:28.7)
+   0:22.7  Headline: Introducing Solix XKG · Cross-Application Knowledge Graph
+   0:23.0  A cross-application semantic layer: identity and meaning, decided once.
+   0:23.7  Sub-line: A Solix Data Sense capability · Governed by Solix EDG
+   ~0:25–0:28.6  Three application-card micro-labels: Governed by its AKG.
+   (no PREVIEW tag)
+
+4. How it works  (0:28.7–0:41.7)
+   0:29.1  Resolve identity. One record for each real-world thing.
+   0:33.3  Certify meaning. One definition for each business term.
+   0:37.5  Answer in place. Each system answers in its own schema.
+   0:40.9  Product badge: Governed result.
+
+5. Product: golden records and steward review  (0:41.7–0:51.2)
+   0:42.1  It proposes. Your stewards decide.
+   0:46.5  Exact matches confirm. Name-only matches wait for a steward.
+
+6. Product: certified terms and the Edit flow  (0:51.2–1:00.7)
+   0:51.6  Certified once. One definition, one column in each application.
+   0:56.2  A steward adds a missing binding. Every answer uses it.
+
+7. The answer  (1:00.7–1:08.5)
+   1:01.1  Same question. Now one answer you can check.
+   1:05.0  Each system's share shown. Retired systems included.
+   ~1:05.8  Product answer chip: AKG-governed.
+
+8. One layer, many questions  (1:08.5–1:17.5)
+   1:08.7  Headline: One layer. Any question that spans your applications.
+   1:08.9  Not just suppliers: customers, materials and more.
+   1:11.7  Pills: No federated join · Certified business terms · Results merged by identity
+   1:13.3  Start with one entity type. Add more when a question needs it.
+
+9. Business outcomes  (1:17.5–1:25.5)
+   1:17.7  Headline: What it unlocks.
+   Tiles: Governance that holds across applications · Answers that show their sources ·
+          Cross-application insight from governed meaning (Application results combined through XKG.) ·
+          A governed build when you need one (generated as a dbt project)
+
+10. End card  (1:25.5–1:29.7)
+   1:25.8  Title: XKG · Cross-Application Knowledge Graph  (Solix mark, current high-res version)
+   1:26.7  Tagline: One shared meaning across every application.
+   1:27.3  Call to action: Ask us for a live demo
+   1:27.7  Footer: A Solix Data Sense capability · Governed by Solix EDG  (no PREVIEW tag)
+
+Production note: Only the five migration-adjacent visual locations listed above were revised. No voice-over or caption track exists. Other screens and claims are unchanged.
