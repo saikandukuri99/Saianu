@@ -1,41 +1,41 @@
-Solix Enterprise AI - narration script (final, v7)
-Runtime 2:05.5. Timings are cue starts in the final video (includes the 6-second title opening).
-Voice: female (Kokoro af_bella). "Agentic" is pronounced ay-JEN-tik.
+Solix Enterprise AI - narration script (final, v8)
+Runtime 2:12.3. Timings are cue starts in the final video (includes the 6-second title opening).
+Voice: ElevenLabs "Hale - Smooth, Confident and Persuasive" (supplied recording).
 
 [0:06.3]  AI is transforming how enterprises run and grow.
 [0:11.5]  But your AI is only as ready as your enterprise data is.
 [0:16.3]  Tables with cryptic names.
-[0:18.5]  Systems that don't talk to each other.
-[0:21.1]  Documents no one has indexed.
-[0:23.4]  So your AI can't use it.
-[0:26.0]  Solix Enterprise AI gets your data ready for AI.
-[0:30.1]  So you can understand it, ask it anything,
-[0:32.7]  build on it, and put it to work.
-[0:35.6]  Data Sense makes sense of all your data, structured and unstructured.
-[0:40.1]  It drafts the business meaning, and your experts review it.
-[0:43.8]  Knowledge graphs for your applications and cloud platforms
-[0:47.7]  get you started in minutes.
-[0:49.7]  And a steward's worklist keeps your experts in the loop, ranked by what matters most.
-[0:55.4]  Here's what sets Solix apart.
-[0:57.5]  One knowledge graph that connects meaning across all your applications.
-[1:02.0]  The same supplier in three systems becomes one record you can trust.
-[1:06.8]  One shared meaning, everywhere.
-[1:09.2]  One governed answer across all your enterprise applications.
-[1:13.8]  Data Ask answers questions in plain language,
-[1:16.8]  across structured and unstructured data,
-[1:19.3]  grounded in your business context,
-[1:21.2]  with every answer cited.
-[1:23.6]  Then the people who know your business take over.
-[1:26.5]  They describe the application they need,
-[1:28.8]  and AI Warehouse builds it on governed, version-tracked data.
-[1:33.0]  Your AI, on your data.
-[1:35.6]  Agentic goes further. Just describe the work you need done.
-[1:39.7]  Agentic AI builds it, tests it, and runs it.
-[1:43.2]  Less manual work, more done every day.
-[1:46.6]  And it works with what you already have.
-[1:48.9]  Any LLM.
-[1:50.5]  Any application.
-[1:52.0]  Any data platform.
-[1:53.7]  It fits right into your existing stack.
-[1:56.9]  Solix Enterprise AI.
-[1:59.0]  Put AI in the hands of your business.
+[0:18.7]  Systems that don't talk to each other.
+[0:21.2]  Documents no one has indexed.
+[0:23.8]  So your AI can't use it.
+[0:26.5]  Solix Enterprise AI gets your data ready for AI.
+[0:30.7]  So you can understand it, ask it anything,
+[0:33.7]  build on it, and put it to work.
+[0:36.7]  Data Sense makes sense of all your data, structured and unstructured.
+[0:41.7]  It drafts the business meaning, and your experts review it.
+[0:45.3]  Knowledge graphs for your applications and cloud platforms
+[0:49.0]  get you started in minutes.
+[0:51.2]  And a steward's worklist keeps your experts in the loop, ranked by what matters most.
+[0:57.0]  Here's what sets Solix apart.
+[0:59.3]  One knowledge graph that connects meaning across all your applications.
+[1:03.7]  The same supplier in three systems becomes one record you can trust.
+[1:08.4]  One shared meaning, everywhere.
+[1:11.2]  One governed answer across all your enterprise applications.
+[1:15.8]  Data Ask answers questions in plain language,
+[1:19.0]  across structured and unstructured data,
+[1:21.8]  grounded in your business context,
+[1:24.2]  with every answer cited.
+[1:26.8]  Then the people who know your business take over.
+[1:29.9]  They describe the application they need,
+[1:32.4]  and AI Warehouse builds it on governed, version-tracked data.
+[1:36.8]  Your AI, on your data.
+[1:39.9]  Agentic goes further. Just describe the work you need done.
+[1:44.1]  Agentic AI builds it, tests it, and runs it.
+[1:47.9]  Less manual work, more done every day.
+[1:51.7]  And it works with what you already have.
+[1:54.3]  Any LLM.
+[1:55.9]  Any application.
+[1:57.5]  Any data platform.
+[1:59.4]  It fits right into your existing stack.
+[2:02.7]  Solix Enterprise AI.
+[2:05.2]  Put AI in the hands of your business.
