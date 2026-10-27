@@ -24,8 +24,8 @@
 **v2:** follows the final Flow script, which opens with "AI is transforming how enterprises run and grow." The background is more corporate: deep navy-to-indigo gradient, fine faint grid, slow blue and red light ribbons, and a sparser low-opacity AI network. The animation is otherwise the same as v1.
 
 **Deliverables in `output/EAI_Teaser_4K/`** (3840×2160, 30 fps, H.264 High with AAC stereo):
-- `Solix_Enterprise_AI_Teaser_v6_4K_dark_with_captions.mp4` / `..._dark_no_captions.mp4`
-- `Solix_Enterprise_AI_Teaser_v6_4K_white_with_captions.mp4` / `..._white_no_captions.mp4`
+- `Solix_Enterprise_AI_Teaser_v8_4K_dark_with_captions.mp4` / `..._dark_no_captions.mp4`
+- `Solix_Enterprise_AI_Teaser_v8_4K_white_with_captions.mp4` / `..._white_no_captions.mp4`
 - `Solix_EAI_Teaser_captions.srt` and `Solix_EAI_Teaser_VO.wav`
 
 **How it is built** (`source/eai_teaser/`):
