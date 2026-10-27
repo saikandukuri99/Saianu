@@ -1,6 +1,8 @@
 # Solix Enterprise AI – Teaser (Storyline A, 4K)
 
-**v7 (current, `*_BGM.mp4`):** the same four v6 videos with the supplied background music ("Top Flow – Ambient Corporation, loop 01 intro") replacing the generated score. The 16.6-second loop is repeated with crossfaded seams, faded in at the top and out over the end card (`bgm_bed.py`), and ducked under the voice-over at -16 LUFS (`mix_bgm.sh`). The picture is unchanged (stream copy). The v6 files with the original score are kept for comparison.
+**v8 (current):** the voice-over is the supplied ElevenLabs recording ("Hale"). It is cut into the 37 script lines (`el_split.py`, split at its natural pauses) and placed on the storyboard cues, so every animation stays in sync. The runtime is 2:12. The background music is the supplied track. The "Open by design" platform card now shows only "Solix Enterprise AI", centred. Four 4K files: dark and white, each with and without captions.
+
+**v7 (`*_BGM.mp4`):** the same four v6 videos with the supplied background music ("Top Flow – Ambient Corporation, loop 01 intro") replacing the generated score. The 16.6-second loop is repeated with crossfaded seams, faded in at the top and out over the end card (`bgm_bed.py`), and ducked under the voice-over at -16 LUFS (`mix_bgm.sh`). The picture is unchanged (stream copy). The v6 files with the original score are kept for comparison.
 
 **v6:** same as v5, plus:
 - "Agentic" is pronounced ay-JEN-tik in the two Agentic lines (forced phonemes in `vo.py`).
