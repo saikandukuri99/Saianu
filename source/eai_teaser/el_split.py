@@ -18,7 +18,12 @@ def split(s, e, frac):
     w = int(.02 * sr)
     rms = [np.sqrt(np.mean(a[i:i + w] ** 2)) for i in range(lo, hi - w, w // 2)]
     cut = (lo + int(np.argmin(rms)) * (w // 2) + w // 2) / sr
-    return [(s, cut), (cut, e)]
+    # widen to the whole quiet stretch around the cut so each half stops/starts in silence
+    thr = np.sqrt(np.mean(a[int(s * sr):int(e * sr)] ** 2)) * .03
+    i0 = i1 = int(cut * sr)
+    while i0 > int(s * sr) and np.sqrt(np.mean(a[i0 - w:i0] ** 2)) < thr: i0 -= w // 4
+    while i1 < int(e * sr) and np.sqrt(np.mean(a[i1:i1 + w] ** 2)) < thr: i1 += w // 4
+    return [(s, i0 / sr), (i1 / sr, e)]
 # segment index -> script lines: 'split' (two lines), 'merge' (with next segment)
 plan = []
 i = 0
@@ -32,7 +37,13 @@ while i < len(segs):
     i += 1
 assert len(plan) == 37, len(plan)
 for k, (s, e) in enumerate(plan):
-    c = a[max(0, int((s - .04) * sr)): int((e + .12) * sr)].copy()
+    # pad into the surrounding pauses, but never past the middle of the gap to the
+    # neighbouring clip, so no syllable is copied into two clips
+    prev_e = plan[k - 1][1] if k else -1
+    next_s = plan[k + 1][0] if k + 1 < len(plan) else 1e9
+    s0 = max(s - .04, (prev_e + s) / 2) if k else max(0, s - .04)
+    e0 = min(e + .12, (e + next_s) / 2)
+    c = a[max(0, int(s0 * sr)): int(e0 * sr)].copy()
     f = int(.015 * sr); c[:f] *= np.linspace(0, 1, f); c[-f:] *= np.linspace(1, 0, f)
     sf.write(f'{out}/{k:02d}.wav', c, sr)
     print(k, round(s, 2), round(e, 2))

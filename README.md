@@ -1,6 +1,8 @@
 # Solix Enterprise AI – Teaser (Storyline A, 4K)
 
-**v8 (current):** the voice-over is the supplied ElevenLabs recording ("Hale"). It is cut into the 37 script lines (`el_split.py`, split at its natural pauses) and placed on the storyboard cues, so every animation stays in sync. The runtime is 2:12. The background music is the supplied track. The "Open by design" platform card now shows only "Solix Enterprise AI", centred. Four 4K files: dark and white, each with and without captions.
+**v9 (current):** fixes a voice-over glitch at about 1:32, where part of "and" played twice. Where one recorded phrase is split into two script lines, the clips now meet in the middle of the pause instead of overlapping (`el_split.py`). The corrected clips are placed at the same cue times (`vo_place.py`), so the picture is identical to v8 and only the soundtrack changed.
+
+**v8:** the voice-over is the supplied ElevenLabs recording ("Hale"). It is cut into the 37 script lines (`el_split.py`, split at its natural pauses) and placed on the storyboard cues, so every animation stays in sync. The runtime is 2:12. The background music is the supplied track. The "Open by design" platform card now shows only "Solix Enterprise AI", centred. Four 4K files: dark and white, each with and without captions.
 
 **v7 (`*_BGM.mp4`):** the same four v6 videos with the supplied background music ("Top Flow – Ambient Corporation, loop 01 intro") replacing the generated score. The 16.6-second loop is repeated with crossfaded seams, faded in at the top and out over the end card (`bgm_bed.py`), and ducked under the voice-over at -16 LUFS (`mix_bgm.sh`). The picture is unchanged (stream copy). The v6 files with the original score are kept for comparison.
 
@@ -24,8 +26,8 @@
 **v2:** follows the final Flow script, which opens with "AI is transforming how enterprises run and grow." The background is more corporate: deep navy-to-indigo gradient, fine faint grid, slow blue and red light ribbons, and a sparser low-opacity AI network. The animation is otherwise the same as v1.
 
 **Deliverables in `output/EAI_Teaser_4K/`** (3840×2160, 30 fps, H.264 High with AAC stereo):
-- `Solix_Enterprise_AI_Teaser_v8_4K_dark_with_captions.mp4` / `..._dark_no_captions.mp4`
-- `Solix_Enterprise_AI_Teaser_v8_4K_white_with_captions.mp4` / `..._white_no_captions.mp4`
+- `Solix_Enterprise_AI_Teaser_v9_4K_dark_with_captions.mp4` / `..._dark_no_captions.mp4`
+- `Solix_Enterprise_AI_Teaser_v9_4K_white_with_captions.mp4` / `..._white_no_captions.mp4`
 - `Solix_EAI_Teaser_captions.srt` and `Solix_EAI_Teaser_VO.wav`
 
 **How it is built** (`source/eai_teaser/`):
