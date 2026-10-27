@@ -1,3 +1,6 @@
+# FINAL v17: `Solix_SAP_OEBS_FINAL_v17_V4c_*` (101.1 s)
+Platform shot: label "YEARS OF APPLICATION ARCHIVING EXPERTISE"; the four circles share one label size and are centred; "SOLIX CDP" in capitals on screen; end card on one line "Visit our booth | www.solix.com". Voice and music as v16.
+
 # FINAL v16 (v4 + feedback round, dark): `Solix_SAP_OEBS_FINAL_v16_V4b_*` (101.1 s)
 Title card = centred headline + line only; challenge shot says "Planning a move to the cloud" (voice and screen, no S/4HANA); platform shot shows the fourth "+ more SOURCES" circle from the start and no "IBM ZSERIES"; Oracle Connect box cleaner with the bolt + SOLIX centred in the logo box; "AND MANY MORE" added after the application chips on the AKG slide (slide held 0.9 s longer); end card: Visit our booth + www.solix.com.
 
