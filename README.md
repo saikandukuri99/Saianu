@@ -1,6 +1,8 @@
 # Solix Enterprise AI – Teaser (Storyline A, 4K)
 
-**v6 (current):** same as v5, plus:
+**v7 (current, `*_BGM.mp4`):** the same four v6 videos with the supplied background music ("Top Flow – Ambient Corporation, loop 01 intro") replacing the generated score. The 16.6-second loop is repeated with crossfaded seams, faded in at the top and out over the end card (`bgm_bed.py`), and ducked under the voice-over at -16 LUFS (`mix_bgm.sh`). The picture is unchanged (stream copy). The v6 files with the original score are kept for comparison.
+
+**v6:** same as v5, plus:
 - "Agentic" is pronounced ay-JEN-tik in the two Agentic lines (forced phonemes in `vo.py`).
 - The client's AI artwork replaces the sparkle at the centre of the Agentic loop. On the white background it sits in a dark medallion.
 - The "AI" chip cropped from that artwork replaces the icon above the problem screen.
