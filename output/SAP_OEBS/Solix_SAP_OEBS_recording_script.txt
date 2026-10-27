@@ -5,9 +5,9 @@ TITLE CARD
  Music only (no voice-over).
 
 NARRATION
- 01. Enterprise applications run the business: Oracle applications, SAP and mainframes.
- 02. But years of inactive data keep bloating databases, slowing performance and driving up costs, right when you're planning a move to the cloud.
- 03. Solix CDP brings more than twenty years of ERP archiving expertise to all of them.
+ 01. Enterprise applications run the business: Oracle, SAP, mainframes, and many more.
+ 02. But years of inactive data keep bloating databases, slowing performance and driving up costs, right when you're planning a move to SAP S/4HANA or the cloud.
+ 03. Solix CDP brings more than twenty years of application archiving expertise to all of them, and connects to more than two hundred sources.
  04. For Oracle E-Business Suite, Solix is validated by Oracle and covers both archiving and full application retirement.
  05. For SAP, Solix CDP works natively through SAP's Archive Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales and more.
  06. Inactive data moves out on policy, and stays searchable, accessible and reportable for as long as you need it.
@@ -16,7 +16,7 @@ NARRATION
  09. Every answer cites its source. And every question is permission checked and audit logged.
  10. The result?
  11. Leaner production systems, cleaner migrations, and legacy databases up to thirty to sixty percent smaller.
- 12. Your ERP history becomes AI-activated data, not dead weight.
+ 12. Your application history becomes AI-activated data, not dead weight.
  13. Solix CDP. Built for enterprise applications.
 
 PRONUNCIATION
