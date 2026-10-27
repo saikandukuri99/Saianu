@@ -279,6 +279,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;font-family:Inter,sans-seri
 <!-- ===== S30 end ===== -->
 <div id="s30" class="a full">
   <svg id="orb" class="a" style="left:1170px;top:170px;width:600px;height:600px;overflow:visible"><circle cx="300" cy="300" r="300" fill="none" stroke="#0088cf" stroke-width="2"/><circle cx="300" cy="300" r="288" fill="none" stroke="#30267b" stroke-width="2"/><circle cx="300" cy="300" r="276" fill="none" stroke="#ee2424" stroke-width="2"/><circle cx="300" cy="300" r="264" fill="none" stroke="#122046" stroke-width="2"/></svg>
+  <div id="bmlab" class="a disp" style="left:1190px;top:792px;width:560px;text-align:center;font-size:58px;color:var(--ink)">Solix</div>
   <div id="bigmark" class="a" style="left:1190px;top:190px;width:560px;height:560px;transform-origin:50% 50%"><img src="assets/mark_orig.png" style="width:100%;height:100%;filter:drop-shadow(0 30px 60px rgba(238,36,36,.25))"></div>
   <div id="kp" class="a disp" style="left:150px;top:190px;font-size:138px;white-space:nowrap"><span class="wm"><span class="wi" id="kp1">Keep</span></span> <span class="wm"><span class="wi" id="kp2">the</span></span> <span class="wm"><span class="wi" id="kp3"><span class="hl" id="kphl"><i></i><span id="kpw">proof.</span></span></span></span></div>
   <div id="pl4" class="a" style="left:150px;top:365px;width:640px;height:6px;display:flex;gap:6px"><i style="flex:1;background:var(--blue);border-radius:3px"></i><i style="flex:1;background:var(--purple);border-radius:3px"></i><i style="flex:1;background:var(--red);border-radius:3px"></i><i style="flex:1;background:var(--navy);border-radius:3px"></i></div>
@@ -286,7 +287,7 @@ html,body{width:1920px;height:1080px;overflow:hidden;font-family:Inter,sans-seri
   <div id="lock2" class="a" style="left:150px;top:462px;display:flex;align-items:center;gap:26px"><img src="assets/logo_black.png" style="height:96px"><div style="width:2px;height:74px;background:#c3c6d1"></div><div style="font-size:76px;font-weight:500;color:var(--ink);letter-spacing:.04em;line-height:1">ECS</div></div>
   <div id="desc" class="a" style="left:150px;top:600px;font-size:25px;color:#4c5068;font-weight:500;white-space:nowrap">Audit-ready document management and archiving for regulated organizations.</div>
   <div id="azure" class="a" style="left:150px;top:642px;font-size:22px;color:var(--grey);font-weight:500;white-space:nowrap">Azure-native SaaS. Nothing to install.</div>
-  <div id="cta" class="a" style="left:150px;top:708px;display:flex;align-items:center;gap:22px;white-space:nowrap"><span style="background:var(--red);color:#fff;font-size:24px;font-weight:700;padding:14px 26px;border-radius:12px;box-shadow:0 14px 30px rgba(238,36,36,.3)">Start your 30-day trial</span><span style="font-size:24px;color:#4c5068;font-weight:500">No card needed · <span style="color:var(--blue);font-weight:600">solix.com</span></span></div>
+  <div id="cta" class="a" style="left:150px;top:708px;display:flex;align-items:center;gap:22px;white-space:nowrap"><span style="background:var(--red);color:#fff;font-size:24px;font-weight:700;padding:14px 26px;border-radius:12px;box-shadow:0 14px 30px rgba(238,36,36,.3)">Start your 30-day trial</span><span style="font-size:24px;color:#4c5068;font-weight:500">No card needed · <span style="color:var(--blue);font-weight:600">www.solix.com</span></span></div>
   <div id="built" class="a" style="left:150px;top:820px;font-family:JBM;font-size:15px;letter-spacing:.16em;color:#8b8fa3;text-transform:uppercase;white-space:nowrap">Built by Solix. Two decades of archiving.</div>
 </div>
 
@@ -817,6 +818,7 @@ function seekOld(t){
     $('pl4').querySelectorAll('i').forEach((q,i)=>{q.style.transform=`scaleX(${R(t,123.4+i*0.15,123.8+i*0.15,E.io)})`;q.style.transformOrigin='left';});
   pop($('appr4'),t,124.0,0.4);pop($('desc'),t,124.5,0.4);pop($('azure'),t,124.8,0.4);pop($('cta'),t,126.6,0.45);pop($('built'),t,127.1,0.45);
   $('orb').querySelectorAll('circle').forEach((c,i)=>{const L0=2*Math.PI*c.r.baseVal.value;c.style.strokeDasharray=L0;c.style.strokeDashoffset=L0*(1-R(t,125.6+i*0.18,126.6+i*0.18,E.io));c.style.transformOrigin='300px 300px';c.style.transform=`rotate(${-90+i*30}deg)`;});
+  pop($('bmlab'),t,124.3,0.45);
   const bm=R(t,123.3,124.3,E.o5);S($('bigmark'),{op:bm,s:L(.82,1,bm)*L(1,1.03,R(t,124.3,130.9,E.l)),r:L(-25,0,bm)});
  }
  // ---------- cursor ----------
