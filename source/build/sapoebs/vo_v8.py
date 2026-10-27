@@ -9,7 +9,7 @@ SR = 48000
 # (sentences) per line; spelled letters / numbers written the way they are spoken
 LINES = [
  ["Enterprise applications run the business: Oracle, S A P, mainframes, and many more."],
- ["But years of inactive data keep bloating databases, slowing performance, and driving up costs, right when you're planning a move to S A P S four HANA, or the cloud."],
+ ["But years of inactive data keep bloating databases, slowing performance, and driving up costs, right when you're planning a move to the cloud."],
  ["Solix C D P brings more than twenty years of application archiving expertise to all of them, and connects to more than two hundred sources."],
  ["For Oracle E Business Suite, Solix is validated by Oracle, and covers both archiving and full application retirement."],
  ["For S A P, Solix C D P works natively through S A P's Archive Development Kit, with pre-built support for standard archive objects across Finance, Materials, Sales, and more."],
@@ -23,7 +23,7 @@ LINES = [
  ["Solix C D P. Built for enterprise applications."],
 ]
 # silence after each line before the next one (s). Line 0 -> 1 leaves room for chips + underline; 8 -> 9 is set by the 2 s hold.
-GAP = {0: 1.10, 1: .38, 2: 1.60, 3: .36, 4: .40, 5: .46, 6: .42, 7: .32, 8: .55, 10: .40, 11: .46}   # tighter, continuous flow like the reference
+GAP = {0: 1.10, 1: .38, 2: 1.60, 3: .36, 4: .40, 5: .46, 6: 1.30, 7: .32, 8: .55, 10: .40, 11: .46}   # tighter, continuous flow like the reference
 HOLD_NEXT = 2.14                        # "The result?" stays on screen 2.0 s; next line starts this long after it begins
 SENT_GAP = .28
 TARGET_RMS = 10 ** (-20 / 20)

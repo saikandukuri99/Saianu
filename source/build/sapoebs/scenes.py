@@ -97,18 +97,11 @@ def family_pill(c, label, col, x, y, size, a, h=None):
     return w
 
 def scene_T(c, t):
-    kicker(c, "SOLIXEMPOWER 2026", 960, 250, .15, t, anchor="c")
+    kicker(c, "SOLIXEMPOWER 2026", 960, 395, .15, t, anchor="c")
     size = 100; hw = [("Enterprise", WHITE, None), ("Application", WHITE, None), ("Archiving", WHITE, None)]
-    words(c, hw, 960, 330, size, [.35, .6, .85], t, anchor="c")
+    words(c, hw, 960, 462, size, [.35, .6, .85], t, anchor="c")
     f = font("d", "Bold", size); wd = sum(f.getlength(i[0]) for i in hw) + size * .27 * 2
-    tri_underline(c, 960 - wd / 2, 490, wd, E(pr(t, 1.4, .7)), 8)
-    items = [("Oracle Applications", ORA, 2.1), ("SAP", SAPB, 2.5), ("Mainframe", MFC, 2.9)]
-    ws = [int(tw(l, "d", "Bold", 40) + 44) for l, _, _ in items]
-    tot_ = 70 + 18 + sum(ws) + 18 * 2; x = 960 - tot_ / 2
-    a_ = E(pr(t, 1.9, .4)); ctext(c, "for", x + 22, 618 + (1 - a_) * 10, "i", "Medium", 40, TXT, a_, anchor="c"); x += 70 + 18
-    for (l, col, ti), w in zip(items, ws):
-        a = E(pr(t, ti, .35)); yy = 618 + (1 - a) * 14
-        c.blit(BAR(w, 70, col), x, yy - 35, a); ctext(c, l, x + w / 2, yy, "d", "Bold", 40, WF, a, anchor="c"); x += w + 18
+    tri_underline(c, 960 - wd / 2, 620, wd, E(pr(t, 1.4, .7)), 8)
 
 # --------------------------------------------------------------------------- A  (HEAD) opening headline
 def scene_A(c, t):
@@ -212,9 +205,7 @@ def scene_B(c, t):
         c.card(x0, y0, w0, h0, da, outline=BLUE + (230,), glow=BLUE)
         c.text("PLANNED MIGRATION", x0 + w0 / 2, y0 + 30, "i", "Bold", 18, SKY, da, track=5, anchor="c")
         c.icon("cloud", x0 + w0 / 2, y0 + 140, 140, SKY, da)
-        sz_ = 38
-        while tw("Oracle  /  SAP S/4HANA", "d", "Bold", sz_) > w0 - 40: sz_ -= 1
-        c.text("Oracle  /  SAP S/4HANA", x0 + w0 / 2, y0 + 232, "d", "Bold", sz_, WHITE, da, anchor="c")
+        c.text("Oracle  /  SAP", x0 + w0 / 2, y0 + 232, "d", "Bold", 38, WHITE, da, anchor="c")
         p0, p1 = (dbx + dbw + 22, dby + 320), (x0 - 12, y0 + 165)
         c.dashed(p0, p1, SKY, da * .8, 3, 14, 10, t * 60)
         c.pulse(p0, p1, t, 0.55, 0.0, WHITE, 6, da)
@@ -252,24 +243,27 @@ def scene_C(c, t):
     # family nodes connect in
     tb = cue(2, "all of them") - .1; act = E(pr(t, tb, .6)); na = E(pr(t, t0 + .2, .6)); solid = E(pr(t, t200, .6))
     nodes = [("Oracle", "APPLICATIONS", ORA, (300, 452), 44, (575, 520)), ("SAP", "ERP", SAPB, (1620, 452), 60, (1345, 520)),
-             ("Mainframe", "IBM ZSERIES", MFC, (300, 764), 34, (575, 650))]
+             ("Mainframe", None, MFC, (300, 764), 34, (575, 650))]
     for lab, sub, col, (nx, ny), fs, hub in nodes:
         node_ring(c, nx, ny, 220, lab, sub, col, na, t, act, fs)
         sgn = 1 if nx < 960 else -1; p0 = (nx + sgn * 112, ny + (14 if ny < 600 else -14))
         c.dashed(p0, hub, col, (.25 * na + .5 * act) * (1 - solid), 3, 12, 9, t * 50)
         c.line(p0, hub, col, .9 * solid * na, 3)
         if solid > .3: c.pulse(p0, hub, t, .6, nx / 3000., WHITE, 5, solid)
-    # fourth node: + more sources, with a spray of small dots
-    fa = E(pr(t, t200 + .35, .6))
+    # fourth node: + more sources, there from the start with the other three; the spray of dots joins on 200+
+    fa = na
     if fa > .01:
         fx, fy = 1620, 760
         c.ring((fx, fy), 98, GREYB, fa * .9, 2)
         c.text("+ more", fx, fy - 30, "d", "Bold", 38, WHITE, fa, anchor="c"); c.text("SOURCES", fx, fy + 24, "i", "Bold", 13, SKY, fa, track=3, anchor="c")
-        p0 = (1345, 650); p1 = (fx - 70, fy - 70); c.line(p0, p1, GREYB, .7 * fa, 3); c.pulse(p0, p1, t, .6, .3, WHITE, 5, fa)
+        p0 = (1345, 650); p1 = (fx - 70, fy - 70)
+        c.dashed(p0, p1, GREYB, (.25 * na + .5 * act) * (1 - solid), 3, 12, 9, t * 50)
+        c.line(p0, p1, GREYB, .7 * solid * fa, 3)
+        if solid > .3: c.pulse(p0, p1, t, .6, .3, WHITE, 5, solid)
         for j in range(30):
             ang = j * 2.399 + (j % 5) * .4; r = 118 + (j * 37 % 60) + 8 * math.sin(t * 1.6 + j)
             col = (ORA, SAPB, MFC)[j % 3]; tw_ = .35 + .65 * (.5 + .5 * math.sin(t * 2.2 + j * 1.7))
-            c.dot((fx + r * math.cos(ang), fy + r * .92 * math.sin(ang)), 2 + (j % 3), col, fa * tw_)
+            c.dot((fx + r * math.cos(ang), fy + r * .92 * math.sin(ang)), 2 + (j % 3), col, fa * solid * tw_)
     # strip of data sources along the bottom
     sa = E(pr(t, t200 + .5, .6))
     if sa > .01: strip(c, SOURCES, 950, t, t200, sa, 75, 14)
@@ -365,20 +359,22 @@ def scene_E(c, t):
     # other connected apps, bottom left, once "validated by Oracle" has been said
     ta = cue(3, "by Oracle", end=True) + .1; pa = E(pr(t, ta, .5))
     if pa > .01:
-        px, py, pw, ph = 120 - (1 - pa) * 30, 700, 740, 232
+        px, py, pw, ph = 120 - (1 - pa) * 30, 690, 740, 262
         c.card(px, py, pw, ph, pa, outline=RED + (190,), r=24)
-        c.blit(BAR(28, 5, RED), px + 34, py + 36, pa); ctext(c, "CONNECT", px + 76, py + 38, "i", "Bold", 22, SKY, pa, track=8)
-        x = px + 34
+        c.blit(BAR(28, 5, RED), px + 36, py + 38, pa); ctext(c, "CONNECT", px + 78, py + 40, "i", "Bold", 22, SKY, pa, track=8)
+        x = px + 36
         for i, nm in enumerate(("EBS", "PEOPLESOFT", "JDE", "SIEBEL")):
             ca = E(pr(t, ta + .3 + i * .16, .35)); w = int(tw(nm, "i", "Bold", 22, 3) + 50); col = RED if i % 2 == 0 else BLUE
-            c.card(x, py + 86 + (1 - ca) * 10, w, 54, ca * pa, outline=col + (220,), fill=CARD + (235,), r=27)
-            ctext(c, nm, x + w / 2, py + 113 + (1 - ca) * 10, "i", "Bold", 22, WHITE, ca * pa, track=3, anchor="c"); x += w + 16
-        fa = E(pr(t, ta + 1.1, .4)) * pa
-        yb = py + 184
-        c.card(px + 28, yb - 36, 58, 72, fa, outline=RED + (230,), fill=BOLTF + (255,), r=12); bolt_solix(c, px + 40, yb - 31, 34, fa, 11)
-        x2 = px + 106; ctext(c, "Through ", x2, yb, "i", "Medium", 28, TXT, fa); x2 += tw("Through ", "i", "Medium", 28)
+            c.card(x, py + 80 + (1 - ca) * 10, w, 54, ca * pa, outline=col + (220,), fill=CARD + (235,), r=27)
+            ctext(c, nm, x + w / 2, py + 107 + (1 - ca) * 10, "i", "Bold", 22, WHITE, ca * pa, track=3, anchor="c"); x += w + 16
+        fa = E(pr(t, ta + 1.0, .4)) * pa
+        c.blit(BAR(pw - 72, 2, SOFT), px + 36, py + 160, fa * .8)
+        yb = py + 208; bx, bw = px + 36, 76                                        # logo box: bolt + SOLIX centred in it, both ways
+        c.card(bx, yb - 38, bw, 76, fa, outline=RED + (230,), fill=BOLTF + (255,), r=14)
+        dd, ns = 38, 12; hh = dd + ns + 4; bolt_solix(c, bx + bw / 2 - dd / 2, yb - hh / 2 - 1, dd, fa, ns)
+        x2 = bx + bw + 24; ctext(c, "Through ", x2, yb, "i", "Medium", 28, TXT, fa); x2 += tw("Through ", "i", "Medium", 28)
         ctext(c, "Solix Connect", x2, yb, "i", "Bold", 28, WHITE, fa)
-        ctext(c, "\u00bb\u00bb\u00bb", px + pw - 34, yb, "i", "Bold", 30, SKY, fa * .8, anchor="r")
+        ctext(c, "\u00bb\u00bb\u00bb", px + pw - 36, yb, "i", "Bold", 30, SKY, fa * .8, anchor="r")
     badge = E(pr(t, cue(3, "both") - .1, .5))
     c.text("BOTH  ·  ONE PLATFORM", 1085, 888, "i", "Bold", 17, SKY, badge * (1 - E(pr(t, line_t(3)[1] - .5, .4))), track=6, anchor="c")
 
@@ -445,6 +441,11 @@ def scene_K(c, t):
         c.card(gx, gy, w, 64, on, outline=col + (220,), fill=CARD + (236,), r=32)
         c.blit(CIRCLE(30, col + (255,), glow=col), gx + 34, gy + 32, on, 1, True); c.icon("check", gx + 34, gy + 32, 18, WF, on)
         ctext(c, nm, gx + 62, gy + 32, "i", "Bold", 19, WHITE, on, track=2)
+    om = E(pr(t, ta + len(apps) * .14, .4))                                   # "and many more"
+    if om > .01:
+        wm = 240 * 3 + 24; c.card(120, 730 + 2 * 82, wm, 64, om, outline=GREYB + (230,), fill=CARD + (236,), r=32)
+        c.blit(CIRCLE(30, GREYB + (255,)), 154, 730 + 2 * 82 + 32, om, 1, True); c.icon("check", 154, 730 + 2 * 82 + 32, 18, WF, om)
+        ctext(c, "AND MANY MORE", 182, 730 + 2 * 82 + 32, "i", "Bold", 19, WHITE, om, track=2)
     # the knowledge graph panel
     pa = E(pr(t, tk - .1, .6)); px, py, pw, ph = 930, 205, 870, 700
     c.card(px, py, pw, ph, pa, outline=SKY + (200,), glow=BLUE)
@@ -707,7 +708,8 @@ def scene_J(c, t):
     ea = E(pr(t, end_card_t(), .8))
     if ea > .01:
         lg = LOGO(150); c.blit(lg, 960 - lg.width / 2, 540 - 14 * (1 - ea), ea)
-        ctext(c, "Visit our booth", 960, 810, "d", "Bold", 54, SKY, E(pr(t, end_card_t() + .5, .6)), anchor="c")
+        ctext(c, "Visit our booth", 960, 790, "d", "Bold", 54, SKY, E(pr(t, end_card_t() + .5, .6)), anchor="c")
+        ctext(c, "www.solix.com", 960, 862, "d", "Bold", 42, WHITE, E(pr(t, end_card_t() + .8, .6)), anchor="c")
         fa = E(pr(t, end_card_t() + .8, .7)) * .9
         for k, ln in enumerate(("SAP, SAP S/4HANA, SAP HANA and SAP ASE are trademarks or registered trademarks of SAP SE. Oracle, E-Business Suite, PeopleSoft, JD Edwards and Siebel are trademarks or registered trademarks of Oracle and/or its affiliates.",
                                 "IBM, zSeries and Db2 are trademarks of International Business Machines Corporation. Microsoft, Dynamics 365 and SQL Server are trademarks of Microsoft Corporation. Salesforce is a trademark of Salesforce, Inc. Workday is a trademark of Workday, Inc.",
