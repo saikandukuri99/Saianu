@@ -214,9 +214,12 @@ def scene_B(c, t):
 def node_ring(c, cx, cy, d, label, sub, col, a, t, active, fs=None):
     c.blit(CIRCLE(d, CARD + (240,), col + (int(120 + 110 * active),), 3, glow=col if active > .5 else None), cx, cy, a, 1.0, True)
     c.ring((cx, cy), d // 2 + 14 + 6 * math.sin(t * 2.2), col, a * (.2 + .5 * active), 2)
-    fs = fs or 46
-    c.text(label, cx, cy - fs * .78 - 10, "d", "Bold", fs, WHITE, a, anchor="c")
-    if sub: c.text(sub, cx, cy + 26, "i", "Bold", 13, mix(SKY, col, .5), a, track=3, anchor="c")
+    fs = 36                                                            # same label size in every circle, centred on the circle
+    if sub:
+        ctext(c, label, cx, cy - 12, "d", "Bold", fs, WHITE, a, anchor="c")
+        ctext(c, sub, cx, cy + 28, "i", "Bold", 13, mix(SKY, col, .5), a, track=3, anchor="c")
+    else:
+        ctext(c, label, cx, cy, "d", "Bold", fs, WHITE, a, anchor="c")
 
 SOURCES = ["Oracle Database", "IBM Db2", "SQL Server", "SAP HANA", "SAP ASE", "MySQL", "Salesforce", "Workday", "Baan", "Microsoft Dynamics 365", "Custom applications"]
 
@@ -224,10 +227,10 @@ def scene_C(c, t):
     t0 = line_t(2)[0]
     a0 = E(pr(t, t0 - .1, .5))
     # header lockup, centred: the bolt always carries SOLIX beneath it, aligned on the middle of the "Solix CDP" line
-    sz = 74; wS = tw("Solix CDP", "d", "Bold", sz, 4); bd = 62; gap = 22; x = 960 - (bd + gap + wS) / 2; ycen = 270
+    sz = 74; wS = tw("SOLIX CDP", "d", "Bold", sz, 4); bd = 62; gap = 22; x = 960 - (bd + gap + wS) / 2; ycen = 270
     hh = bd + 14 + 6
     bolt_solix(c, x, ycen - hh / 2, bd, a0, 14)
-    ctext(c, "Solix CDP", x + bd + gap, ycen, "d", "Bold", sz, WHITE, a0, track=4)
+    ctext(c, "SOLIX CDP", x + bd + gap, ycen, "d", "Bold", sz, WHITE, a0, track=4)
     ac = E(pr(t, cue(2, "C D P") + .6, .5))
     ctext(c, "COMMON DATA PLATFORM", 960, 346, "i", "Bold", 17, DIM, ac, track=7, anchor="c")
     # counter: 0 -> 20+ on "twenty", then rolls to 200+ on "two hundred"
@@ -238,12 +241,12 @@ def scene_C(c, t):
     c.text(str(n), xx, 380, "d", "Bold", 270, WHITE, s_)
     c.text("+", xx + ws_ + 26, 380, "d", "Bold", 270, RED, s_)
     sw = E(pr(t, t200 + .25, .5))
-    c.text("YEARS OF ERP ARCHIVING EXPERTISE", 960, 705, "i", "Bold", 30, SKY, E(pr(t, cue(2, "application") - .15, .5)) * (1 - sw), track=7, anchor="c")
-    c.text("SOURCES THROUGH SOLIX CONNECT", 960, 705, "i", "Bold", 30, SKY, sw, track=7, anchor="c")
+    c.text("YEARS OF APPLICATION ARCHIVING EXPERTISE", 960, 705, "i", "Bold", 27, SKY, E(pr(t, cue(2, "application") - .15, .5)) * (1 - sw), track=5, anchor="c")
+    c.text("SOURCES THROUGH SOLIX CONNECT", 960, 705, "i", "Bold", 27, SKY, sw, track=5, anchor="c")
     # family nodes connect in
     tb = cue(2, "all of them") - .1; act = E(pr(t, tb, .6)); na = E(pr(t, t0 + .2, .6)); solid = E(pr(t, t200, .6))
-    nodes = [("Oracle", "APPLICATIONS", ORA, (300, 452), 44, (575, 520)), ("SAP", "ERP", SAPB, (1620, 452), 60, (1345, 520)),
-             ("Mainframe", None, MFC, (300, 764), 34, (575, 650))]
+    nodes = [("Oracle", "APPLICATIONS", ORA, (300, 452), 40, (575, 520)), ("SAP", "ERP", SAPB, (1620, 452), 40, (1345, 520)),
+             ("Mainframe", None, MFC, (300, 764), 40, (575, 650))]
     for lab, sub, col, (nx, ny), fs, hub in nodes:
         node_ring(c, nx, ny, 220, lab, sub, col, na, t, act, fs)
         sgn = 1 if nx < 960 else -1; p0 = (nx + sgn * 112, ny + (14 if ny < 600 else -14))
@@ -254,9 +257,8 @@ def scene_C(c, t):
     fa = na
     if fa > .01:
         fx, fy = 1620, 760
-        c.ring((fx, fy), 98, GREYB, fa * .9, 2)
-        c.text("+ more", fx, fy - 30, "d", "Bold", 38, WHITE, fa, anchor="c"); c.text("SOURCES", fx, fy + 24, "i", "Bold", 13, SKY, fa, track=3, anchor="c")
-        p0 = (1345, 650); p1 = (fx - 70, fy - 70)
+        node_ring(c, fx, fy, 220, "+ more", "SOURCES", GREYB, fa, t, act, 40)
+        p0 = (1345, 650); p1 = (fx - 80, fy - 80)
         c.dashed(p0, p1, GREYB, (.25 * na + .5 * act) * (1 - solid), 3, 12, 9, t * 50)
         c.line(p0, p1, GREYB, .7 * solid * fa, 3)
         if solid > .3: c.pulse(p0, p1, t, .6, .3, WHITE, 5, solid)
@@ -675,8 +677,8 @@ def scene_J(c, t):
     out = 1 - E(pr(t, tg, .4)); a_sol = E(pr(t, cue(12, "Solix") - .1, .5))
     # Solix CDP stays; its tri-colour underline arrives with the end card
     sz = 130; cyS = lerp(380, 250, E(pr(t, tg, .55))) + (1 - a_sol) * 16
-    ctext(c, "Solix CDP", 960, cyS, "d", "Bold", sz, WHITE, a_sol, track=3, anchor="c")
-    wd = tw("Solix CDP", "d", "Bold", sz, 3)
+    ctext(c, "SOLIX CDP", 960, cyS, "d", "Bold", sz, WHITE, a_sol, track=3, anchor="c")
+    wd = tw("SOLIX CDP", "d", "Bold", sz, 3)
     tri_underline(c, 960 - wd / 2, 340, wd, E(pr(t, tg + .25, .6)), 9)
     # "Built for" + one gradient pill + the three families
     tb = cue(12, "Built for") - .1; te = cue(12, "enterprise") - .1
@@ -708,8 +710,9 @@ def scene_J(c, t):
     ea = E(pr(t, end_card_t(), .8))
     if ea > .01:
         lg = LOGO(150); c.blit(lg, 960 - lg.width / 2, 540 - 14 * (1 - ea), ea)
-        ctext(c, "Visit our booth", 960, 790, "d", "Bold", 54, SKY, E(pr(t, end_card_t() + .5, .6)), anchor="c")
-        ctext(c, "www.solix.com", 960, 862, "d", "Bold", 42, WHITE, E(pr(t, end_card_t() + .8, .6)), anchor="c")
+        zs = 50; p1_, p2_, p3_ = "Visit our booth", "   |   ", "www.solix.com"
+        w1_, w2_, w3_ = (tw(q, "d", "Bold", zs) for q in (p1_, p2_, p3_)); x0_ = 960 - (w1_ + w2_ + w3_) / 2; ka = E(pr(t, end_card_t() + .5, .6))
+        ctext(c, p1_, x0_, 810, "d", "Bold", zs, SKY, ka); ctext(c, p2_, x0_ + w1_, 810, "d", "Bold", zs, DIM, ka); ctext(c, p3_, x0_ + w1_ + w2_, 810, "d", "Bold", zs, WHITE, ka)
         fa = E(pr(t, end_card_t() + .8, .7)) * .9
         for k, ln in enumerate(("SAP, SAP S/4HANA, SAP HANA and SAP ASE are trademarks or registered trademarks of SAP SE. Oracle, E-Business Suite, PeopleSoft, JD Edwards and Siebel are trademarks or registered trademarks of Oracle and/or its affiliates.",
                                 "IBM, zSeries and Db2 are trademarks of International Business Machines Corporation. Microsoft, Dynamics 365 and SQL Server are trademarks of Microsoft Corporation. Salesforce is a trademark of Salesforce, Inc. Workday is a trademark of Workday, Inc.",
