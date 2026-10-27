@@ -1014,6 +1014,52 @@ def render(c, t, src, now):
     draw_chrome(c, t)
 
 
+# The source answer screen briefly shows an older "Nothing copied" chip while the chips fade in and out.
+# Replace that chip with the approved "AKG-governed" chip, matched to each frame's fade level.
+CHIP = (690, 612, 210, 52)        # chip slot, in source-crop coordinates
+COVERED = (130, 620, 288, 36)     # neighbouring "Covered" chip, used to measure the fade
+BGREF = (910, 622, 120, 30)       # chip-free card area, used to measure background dimming
+CHIP_SRC = (65.4, 68.7)
+
+
+def grab(path, t):
+    x, y, w, h = bl.CROP
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{t}", "-i", path, "-frames:v", "1", "-vf",
+                          f"crop={w}:{h}:{x}:{y}", "-f", "rawvideo", "-pix_fmt", "rgba", "-"],
+                         capture_output=True).stdout
+    return np.frombuffer(raw, np.uint8).reshape(h, w, 4).astype(np.float32)
+
+
+def reg(a, r):
+    x, y, w, h = r
+    return a[y:y + h, x:x + w]
+
+
+class PatchedSource(bl.Source):
+    def __init__(self, path, need):
+        super().__init__(path, need)
+        self.akg = grab(path, 66.5)        # steady frame with the AKG-governed chip
+        self.empty = grab(path, 64.5)      # same screen before the chips appear
+        self.done = {}
+
+    def frame(self, idx, now):
+        arr = super().frame(idx, now)
+        if not (CHIP_SRC[0] * FPS <= idx <= CHIP_SRC[1] * FPS):
+            return arr
+        if idx not in self.done:
+            f = arr.astype(np.float32)
+            m, m0, m1 = (reg(f, COVERED)[..., :3].mean(), reg(self.empty, COVERED)[..., :3].mean(),
+                         reg(self.akg, COVERED)[..., :3].mean())
+            a = clamp((m - m0) / (m1 - m0)) if m1 > m0 else 1.0
+            s = reg(f, BGREF)[..., :3].mean() / max(1e-3, reg(self.empty, BGREF)[..., :3].mean())
+            patch = reg(self.empty, CHIP) * s * (1 - a) + reg(self.akg, CHIP) * a
+            out = arr.copy()
+            x, y, w, h = CHIP
+            out[y:y + h, x:x + w, :3] = np.clip(patch[..., :3], 0, 255).astype(np.uint8)
+            self.done = {idx: out}
+        return self.done[idx]
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("src")
@@ -1025,7 +1071,7 @@ def main():
     c = surf.getCanvas()
     if a.still:
         fr = sorted(int(round(float(x) * FPS)) for x in a.still.split(","))
-        src = bl.Source(a.src, [frame_needs(f) for f in fr])
+        src = PatchedSource(a.src, [frame_needs(f) for f in fr])
         from PIL import Image
         for n, f in enumerate(fr):
             render(c, f / FPS, src, n)
@@ -1033,7 +1079,7 @@ def main():
                 f"{a.out}_{f / FPS:06.2f}.png")
         return
     f0, f1 = map(int, a.frames.split(":"))
-    src = bl.Source(a.src, [frame_needs(f) for f in range(f0, f1)])
+    src = PatchedSource(a.src, [frame_needs(f) for f in range(f0, f1)])
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}",
                             "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "slow", "-crf", "14",
                             "-pix_fmt", "yuv420p", "-x264-params", "keyint=60", a.out], stdin=subprocess.PIPE)

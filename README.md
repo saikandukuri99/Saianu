@@ -114,7 +114,7 @@
 `output/EAI_Booth_Loop_White/Solix_EAI_Booth_Loop_White_1080p.mp4`: 1920×1080, 30 fps, 1:30, H.264, **no audio**. The last frame flows straight into the first, so it can play on repeat at the booth.
 
 - **Look:** a white background with a slowly drifting tech network (nodes and links in #0088cf and #ee2424, with data pulses moving along the links). Headlines are #30267b, the key phrase in each is #0088cf with a #ee2424 underline that sweeps in, and the kickers are #0088cf letter-spaced caps after a red dash.
-- **Flow (follows the storyboard):** Solix logo build → "Enterprise AI for real business impact." + product chips → Data Sense → Curation → Data Ask → XKG (PREVIEW) → AI Warehouse → Agentic (ANNOUNCED) → Open by design (5 cards) → clean network, which loops back to the start.
+- **Flow (follows the storyboard):** Solix logo build → "Enterprise AI for real business impact." + product chips → Data Sense → Curation → Data Ask → XKG → AI Warehouse → Agentic → Open by design (5 cards) → clean network, which loops back to the start.
 - **Motion:** the logo icon spins and pops in and the wordmark wipes in, then the logo flies to the corner. Headline words rise from behind a mask, one after another, and body lines fade up. Product screens play in a floating browser card (with the solix.com URL) that slides in, pushes in slowly and floats gently. Between scenes there's an angled blue and red wipe with a light sweep. The bottom nav shows the active product, with a blue→red progress bar. The "Live demo at this stand" pill pulses.
 - The product screens are re-used from the v4 booth loop (cropped so the clideo watermark is gone).
 - The build is `source/build/booth_loop.py` (skia-python + ffmpeg): `python3 booth_loop.py <v4_loop.mp4> out.mp4 [--frames a:b]`.
@@ -123,6 +123,7 @@
 `output/EAI_Booth_Loop_White_v6/Solix_EAI_Booth_Loop_White_v6_1080p.mp4` uses the same format as above, updated to `EAI_Booth_Loop_Onscreen_Text_v6.txt` (copied into the same folder):
 - XKG headline: "One meaning across every application." The XKG line is unchanged: "Each application answers through its own AKG. XKG combines results using certified business meaning."
 - Opening products: Data Sense · Data Ask · AI Warehouse · Agentic. The bottom navigation still lists all five sections.
+- The product status tags are removed: no PREVIEW on XKG and no ANNOUNCED on Agentic.
 
 ---
 
@@ -134,3 +135,6 @@
 - **Rebuilt natively in white:** the diagram scenes. These are "Why it fails" (three app cards, ≠ markers, three failure chips), "Introducing Solix XKG" (the semantic-layer hub feeding three apps, each "Governed by its AKG", no PREVIEW tag), and "How it works" (a 3-step stepper, the golden record, the certified term, contributions counting up to the governed result of $875,500). Also "One layer, many questions" (Suppliers / Customers / Materials, plus the three pills), "What it unlocks" (4 tiles) and the end card: Solix icon + "Solix XKG" (tagline, "Ask us for a live demo", "A Solix Data Sense capability · Governed by Solix EDG").
 - **Bottom nav:** The question · Why it fails · Solix XKG · In the product · What it unlocks.
 - The build is `source/build/xkg_loop.py`, which reuses `booth_loop.py`: `python3 xkg_loop.py <xkg_loop.mp4> out.mp4 [--frames a:b]`.
+
+### XKG loop: answer chip correction
+On the answer screen (around 1:05–1:08), the chip row reads "Covered: 3 of 3 applications · Lineage for every figure · AKG-governed". The source recording briefly showed an older "Nothing copied" chip while the chips faded in and out. `xkg_loop.py` (`PatchedSource`) replaces it, frame by frame, with the approved "AKG-governed" chip, matched to each frame's fade.
