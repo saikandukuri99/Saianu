@@ -65,7 +65,7 @@ SCENES = [
                 (19.0, "Every application speaks |its own language.|",
                  "An LLM can read each system. It can't know what they mean together.")]),
     dict(t0=22.2, t1=28.7, kind="intro", nav=2, kick="INTRODUCING",
-         beats=[(22.7, "Solix |XKG|", "A cross-application semantic layer: identity and meaning, decided once.")],
+         beats=[(22.7, "Solix |XKG|", "")],
          hsize=112, sub="Cross-Application Knowledge Graph", foot="A Solix Data Sense capability · Governed by Solix EDG"),
     dict(t0=28.7, t1=41.7, kind="how", nav=2, kick="HOW IT WORKS",
          beats=[(29.1, "|Resolve identity.|", "One record for each real-world thing."),
@@ -83,8 +83,8 @@ SCENES = [
          beats=[(61.1, "Same question. Now |one answer you can check.|", ""),
                 (65.0, "Same question. Now |one answer you can check.|", "Each system's share shown. Retired systems included.")]),
     dict(t0=68.5, t1=77.5, kind="layer", nav=4, kick="ONE LAYER, MANY QUESTIONS",
-         beats=[(68.7, "One layer. |Any question| that spans your applications.", "Not just suppliers: customers, materials and more."),
-                (73.3, "One layer. |Any question| that spans your applications.",
+         beats=[(68.7, "One layer. |Questions across| your applications.", "Not just suppliers: customers, materials and more."),
+                (73.3, "One layer. |Questions across| your applications.",
                  "Start with one entity type. Add more when a question needs it.")]),
     dict(t0=77.5, t1=85.5, kind="outcomes", nav=4, kick="BUSINESS OUTCOMES",
          beats=[(77.7, "What it |unlocks.|", "Identity and meaning, decided once. Applied everywhere.")]),
@@ -647,8 +647,7 @@ def draw_intro(c, t, sc):
         sh = skia.GradientShader.MakeLinear([(hub.left(), 0), (hub.right(), 0)], [col(BLUE, 0.08), col(RED, 0.06)])
         c.drawRRect(skia.RRect.MakeRectXY(hub, 50, 50), skia.Paint(AntiAlias=True, Shader=sh))
         c.drawImageRect(LOGO_ICON, skia.Rect(hub.left() + 26, hub.top() + 22, hub.left() + 82, hub.top() + 78), SAMP)
-        text(c, "XKG", hub.left() + 98, hub.top() + 47, font("black", 30), INDIGO)
-        text(c, "Cross-application semantic layer", hub.left() + 98, hub.top() + 74, font("med", 18), BODY)
+        text(c, "XKG", hub.left() + 98, hub.centerY() + 11, font("black", 30), INDIGO)
         text(c, "Identity and meaning, decided once", hub.right() - 34, hub.centerY() + 9, font("bold", 24), BLUE,
              1, "r")
     pop(c, hub.centerX(), hub.centerY(), k, hubf)
@@ -678,11 +677,10 @@ def draw_intro(c, t, sc):
         def appf(bx=bx, name=name, st=st, ic=ic, i=i):
             panel(c, bx, 560, bx + cw, 700, accent=[BLUE, RED, BLUE][i])
             icon_box(c, bx + 22, 585, 44, [TEAL, BLUE, INDIGO][i], ic)
-            text(c, name, bx + 80, 607, font("bold", 20 if len(name) > 18 else 22), INDIGO)
-            status_pill(c, bx + 80, 618, st)
+            text(c, name, bx + 80, 614, font("bold", 20 if len(name) > 18 else 22), INDIGO)
             gk = prog(t, 25.0 + i * 0.25, 0.5)
             if gk > 0:
-                chip(c, bx + 22, 655 - 6 * (1 - gk), "Governed by its AKG", GREEN, "check", gk, 30, font("semi", 14))
+                chip(c, bx + 22, 646 - 6 * (1 - gk), "Governed by its AKG", GREEN, "check", gk, 30, font("semi", 14))
         pop(c, bx + cw / 2, 630, kk, appf)
     c.restore()
 
@@ -1052,9 +1050,18 @@ class PatchedSource(bl.Source):
                          reg(self.akg, COVERED)[..., :3].mean())
             a = clamp((m - m0) / (m1 - m0)) if m1 > m0 else 1.0
             s = reg(f, BGREF)[..., :3].mean() / max(1e-3, reg(self.empty, BGREF)[..., :3].mean())
-            patch = reg(self.empty, CHIP) * s * (1 - a) + reg(self.akg, CHIP) * a
-            out = arr.copy()
+            # chips slide up while fading in: follow the vertical offset of the neighbouring chip row
+            cx, cy, cw, ch = COVERED
+            pf = f[cy - 20:cy + ch + 20, cx:cx + cw, :3].mean(axis=(1, 2))
+            pa = self.akg[cy - 20:cy + ch + 20, cx:cx + cw, :3].mean(axis=(1, 2))
+            pf, pa = pf - pf.mean(), pa - pa.mean()
+            dy = 0
+            if pf.std() > 0.5:
+                dy = max(range(-14, 15), key=lambda d: float(np.dot(pf[20:-20], pa[20 - d:len(pa) - 20 - d])))
             x, y, w, h = CHIP
+            akg = self.akg[y - dy:y - dy + h, x:x + w]
+            patch = reg(self.empty, CHIP) * s * (1 - a) + akg * a
+            out = arr.copy()
             out[y:y + h, x:x + w, :3] = np.clip(patch[..., :3], 0, 255).astype(np.uint8)
             self.done = {idx: out}
         return self.done[idx]

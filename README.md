@@ -138,3 +138,7 @@
 
 ### XKG loop: answer chip correction
 On the answer screen (around 1:05–1:08), the chip row reads "Covered: 3 of 3 applications · Lineage for every figure · AKG-governed". The source recording briefly showed an older "Nothing copied" chip while the chips faded in and out. `xkg_loop.py` (`PatchedSource`) replaces it, frame by frame, with the approved "AKG-governed" chip, matched to each frame's fade.
+
+### Review round (EAI + XKG)
+- **EAI:** no status tags on XKG or Agentic. The XKG headline is "One shared meaning across every application." The Curation label reads "DATA SENSE". At 0:14, "AKGs" is spelled out as "Application Knowledge Graphs". AI Warehouse reads "Domain experts build AI applications." / "On governed data that already carries its meaning and rules. No data engineering project needed."
+- **XKG:** "AKG-governed" from the first fade-in frame (1:05.3) onward, and the replaced chip slides in with its neighbours. The intro has no Retired/Live status pills and no "cross-application semantic layer" line, in either the text column or the hub. One layer reads "One layer. Questions across your applications."
