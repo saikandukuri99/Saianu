@@ -1,3 +1,6 @@
+# FINAL v15 (script and screens v4, dark theme): `Solix_SAP_OEBS_FINAL_v15_V4_*` (102.6 s)
+Built from SolixEmpower2026_Script_Storyboard_v4: new hook (three families + "...and many more" with a moving strip), Solix CDP shot with Oracle / SAP / Mainframe nodes, 20+ rolling to 200+ sources, "+ more sources" node and data-source strip; Connect card without "& 100+ Sources"; closing "Solix CDP. Built for enterprise applications." with gradient pill and chips incl. "and many more"; new trademark lines. Colours: Oracle #FC371F, SAP #007ED3, Mainframe #12A99B, other apps #7D8FB5. The red bolt mark always has SOLIX beneath it and is centred on the "Solix CDP" line. New voice-over lines re-recorded in the same voice. Kept "Visit our booth" on the end card (earlier request; v4 doc still shows solix.com). Voice says "...a move to SAP S/4HANA, or the cloud" per the v4 script; screen text unchanged.
+
 # FINAL v14 DARK THEME: `Solix_SAP_OEBS_FINAL_v14_DarkTheme_*` (96.3 s)
 Same film as v13b (storyboard v3, new voice, bolt always with SOLIX, "Visit our booth", chips fixed) on the Solix dark-blue AI-network background. Voice and music identical to v13b.
 
