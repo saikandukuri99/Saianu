@@ -1,0 +1,5 @@
+episodes/*/mix/
+episodes/*/final_audio.wav
+episodes/*/cues.json
+__pycache__/
+*.whl

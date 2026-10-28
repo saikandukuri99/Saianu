@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face{font-family:'TeSans';src:url('../fonts/NotoSansTelugu-Regular.ttf');font-weight:400}
+  @font-face{font-family:'TeSans';src:url('../fonts/NotoSansTelugu-Bold.ttf');font-weight:700}
+  @font-face{font-family:'TeSerif';src:url('../fonts/NotoSerifTelugu-Bold.ttf');font-weight:700}
+  @font-face{font-family:'Pop';src:url('../fonts/Poppins-Regular.ttf');font-weight:400}
+  @font-face{font-family:'Pop';src:url('../fonts/Poppins-SemiBold.ttf');font-weight:600}
+  @font-face{font-family:'Pop';src:url('../fonts/Poppins-Bold.ttf');font-weight:700}
+  html,body{margin:0;padding:0;background:#000;overflow:hidden}
+  #stage{width:1920px;height:1080px;position:relative;overflow:hidden}
+  svg{display:block}
+  text{font-family:'TeSans','Pop','Noto Color Emoji',sans-serif;}
+</style>
+</head>
+<body>
+<div id="stage">
+  <svg id="svg" width="1920" height="1080" viewBox="0 0 1920 1080" xmlns="http://www.w3.org/2000/svg">
+    <defs id="defs"></defs>
+    <g id="bg"></g>
+    <g id="layers"></g>
+    <g id="cap"></g>
+    <g id="fx"></g>
+  </svg>
+  <svg id="measure" width="10" height="10" style="position:absolute;left:-9999px;top:0"></svg>
+</div>
+<script src="timeline.js"></script>
+<script src="engine.js"></script>
+<script src="assets.js"></script>
+<script src="visuals1.js"></script>
+<script src="visuals2.js"></script>
+<script src="visuals3.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
