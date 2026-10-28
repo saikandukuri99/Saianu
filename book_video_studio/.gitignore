@@ -4,3 +4,7 @@ episodes/*/cues.json
 __pycache__/
 *.whl
 output/*.mp4
+renderer3d/node_modules/
+renderer3d/package-lock.json
+renderer3d/perf.html
+blender/render/

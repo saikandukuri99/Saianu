@@ -167,7 +167,7 @@ total = sentences[-1]['end']
 
 tl = {'fps': 30, 'total': round(total, 3), 'brand': ep.get('brand', ''), 'sentences': [
     {k: v for k, v in s.items() if k in ('id', 'scene', 'text', 'start', 'end', 'dur', 'vs', 've', 'visual', 'theme', 'trans', 'txt', 'chunks')} for s in sentences]}
-open(f'{ROOT}/renderer/timeline.js', 'w', encoding='utf-8').write('window.TL=' + json.dumps(tl, ensure_ascii=False) + ';\n')
+open(f'{ROOT}/{sys.argv[2] if len(sys.argv) > 2 else "renderer"}/timeline.js', 'w', encoding='utf-8').write('window.TL=' + json.dumps(tl, ensure_ascii=False) + ';\n')
 json.dump({'total': tl['total'], 'scenes': plan, 'sentences': [{'id': s['id'], 'vs': s['vs'], 've': s['ve'], 'start': s['start'], 'end': s['end']} for s in sentences]}, open(f'{EP}/voice_plan.json', 'w'), indent=1)
 
 

@@ -1,0 +1,45 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>3D money-mindset showcase (Three.js)</title>
+<style>
+  @font-face{font-family:'TeSans';src:url('fonts/NotoSansTelugu-Bold.ttf');font-weight:700}
+  @font-face{font-family:'Pop';src:url('fonts/Poppins-Bold.ttf');font-weight:700}
+  html,body{margin:0;background:#000;height:100%;overflow:hidden;font-family:sans-serif;color:#fff}
+  #gl{position:fixed;inset:0} #gl canvas{width:100vw!important;height:56.25vw!important;max-height:100vh;max-width:177.78vh;margin:auto;position:absolute;inset:0}
+  #cap{display:none} #ui{position:fixed;left:12px;bottom:10px;font-size:13px;opacity:.7}
+</style></head>
+<body><div id="gl"></div><svg id="cap"></svg><svg id="measure" width="10" height="10" style="position:absolute;left:-9999px"></svg>
+<div id="ui">Real-time preview · camera path loops every 12 s · add ?ms=4 for MSAA</div>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { scene, composer, applyTheme, evalCam, setCamera, fx, FLOOR_Y, E, seg, bob } from './core3d.js';
+import { P, person, PEOPLE, text3d, words3d, label, halo, lightCone, popWords, M } from './kit3d.js';
+
+// ---- scene content: coin tower, idea bulb, glass cards, 3D title, a character
+const tower = new THREE.Group(); for (let i = 0; i < 14; i++) { const c = P.coin(.62); c.rotation.x = Math.PI / 2; c.rotation.z = i * .5; c.position.set((Math.random() - .5) * .06, FLOOR_Y + .12 + i * .1, (Math.random() - .5) * .06); c.rotation.set(Math.PI / 2, 0, Math.random() * 6); tower.add(c); } scene.add(tower);
+const bulb = P.bulb(); bulb.position.set(-3.6, -.4, 0); bulb.scale.setScalar(1.3); scene.add(bulb);
+const cards = [[3.6, .2, .6], [4.9, 1.6, -.6], [2.7, 1.9, 1.0]].map(([x, y, z], i) => { const c = P.glassCard(2.4, 1.5, { color: '#9ec2ff', opacity: .16, edge: '#ffffff' }); c.position.set(x, y, z); scene.add(c); return c; });
+const ring = new THREE.Mesh(new THREE.TorusGeometry(1.7, .035, 12, 128), new THREE.MeshBasicMaterial({ color: new THREE.Color('#33e0ff').multiplyScalar(2.2) })); ring.position.y = -.9; scene.add(ring);
+const title = words3d('ఎవరూ పిచ్చివాళ్ళు కాదు', { h: 1.5, size: 160, fill: '#FFD66B', outline: '#2a1450', depth: '#a86a08', layers: 12, step: .022 }); title.position.set(0, 3.0, 0); title.scale.setScalar(.85); scene.add(title);
+const guy = person(Object.assign({ mood: 'grin' }, PEOPLE.youth)); guy.position.set(-1.6, FLOOR_Y, 2.0); guy.scale.setScalar(.9); scene.add(guy);
+const cone = lightCone('#ffe1a8', 12, 3.2, .09); cone.position.set(0, 4.5, -1); scene.add(cone);
+
+// ---- camera path (keys are [time 0..1], position, look-at, fov, roll) — edit these to direct your own shot
+const SHOT = [
+  { t: 0,   p: [-9, 1.0, 9],  l: [0, .2, 0], f: 36, r: -2 },
+  { t: .35, p: [0, -.4, 11],  l: [0, .8, 0], f: 30, r: 0 },
+  { t: .7,  p: [8, 2.2, 8],   l: [-1, .6, 0], f: 28, r: 2 },
+  { t: 1,   p: [-2, 1.4, 6.5], l: [-3.5, -.2, 0], f: 24, r: 0 },
+];
+const LOOP = 12;
+function frame(ms) {
+  const t = ms / 1000, f = (t % LOOP) / LOOP;
+  applyTheme('night', 'royal', E.inOut(f), t);
+  setCamera(evalCam(SHOT, f), t);
+  tower.rotation.y = t * .3; ring.rotation.set(1.2 + t * .3, t * .5, 0); bulb.setOn(.5 + .5 * Math.sin(t * 1.2)); bulb.rotation.y = bob(t, .3, .2);
+  cards.forEach((c, i) => { c.rotation.y = Math.sin(t * .5 + i) * .5; c.position.y += Math.sin(t + i) * .001; });
+  guy.idle(t); popWords(title, (t % LOOP), 0, .25, .6); fx.uniforms.uT.value = t;
+  composer.render(); requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script></body></html>

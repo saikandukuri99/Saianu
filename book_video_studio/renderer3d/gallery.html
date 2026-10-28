@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+  @font-face{font-family:'TeSans';src:url('fonts/NotoSansTelugu-Bold.ttf');font-weight:700}
+  @font-face{font-family:'Pop';src:url('fonts/Poppins-Bold.ttf');font-weight:700}
+  html,body{margin:0;background:#000}#gl{width:1920px;height:1080px}#cap{display:none}</style></head>
+<body><div id="gl"></div><svg id="cap"></svg>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/jsm/"}}</script>
+<script type="module">
+import * as C from './core3d.js'; import * as K from './kit3d.js'; import * as THREE from 'three';
+const {scene,camera,composer,applyTheme,setCamera,fx}=C; const {P,person,PEOPLE,at}=K;
+applyTheme('night','night',1,3);
+const items=[
+ ['coin',P.coin(.8)],['bank',P.bank()],['piggy',P.piggy()],['calendar',P.calendar()],['bag',P.bag()],['chart',(()=>{const c=P.chart();c.setProgress(1);return c})()],
+ ['globe',P.globe(1.1)],['magnifier',P.magnifier()],['gear',P.gear()],['puzzle',P.puzzle('#FF8A3D',[0,-1,0,0],.6)],['heart',P.heart()],['star',P.star()],
+ ['bulb',(()=>{const b=P.bulb();b.setOn(1);return b})()],['thumb',P.thumb()],['bell',P.bell()],['house',P.house()],['pin',P.pin()],['eye',P.eye()],['calc',P.calculator()],['wallet',P.wallet()],
+ ['check',P.check()],['cross',P.cross()],['warn',P.warning()],['cloud',P.cloud()],['sun',P.sun()],['rocket',P.rocket()],['tag',P.tag()],['bolt',P.bolt()],['docs',P.docs()],['polaroid',P.polaroid('🌧️')],
+];
+items.forEach(([n,o],i)=>{const x=(i%6-2.5)*3.0, y=(2-Math.floor(i/6))*2.6-1; o.position.set(x,y,0); o.scale.setScalar(.8); scene.add(o);});
+const t=K.text3d('ఎవరూ పిచ్చివాళ్ళు',{h:1.2,size:160,fill:'#FFD66B',outline:'#2a1450',depth:'#a86a08'}); t.position.set(0,-4.2,0); scene.add(t);
+setCamera({p:[0,0,22],l:[0,0,0],f:34,r:0},3); fx.uniforms.uT.value=1;
+window.render=()=>{composer.render();};
+window.READY=true;
+</script></body></html>
