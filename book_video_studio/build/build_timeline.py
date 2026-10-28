@@ -31,7 +31,7 @@ def silences(path):
     return list(zip(starts, ends))
 
 
-def align(chars, sil, total):
+def align(chars, sil, total, commas=None):
     """Return list of (voice_start, voice_end, boundary_center) per sentence, scene-local seconds."""
     k = len(chars)
     lead, tail = 0.0, total
@@ -46,14 +46,21 @@ def align(chars, sil, total):
             cand.append((s, e))
     if k == 1:
         return [(lead, tail, None)]
+    strong = [c for c in cand if c[1] - c[0] >= .3]
+    if len(strong) >= k - 1:
+        cand = strong
     voice = tail - lead
     tot = float(sum(chars))
+    commas = commas or [0] * k
+    fixed = .3 * sum(commas) + .45 * (k - 1)
+    rate = max(.02, (voice - fixed)) / tot
     expect = []
-    acc = 0
+    t = lead
     for i in range(k - 1):
-        acc += chars[i]
-        expect.append(lead + voice * acc / tot)
-    tol = max(.6, .07 * voice)
+        t += chars[i] * rate + .3 * commas[i]
+        expect.append(t + .225)
+        t += .45
+    tol = .8
     INF = 1e18
     n = len(cand)
     # dp[i][j] = best cost placing boundary i at candidate j
@@ -61,11 +68,11 @@ def align(chars, sil, total):
     bk = [[-1] * n for _ in range(k - 1)]
     for j, (s, e) in enumerate(cand):
         c = (s + e) / 2
-        dp[0][j] = ((c - expect[0]) / tol) ** 2 - 5 * (e - s)
+        dp[0][j] = ((c - expect[0]) / tol) ** 2 - 4 * (e - s)
     for i in range(1, k - 1):
         for j, (s, e) in enumerate(cand):
             c = (s + e) / 2
-            base = ((c - expect[i]) / tol) ** 2 - 5 * (e - s)
+            base = ((c - expect[i]) / tol) ** 2 - 4 * (e - s)
             for jj in range(j):
                 if dp[i - 1][jj] < INF and dp[i - 1][jj] + base < dp[i][j]:
                     dp[i][j] = dp[i - 1][jj] + base
@@ -130,7 +137,7 @@ for si, sc in enumerate(ep['scenes']):
     real = os.path.exists(p)
     total = probe(p) if real else sum(chars) * spc + .3
     if real:
-        al = align(chars, silences(p), total)
+        al = align(chars, silences(p), total, [sn['text'].count(',') for sn in sc['sentences']])
     else:
         tot = float(sum(chars)); acc = 0; al = []
         for i, c in enumerate(chars):
