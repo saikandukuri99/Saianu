@@ -12,7 +12,7 @@ function serve() { return new Promise(res => { const s = http.createServer((q, r
   await page.goto(`http://localhost:${port}/index.html`); await page.waitForFunction('window.READY === true', null, { timeout: 120000 });
   if (mode === 'frames') {
     const [out, a, b] = [rest[0], +rest[1], +rest[2]]; fs.mkdirSync(out, { recursive: true }); const t0 = Date.now();
-    for (let f = a; f < b; f++) { const b64 = await page.evaluate(t => window.grab(t), f / FPS); fs.writeFileSync(path.join(out, `f_${String(f).padStart(6, '0')}.jpg`), Buffer.from(b64, 'base64')); if ((f - a) % 50 === 0) console.log(`frame ${f} (${a}-${b}) ${((Date.now() - t0) / 1000).toFixed(0)}s`); }
+    for (let f = a; f < b; f++) { const fp = path.join(out, `f_${String(f).padStart(6, '0')}.jpg`); if (fs.existsSync(fp)) continue; const b64 = await page.evaluate(t => window.grab(t), f / FPS); fs.writeFileSync(path.join(out, `f_${String(f).padStart(6, '0')}.jpg`), Buffer.from(b64, 'base64')); if ((f - a) % 50 === 0) console.log(`frame ${f} (${a}-${b}) ${((Date.now() - t0) / 1000).toFixed(0)}s`); }
   } else if (mode === 'snap') {
     const out = rest[0]; fs.mkdirSync(out, { recursive: true });
     for (const t of rest.slice(1)) { const b64 = await page.evaluate(t => window.grab(t, .97), +t); fs.writeFileSync(path.join(out, `snap_${(+t).toFixed(2)}.jpg`), Buffer.from(b64, 'base64')); }
