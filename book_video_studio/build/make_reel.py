@@ -133,9 +133,6 @@ probe = ImageDraw.Draw(Image.new('RGBA', (10, 10)))
 for fi in range(NF):
     t = fi / FPS
     im = Image.new('RGBA', (W, H), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
-    # tag chip (top)
-    d.rounded_rectangle((60, 120, 60 + 470, 120 + 78), 39, fill=(255, 200, 87, 255))
-    d.text((60 + 235, 120 + 39), 'డబ్బు సైకాలజీ', font=F_TAG, fill=(42, 27, 0, 255), anchor='mm')
     # headline of the current segment (slides up + fades in)
     seg = [g for g in segs if g['off'] <= t < g['off'] + (g['t1'] - g['t0'])][-1]
     lt = t - seg['off']; a = ease(lt / .35)
