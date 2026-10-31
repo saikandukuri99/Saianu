@@ -6,7 +6,7 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 
-const PAGE = 'file://' + path.resolve(__dirname, '../renderer/index.html');
+const PAGE = process.env.PAGE ? 'file://' + path.resolve(process.env.PAGE) : 'file://' + path.resolve(__dirname, '../renderer/index.html');
 const FPS = 30;
 
 async function open() {
