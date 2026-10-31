@@ -35,8 +35,9 @@ vo = np.pad(vo, (0, max(0, N - len(vo))))[:N]
 # ---- music
 sc_marks = [s['start'] for s in plan['sentences'] if s['id'].endswith('.1')]
 sc_marks[0] = 0.0
-energies = [.55, .6, .6, 0.0, .9, .6, .5, .75, 1.0]
-mus = music.make(total, sc_marks, energies[:len(sc_marks)])
+energies = [float(v) for v in sys.argv[2].split(',')] if len(sys.argv) > 2 else [.55, .6, .6, 0.0, .9, .6, .5, .75, 1.0]
+major = int(sys.argv[3]) if len(sys.argv) > 3 else 4
+mus = music.make(total, sc_marks, energies[:len(sc_marks)], major_scene=major)
 mus = np.pad(mus, ((0, max(0, N - len(mus))), (0, 0)))[:N]
 # loud finale on the title reveal (sentence 1.5): small lift via gain envelope
 # ---- ducking

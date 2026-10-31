@@ -78,7 +78,7 @@ def hat(open_=False):
     return hp(n, 7000) * np.exp(-t / (.07 if open_ else .018))
 
 
-def make(total, scene_marks, energies, out_fx=4.0):
+def make(total, scene_marks, energies, out_fx=4.0, major_scene=4):
     """scene_marks: list of start times of each scene; energies: drum energy per scene (0..1)."""
     N = int((total + 1.0) * SR); buf = np.zeros((N, 2)); drums = np.zeros((N, 2))
     bars = int(total / BAR) + 2
@@ -89,7 +89,7 @@ def make(total, scene_marks, energies, out_fx=4.0):
             if sc_start[i] <= t < sc_start[i + 1]: return energies[i]
         return energies[-1]
 
-    major_from = scene_marks[4] if len(scene_marks) > 4 else 1e9  # story turns bright at scene 5
+    major_from = scene_marks[major_scene] if len(scene_marks) > major_scene else 1e9  # story turns bright at scene 5
     for b in range(bars):
         t0 = b * BAR
         prog = MAJOR if t0 + BAR / 2 >= major_from else MINOR
