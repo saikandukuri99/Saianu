@@ -9,10 +9,11 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 W, H, FPS = 1920, 1080, 30
-DUR = 7.0                      # in 1.2 s, hold, out 0.7 s
+DUR = 7.0                      # in ~1.2 s (+ shine), hold, out 0.7 s
 RED = (238, 36, 36)            # Solix red  #ee2424
 BLUE = (48, 38, 123)           # Solix dark blue/indigo #30267b
 BLUE_D = (28, 22, 82)
+CYAN = (0, 136, 207)           # Solix brand blue #0088cf
 WHITE = (255, 255, 255)
 F = "/usr/share/fonts/opentype/inter/"
 
@@ -83,8 +84,8 @@ def frame(t):
 
     # plates wipe right out of the bar; on exit they wipe back in
     for pl, tx, y, a, b, ta, tb_, oa in (
-        (name_plate, name_txt, Y_NAME, 0.15, 0.75, 0.40, 0.95, 0.0),
-        (title_plate, title_txt, Y_TITLE, 0.30, 0.90, 0.60, 1.15, 0.08),
+        (name_plate, name_txt, Y_NAME, 0.18, 0.80, 0.45, 1.00, 0.0),
+        (title_plate, title_txt, Y_TITLE, 0.35, 0.95, 0.65, 1.20, 0.08),
     ):
         w = pl.width
         vis = ease_out(seg(t, a, b)) * (1 - ease_in(seg(t, out_t + oa, out_t + oa + 0.5)))
@@ -101,6 +102,28 @@ def frame(t):
             layer.alpha_composite(tl, (int(-40 * (1 - k)), 0))
         layer = layer.crop((w - cw, 0, w, pl.height))   # reveal: content travels with the edge
         fr.alpha_composite(layer, (PX, y))
+        if pl is name_plate:
+            d = ImageDraw.Draw(fr)
+            # #0088cf tab riding the leading edge of the name plate
+            d.rectangle([PX + cw - 8, y, PX + cw - 1, y + pl.height - 1], fill=CYAN + (255,))
+            # #0088cf line that races ahead of the plate along its top
+            lw = int((w + 40) * ease_out(seg(t, 0.05, 0.55)) * (1 - ease_in(seg(t, out_t, out_t + 0.45))))
+            if lw > 0:
+                d.rectangle([PX, y - 6, PX + lw, y - 2], fill=CYAN + (255,))
+
+    # light shine sweeping across both plates once they are in
+    st = seg(t, 1.25, 2.0)
+    if 0 < st < 1:
+        x1, y1 = PX, Y_NAME - 6
+        x2, y2 = PX + max(NAME_W, TITLE_W) + 40, Y_TITLE_BOTTOM
+        a = np.asarray(fr.crop((x1, y1, x2, y2))).astype(np.float32)
+        hh, ww = a.shape[:2]
+        xx, yy = np.meshgrid(np.arange(ww), np.arange(hh))
+        pos = -200 + (ww + 400) * ease_out(st)
+        band = np.clip(1 - np.abs(xx + 0.45 * yy - pos) / 70, 0, 1) * 0.35
+        band *= a[..., 3] / 255
+        a[..., :3] += (255 - a[..., :3]) * band[..., None]
+        fr.paste(Image.fromarray(a.astype(np.uint8), "RGBA"), (x1, y1))
     return fr
 
 
