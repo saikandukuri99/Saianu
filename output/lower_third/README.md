@@ -1,4 +1,6 @@
-# Lower third: Janu Jethani (Solix red, dark blue, blue)
+# Lower thirds: Janu Jethani, Suresh Mani (Solix red, dark blue, blue)
+
+The `LowerThird_Suresh_Mani*` files come in the same set of formats as the Janu Jethani files listed below.
 
 | File | Size | Use |
 |---|---|---|
