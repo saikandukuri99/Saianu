@@ -1,10 +1,18 @@
-# Lower third: Janu Jethani (Solix red + dark blue)
+# Lower third: Janu Jethani (Solix red, dark blue, blue)
 
-- `LowerThird_Janu_Jethani.mov`: QuickTime Animation, **RGB + Alpha**, 1920×1080, 30 fps, 7 s, silent.
-  The animation runs in for 1.2 s, holds, then runs out for 0.7 s. Put it on a track above your footage in Premiere; the alpha is Straight.
-- `LowerThird_Janu_Jethani.png`: the same graphic as a full-frame transparent still (1920×1080).
-- Colours: Solix dark blue #30267b (name plate), Solix red #ee2424 (title strip and left accent bar), Solix blue #0088cf (line racing along the top and the tab on the name plate's edge), white Inter text.
-- Animation: red bar grows in, the #0088cf line races out, the blue and red plates wipe out with the text sliding in, a light shine sweeps across, it holds, then everything wipes back.
-- `LowerThird_Janu_Jethani_preview.mp4`: preview over a grey background (not for editing).
-- To make one for another speaker, run this and it writes the .mov and .png:
-  `python3 source/build/lower_third.py "Name" "Title" output/lower_third/LowerThird_Name`
+| File | Size | Use |
+|---|---|---|
+| `LowerThird_Janu_Jethani_Reel.mov` | 1080×1920 (Reels/Shorts) | RGB + Alpha, use this in Premiere |
+| `LowerThird_Janu_Jethani_Reel.png` | 1080×1920 | transparent still |
+| `LowerThird_Janu_Jethani_Reel_preview.mp4` | 1080×1920 | preview over grey only |
+| `LowerThird_Janu_Jethani.mov` | 1920×1080 (16:9) | RGB + Alpha, use this in Premiere |
+| `LowerThird_Janu_Jethani.png` | 1920×1080 | transparent still |
+| `LowerThird_Janu_Jethani_preview.mp4` | 1920×1080 | preview over grey only |
+
+- Every .mov is QuickTime Animation, 30 fps, 7 s, with no audio. The alpha is Straight.
+- **Colours:** dark blue #30267b on the name panel, red #ee2424 on the title strip and the left accent bar, a blue #0088cf strip on the right edge of the name panel, and white Inter text.
+- **Animation:** the red bar grows in, the name and title panels slide out with their text, a light shine sweeps across, it holds, then everything slides back out over the last 0.7 s.
+- **Reel placement:** the graphic sits at the left, with its bottom edge at y = 1500, so it stays clear of the caption and buttons at the bottom of the screen. The title is on two lines.
+- **Another speaker:** the title wraps automatically, and `|` forces a line break. Run this and it writes the .mov and .png:
+  `python3 source/build/lower_third.py "Name" "Title line 1 | line 2" output/lower_third/LowerThird_Name --reel`
+  Leave off `--reel` to get the 16:9 version.

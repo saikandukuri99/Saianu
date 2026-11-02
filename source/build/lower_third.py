@@ -1,14 +1,17 @@
 """Animated lower third (RGB + alpha) in Solix colours.
 
-Usage:  python3 lower_third.py "Janu Jethani" "AI Product Innovation & Platform Leader at Accenture" OUT_BASENAME
-Writes OUT_BASENAME.mov (QuickTime Animation, RGB+Alpha, 1920x1080, 30 fps)
+Usage:  python3 lower_third.py "Janu Jethani" "AI Product Innovation & Platform Leader at Accenture" OUT_BASENAME [--reel]
+Writes OUT_BASENAME.mov (QuickTime Animation, RGB+Alpha, 1920x1080 or 1080x1920 with --reel, 30 fps)
+The title wraps automatically; use '|' to force line breaks.
 and OUT_BASENAME.png (full-frame still with alpha).
 """
 import subprocess, sys
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-W, H, FPS = 1920, 1080, 30
+REEL = "--reel" in sys.argv          # 1080x1920 vertical (Instagram/YouTube Reels, Shorts)
+args = [a for a in sys.argv[1:] if a != "--reel"]
+W, H, FPS = (1080, 1920, 30) if REEL else (1920, 1080, 30)
 DUR = 7.0                      # in ~1.2 s (+ shine), hold, out 0.7 s
 RED = (238, 36, 36)            # Solix red  #ee2424
 BLUE = (48, 38, 123)           # Solix dark blue/indigo #30267b
@@ -17,21 +20,43 @@ CYAN = (0, 136, 207)           # Solix brand blue #0088cf
 WHITE = (255, 255, 255)
 F = "/usr/share/fonts/opentype/inter/"
 
-name = sys.argv[1] if len(sys.argv) > 1 else "Janu Jethani"
-title = sys.argv[2] if len(sys.argv) > 2 else "AI Product Innovation & Platform Leader at Accenture"
-out = sys.argv[3] if len(sys.argv) > 3 else "lower_third"
+name = args[0] if len(args) > 0 else "Janu Jethani"
+title = args[1] if len(args) > 1 else "AI Product Innovation & Platform Leader at Accenture"
+out = args[2] if len(args) > 2 else "lower_third"
 
-f_name = ImageFont.truetype(F + "InterDisplay-Bold.otf", 58)
-f_title = ImageFont.truetype(F + "Inter-Medium.otf", 30)
+f_name = ImageFont.truetype(F + "InterDisplay-Bold.otf", 66 if REEL else 58)
+f_title = ImageFont.truetype(F + "Inter-Medium.otf", 36 if REEL else 30)
 
 # ---- layout ----
-X0, BAR = 110, 12                 # left edge, red accent bar width
-PADX = 34
-NAME_H, TITLE_H, GAP = 92, 58, 0
-nb = f_name.getbbox(name); tb = f_title.getbbox(title)
-NAME_W = max(nb[2] - nb[0] + 2 * PADX, 460)
-TITLE_W = max(tb[2] - tb[0] + 2 * PADX, 300)
-Y_TITLE_BOTTOM = 960
+X0, BAR = (64, 12) if REEL else (110, 12)   # left edge, red accent bar width
+PADX = 30 if REEL else 34
+MAXW = W - 2 * X0 - BAR - 6                 # widest a plate may be
+
+
+def wrap(txt, font, maxw):
+    """Split on '|' if given, otherwise word-wrap to fit maxw."""
+    if "|" in txt:
+        return [l.strip() for l in txt.split("|")]
+    lines, cur = [], ""
+    for w_ in txt.split():
+        trial = (cur + " " + w_).strip()
+        if font.getlength(trial) + 2 * PADX <= maxw or not cur:
+            cur = trial
+        else:
+            lines.append(cur); cur = w_
+    return lines + [cur]
+
+
+title_lines = wrap(title, f_title, MAXW)
+LINE_H = int(f_title.size * 1.32)
+NAME_H = 104 if REEL else 92
+TITLE_H = LINE_H * len(title_lines) + (26 if REEL else 16)
+GAP = 0
+nb = f_name.getbbox(name)
+NAME_W = max(nb[2] - nb[0] + 2 * PADX + 8, 420)
+TITLE_W = int(max(f_title.getlength(l) for l in title_lines) + 2 * PADX)
+# Reels: sit above the caption/UI zone at the bottom of the screen
+Y_TITLE_BOTTOM = 1500 if REEL else 960
 Y_TITLE = Y_TITLE_BOTTOM - TITLE_H
 Y_NAME = Y_TITLE - GAP - NAME_H
 PX = X0 + BAR + 6                 # plates start right of the bar
@@ -58,16 +83,22 @@ name_plate = plate(NAME_W, NAME_H, (62, 50, 150), BLUE_D)
 title_plate = plate(TITLE_W, TITLE_H, (246, 52, 52), (206, 26, 26))
 
 
-def text_layer(txt, font, w, h, color):
+def text_layer(lines, font, w, h, color, line_h=None):
     im = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    bb = font.getbbox(txt)
-    y = (h - (bb[3] - bb[1])) // 2 - bb[1]
-    ImageDraw.Draw(im).text((PADX, y), txt, font=font, fill=color + (255,))
+    d = ImageDraw.Draw(im)
+    if line_h is None:
+        bb = font.getbbox(lines[0])
+        d.text((PADX, (h - (bb[3] - bb[1])) // 2 - bb[1]), lines[0], font=font, fill=color + (255,))
+        return im
+    asc, desc = font.getmetrics()
+    y0 = (h - line_h * len(lines)) // 2 + (line_h - asc - desc) // 2
+    for i, l in enumerate(lines):
+        d.text((PADX, y0 + i * line_h), l, font=font, fill=color + (255,))
     return im
 
 
-name_txt = text_layer(name, f_name, NAME_W, NAME_H, WHITE)
-title_txt = text_layer(title, f_title, TITLE_W, TITLE_H, WHITE)
+name_txt = text_layer([name], f_name, NAME_W, NAME_H, WHITE)
+title_txt = text_layer(title_lines, f_title, TITLE_W, TITLE_H, WHITE, LINE_H)
 
 
 def frame(t):
@@ -106,15 +137,11 @@ def frame(t):
             d = ImageDraw.Draw(fr)
             # #0088cf tab riding the leading edge of the name plate
             d.rectangle([PX + cw - 8, y, PX + cw - 1, y + pl.height - 1], fill=CYAN + (255,))
-            # #0088cf line that races ahead of the plate along its top
-            lw = int((w + 40) * ease_out(seg(t, 0.05, 0.55)) * (1 - ease_in(seg(t, out_t, out_t + 0.45))))
-            if lw > 0:
-                d.rectangle([PX, y - 6, PX + lw, y - 2], fill=CYAN + (255,))
 
     # light shine sweeping across both plates once they are in
     st = seg(t, 1.25, 2.0)
     if 0 < st < 1:
-        x1, y1 = PX, Y_NAME - 6
+        x1, y1 = PX, Y_NAME
         x2, y2 = PX + max(NAME_W, TITLE_W) + 40, Y_TITLE_BOTTOM
         a = np.asarray(fr.crop((x1, y1, x2, y2))).astype(np.float32)
         hh, ww = a.shape[:2]
