@@ -3,9 +3,11 @@
 | File | Size | Use |
 |---|---|---|
 | `LowerThird_Janu_Jethani_Reel.mov` | 1080×1920 (Reels/Shorts) | RGB + Alpha, use this in Premiere |
+| `LowerThird_Janu_Jethani_Reel_ProRes4444.mov` | 1080×1920 | RGB + Alpha in ProRes 4444, works best in Premiere, Final Cut and After Effects |
 | `LowerThird_Janu_Jethani_Reel.png` | 1080×1920 | transparent still |
 | `LowerThird_Janu_Jethani_Reel_preview.mp4` | 1080×1920 | preview over grey only |
 | `LowerThird_Janu_Jethani.mov` | 1920×1080 (16:9) | RGB + Alpha, use this in Premiere |
+| `LowerThird_Janu_Jethani_ProRes4444.mov` | 1920×1080 | RGB + Alpha in ProRes 4444 |
 | `LowerThird_Janu_Jethani.png` | 1920×1080 | transparent still |
 | `LowerThird_Janu_Jethani_preview.mp4` | 1920×1080 | preview over grey only |
 
@@ -16,3 +18,5 @@
 - **Another speaker:** the title wraps automatically, and `|` forces a line break. Run this and it writes the .mov and .png:
   `python3 source/build/lower_third.py "Name" "Title line 1 | line 2" output/lower_third/LowerThird_Name --reel`
   Leave off `--reel` to get the 16:9 version.
+
+**Where is the alpha?** Every `.mov` here has RGB + alpha, and the `_preview.mp4` files do not. A phone or a basic player shows the transparent area as black because it can't display alpha. Import the .mov into an editor to see it transparent.
