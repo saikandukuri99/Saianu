@@ -11,7 +11,7 @@ const FPS = 30;
 
 async function open() {
   const browser = await chromium.launch({ args: ['--allow-file-access-from-files', '--font-render-hinting=none'] });
-  const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: +(process.env.VW||1920), height: +(process.env.VH||1080) }, deviceScaleFactor: 1 });
   page.on('console', m => { if (['error', 'warning'].includes(m.type())) console.log('[page]', m.type(), m.text()); });
   page.on('pageerror', e => console.log('[pageerror]', e.message));
   await page.goto(PAGE);
