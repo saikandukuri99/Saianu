@@ -2,7 +2,7 @@
 
 Usage:  python3 lower_third.py "Janu Jethani" "AI Product Innovation & Platform Leader at Accenture" OUT_BASENAME [--reel]
 Writes OUT_BASENAME.mov (QuickTime Animation, RGB+Alpha, 1920x1080 or 1080x1920 with --reel, 30 fps)
-The title wraps automatically; use '|' to force line breaks.
+The title wraps automatically; use '|' to force line breaks. Add --center to centre it in the frame.
 and OUT_BASENAME.png (full-frame still with alpha).
 """
 import subprocess, sys
@@ -10,7 +10,8 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 REEL = "--reel" in sys.argv          # 1080x1920 vertical (Instagram/YouTube Reels, Shorts)
-args = [a for a in sys.argv[1:] if a != "--reel"]
+CENTER = "--center" in sys.argv      # whole graphic centred in frame, equal-width plates, centred text
+args = [a for a in sys.argv[1:] if a not in ("--reel", "--center")]
 W, H, FPS = (1080, 1920, 30) if REEL else (1920, 1080, 30)
 DUR = 7.0                      # in ~1.2 s (+ shine), hold, out 0.7 s
 RED = (238, 36, 36)            # Solix red  #ee2424
@@ -59,6 +60,12 @@ TITLE_W = int(max(f_title.getlength(l) for l in title_lines) + 2 * PADX)
 Y_TITLE_BOTTOM = 1500 if REEL else 960
 Y_TITLE = Y_TITLE_BOTTOM - TITLE_H
 Y_NAME = Y_TITLE - GAP - NAME_H
+if CENTER:
+    NAME_W = TITLE_W = max(NAME_W, TITLE_W)
+    X0 = (W - (BAR + 6 + NAME_W)) // 2
+    Y_NAME = (H - (NAME_H + GAP + TITLE_H)) // 2
+    Y_TITLE = Y_NAME + NAME_H + GAP
+    Y_TITLE_BOTTOM = Y_TITLE + TITLE_H
 PX = X0 + BAR + 6                 # plates start right of the bar
 
 
@@ -88,12 +95,14 @@ def text_layer(lines, font, w, h, color, line_h=None):
     d = ImageDraw.Draw(im)
     if line_h is None:
         bb = font.getbbox(lines[0])
-        d.text((PADX, (h - (bb[3] - bb[1])) // 2 - bb[1]), lines[0], font=font, fill=color + (255,))
+        x = (w - 8 - font.getlength(lines[0])) / 2 if CENTER else PADX
+        d.text((x, (h - (bb[3] - bb[1])) // 2 - bb[1]), lines[0], font=font, fill=color + (255,))
         return im
     asc, desc = font.getmetrics()
     y0 = (h - line_h * len(lines)) // 2 + (line_h - asc - desc) // 2
     for i, l in enumerate(lines):
-        d.text((PADX, y0 + i * line_h), l, font=font, fill=color + (255,))
+        x = (w - font.getlength(l)) / 2 if CENTER else PADX
+        d.text((x, y0 + i * line_h), l, font=font, fill=color + (255,))
     return im
 
 

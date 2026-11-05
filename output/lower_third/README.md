@@ -25,3 +25,7 @@ The `LowerThird_Suresh_Mani*` and `LowerThird_Arvind_Sathi*` files come in the s
 
 ## Day titles (`Day_Titles/`)
 `LowerThird_Day1`, `LowerThird_Day2` and `LowerThird_Day3` read "DAY 1", "DAY 2" or "DAY 3" on the dark blue panel, with "Solix Empower 2026" on the red strip. Each one comes in the same formats as above: `_Reel_ProRes4444.mov`, `_Reel.mov`, `_ProRes4444.mov`, `.mov`, `.png`, and `_Reel_preview.mp4`.
+
+## Centred day titles (`Day_Titles_Center/`)
+These are the same Day 1, 2 and 3 graphics placed in the exact centre of the frame. Both panels are the same width and the text is centred in them. The files are `LowerThird_DayN_Center_Reel_ProRes4444.mov` (1080×1920) and `LowerThird_DayN_Center_ProRes4444.mov` (1920×1080). There are also Animation-codec .mov files, PNG stills and Reel previews.
+To make another centred graphic, add `--center` to the command above.
