@@ -22,3 +22,6 @@ The `LowerThird_Suresh_Mani*` and `LowerThird_Arvind_Sathi*` files come in the s
   Leave off `--reel` to get the 16:9 version.
 
 **Where is the alpha?** Every `.mov` here has RGB + alpha, and the `_preview.mp4` files do not. A phone or a basic player shows the transparent area as black because it can't display alpha. Import the .mov into an editor to see it transparent.
+
+## Day titles (`Day_Titles/`)
+`LowerThird_Day1`, `LowerThird_Day2` and `LowerThird_Day3` read "DAY 1", "DAY 2" or "DAY 3" on the dark blue panel, with "Solix Empower 2026" on the red strip. Each one comes in the same formats as above: `_Reel_ProRes4444.mov`, `_Reel.mov`, `_ProRes4444.mov`, `.mov`, `.png`, and `_Reel_preview.mp4`.
