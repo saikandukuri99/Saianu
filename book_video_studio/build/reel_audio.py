@@ -4,7 +4,7 @@ import json, os, sys, subprocess
 import numpy as np, soundfile as sf
 from scipy import signal
 sys.path.insert(0, os.path.dirname(__file__)); import sfx, music
-SR = 48000; EP = 'episodes/ep02_one_car'
+SR = 48000; EP = os.environ.get('EP','episodes/ep02_one_car'); MAJ = os.environ.get('MAJ','3.3')
 plan = json.load(open(f'{EP}/reel_plan.json')); total = plan['total']; N = int((total + .5) * SR)
 cues = json.load(open(f'{EP}/reel_cues.json'))
 vp, _ = sf.read(f'{EP}/mix/vo_proc.wav', dtype='float32')
@@ -13,7 +13,7 @@ vo = np.zeros(N, np.float32); F = int(.03 * SR)
 for s in plan['segs']:
     a, b = int(s['o0'] * SR), int(s['o1'] * SR); x = vp[a:b].copy(); x[:F] *= np.linspace(0, 1, F); x[-F:] *= np.linspace(1, 0, F)
     i = int(s['n0'] * SR); n = min(len(x), N - i); vo[i:i + n] += x[:n]
-marks = [0.0, [s for s in plan['segs'] if s['id'] == '3.3'][0]['n0']]
+marks = [0.0, [s for s in plan['segs'] if s['id'] == MAJ][0]['n0']]
 mus = music.make(total, marks, [.7, .9], out_fx=3.0, major_scene=1)
 mus = np.pad(mus, ((0, max(0, N - len(mus))), (0, 0)))[:N]
 env = np.abs(vo); b, a = signal.butter(1, 12 / (SR / 2)); env = signal.filtfilt(b, a, env)
