@@ -20,8 +20,8 @@
   // ---------- the three pillar presenters (HeyGen avatar clips, their own voices) ----------
   const AVATARS = [
     { id: 'av1', name: 'data', dur: 7.56, frames: 189, fps: 25, color: C.blue, hi: C.blueHi, icon: 'database' },
-    { id: 'av2', name: 'people', dur: 7.6, frames: 190, fps: 25, color: C.red, hi: '#ff5a5a', icon: 'people' },
-    { id: 'av3', name: 'governance', dur: 5.5, frames: 144, fps: 25, color: C.indigo, hi: '#8d7bff', icon: 'shield' }, // the clip's last 0.26 s is black
+    { id: 'av2', name: 'governance', dur: 5.5, frames: 144, fps: 25, color: C.indigo, hi: '#8d7bff', icon: 'shield' }, // the clip's last 0.26 s is black
+    { id: 'av3', name: 'people', dur: 7.6, frames: 190, fps: 25, color: C.red, hi: '#ff5a5a', icon: 'people' },
   ];
 
   // ---------- timeline: narration lines + avatar clips (gap = silence BEFORE the item) ----------
