@@ -1,0 +1,140 @@
+{
+ "total": 70.051,
+ "lines": [
+  {
+   "i": 0,
+   "id": "hook",
+   "caption": "Every enterprise carries applications it has already moved on from.",
+   "pause": 0.5,
+   "file": "00_hook.wav",
+   "start": 2.4,
+   "end": 6.49
+  },
+  {
+   "i": 1,
+   "id": "t1",
+   "caption": "A renewal you shouldn't pay.",
+   "pause": 0.25,
+   "file": "01_t1.wav",
+   "start": 6.99,
+   "end": 8.41
+  },
+  {
+   "i": 2,
+   "id": "t2",
+   "caption": "A system you can't patch.",
+   "pause": 0.25,
+   "file": "02_t2.wav",
+   "start": 8.66,
+   "end": 10.191
+  },
+  {
+   "i": 3,
+   "id": "t3",
+   "caption": "An acquisition to absorb.",
+   "pause": 0.25,
+   "file": "03_t3.wav",
+   "start": 10.441,
+   "end": 12.035
+  },
+  {
+   "i": 4,
+   "id": "t4",
+   "caption": "An archive at its limit.",
+   "pause": 0.25,
+   "file": "04_t4.wav",
+   "start": 12.285,
+   "end": 13.893
+  },
+  {
+   "i": 5,
+   "id": "t5",
+   "caption": "An AI program short on history.",
+   "pause": 0.6,
+   "file": "05_t5.wav",
+   "start": 14.143,
+   "end": 16.399
+  },
+  {
+   "i": 6,
+   "id": "one",
+   "caption": "Many reasons. One engine.",
+   "pause": 0.6,
+   "file": "06_one.wav",
+   "start": 16.999,
+   "end": 18.927
+  },
+  {
+   "i": 7,
+   "id": "connect",
+   "caption": "Solix Application Retirement connects to ERP, mainframe, custom and SaaS applications, files and email.",
+   "pause": 0.4,
+   "file": "07_connect.wav",
+   "start": 19.527,
+   "end": 26.966
+  },
+  {
+   "i": 8,
+   "id": "migrate",
+   "caption": "Data moves into a governed Preservation Zone, checked against the source, with retention and legal hold from the day it lands.",
+   "pause": 0.5,
+   "file": "08_migrate.wav",
+   "start": 27.366,
+   "end": 35.254
+  },
+  {
+   "i": 9,
+   "id": "dark",
+   "caption": "Only then does the application go dark. Its licenses, its servers, its risk: gone for good.",
+   "pause": 0.6,
+   "file": "09_dark.wav",
+   "start": 35.754,
+   "end": 41.828
+  },
+  {
+   "i": 10,
+   "id": "access",
+   "caption": "Nothing it held is lost. Auditors get provable records.",
+   "pause": 2.3,
+   "file": "10_access.wav",
+   "start": 42.428,
+   "end": 45.943
+  },
+  {
+   "i": 11,
+   "id": "access2",
+   "caption": "Users get the reports they know.",
+   "pause": 1.1,
+   "file": "11_access2.wav",
+   "start": 48.243,
+   "end": 50.093
+  },
+  {
+   "i": 12,
+   "id": "ask",
+   "caption": "With Solix Data Ask, people ask in plain English and get cited answers from the application's own Knowledge Graph.",
+   "pause": 0.5,
+   "file": "12_ask.wav",
+   "start": 51.193,
+   "end": 58.675
+  },
+  {
+   "i": 13,
+   "id": "ai",
+   "caption": "Governed history, ready for your AI.",
+   "pause": 0.7,
+   "file": "13_ai.wav",
+   "start": 59.175,
+   "end": 61.429
+  },
+  {
+   "i": 14,
+   "id": "sign",
+   "caption": "Retire the application. Keep every answer.",
+   "pause": 0.0,
+   "file": "14_sign.wav",
+   "start": 62.129,
+   "end": 67.051
+  }
+ ]
+}
