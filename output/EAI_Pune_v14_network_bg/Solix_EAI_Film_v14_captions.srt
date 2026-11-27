@@ -1,0 +1,121 @@
+1
+00:00:00,500 --> 00:00:04,210
+Your business runs on your enterprise
+systems, and the data they hold.
+
+2
+00:00:04,250 --> 00:00:06,480
+Every order, invoice and contract.
+
+3
+00:00:06,770 --> 00:00:12,220
+But when a business problem lands, can they help
+you answer, and act, in the time that matters?
+
+4
+00:00:12,570 --> 00:00:17,500
+For example: three key suppliers declare
+backorders, one citing force majeure.
+
+5
+00:00:17,800 --> 00:00:22,590
+Procurement needs the items affected,
+the stock cover, and alternate suppliers.
+
+6
+00:00:22,900 --> 00:00:25,170
+Can one system answer that? No.
+
+7
+00:00:25,470 --> 00:00:29,000
+It takes exports, IT tickets, SQL queries.
+
+8
+00:00:29,300 --> 00:00:31,250
+Days of back and forth.
+
+9
+00:00:31,570 --> 00:00:33,460
+And it's never just one question.
+
+10
+00:00:33,500 --> 00:00:37,410
+Every team has them, across applications,
+data platforms and archives.
+
+11
+00:00:37,770 --> 00:00:41,960
+What if you could just ask, and let
+AI agents run the work that repeats?
+
+12
+00:00:43,470 --> 00:00:45,200
+Now, just ask.
+
+13
+00:00:45,790 --> 00:00:51,110
+Data Ask answers across your applications
+and contracts, with every figure cited.
+
+14
+00:00:51,400 --> 00:00:53,700
+Who else can deliver, and how fast?
+
+15
+00:00:56,000 --> 00:00:58,800
+Then your domain experts
+turn it into a workflow.
+
+16
+00:00:58,840 --> 00:01:02,100
+Agents check stock, find
+suppliers and draft the order.
+
+17
+00:01:02,140 --> 00:01:03,120
+A person approves.
+
+18
+00:01:04,000 --> 00:01:06,590
+Introducing Solix Enterprise AI.
+
+19
+00:01:06,630 --> 00:01:11,320
+Put AI in the hands of your business, and
+reimagine your business workflows with AI.
+
+20
+00:01:11,600 --> 00:01:15,930
+But the data you hold across your
+applications isn't readable by AI.
+
+21
+00:01:15,970 --> 00:01:18,380
+Data Sense makes it AI-activated.
+
+22
+00:01:18,600 --> 00:01:21,280
+Data Sense understands all your data.
+
+23
+00:01:21,320 --> 00:01:27,320
+On it, Data Ask answers, AI Warehouse builds,
+and AI Agent Studio puts agents to work.
+
+24
+00:01:29,000 --> 00:01:30,890
+Your systems hold the data.
+
+25
+00:01:30,930 --> 00:01:34,100
+Solix gives it meaning,
+and puts AI to work on it.
+
+26
+00:01:35,500 --> 00:01:37,700
+Solix Enterprise AI.
+
+27
+00:01:37,740 --> 00:01:39,990
+Put AI in the hands of your business.
+
